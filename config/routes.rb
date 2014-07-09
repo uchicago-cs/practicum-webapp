@@ -6,7 +6,7 @@ Dccc::Application.routes.draw do
   
   # Make devise resource routes for users controller, but do not use the
   # pre-packaged devise routes for sessions, registrations, and passwords.
-  devise_for :users, skip: [:sessions, :registrations, :passwords]
+  devise_for :users, skip: [:sessions, :registrations]#, :passwords]
 
   # Customized Devise routes for users.
   devise_scope :user do
@@ -18,6 +18,14 @@ Dccc::Application.routes.draw do
     # Registrations.
     get "/signup" => "devise/registrations#new", as: :new_user_registration
     post "/signup" => "devise/registrations#create", as: :user_registration
+
+    # Prevent users from deleting their own accounts.
+    resource :registration,
+      only: [:new, :create, :edit, :update],
+      controller: "devise/registrations",
+      as: :user_registration do
+        get :cancel
+      end
   end
 
 end
