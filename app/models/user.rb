@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
-  has_many :projects, foreign_key: "advisor_id"
-  has_many :submissions, foreign_key: "student_id"
+  has_many :projects, foreign_key: "advisor_id", dependent: :destroy
+  has_many :submissions, foreign_key: "student_id", dependent: :destroy
 
   ROLES = [:admin, :advisor, :student]
 
