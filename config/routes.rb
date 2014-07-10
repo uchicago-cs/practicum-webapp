@@ -1,8 +1,9 @@
 Dccc::Application.routes.draw do
   
   root 'pages#home'
-  resource :projects
-  resource :submissions
+  resources :projects
+  resources :submissions
+  
   
   # Make devise resource routes for users controller, but do not use the
   # pre-packaged devise routes for sessions, registrations, and passwords.
@@ -27,5 +28,9 @@ Dccc::Application.routes.draw do
         get :cancel
       end
   end
+
+  match "/users", to: "users#index", via: "get"
+  
+  # Why would users need to edit their accounts?
 
 end

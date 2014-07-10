@@ -18,6 +18,12 @@
 	<div><%= link_to "Sign out", destroy_user_session_path,
 	                             method: :delete %></div>
       <% end %>
+      <% if can? :read, @users %>
+	<div><%= link_to "User list", users_path %></div>
+      <% end %>
+      <% if can? :read, @projects %>
+	<div><%= link_to "Project list", projects_path %></div>
+      <% end %>
     </nav>
 
     <p class="notice"><%= notice %></p>

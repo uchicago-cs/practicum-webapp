@@ -7,7 +7,22 @@ class User < ActiveRecord::Base
 
   # Devise modules.
   devise :database_authenticatable, :registerable,
-  :recoverable, :rememberable, :trackable, :validatable
+  :rememberable, :trackable, :validatable#, :recoverable
+
+  # Validations? Already taken care of by Devise?
+
+  def admin?
+    self.role == "admin"
+  end
+
+  def advisor?
+    self.role == "advisor"
+  end
+
+  def student?
+    self.role == "student"
+  end
+
 end
 
 
