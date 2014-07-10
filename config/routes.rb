@@ -1,8 +1,9 @@
 Dccc::Application.routes.draw do
   
   root 'pages#home'
-  resources :projects
-  resources :submissions
+  resources :projects do
+    resources :submissions
+  end
   
   # Make devise resource routes for users controller, but do not use the
   # pre-packaged devise routes for sessions, registrations, and passwords.
@@ -15,7 +16,8 @@ Dccc::Application.routes.draw do
     post "/signin" => "devise/sessions#create", as: :user_session
     delete "/logout" => "devise/sessions#destroy", as: :destroy_user_session
 
-    # Registrations.
+    # Registrations. Will later be removed when we incorporate CNetID
+    # authentication.
     get "/signup" => "devise/registrations#new", as: :new_user_registration
     post "/signup" => "devise/registrations#create", as: :user_registration
 
@@ -28,10 +30,12 @@ Dccc::Application.routes.draw do
       end
   end
 
+  # Users directory. Available only for admins.
   match "/users", to: "users#index", via: "get"
-  match "/users/:id/submissions", to: "users#submissions_made", via: "get"
-  match "/users/:id/projects", to: "users#projects_made", via: "get"
+  # Maybe the below routes will be available for admins. Users can
+  # view their own information on their /users/:id page, and users
+  # do not need to edit their profiles.
+  # match "/users/:id/submissions", to: "users#submissions_made", via: "get"
+  # match "/users/:id/projects", to: "users#projects_made", via: "get"
   
-  # Why would users need to edit their accounts?
-
 end

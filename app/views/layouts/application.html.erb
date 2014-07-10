@@ -26,8 +26,14 @@
       <% if can? :read, Project %>
 	<div><%= link_to "Project list", projects_path %></div>
       <% end %>
-      <% if can? :read, Submission %>
+      <% if (can? :read, Submission) && user.student? %>
 	<div><%= link_to "My submissions", submissions_path %></div>
+      <% end %>
+      <% if (can? :read, Submission) && user.advisor? %>
+	<div><%= link_to "Submissions to my projects", submissions_path %></div>
+      <% end %>
+      <% if (can? :read, Submission) && user.admin? %>
+	<div><%= link_to "All submissions", submissions_path %></div>
       <% end %>
     </nav>
 
