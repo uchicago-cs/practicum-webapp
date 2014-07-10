@@ -15,14 +15,19 @@
 	<div><%= link_to "Sign up", new_user_registration_path %></div>
 	<div><%= link_to "Sign in", new_user_session_path %></div>
       <% else %>
+	<div>You are currently signed in as <%= current_user.email %>!</div>
 	<div><%= link_to "Sign out", destroy_user_session_path,
 	                             method: :delete %></div>
       <% end %>
-      <% if can? :read, @users %>
+
+      <% if can? :read, User %>
 	<div><%= link_to "User list", users_path %></div>
       <% end %>
-      <% if can? :read, @projects %>
+      <% if can? :read, Project %>
 	<div><%= link_to "Project list", projects_path %></div>
+      <% end %>
+      <% if can? :read, Submission %>
+	<div><%= link_to "My submissions", submissions_path %></div>
       <% end %>
     </nav>
 

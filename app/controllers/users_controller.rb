@@ -14,4 +14,10 @@ class UsersController < ApplicationController
   def update
   end
 
+  def submissions_made
+  end
+
+  def projects_created
+  end
+
 end

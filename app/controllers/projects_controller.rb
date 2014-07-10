@@ -20,6 +20,7 @@ class ProjectsController < ApplicationController
   end
 
   def index
+    # @projects = Project.where.not(id: current_user.projects_applied_to)
   end
 
   def show

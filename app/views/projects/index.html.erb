@@ -1,7 +1,16 @@
-<h1>All projects</h1>
+<h1>All <em>approved</em> projects</h1>
 
-<ol>
-<% @projects.each do |project| %>
-  <div><li><%= project.name %></li></div>
+<% if can? :read, Project %>
+  <ol>
+    <% @projects.each do |project| %>
+      <div><li><%= project.name %> | posted by <%= project.advisor_email %> | application deadline: midnight of <%= project.deadline %></li>
+	<% if (can? :create, Submission) && !(current_user.already_applied_to_project?(project.id)) %>
+	  <%= link_to "Apply for this project", new_submission_path %>
+        <% else %>
+	  You've already applied for this project. View your application <%= link_to "here", '#' %>.
+        <% end %>
+</div>
+<br>
+    <% end %>
+  </ol>
 <% end %>
-</ol>

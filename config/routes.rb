@@ -4,7 +4,6 @@ Dccc::Application.routes.draw do
   resources :projects
   resources :submissions
   
-  
   # Make devise resource routes for users controller, but do not use the
   # pre-packaged devise routes for sessions, registrations, and passwords.
   devise_for :users, skip: [:sessions, :registrations]#, :passwords]
@@ -30,6 +29,8 @@ Dccc::Application.routes.draw do
   end
 
   match "/users", to: "users#index", via: "get"
+  match "/users/:id/submissions", to: "users#submissions_made", via: "get"
+  match "/users/:id/projects", to: "users#projects_made", via: "get"
   
   # Why would users need to edit their accounts?
 

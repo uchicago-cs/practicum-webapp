@@ -1,3 +1,5 @@
+require 'faker'
+
 namespace :db do
   desc "Fill database with sample data"
 
@@ -62,13 +64,16 @@ end
 
 def make_projects
   advisors = User.find_all_by_role("advisor")
+  x = -1
   advisors.each do |advisor|
-    20.times do
+    x += 1
+    20.times do |n|
       content = Faker::Lorem.sentence(20)
       advisor.projects.create!(description: content,
                                advisor_id: advisor.id,
-                               name: "Some Project",
-                               deadline: Date.today)
+                               name: "Some Project #{20*x + n + 1}",
+                               deadline: Date.today,
+                               approved: (1 == rand(2) ? true : false) )
     end
   end
 end

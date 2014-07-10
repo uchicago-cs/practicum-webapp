@@ -1,2 +1,12 @@
-<h1>Submissions#index</h1>
-<p>Find me in app/views/submissions/index.html.erb</p>
+<h1>All of my submissions</h1>
+
+<% if can? :read, Submission %>
+<!-- Is the above check needed? -->
+  <ol>
+    <% @submissions.each do |submission| %>
+      <div><li><%= submission.information %> | submitted by <%= submission.student_email %> to project <%= submission.project_id %>, which is entitled "<%= submission.project_name %>"</li></div>
+    <% end %>
+
+  </ol>
+<% end %>
+

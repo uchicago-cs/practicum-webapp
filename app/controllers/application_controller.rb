@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |exception|
     # flash[:notice] = "Access denied."
-    redirect_to new_user_session_url, notice: "Access denied."
+    redirect_to root_url, notice: "Access denied."
+    # If user is signed in, direct user to root_url.
+    # If user is not signed in, direct user to sign in url. (new_user_ses?)
   end
 end

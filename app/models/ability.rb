@@ -6,6 +6,9 @@ class Ability
     user ||= User.new
     # If the user is not already signed in, we create a "guest account"
     # for them so that the authorizations below are still applied.
+
+    # Cannot do any of the below initially (if we sign up as a new user)
+    # since a user's role is "" by default.
     
     if user.admin?
       
@@ -28,22 +31,23 @@ class Ability
       end
 
     elsif user.student?
+      # Student abilities.
+
+      can :read, Project, approved: true
+      # User X can read a project if it has been approved.
       
-      can :read, Project
+      can :create, Submission
+      # Submission.where.not(project_id: current_user.projects_applied_to)
+      # User X can create a submission for a project if he has not already
+      # done so.
       
-      can :create, Submission do |submission|
-        # User has not already submitted an application for this project.
-        true
-      end
-      can :read, Submission do |submission|
-        user.id == submission.try(:user_id)
-      end
+      can :read, Submission, student_id: user.id
+      # User X can read the submissions he has sent in.
       
     else
       # A user who is none of the above, i.e., a guest who is not
       # signed in?
-      # ...
-      # Cannot do very much.
+      # ... Cannot do very much.
       
     end
     
