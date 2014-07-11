@@ -1,0 +1,23 @@
+<h1><%= @user.email %></h1>
+
+This is your personal page for you to view your applications / projects.
+
+<% if (@user.advisor? or @user.admin?) %>
+
+  <h2>Pending project proposals</h2>
+  <% @user.unapproved_projects.each do |project| %>
+    <div>
+      You proposed <%= link_to project.name, project %> with a deadline of <%= project.deadline %>. It is currently <%= project.status %>. You may edit your proposal <%= link_to "here", edit_project_path(project.id) %>.
+    </div>
+  <% end %>
+  <br><br>
+  <h2>Approved projects</h2>
+  <% @user.approved_projects.each do |project| %>
+    <div>
+      You proposed <%= link_to project.name, project %> with a deadline of <%= project.deadline %>. It is currently <%= project.status %>. You may no longer edit your proposal. You may view students' applications to this project <%= link_to "here", project_submissions_path(project.id) %>.
+    </div>
+  <% end %>
+
+<% elsif (@user.student? or @user.admin?) %>
+
+<% end %>

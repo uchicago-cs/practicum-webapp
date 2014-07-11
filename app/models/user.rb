@@ -37,6 +37,18 @@ class User < ActiveRecord::Base
     project_id.in?(self.projects_applied_to)
   end
 
+  def approved_projects
+    if self.advisor?
+      self.projects.where(approved: true)
+    end
+  end
+
+  def unapproved_projects
+    if self.advisor?
+      self.projects.where(approved: false)
+    end
+  end
+
 end
 
 

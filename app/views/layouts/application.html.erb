@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Dccc</title>
-    <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-    <%= javascript_include_tag :defaults %>
+<%= render 'shared/header' %>
 
-    <%= csrf_meta_tags %>
-  </head>
   <body>
 
     <nav>
@@ -20,20 +12,28 @@
 	                             method: :delete %></div>
       <% end %>
 
-      <% if can? :read, User %>
+      <!-- The ability condition checks are messy and need to be rewritten. -->
+
+      <% if (can? :read, User) && current_user.admin? %>
 	<div><%= link_to "User list", users_path %></div>
       <% end %>
       <% if can? :read, Project %>
 	<div><%= link_to "Project list", projects_path %></div>
       <% end %>
-      <% if (can? :read, Submission) && user.student? %>
-	<div><%= link_to "My submissions", submissions_path %></div>
+      <% if (can? :read, Submission) && current_user.student? %>
+	<div><%= link_to "My submissions", current_user %></div>
       <% end %>
-      <% if (can? :read, Submission) && user.advisor? %>
-	<div><%= link_to "Submissions to my projects", submissions_path %></div>
+      <% if (can? :read, Submission) && current_user.advisor? %>
+	<div><%= link_to "My projects", current_user %></div>
       <% end %>
-      <% if (can? :read, Submission) && user.admin? %>
-	<div><%= link_to "All submissions", submissions_path %></div>
+      <% if (can? :read, Submission) && current_user.admin? %>
+	<div><%= link_to "All submissions", '#' %></div>
+      <% end %>
+      <% if (can? :approve, Project) %>
+	<div><%= link_to "Unapproved projects", unapproved_projects_path %></div>
+      <% end %>
+      <% if (can? :create, Project) %>
+	<div><%= link_to "Create new project proposal", new_project_path %>
       <% end %>
     </nav>
 

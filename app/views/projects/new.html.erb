@@ -1,2 +1,19 @@
-<h1>Projects#new</h1>
-<p>Find me in app/views/projects/new.html.erb</p>
+<h1>Create a new project proposal</h1>
+
+<%= form_for(@project) do |f| %>
+
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+
+      <%= f.label :description %>
+      <%= f.text_field :description %>
+
+      <%= f.label :deadline %>
+      <%= f.date_select :deadline %>
+
+      <%= f.label :password_confirmation, "Password confirmation" %>
+      <%= f.password_field :password_confirmation %>
+
+      <%= f.submit "Create my proposal", class: "btn btn-large btn-primary" %>
+
+<% end %>

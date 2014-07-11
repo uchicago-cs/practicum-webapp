@@ -8,6 +8,13 @@ class ProjectsController < ApplicationController
   end
 
   def create
+    @project = current_user.projects.build(project_params)
+    if @project.save
+      flash[:notice] = "Project successfully proposed."
+      redirect_to current_user
+    else
+      render 'new'
+    end
   end
 
   def edit
@@ -24,4 +31,16 @@ class ProjectsController < ApplicationController
 
   def show
   end
+
+  def unapproved
+    @unapproved_projects = Project.where(approved: false)
+    # `false` means "not yet approved".
+  end
+
+  private
+
+  def project_params
+    params.require(:project).permit(:name, :description, :deadline)
+  end
+
 end

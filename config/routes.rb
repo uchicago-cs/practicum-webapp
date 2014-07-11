@@ -1,8 +1,16 @@
 Dccc::Application.routes.draw do
   
   root 'pages#home'
+
   resources :projects do
+    # Nest submissions routes within projects.
     resources :submissions
+
+    collection do
+      # List of unapproved projects. Available only for admins.
+      get "unapproved"
+    end
+    
   end
   
   # Make devise resource routes for users controller, but do not use the
@@ -32,10 +40,9 @@ Dccc::Application.routes.draw do
 
   # Users directory. Available only for admins.
   match "/users", to: "users#index", via: "get"
+  match "/users/:id", to: "users#show", via: "get", as: "user"
   # Maybe the below routes will be available for admins. Users can
   # view their own information on their /users/:id page, and users
   # do not need to edit their profiles.
-  # match "/users/:id/submissions", to: "users#submissions_made", via: "get"
-  # match "/users/:id/projects", to: "users#projects_made", via: "get"
   
 end

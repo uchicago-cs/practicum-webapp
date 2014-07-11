@@ -18,6 +18,7 @@ class SubmissionsController < ApplicationController
   end
 
   def index
+    @submissions = Submission.all
   end
 
   def show

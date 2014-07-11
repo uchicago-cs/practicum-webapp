@@ -1,2 +1,20 @@
-<h1>Projects#show</h1>
-<p>Find me in app/views/projects/show.html.erb</p>
+<h1><%= @project.name %></h1>
+<div>
+Project advisor: <%= @project.advisor_email %>
+</div>
+<div>
+Project description: <%= @project.description %>
+</div>
+<div>
+Project deadline: <%= @project.deadline %>
+</div>
+
+<% if can? :create, Submission %>
+  <% if !(@project.id.in?(current_user.projects_applied_to)) %>
+    <%= link_to "Click here to apply.", new_project_submission_path(@project.id) %>
+  <% else %>
+    You have already applied to participate in this project. Please wait
+    for the advisors to review your application. You will be notified by
+    e-mail when they have made their decision.
+  <% end %>
+<% end %>

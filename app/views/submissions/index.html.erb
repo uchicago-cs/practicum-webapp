@@ -1,9 +1,11 @@
-<h1>All of my submissions</h1>
+<h1>Applications to <%= Project.find(params[:project_id]).name %></h1>
+
+<!-- The erb code here needs to be cleaned up. -->
 
 <% if can? :read, Submission %>
 <!-- Is the above check needed? -->
   <ol>
-    <% @submissions.each do |submission| %>
+    <% Project.find(params[:project_id]).submissions.each do |submission| %>
       <div><li><%= submission.information %> | submitted by <%= submission.student_email %> to project <%= submission.project_id %>, which is entitled "<%= submission.project_name %>"</li></div>
     <% end %>
 

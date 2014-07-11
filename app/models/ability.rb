@@ -13,6 +13,7 @@ class Ability
     if user.admin?
       
       can :manage, :all
+      can :approve, :all
       # can :update, Project
       # can :assign_roles
       # can :approve_users
@@ -29,6 +30,8 @@ class Ability
         project = Project.find_by(submission.try(:project_id))
         user.id == project.try(:advisor_id)
       end
+
+      can :read, User, id: user.id
 
     elsif user.student?
       # Student abilities.
