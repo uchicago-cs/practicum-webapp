@@ -3,12 +3,18 @@ class Submission < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
 
-  def student_email
-    User.find(self.student_id).email
-  end
+  validates :information, presence: true,
+                          length: { minimum: 100, maximum: 1500 }
 
-  def project_name
-    Project.find(self.project_id).name
+  delegate :name, to: :project, prefix: true
+  # Replaces the following:
+  # def project_name
+  #   project.name
+  # end
+
+  # Can delegate this method, as well:
+  def student_email
+    user.try(:email)
   end
 
 end

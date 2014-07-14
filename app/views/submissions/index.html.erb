@@ -1,12 +1,12 @@
-<h1>Applications to <%= Project.find(params[:project_id]).name %></h1>
-
-<!-- The erb code here needs to be cleaned up. -->
+<h1>Applications to <%= @project.name %></h1>
 
 <% if can? :read, Submission %>
-<!-- Is the above check needed? -->
   <ol>
-    <% Project.find(params[:project_id]).submissions.each do |submission| %>
-      <div><li><%= submission.information %> | submitted by <%= submission.student_email %> to project <%= submission.project_id %>, which is entitled "<%= submission.project_name %>"</li></div>
+    <% @project.submissions.each do |submission| %>
+      <div><li>
+	<%= submission.information %> | submitted by <%= submission.student_email %> to project <%= submission.project_id %>, which is entitled "<%= submission.project_name %>"</li>
+	<%= link_to "View this application.", project_submission_path(submission.id) %>
+      </div>
     <% end %>
 
   </ol>

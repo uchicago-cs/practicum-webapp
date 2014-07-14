@@ -21,6 +21,12 @@ class ProjectsController < ApplicationController
   end
 
   def update
+    if @project.update_attributes(project_params)
+      flash[:notice] = "Project proposal successfully updated."
+      redirect_to @project
+    else
+      render 'edit'
+    end
   end
 
   def destroy
@@ -35,6 +41,17 @@ class ProjectsController < ApplicationController
   def unapproved
     @unapproved_projects = Project.where(approved: false)
     # `false` means "not yet approved".
+  end
+
+  def approve
+#    @project = Project.find(params[:id])
+    if @project.update_attributes(approved: true)
+      flash[:notice] = "Project approved."
+      redirect_to project_path
+    end
+  end
+
+  def disapprove
   end
 
   private

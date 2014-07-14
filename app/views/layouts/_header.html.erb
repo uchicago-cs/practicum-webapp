@@ -1,0 +1,34 @@
+<nav>
+  <% if !user_signed_in? %>
+    <div><%= link_to "Sign up", new_user_registration_path %></div>
+    <div><%= link_to "Sign in", new_user_session_path %></div>
+  <% else %>
+    <div>You are currently signed in as <%= current_user.email %>!</div>
+    <div><%= link_to "Sign out", destroy_user_session_path,
+    method: :delete %></div>
+  <% end %>
+
+  <!-- The ability condition checks are messy and need to be rewritten. -->
+
+  <% if (can? :read, User) && current_user.admin? %>
+    <div><%= link_to "User list", users_path %></div>
+  <% end %>
+  <% if can? :read, Project %>
+    <div><%= link_to "Project list", projects_path %></div>
+  <% end %>
+  <% if (can? :read, Submission) && current_user.student? %>
+    <div><%= link_to "My applications", current_user %></div>
+  <% end %>
+  <% if (can? :read, Submission) && current_user.advisor? %>
+    <div><%= link_to "My projects", current_user %></div>
+  <% end %>
+  <% if (can? :read, Submission) && current_user.admin? %>
+    <div><%= link_to "All submissions", submissions_path %></div>
+  <% end %>
+  <% if (can? :approve, Project) %>
+    <div><%= link_to "Unapproved projects", unapproved_projects_path %></div>
+  <% end %>
+  <% if (can? :create, Project) %>
+    <div><%= link_to "Create new project proposal", new_project_path %>
+  <% end %>
+</nav>

@@ -1,2 +1,14 @@
-<h1>Submissions#new</h1>
-<p>Find me in app/views/submissions/new.html.erb</p>
+<h1>Apply to <%= @project.name %></h1>
+
+<%= form_for([@project, @submission]) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+
+      <%= f.label :information %>
+      <%= f.text_area :information %>
+
+      <%= f.label :password_confirmation, "Password confirmation" %>
+      <%= f.password_field :password_confirmation %>
+
+      <%= f.submit "Submit my application", class: "btn btn-large btn-primary" %>
+
+<% end %>

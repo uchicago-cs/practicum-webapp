@@ -22,9 +22,9 @@ class Ability
 
       can :create, Project
       can :read, Project
-      can :update, Project do |project|
-        !(project.try(:approved))
-      end
+      # NOTE: The following abilities with conditions (by blocks) probably
+      # do not work. 
+      can :update, Project, approved: false
       
       can :read, Submission do |submission|
         project = Project.find_by(submission.try(:project_id))
@@ -32,6 +32,9 @@ class Ability
       end
 
       can :read, User, id: user.id
+
+      can :accept, Submission
+      can :reject, Submission
 
     elsif user.student?
       # Student abilities.
@@ -46,6 +49,8 @@ class Ability
       
       can :read, Submission, student_id: user.id
       # User X can read the submissions he has sent in.
+
+      can :read, User, id: user.id
       
     else
       # A user who is none of the above, i.e., a guest who is not

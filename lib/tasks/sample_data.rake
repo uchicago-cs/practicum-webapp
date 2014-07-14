@@ -82,8 +82,11 @@ def make_submissions
   students = User.find_all_by_role("student")
   students.each do |student|
     content = Faker::Lorem.sentence(20)
-    student.submissions.create!(information: content,
-                                student_id: student.id,
-                                project_id: ((student.id % 50)+1))
+    project_id = (student.id % 50)+1
+    if Project.find(project_id).approved
+        student.submissions.create!(information: content,
+                                    student_id: student.id,
+                                    project_id: project_id)
+    end
   end
 end

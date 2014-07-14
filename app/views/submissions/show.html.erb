@@ -1,2 +1,14 @@
-<h1>Submissions#show</h1>
-<p>Find me in app/views/submissions/show.html.erb</p>
+<h1>Application from <%= User.find(@submission.student_id).email %></h1>
+
+<div>
+  Applicant: <%= User.find(@submission.student_id).email %>
+  Information: <%= @submission.information %>
+  <% if (current_user.advisor?) && (@project.in?(current_user.projects)) %>
+    <% if !@submission.accepted %>
+      You may <%= link_to "accept", accept_project_submission_path(@project.id, @submission.id) %> or  <%= link_to "reject", reject_project_submission_path(@project.id, @submission.id) %> this application.
+    <% else %>
+      You have already accepted this applicant.
+    <% end %>
+    <!-- Or somehow make one action that accepts a bool? -->
+  <% end %>
+</div>

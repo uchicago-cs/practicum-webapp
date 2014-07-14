@@ -10,11 +10,35 @@ Project deadline: <%= @project.deadline %>
 </div>
 
 <% if can? :create, Submission %>
-  <% if !(@project.id.in?(current_user.projects_applied_to)) %>
+  <% if current_user.projects_applied_to && !(@project.id.in?(current_user.projects_applied_to)) %>
     <%= link_to "Click here to apply.", new_project_submission_path(@project.id) %>
   <% else %>
     You have already applied to participate in this project. Please wait
     for the advisors to review your application. You will be notified by
     e-mail when they have made their decision.
+  <% end %>
+<% end %>
+
+<% if (can? :create, Project) && (@project.in?(current_user.projects)) && (!@project.approved) %>
+  <%= link_to "Click here to edit the project information.", edit_project_path  %>
+<% end %>
+
+<br>
+
+<% if (can? :approve, Project) && !@project.approved %>
+  <%= link_to "Click here to approve the project.", approve_project_path %>
+<% end %>
+
+<br>
+
+<% if (can? :accept, Submission) %>
+  <% if (@project.submissions.count > 0) %>
+    <% @project.submissions.each do |submission| %>
+      <div>
+	<%= submission.student_email %> applied for this project. View this student's application <%= link_to "here", project_submission_path(@project.id, submission.id) %>.
+      </div>
+    <% end %>
+  <% else %>
+    No one has applied to this project yet.
   <% end %>
 <% end %>

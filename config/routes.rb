@@ -4,11 +4,21 @@ Dccc::Application.routes.draw do
 
   resources :projects do
     # Nest submissions routes within projects.
-    resources :submissions
+    resources :submissions do
+      member do
+        get "accept"
+        get "reject"
+      end
+    end
 
     collection do
       # List of unapproved projects. Available only for admins.
       get "unapproved"
+    end
+
+    member do
+      get "approve"
+      get "disapprove"
     end
     
   end
@@ -22,7 +32,7 @@ Dccc::Application.routes.draw do
     # Sessions.
     get "/signin" => "devise/sessions#new", as: :new_user_session
     post "/signin" => "devise/sessions#create", as: :user_session
-    delete "/logout" => "devise/sessions#destroy", as: :destroy_user_session
+    delete "/signout" => "devise/sessions#destroy", as: :destroy_user_session
 
     # Registrations. Will later be removed when we incorporate CNetID
     # authentication.
@@ -44,5 +54,7 @@ Dccc::Application.routes.draw do
   # Maybe the below routes will be available for admins. Users can
   # view their own information on their /users/:id page, and users
   # do not need to edit their profiles.
-  
+
+  match "/submissions", to: "pages#submissions", via: "get"
+
 end
