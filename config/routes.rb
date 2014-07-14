@@ -1,4 +1,4 @@
-Dccc::Application.routes.draw do
+Practicum::Application.routes.draw do
   
   root 'pages#home'
 

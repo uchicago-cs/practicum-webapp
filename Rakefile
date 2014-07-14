@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Dccc::Application.load_tasks
+Practicum::Application.load_tasks

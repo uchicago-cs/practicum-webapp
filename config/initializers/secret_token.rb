@@ -24,4 +24,4 @@ def secure_token
   end
 end
 
-Dccc::Application.config.secret_key_base = secure_token
+Practicum::Application.config.secret_key_base = secure_token
