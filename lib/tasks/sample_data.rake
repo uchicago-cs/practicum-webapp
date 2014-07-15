@@ -72,7 +72,7 @@ def make_projects
       advisor.projects.create!(description: content,
                                advisor_id: advisor.id,
                                name: "Some Project #{20*x + n + 1}",
-                               deadline: Date.today,
+                               deadline: DateTime.current,
                                approved: (1 == rand(2) ? true : false) )
     end
   end

@@ -10,7 +10,7 @@
       <%= f.text_area :description %>
 
       <%= f.label :deadline %>
-      <%= f.date_select :deadline %>
+      <%= f.datetime_select :deadline, ampm: true, minute_step: 15 %>
 
       <%= f.label :password_confirmation, "Password confirmation" %>
       <%= f.password_field :password_confirmation %>
