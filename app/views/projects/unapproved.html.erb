@@ -1,9 +1,15 @@
 <h1>Unapproved projects</h1>
 
 <% @unapproved_projects.each do |project| %>
-  <div> <%= project.name %> proposed by <%= project.advisor_email %> with deadline <%= project.deadline %>. Click <%= link_to "here", project %> to read the description. </div>
   <div>
-    Click <%= link_to "here", approve_project_path(project.id) %> to approve <%= project.name %>.
+    <%= project.name %> proposed by <%= project.advisor_email %> 
+    with deadline <%= project.deadline %>. Click 
+    <%= link_to "here", project %> to read this project's description.
+  </div>
+
+  <div>
+    Click <%= link_to "here", approve_project_path(project.id) %> to 
+    approve <%= project.name %>.
   </div>
   <br>
 <% end %>

@@ -2,11 +2,18 @@
 
 <% if can? :read, Project %>
   <ol>
-    <% @projects.where(approved: true).each do |project| %>
-      <div><li><%= project.name %> | posted by <%= project.advisor_email %> | application deadline: midnight of <%= project.deadline %></li>
-	<div>Find out more information <%= link_to "here", project %>.</div>
-</div>
-<br>
+    <% @projects.each do |project| %>
+      <div>
+	<li>
+	  <%= project.name %> | posted by <%= project.advisor_email %> 
+	  | application deadline: midnight of <%= project.deadline %>
+	</li>
+
+	<div>
+	  Find out more information <%= link_to "here", project %>.
+	</div>
+      </div>
+      <br>
     <% end %>
   </ol>
 <% end %>

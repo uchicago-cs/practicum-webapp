@@ -3,8 +3,6 @@ class User < ActiveRecord::Base
   has_many :projects, foreign_key: "advisor_id", dependent: :destroy
   has_many :submissions, foreign_key: "student_id", dependent: :destroy
 
-  ROLES = [:admin, :advisor, :student]
-
   devise :database_authenticatable, :registerable,
   :rememberable, :trackable, :validatable
 
@@ -21,29 +19,28 @@ class User < ActiveRecord::Base
   end
 
   def projects_applied_to
-    self.submissions.pluck(:project_id)
+    Project.find(self.submissions.pluck(:project_id))
+    # Not ideal...
   end
 
-  def already_applied_to_projects?
+  def applied_to_projects?
     self.submissions.count > 0
   end
 
-  def already_applied_to_project?(project_id)
-    project_id.in?(self.projects_applied_to)
+  def applied_to_project?(project)
+    project.in?(self.projects_applied_to)
+  end
+
+  def made_project?(project)
+    project.in?(self.projects)
   end
 
   def approved_projects
-#    if self.advisor?
-      self.projects.where(approved: true)
-#    end
+    self.projects.where(approved: true)
   end
 
   def unapproved_projects
-#    if self.advisor?
-      self.projects.where(approved: false)
-#    end
+    self.projects.where(approved: false)
   end
 
 end
-
-

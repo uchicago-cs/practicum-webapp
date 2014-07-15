@@ -2,7 +2,7 @@
 
 This is your personal page for you to view your applications / projects.
 
-<% if (@user.advisor? or @user.admin?) %>
+<% if @user.advisor? or @user.admin? %>
 
   <h2>Pending project proposals</h2>
   <% @user.unapproved_projects.each do |project| %>
@@ -27,7 +27,9 @@ This is your personal page for you to view your applications / projects.
     </div>
   <% end %>
 
-<% elsif (@user.student? or @user.admin?) %>
+<% end %>
+
+<% if (@user.student? or @user.admin?) %>
   
   <h2>Submitted applications</h2>
   <% if @user.submissions.count > 0 %>

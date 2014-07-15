@@ -33,14 +33,14 @@ class ProjectsController < ApplicationController
   end
 
   def index
+    @projects = Project.approved_projects
   end
 
   def show
   end
 
   def unapproved
-    @unapproved_projects = Project.where(approved: false)
-    # `false` means "not yet approved".
+    @unapproved_projects = Project.unapproved_projects
   end
 
   def approve

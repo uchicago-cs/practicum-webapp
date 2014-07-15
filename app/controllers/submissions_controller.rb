@@ -3,6 +3,7 @@ class SubmissionsController < ApplicationController
   load_and_authorize_resource
 
   before_action :get_project
+  before_action :project_approved?, only: :new
 
   def new
     @submission = Submission.new
@@ -54,6 +55,10 @@ class SubmissionsController < ApplicationController
 
   def get_project
     @project = Project.find(params[:project_id])
+  end
+
+  def project_approved?
+    redirect_to root_url unless @project.approved
   end
 
 end

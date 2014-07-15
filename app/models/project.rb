@@ -10,6 +10,14 @@ class Project < ActiveRecord::Base
 
   delegate :email, to: :user, prefix: :advisor, allow_nil: true
 
+  def Project.approved_projects
+    Project.where(approved: true)
+  end
+
+  def Project.unapproved_projects
+    Project.where(approved: false)
+  end
+
   def status
     if self.approved?
       "approved"

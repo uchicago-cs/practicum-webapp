@@ -3,12 +3,16 @@
 <% if can? :read, Submission %>
   <ol>
     <% @project.submissions.each do |submission| %>
-      <div><li>
-	<%= submission.information %> | submitted by <%= submission.student_email %> to project <%= submission.project_id %>, which is entitled "<%= submission.project_name %>"</li>
-	<%= link_to "View this application.", project_submission_path(submission.id) %>
+      <div>
+	<li>
+	  <%= submission.information %> | submitted by 
+	  <%= submission.student_email %> to project 
+	  <%= submission.project_id %>, which is entitled 
+	  "<%= submission.project_name %>"
+	</li>
+	<%= link_to "View this application.", project_submission_path(@project.id, submission.id) %>
       </div>
     <% end %>
-
   </ol>
 <% end %>
 
