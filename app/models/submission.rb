@@ -1,6 +1,6 @@
 class Submission < ActiveRecord::Base
 
-  belongs_to :user
+  belongs_to :user, foreign_key: "student_id"
   belongs_to :project
 
   validates :information, presence: true,
@@ -8,14 +8,6 @@ class Submission < ActiveRecord::Base
   validates :student_id, presence: true
 
   delegate :name, to: :project, prefix: true
-  # Replaces the following:
-  # def project_name
-  #   project.name
-  # end
-
-  # Can delegate this method, as well:
-  def student_email
-    user.try(:email)
-  end
+  delegate :email, to: :user, prefix: :student
 
 end

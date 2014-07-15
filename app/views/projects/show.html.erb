@@ -1,20 +1,22 @@
 <h1><%= @project.name %></h1>
 <div>
-Project advisor: <%= @project.advisor_email %>
+  Project advisor: <%= @project.advisor_email %>
 </div>
 <div>
-Project description: <%= @project.description %>
+  Project description: <%= @project.description %>
 </div>
 <div>
-Project deadline: <%= @project.deadline %>
+  Project deadline: <%= @project.deadline %>
 </div>
 
 <% if can? :create, Submission %>
-  <% if current_user.projects_applied_to && !(@project.id.in?(current_user.projects_applied_to)) %>
+  <% if @project.approved && !(@project.id.in?(current_user.projects_applied_to)) %>
     <%= link_to "Click here to apply.", new_project_submission_path(@project.id) %>
+    <% elsif !@project.approved && !(@project.id.in?(current_user.projects_applied_to)) %>
+    This project has not yet been approved.
   <% else %>
-    You have already applied to participate in this project. Please wait
-    for the advisors to review your application. You will be notified by
+    You have already applied to participate in this project. Please wait 
+    for the advisors to review your application. You will be notified by 
     e-mail when they have made their decision.
   <% end %>
 <% end %>
@@ -35,7 +37,9 @@ Project deadline: <%= @project.deadline %>
   <% if (@project.submissions.count > 0) %>
     <% @project.submissions.each do |submission| %>
       <div>
-	<%= submission.student_email %> applied for this project. View this student's application <%= link_to "here", project_submission_path(@project.id, submission.id) %>.
+	<%= submission.student_email %> applied for this project. View 
+	this student's application 
+	<%= link_to "here", project_submission_path(@project.id, submission.id) %>.
       </div>
     <% end %>
   <% else %>

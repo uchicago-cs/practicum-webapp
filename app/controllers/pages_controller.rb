@@ -1,9 +1,7 @@
 class PagesController < ApplicationController
 
-  #  before_action :signed_in_user, only: :submissions
   before_action :authenticate_user!, only: :submissions
-  # Use Devise's authenticate_user! to ensure that the user is signed in
-  # before viewing the submissions page
+  before_action :is_admin?, only: :submissions
 
   def home
   end
@@ -20,10 +18,10 @@ class PagesController < ApplicationController
   def submissions
   end
 
-  # private
+  private
 
-  # def signed_in_user
-    
-  # end
+    def is_admin?
+      redirect_to(root_url) unless current_user.admin?
+    end
   
 end

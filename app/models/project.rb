@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
 
-  belongs_to :user
+  belongs_to :user, foreign_key: "advisor_id"
   has_many :submissions
 
   validates :name, presence: true, uniqueness: true
@@ -8,10 +8,7 @@ class Project < ActiveRecord::Base
   validates :description, presence: true,
                          length: { minimum: 100, maximum: 1500 }
 
-  def advisor_email
-    User.find(self.advisor_id).email
-    # If searching just by an id, then use `find`, not `find_by`.
-  end
+  delegate :email, to: :user, prefix: :advisor, allow_nil: true
 
   def status
     if self.approved?

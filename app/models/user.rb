@@ -5,11 +5,8 @@ class User < ActiveRecord::Base
 
   ROLES = [:admin, :advisor, :student]
 
-  # Devise modules.
   devise :database_authenticatable, :registerable,
-  :rememberable, :trackable, :validatable#, :recoverable
-
-  # Validations? Already taken care of by Devise?
+  :rememberable, :trackable, :validatable
 
   def admin?
     self.role == "admin"
@@ -24,13 +21,7 @@ class User < ActiveRecord::Base
   end
 
   def projects_applied_to
-    # Returns an array of the project_id's of the projects this
-    # student has applied to. If user is not a student, returns 0.
-    if self.admin? or self.student? # Might want to remove this check later.
-      self.submissions.pluck(:project_id)
-    else
-      []
-    end
+    self.submissions.pluck(:project_id)
   end
 
   def already_applied_to_projects?
@@ -42,15 +33,15 @@ class User < ActiveRecord::Base
   end
 
   def approved_projects
-    if self.advisor?
+#    if self.advisor?
       self.projects.where(approved: true)
-    end
+#    end
   end
 
   def unapproved_projects
-    if self.advisor?
+#    if self.advisor?
       self.projects.where(approved: false)
-    end
+#    end
   end
 
 end

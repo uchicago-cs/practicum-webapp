@@ -44,7 +44,6 @@ class ProjectsController < ApplicationController
   end
 
   def approve
-#    @project = Project.find(params[:id])
     if @project.update_attributes(approved: true)
       flash[:notice] = "Project approved."
       redirect_to project_path
