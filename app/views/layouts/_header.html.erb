@@ -17,10 +17,10 @@
 	    <!-- The ability checks are messy and need to be rewritten. -->
 
 	    <% if (can? :read, User) && current_user.admin? %>
-	      <li><%= link_to "User list", users_path %></li>
+	      <li><%= link_to "Users", users_path %></li>
 	    <% end %>
 	    <% if (can? :read, Project) %>
-	      <li><%= link_to "Project list", projects_path %></li>
+	      <li><%= link_to "Projects", projects_path %></li>
 	    <% end %>
 	    <% if (can? :read, Submission) && current_user.student? %>
 	      <li><%= link_to "My applications", current_user %></li>
@@ -29,13 +29,13 @@
 	      <li><%= link_to "My projects", current_user %></li>
 	    <% end %>
 	    <% if (can? :read, Submission) && current_user.admin? %>
-	      <li><%= link_to "All submissions", submissions_path %></li>
+	      <li><%= link_to "Applications", submissions_path %></li>
 	    <% end %>
 	    <% if (can? :approve, Project) %>
 	      <li><%= link_to "Unapproved projects", unapproved_projects_path %></li>
 	    <% end %>
 	    <% if (can? :create, Project) %>
-	      <li><%= link_to "Create new project proposal", new_project_path %></li>
+	      <li><%= link_to "Propose a project", new_project_path %></li>
 	    <% end %>
 	  </ul>
 	  <!-- 	</div> -->

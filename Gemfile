@@ -12,7 +12,6 @@ gem 'bootstrap-will_paginate', '0.0.9'
 gem 'rspec-its'
 gem 'cancancan', '~> 1.8'
 gem 'devise', '~> 3.2.4'
-# rspec-its probably just needs to be included for :dev and :test 
 
 group :development, :test do
   gem 'sqlite3', '1.3.8'
@@ -47,8 +46,6 @@ group :production do
   gem 'pg', '0.15.1'
   gem 'rails_12factor', '0.0.2'
 end
-
-# Other added gems
 
 gem 'rb-readline'
 gem 'rails_best_practices'

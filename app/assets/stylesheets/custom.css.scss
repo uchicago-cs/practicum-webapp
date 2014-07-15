@@ -1,3 +1,5 @@
+/* Adapted from Michael Hartl's Rails Tutorial. */
+
 @import "bootstrap";
 
 $grayMediumLight: #eaeaea;
@@ -18,7 +20,6 @@ body {
     font-size: 1.5em;
     color: white;
     padding-top: 10px;
-//    font-weight: bold;
     line-height: 1;
     &:hover {
 	color: white;
