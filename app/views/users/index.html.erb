@@ -3,6 +3,5 @@
 <% if @users.count > 0 %>
   <% @users.each do |user| %>
     <div><%= user.email %> | <%= user.role %></div>
-    <!-- Ideally, read the users' first and last names from the CNet info -->
   <% end %>
 <% end %>

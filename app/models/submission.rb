@@ -5,6 +5,7 @@ class Submission < ActiveRecord::Base
 
   validates :information, presence: true,
                           length: { minimum: 100, maximum: 1500 }
+  validates :student_id, presence: true
 
   delegate :name, to: :project, prefix: true
   # Replaces the following:

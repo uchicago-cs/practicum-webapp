@@ -26,11 +26,15 @@ class User < ActiveRecord::Base
   def projects_applied_to
     # Returns an array of the project_id's of the projects this
     # student has applied to. If user is not a student, returns 0.
-    if !self.advisor? # Might want to remove this check later.
+    if self.admin? or self.student? # Might want to remove this check later.
       self.submissions.pluck(:project_id)
     else
       []
     end
+  end
+
+  def already_applied_to_projects?
+    self.submissions.count > 0
   end
 
   def already_applied_to_project?(project_id)

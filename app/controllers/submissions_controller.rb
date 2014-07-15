@@ -10,6 +10,7 @@ class SubmissionsController < ApplicationController
 
   def create
     @submission = @project.submissions.build(submission_params)
+    @submission.update_attributes(student_id: current_user.id)
 
     if @submission.save
       flash[:notice] = "Application submitted!"
