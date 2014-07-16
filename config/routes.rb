@@ -3,7 +3,6 @@ Practicum::Application.routes.draw do
   root 'pages#home'
 
   resources :projects do
-    # Nest submissions routes within projects.
     resources :submissions do
       member do
         get "accept"
@@ -12,13 +11,12 @@ Practicum::Application.routes.draw do
     end
 
     collection do
-      # List of unapproved projects. Available only for admins.
-      get "unapproved"
+      get "pending"
     end
 
     member do
-      get "approve"
-      get "disapprove"
+      get "accept"
+      get "reject"
     end
     
   end

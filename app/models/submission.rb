@@ -15,4 +15,16 @@ class Submission < ActiveRecord::Base
     # Not ideal
   end
 
+  def accepted?
+    status == "accepted"
+  end
+
+  def rejected?
+    status == "rejected"
+  end
+
+  def pending?
+    status == "pending"
+  end
+
 end

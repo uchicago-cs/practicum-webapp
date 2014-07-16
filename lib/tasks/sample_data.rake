@@ -17,16 +17,19 @@ namespace :db do
 end
 
 def delete_users
+  User.destroy_all
   User.delete_all
   ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'users'")
 end
 
 def delete_projects
+  Project.destroy_all
   Project.delete_all
   ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'projects'")
 end
 
 def delete_submissions
+  Submission.destroy_all
   Submission.delete_all
   ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'submissions'")
 end
@@ -39,7 +42,7 @@ def make_users
     email = "admin-#{n+1}@blah.org"
     password = "foobarfoo"
     User.create!(email: email, password: password,
-                 password_confirmation: password, role: "admin")
+                 password_confirmation: password, admin: true)
   end
 
   # Create advisor users
@@ -48,7 +51,7 @@ def make_users
     email = "advisor-#{n+1}@blah.org"
     password = "foobarfoo"
     User.create!(email: email, password: password,
-                 password_confirmation: password, role: "advisor")
+                 password_confirmation: password, advisor: true)
   end
 
   # Create student users
@@ -57,36 +60,39 @@ def make_users
     email = "student-#{n+1}@blah.org"
     password = "foobarfoo"
     User.create!(email: email, password: password,
-                 password_confirmation: password, role: "student")
+                 password_confirmation: password, student: true)
   end
   
 end
 
 def make_projects
-  advisors = User.find_all_by_role("advisor")
+  advisors = User.find_all_by_advisor(true)
   x = -1
   advisors.each do |advisor|
     x += 1
     20.times do |n|
-      content = Faker::Lorem.sentence(20)
+      content = Faker::Lorem.sentence(30)
+      status = ["pending", "accepted", "rejected"].sample
       advisor.projects.create!(description: content,
                                advisor_id: advisor.id,
                                name: "Some Project #{20*x + n + 1}",
                                deadline: DateTime.current,
-                               approved: (1 == rand(2) ? true : false) )
+                               status: status)
     end
   end
 end
 
 def make_submissions
-  students = User.find_all_by_role("student")
+  students = User.find_all_by_student(true)
   students.each do |student|
-    content = Faker::Lorem.sentence(20)
+    content = Faker::Lorem.sentence(30)
     project_id = (student.id % 50)+1
-    if Project.find(project_id).approved
+    status = ["pending", "accepted", "rejected"].sample
+    if Project.find(project_id).accepted?
         student.submissions.create!(information: content,
                                     student_id: student.id,
-                                    project_id: project_id)
+                                    project_id: project_id,
+                                    status: status)
     end
   end
 end

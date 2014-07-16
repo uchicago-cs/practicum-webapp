@@ -5,7 +5,7 @@ This is your personal page for you to view your applications / projects.
 <% if @user.advisor? or @user.admin? %>
 
   <h2>Pending project proposals</h2>
-  <% @user.unapproved_projects.each do |project| %>
+  <% @user.pending_projects.each do |project| %>
     <div>
       You proposed <%= link_to project.name, project %> with a deadline 
       of <%= project.deadline %>. It is currently <%= project.status %>. 
@@ -17,7 +17,7 @@ This is your personal page for you to view your applications / projects.
   <br><br>
   
   <h2>Approved projects</h2>
-  <% @user.approved_projects.each do |project| %>
+  <% @user.accepted_projects.each do |project| %>
     <div>
       You proposed <%= link_to project.name, project %> with a deadline 
       of <%= project.deadline %>. It is currently <%= project.status %>. 

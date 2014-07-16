@@ -2,6 +2,6 @@
 
 <% if @users.count > 0 %>
   <% @users.each do |user| %>
-    <div><%= user.email %> | <%= user.role %></div>
+    <div><%= user.email %> | <%= user.roles %></div>
   <% end %>
 <% end %>

@@ -10,12 +10,12 @@ class Project < ActiveRecord::Base
 
   delegate :email, to: :user, prefix: :advisor, allow_nil: true
 
-  def Project.approved_projects
-    Project.where(approved: true)
+  def Project.accepted_projects
+    Project.where(status: "accepted")
   end
 
-  def Project.unapproved_projects
-    Project.where(approved: false)
+  def Project.rejected_projects
+    Project.where(status: "rejected")
   end
 
   def advisor
@@ -23,12 +23,24 @@ class Project < ActiveRecord::Base
     # Not ideal
   end
 
-  def status
-    if self.approved?
-      "approved"
-    else
-      "unapproved"
-    end
+  # def status
+  #   if self.approved?
+  #     "approved"
+  #   else
+  #     "unapproved"
+  #   end
+  # end
+
+  def accepted?
+    status == "accepted"
+  end
+
+  def rejected?
+    status == "rejected"
+  end
+
+  def pending?
+    status == "pending"
   end
 
 end

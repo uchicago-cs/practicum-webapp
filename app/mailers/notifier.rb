@@ -11,7 +11,7 @@ class Notifier < ActionMailer::Base
     mail(to: @to, subject: @subject)
   end
 
-  def project_approved(advisor, project)
+  def project_accepted(advisor, project)
     @advisor = advisor
     @project = project
     @to = @advisor.email

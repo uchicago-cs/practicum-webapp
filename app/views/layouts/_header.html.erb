@@ -31,8 +31,8 @@
 	    <% if (can? :read, Submission) && current_user.admin? %>
 	      <li><%= link_to "Applications", submissions_path %></li>
 	    <% end %>
-	    <% if (can? :approve, Project) %>
-	      <li><%= link_to "Unapproved projects", unapproved_projects_path %></li>
+	    <% if (can? :accept, Project) %>
+	      <li><%= link_to "Unapproved projects", pending_projects_path %></li>
 	    <% end %>
 	    <% if (can? :create, Project) %>
 	      <li><%= link_to "Propose a project", new_project_path %></li>

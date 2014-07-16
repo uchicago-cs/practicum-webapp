@@ -10,9 +10,9 @@
 </div>
 
 <% if can? :create, Submission %>
-  <% if @project.approved and !current_user.applied_to_project?(@project) %>
+  <% if @project.accepted? and !current_user.applied_to_project?(@project) %>
     <%= link_to "Click here to apply.", new_project_submission_path(@project.id) %>
-    <% elsif !@project.approved and !current_user.applied_to_project?(@project) %>
+    <% elsif !@project.accepted? and !current_user.applied_to_project?(@project) %>
     This project has not yet been approved.
   <% else %>
     You have already applied to participate in this project. Please wait 
@@ -21,14 +21,14 @@
   <% end %>
 <% end %>
 
-<% if (can? :create, Project) and current_user.made_project?(@project) and !@project.approved %>
+<% if (can? :create, Project) and current_user.made_project?(@project) and !@project.accepted? %>
   <%= link_to "Click here to edit the project information.", edit_project_path  %>
 <% end %>
 
 <br>
 
-<% if (can? :approve, Project) && !@project.approved %>
-  <%= link_to "Click here to approve the project.", approve_project_path %>
+<% if (can? :accept, Project) && !@project.accepted? %>
+  <%= link_to "Click here to approve the project.", accept_project_path %>
 <% end %>
 
 <br>

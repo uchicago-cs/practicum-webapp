@@ -10,7 +10,8 @@ class ProjectsController < ApplicationController
     if @project.save
 
       User.admins.each do |admin|
-        Notifier.project_proposed(@project.advisor, @project, admin)
+        Notifier.project_proposed(@project.advisor, 
+                                  @project, admin).deliver
       end
       
       flash[:notice] = "Project successfully proposed."
@@ -36,31 +37,32 @@ class ProjectsController < ApplicationController
   end
 
   def index
-    @projects = Project.approved_projects
+    @projects = Project.accepted_projects
   end
 
   def show
   end
 
-  def unapproved
-    @unapproved_projects = Project.unapproved_projects
+  def pending
+    @pending_projects = Project.pending_projects
   end
 
-  def approve
-    if @project.update_attributes(approved: true)
-      Notifier.project_approved(@project.advisor, @project)
-      flash[:notice] = "Project approved."
+  def accept
+    if @project.update_attributes(status: "accept")
+      Notifier.project_accepted(@project.advisor,
+                                @project).deliver
+      flash[:notice] = "Project accepted."
       redirect_to project_path
     end
   end
 
-  def disapprove
+  def reject
   end
 
   private
 
   def project_params
-    params.require(:project).permit(:name, :description, :deadline)
+    params.require(:project).permit(:name, :description, :deadline, :status)
   end
 
 end

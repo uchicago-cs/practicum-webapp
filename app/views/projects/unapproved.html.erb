@@ -1,6 +1,6 @@
 <h1>Unapproved projects</h1>
 
-<% @unapproved_projects.each do |project| %>
+<% @unaccepted_projects.each do |project| %>
   <div>
     <%= project.name %> proposed by <%= project.advisor_email %> 
     with deadline <%= project.deadline %>. Click 
@@ -8,7 +8,7 @@
   </div>
 
   <div>
-    Click <%= link_to "here", approve_project_path(project.id) %> to 
+    Click <%= link_to "here", accept_project_path(project.id) %> to 
     approve <%= project.name %>.
   </div>
   <br>

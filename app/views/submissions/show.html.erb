@@ -5,7 +5,7 @@
   Information: <%= @submission.information %>
   <% if (current_user.advisor?) && (current_user.made_project?(@project)) %>
     
-    <% if !@submission.accepted %>
+    <% if !@submission.accepted? %>
       You may 
       <%= link_to "accept", accept_project_submission_path(@project.id, @submission.id) %> or 
       <%= link_to "reject", reject_project_submission_path(@project.id, @submission.id) %> 

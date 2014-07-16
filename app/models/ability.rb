@@ -8,13 +8,13 @@ class Ability
     if user.admin?
       
       can :manage, :all
-      can :approve, :all
+      can :accept, :all
       
     elsif user.advisor?
 
       can :create, Project
       can :read, Project
-      can :update, Project, approved: false
+      can :update, Project, status: "pending"
       can :read, User, id: user.id
       can :accept, Submission
       can :reject, Submission
@@ -27,7 +27,7 @@ class Ability
 
     elsif user.student?
 
-      can :read, Project, approved: true
+      can :read, Project, status: "accepted"
       can :read, User, id: user.id
       can :create, Submission
       can :read, Submission, student_id: user.id
