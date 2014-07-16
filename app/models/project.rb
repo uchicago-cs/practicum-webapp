@@ -18,6 +18,11 @@ class Project < ActiveRecord::Base
     Project.where(approved: false)
   end
 
+  def advisor
+    User.find(advisor_id)
+    # Not ideal
+  end
+
   def status
     if self.approved?
       "approved"

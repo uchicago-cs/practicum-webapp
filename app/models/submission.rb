@@ -10,4 +10,9 @@ class Submission < ActiveRecord::Base
   delegate :name, to: :project, prefix: true
   delegate :email, to: :user, prefix: :student
 
+  def student
+    User.find(student_id)
+    # Not ideal
+  end
+
 end

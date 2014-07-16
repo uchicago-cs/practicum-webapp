@@ -14,6 +14,7 @@ class SubmissionsController < ApplicationController
     @submission.update_attributes(student_id: current_user.id)
 
     if @submission.save
+      Notifier.student_applied(@project.advisor, current_user)
       flash[:notice] = "Application submitted!"
       redirect_to current_user
     else
@@ -39,6 +40,7 @@ class SubmissionsController < ApplicationController
 
   def accept
     if @submission.update_attributes(accepted: true)
+      Notifier.accept_student(@submission.student, @submission.project)
       flash[:notice] = "Application accepted."
       redirect_to project_submission_path      
     end

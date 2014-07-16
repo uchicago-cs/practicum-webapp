@@ -1,8 +1,6 @@
 class ProjectsController < ApplicationController
 
   load_and_authorize_resource
-  # Load the resource the viewer is trying to view and authorize
-  # based on the viewer's role (and whether the viewer is logged in.)
 
   def new
   end
@@ -10,6 +8,11 @@ class ProjectsController < ApplicationController
   def create
     @project = current_user.projects.build(project_params)
     if @project.save
+
+      User.admins.each do |admin|
+        Notifier.project_proposed(@project.advisor, @project, admin)
+      end
+      
       flash[:notice] = "Project successfully proposed."
       redirect_to current_user
     else
@@ -45,6 +48,7 @@ class ProjectsController < ApplicationController
 
   def approve
     if @project.update_attributes(approved: true)
+      Notifier.project_approved(@project.advisor, @project)
       flash[:notice] = "Project approved."
       redirect_to project_path
     end
