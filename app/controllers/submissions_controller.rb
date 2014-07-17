@@ -55,7 +55,8 @@ class SubmissionsController < ApplicationController
   private
 
   def submission_params
-    params.require(:submission).permit(:information, :student_id, :status)
+    params.require(:submission).permit(:information, :student_id, :status,
+                                       :qualifications, :courses)
   end
 
   def get_project

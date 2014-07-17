@@ -3,8 +3,17 @@
 <%= form_for([@project, @submission]) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
 
-      <%= f.label :information %>
+      <%= f.label :information, "Interests: explain, in 1-2 paragraphs, why you are interested in working on this project (:interest)." %>
       <%= f.text_area :information %>
+
+      <%= f.label :qualifications, "Qualifications: explain, in 1-2 paragraphs, why you feel you are qualified to work on this project." %>
+      <%= f.text_area :qualifications %>
+
+      <%= f.label :courses, "Courses: list the MPCS courses you have taken so far, and the courses you are currently enrolled in." %>
+      <%= f.text_area :courses %>
+
+      <%#= f.label :resume, "Resume (optional)" %>
+      <%#= f.text_area :resume %>
 
       <%= f.label :password_confirmation, "Password confirmation" %>
       <%= f.password_field :password_confirmation %>

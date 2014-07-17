@@ -4,7 +4,11 @@ class Submission < ActiveRecord::Base
   belongs_to :project
 
   validates :information, presence: true,
-                          length: { minimum: 100, maximum: 1500 }
+    length: { minimum: 100, maximum: 1500 }
+  validates :qualifications, presence: true,
+    length: { minimum: 100, maximum: 1500 }
+  validates :courses, presence: true,
+    length: { minimum: 100, maximum: 1500 }
   validates :student_id, presence: true
 
   delegate :name, to: :project, prefix: true

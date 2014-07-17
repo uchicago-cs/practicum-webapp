@@ -71,6 +71,9 @@ def make_projects
       content = Faker::Lorem.sentence(30)
       status = ["pending", "accepted", "rejected"].sample
       advisor.projects.create!(description: content,
+                               expected_deliverables: content,
+                               prerequisites: content,
+                               related_work: [content, ""].sample,
                                advisor_id: advisor.id,
                                name: "Some Project #{20*x + n + 1}",
                                deadline: DateTime.current,
@@ -86,10 +89,12 @@ def make_submissions
     project_id = (student.id % 50)+1
     status = ["pending", "accepted", "rejected"].sample
     if Project.find(project_id).accepted?
-        student.submissions.create!(information: content,
-                                    student_id: student.id,
-                                    project_id: project_id,
-                                    status: status)
+      student.submissions.create!(information: content,
+                                  qualifications: content,
+                                  courses: content,
+                                  student_id: student.id,
+                                  project_id: project_id,
+                                  status: status)
     end
   end
 end

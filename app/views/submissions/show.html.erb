@@ -2,7 +2,9 @@
 
 <div>
   <div>Applicant: <%= @submission.student_email %></div>
-  <div>Information: <%= @submission.information %></div>
+  <div>Interests: <%= @submission.information %></div>
+  <div>Qualifications: <%= @submission.qualifications %></div>
+  <div>Courses: <%= @submission.courses %></div>
   <div>Status: <%= @submission.status.capitalize %> </div>
   <% if (current_user.advisor?) && (current_user.made_project?(@project)) %>
     

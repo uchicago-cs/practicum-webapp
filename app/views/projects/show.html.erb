@@ -1,10 +1,26 @@
 <h1><%= @project.name %></h1>
+<% if (can? :create, Project) and current_user.made_project?(@project) %>
+  <div>
+    Project status: <%= @project.status.capitalize %>
+  </div>
+<% end %>
 <div>
   Project advisor: <%= @project.advisor_email %>
 </div>
 <div>
   Project description: <%= @project.description %>
 </div>
+<div>
+  Expected deliverables: <%= @project.expected_deliverables %>
+</div>
+<div>
+  Prerequisites: <%= @project.prerequisites %>
+</div>
+<% if !@project.related_work.empty? %>
+  <div>
+    Related work: <%= @project.related_work %>
+  </div>
+<% end %>
 <div>
   Project deadline: <%= @project.deadline %>
 </div>
@@ -13,7 +29,7 @@
   <% if @project.accepted? and !current_user.applied_to_project?(@project) %>
     <%= link_to "Click here to apply.", new_project_submission_path(@project.id) %>
     <% elsif !@project.accepted? and !current_user.applied_to_project?(@project) %>
-    This project has not yet been approved.
+    <!-- This project is currently awaiting approval. -->
   <% else %>
     You have already applied to participate in this project. Please wait 
     for the advisors to review your application. You will be notified by 
@@ -21,7 +37,7 @@
   <% end %>
 <% end %>
 
-<% if (can? :create, Project) and current_user.made_project?(@project) and !@project.accepted? %>
+<% if (can? :create, Project) and current_user.made_project?(@project) and @project.pending? %>
   <%= link_to "Click here to edit the project information.", edit_project_path  %>
 <% end %>
 

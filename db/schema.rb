@@ -11,16 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140717185227) do
+ActiveRecord::Schema.define(version: 20140717201050) do
 
   create_table "projects", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "name",        default: "",        null: false
+    t.string   "name",                  default: "",        null: false
     t.integer  "advisor_id"
     t.datetime "deadline"
-    t.text     "description", default: "",        null: false
-    t.string   "status",      default: "pending", null: false
+    t.text     "description",           default: "",        null: false
+    t.string   "status",                default: "pending", null: false
+    t.text     "expected_deliverables", default: "",        null: false
+    t.text     "prerequisites",         default: "",        null: false
+    t.text     "related_work",          default: "",        null: false
   end
 
   add_index "projects", ["advisor_id"], name: "index_projects_on_advisor_id"
@@ -29,9 +32,11 @@ ActiveRecord::Schema.define(version: 20140717185227) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "student_id"
-    t.text     "information", default: "",        null: false
+    t.text     "information",    default: "",        null: false
     t.integer  "project_id"
-    t.string   "status",      default: "pending", null: false
+    t.string   "status",         default: "pending", null: false
+    t.text     "qualifications", default: "",        null: false
+    t.text     "courses",        default: "",        null: false
   end
 
   add_index "submissions", ["student_id"], name: "index_submissions_on_student_id"
@@ -52,6 +57,8 @@ ActiveRecord::Schema.define(version: 20140717185227) do
     t.boolean  "student",                default: true,  null: false
     t.boolean  "advisor",                default: false, null: false
     t.boolean  "admin",                  default: false, null: false
+    t.string   "first_name",             default: "",    null: false
+    t.string   "last_name",              default: "",    null: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
