@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140716215729) do
+ActiveRecord::Schema.define(version: 20140717185227) do
 
   create_table "projects", force: true do |t|
     t.datetime "created_at"
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 20140716215729) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "student",                default: false, null: false
+    t.boolean  "student",                default: true,  null: false
     t.boolean  "advisor",                default: false, null: false
     t.boolean  "admin",                  default: false, null: false
   end

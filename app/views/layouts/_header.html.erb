@@ -16,7 +16,7 @@
 
 	    <!-- The ability checks are messy and need to be rewritten. -->
 
-	    <% if (can? :read, User) && current_user.admin? %>
+	    <% if (can? :read, User) %>
 	      <li><%= link_to "Users", users_path %></li>
 	    <% end %>
 	    <% if (can? :read, Project) %>

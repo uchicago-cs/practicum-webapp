@@ -53,3 +53,8 @@ This is your personal page for you to view your applications / projects.
   <% end %>
   
 <% end %>
+
+<% if @user.admin? %>
+  <h2>Change this user's role</h2>
+
+<% end %>
