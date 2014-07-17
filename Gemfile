@@ -23,7 +23,9 @@ group :development, :test do
   gem 'webrat'
   gem 'database_cleaner', github: 'bmabey/database_cleaner'
   gem 'brakeman'
-  
+  gem 'launchy'
+  gem 'pry', github: 'pry/pry'
+#  gem 'pry_debug'
 end
 
 group :test do

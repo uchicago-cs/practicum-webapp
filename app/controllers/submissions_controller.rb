@@ -4,6 +4,7 @@ class SubmissionsController < ApplicationController
 
   before_action :get_project
   before_action :project_accepted?, only: :new
+  before_action :is_admin_or_advisor?, only: :index
 
   def new
     @submission = Submission.new
@@ -63,6 +64,10 @@ class SubmissionsController < ApplicationController
 
   def project_accepted?
     redirect_to root_url unless @project.accepted?
+  end
+
+  def is_admin_or_advisor?
+    redirect_to root_url unless current_user.admin? or current_user.advisor?
   end
 
 end

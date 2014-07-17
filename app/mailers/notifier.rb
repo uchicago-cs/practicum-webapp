@@ -20,6 +20,15 @@ class Notifier < ActionMailer::Base
     mail(to: @to, subject: @subject)
   end
 
+  def project_needs_edits(advisor, project)
+    @advisor = advisor
+    @project = project
+    @to = @advisor.email
+    @subject = "Your project \"#{@project.name}\" requires attention"
+
+    mail(to: @to, subject: @subject)
+  end
+
   def student_applied(advisor, student)
     @advisor = advisor
     @student = student

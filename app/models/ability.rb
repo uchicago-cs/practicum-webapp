@@ -4,13 +4,17 @@ class Ability
   def initialize(user)
     
     user ||= User.new
-    
+
+    # Do not restrict abilities by "cannot" here
+
     if user.admin?
       
       can :manage, :all
       can :accept, :all
-      
-    elsif user.advisor?
+
+    end
+
+    if user.advisor?
 
       can :create, Project
       can :read, Project
@@ -25,7 +29,9 @@ class Ability
         user.id == project.try(:advisor_id)
       end
 
-    elsif user.student?
+    end
+
+    if user.student?
 
       can :read, Project, status: "accepted"
       can :read, User, id: user.id

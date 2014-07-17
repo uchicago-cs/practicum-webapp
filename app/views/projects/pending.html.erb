@@ -1,6 +1,6 @@
-<h1>Unapproved projects</h1>
+<h1>Pending projects</h1>
 
-<% @unaccepted_projects.each do |project| %>
+<% @pending_projects.each do |project| %>
   <div>
     <%= project.name %> proposed by <%= project.advisor_email %> 
     with deadline <%= project.deadline %>. Click 

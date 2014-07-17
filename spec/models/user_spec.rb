@@ -7,10 +7,7 @@ RSpec.describe User, :type => :model do
     let(@student) { FactoryGirl.create(:student) }
     let(@advisor) { FactoryGirl.create(:advisor) }
     let(@project) { FactoryGirl.create(:project) }
-  end
-
-  describe "when user submits an application" do
-    @student.submissions.build
+    let(@project) { FactoryGirl.create(:submission) }
   end
 
 end

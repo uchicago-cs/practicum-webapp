@@ -17,19 +17,16 @@ namespace :db do
 end
 
 def delete_users
-  User.destroy_all
   User.delete_all
   ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'users'")
 end
 
 def delete_projects
-  Project.destroy_all
   Project.delete_all
   ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'projects'")
 end
 
 def delete_submissions
-  Submission.destroy_all
   Submission.delete_all
   ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'submissions'")
 end

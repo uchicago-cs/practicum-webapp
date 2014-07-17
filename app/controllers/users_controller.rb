@@ -4,6 +4,8 @@ class UsersController < ApplicationController
 
   before_action :is_admin?, only: :index
 
+  # Ensure user cannot set self to admin, advisor, etc.
+
   def show
   end
 

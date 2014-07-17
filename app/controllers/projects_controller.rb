@@ -57,6 +57,8 @@ class ProjectsController < ApplicationController
   end
 
   def reject
+    Notifier.project_needs_edits(@project.advisor,
+                                 @project).deliver
   end
 
   private

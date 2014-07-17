@@ -1,8 +1,9 @@
 <h1>Application from <%= @submission.student_email %></h1>
 
 <div>
-  Applicant: <%= @submission.student_email %>
-  Information: <%= @submission.information %>
+  <div>Applicant: <%= @submission.student_email %></div>
+  <div>Information: <%= @submission.information %></div>
+  <div>Status: <%= @submission.status.capitalize %> </div>
   <% if (current_user.advisor?) && (current_user.made_project?(@project)) %>
     
     <% if !@submission.accepted? %>
