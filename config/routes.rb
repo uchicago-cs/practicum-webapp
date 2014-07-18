@@ -16,6 +16,7 @@ Practicum::Application.routes.draw do
 
     member do
       get "accept"
+      get "request_changes"
       get "reject"
     end
     

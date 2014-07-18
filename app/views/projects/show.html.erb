@@ -43,8 +43,16 @@
 
 <br>
 
-<% if (can? :accept, Project) && !@project.accepted? %>
-  <%= link_to "Click here to approve the project.", accept_project_path %>
+<% if (can? :accept, Project) and @project.pending? %>
+  <div>
+    <%= link_to "Click here to approve the project.", accept_project_path %>
+  </div>
+  <div>
+  <%= link_to "Click here to request changes to the project.", request_changes_project_path %>
+  </div>
+  <div>
+  <%= link_to "Click here to reject the project.", reject_project_path %>
+  </div>
 <% end %>
 
 <br>

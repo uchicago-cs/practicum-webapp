@@ -22,18 +22,14 @@ class Project < ActiveRecord::Base
     Project.where(status: "rejected")
   end
 
+  def Project.pending_projects
+    Project.where(status: "pending")
+  end
+
   def advisor
     User.find(advisor_id)
     # Not ideal
   end
-
-  # def status
-  #   if self.approved?
-  #     "approved"
-  #   else
-  #     "unapproved"
-  #   end
-  # end
 
   def accepted?
     status == "accepted"
