@@ -1,7 +1,10 @@
 Practicum::Application.routes.draw do
   
   root 'pages#home'
-
+  
+  resources :messages, except: :new
+  match "/projects/:id/request_changes", to: "messages#new", via: "get"
+  
   resources :projects do
     resources :submissions do
       member do
@@ -50,6 +53,7 @@ Practicum::Application.routes.draw do
   match "/users", to: "users#index", via: "get"
   match "/users/:id", to: "users#show", via: "get", as: "user"
   match "/users/:id", to: "users#update", via: "patch"
+
   match "/submissions", to: "pages#submissions", via: "get"
 
 end

@@ -1,0 +1,10 @@
+<h1><%= @project.name %></h1>
+
+<%= form_for @message do |f| %>
+
+  <%= f.label :content, "Write the changes you would like to see made to the proposal below." %>
+  <%= f.text_area :content %>
+
+  <%= f.submit "Submit request for revision", class: "btn btn-primary" %>
+
+<% end %>
