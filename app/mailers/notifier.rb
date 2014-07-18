@@ -38,6 +38,16 @@ class Notifier < ActionMailer::Base
     mail(to: @to, subject: @subject)
   end
 
+  def project_status_changed(advisor, project, comment)
+    @advisor = advisor
+    @project = project
+    @comment = comment
+    @to = @advisor.email
+    @subject = "Your project status has been updated"
+
+    mail(to: @to, subject: @subject)
+  end
+
   def student_applied(advisor, student)
     @advisor = advisor
     @student = student

@@ -47,6 +47,20 @@ class ProjectsController < ApplicationController
     @pending_projects = Project.pending_projects
   end
 
+  def edit_status
+  end
+
+  def update_status
+    if @project.update_attributes(project_params)
+      Notifier.project_status_changed(@project.advisor,
+                                      @project, params[:comment]).deliver
+      flash[:notice] = "Project status changed."
+      redirect_to project_path
+    else
+      render 'edit_status'
+    end    
+  end
+
   def accept
     if @project.update_attributes(status: "accepted")
       Notifier.project_accepted(@project.advisor,
@@ -81,7 +95,7 @@ class ProjectsController < ApplicationController
   def project_params
     params.require(:project).permit(:name, :description, :deadline, :status,
                                     :expected_deliverables, :prerequisites,
-                                    :related_work)
+                                    :related_work, :comments)
   end
 
 end

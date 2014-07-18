@@ -1,5 +1,7 @@
 <h1><%= @project.name %></h1>
-<% if (can? :create, Project) and current_user.made_project?(@project) %>
+<!-- Messy logic -->
+<% if (can? :create, Project) and
+  (current_user.made_project?(@project) or current_user.admin?) %>
   <div>
     Project status: <%= @project.status.capitalize %>
   </div>
@@ -45,13 +47,7 @@
 
 <% if (can? :accept, Project) and @project.pending? %>
   <div>
-    <%= link_to "Click here to approve the project.", accept_project_path %>
-  </div>
-  <div>
-  <%= link_to "Click here to request changes to the project.", request_changes_project_path %>
-  </div>
-  <div>
-  <%= link_to "Click here to reject the project.", reject_project_path %>
+    Click <%= link_to "here", edit_status_project_path %>  to change this project's status or request changes to the proposal.
   </div>
 <% end %>
 
