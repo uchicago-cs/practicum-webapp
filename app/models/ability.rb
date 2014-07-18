@@ -10,7 +10,6 @@ class Ability
     else
       if user.admin?
         can :manage, :all
-        can :accept, :all
       end
 
       if user.advisor?
@@ -18,6 +17,7 @@ class Ability
         can :read, Project
         can :update, Project, status: "pending"
         can :read, User, id: user.id
+        can :update, User, id: user.id
         can :accept, Submission
         can :reject, Submission
 

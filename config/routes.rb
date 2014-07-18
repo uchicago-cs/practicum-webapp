@@ -46,13 +46,9 @@ Practicum::Application.routes.draw do
       end
   end
 
-  # Users directory. Available only for admins.
   match "/users", to: "users#index", via: "get"
   match "/users/:id", to: "users#show", via: "get", as: "user"
-  # Maybe the below routes will be available for admins. Users can
-  # view their own information on their /users/:id page, and users
-  # do not need to edit their profiles.
-
+  match "/users/:id", to: "users#update", via: "patch"
   match "/submissions", to: "pages#submissions", via: "get"
 
 end

@@ -1,7 +1,8 @@
 <h1><%= @user.email %></h1>
 
 This is your personal page for you to view your applications / projects.
-
+<!-- @user is the user the page is displaying -->
+<!-- current_user is the user browsing the form -->
 <% if @user.advisor? or @user.admin? %>
 
   <h2>Pending project proposals</h2>
@@ -56,7 +57,40 @@ This is your personal page for you to view your applications / projects.
   
 <% end %>
 
-<% if @user.admin? %>
-  <h2>Change this user's role</h2>
+<% if (current_user.advisor? and @user == current_user) or (current_user.admin?) %>
+  <h3>Change your affiliation and department</h3>
+  This will show up on your project proposals and postings.
+  
+  <%= form_for(@user) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
 
+    <%= f.label :affiliation %>
+    <%= f.text_field :affiliation %>
+
+    <%= f.label :department, "Department, institution, etc." %>
+    <%= f.text_field :department %>
+
+    <%= f.submit "Update your information",
+        class: "btn btn-large btn-primary" %>
+
+    <% end %>
+<% end %>
+
+<% if current_user.admin? %>
+  <h3>Change user roles</h3>
+  <%= form_for(@user) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+
+    <%= f.label :student %>
+    <%= f.check_box :student %>
+
+    <%= f.label :advisor %>
+    <%= f.check_box :advisor %>
+
+    <%= f.label :admin %>
+    <%= f.check_box :admin %>
+
+    <%= f.submit "Change this user's roles",
+        class: "btn btn-large btn-primary" %>
+  <% end %>
 <% end %>

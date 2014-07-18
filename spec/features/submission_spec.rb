@@ -14,6 +14,8 @@ feature "Creating a new submission" do
     @project = @advisor.projects.create!(name: "project",
                                          deadline: DateTime.current,
                                          description: "b"*100,
+                                         expected_deliverables: "b"*100,
+                                         prerequisites: "b"*100,
                                          status: "accepted")
 
     @student = User.new(email: "student@school.edu",
@@ -27,8 +29,8 @@ feature "Creating a new submission" do
   describe "new submission" do
 
     it "should have the Information field" do
-      visit new_project_submission_url(@project.id) 
-      save_and_open_page
+      visit new_project_submission_url(@project.id)
+      #save_and_open_page
       page.should have_content("Information")
     end
 

@@ -1,6 +1,6 @@
 class Notifier < ActionMailer::Base
   default from: "do-not-reply@cs.uchicago.edu"
-
+  
   def project_proposed(advisor, project, admin)
     @advisor = advisor
     @project = project
@@ -29,6 +29,15 @@ class Notifier < ActionMailer::Base
     mail(to: @to, subject: @subject)
   end
 
+  def project_rejected(advisor, project)
+    @advisor = advisor
+    @project = project
+    @to = @advisor.email
+    @subject = "Your project \"#{@project.name}\""
+
+    mail(to: @to, subject: @subject)
+  end
+
   def student_applied(advisor, student)
     @advisor = advisor
     @student = student
@@ -44,6 +53,24 @@ class Notifier < ActionMailer::Base
     @to = @student.email
     @subject = "You have been accepted to #{@project.name}"
     
+    mail(to: @to, subject: @subject)
+  end
+
+  def reject_student(student, project)
+    @student = student
+    @project = project
+    @to = @student.email
+    @subject = "Your application to #{@project.name}"
+    
+    mail(to: @to, subject: @subject)
+  end
+
+  def evaluation_submitted(advisor, admin) #, evaluation)
+    @advisor = advisor
+    @admin = admin
+    @to = @admin.email
+    @subject = "#{@advisor.email} has submitted a new evaluation"
+
     mail(to: @to, subject: @subject)
   end
 

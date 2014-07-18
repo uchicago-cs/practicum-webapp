@@ -4,41 +4,44 @@
       <%= link_to "Computer Science Practicum", root_path, id: "logo" %>
       <nav>
 	<!-- 	<div class="collapse navbar-collapse"> -->
-	  <ul class="nav pull-right">
-	    <% if !user_signed_in? %>
-	      <li><%= link_to "Sign up", new_user_registration_path %></li>
-	      <li><%= link_to "Sign in", new_user_session_path %></li>
-	    <% else %>
-	      <li>You are signed in as <%= current_user.email %>.</li>
-	      <li><%= link_to "Sign out", destroy_user_session_path,
-	      method: :delete %></li>
-	    <% end %>
+	<ul class="nav pull-right">
+	  <% if !user_signed_in? %>
+	    <li><%= link_to "Sign up", new_user_registration_path %></li>
+	    <li><%= link_to "Sign in", new_user_session_path %></li>
+	  <% else %>
+	    <li>You are signed in as <%= current_user.email %>.</li>
+	    <li><%= link_to "Sign out", destroy_user_session_path,
+	    method: :delete %></li>
+	  <% end %>
 
-	    <!-- The ability checks are messy and need to be rewritten. -->
+	  <% if can? :read, Submission %>
+	    <li><%= link_to "My account", current_user %></li>
+	  <% end %>
 
-	    <% if (can? :read, User) %>
-	      <li><%= link_to "Users", users_path %></li>
-	    <% end %>
-	    <% if (can? :read, Project) %>
-	      <li><%= link_to "Projects", projects_path %></li>
-	    <% end %>
-	    <% if (can? :read, Submission) && current_user.student? %>
-	      <li><%= link_to "My applications", current_user %></li>
-	    <% end %>
-	    <% if (can? :read, Submission) && current_user.advisor? %>
-	      <li><%= link_to "My projects", current_user %></li>
-	    <% end %>
-	    <% if (can? :read, Submission) && current_user.admin? %>
-	      <li><%= link_to "Applications", submissions_path %></li>
-	    <% end %>
-	    <% if (can? :accept, Project) %>
-	      <li><%= link_to "Unapproved projects", pending_projects_path %></li>
-	    <% end %>
-	    <% if (can? :create, Project) %>
-	      <li><%= link_to "Propose a project", new_project_path %></li>
-	    <% end %>
-	  </ul>
-	  <!-- 	</div> -->
+	  <% if can? :manage, User %>
+	    <li><%= link_to "Users", users_path %></li>
+	  <% end %>
+
+	  <% if can? :read, Project %>
+	    <li><%= link_to "Projects", projects_path %></li>
+	  <% end %>
+
+	  <% if can? :manage, Submission %>
+	    <li><%= link_to "Applications", submissions_path %></li>
+	  <% end %>
+
+	  <% if can? :accept, Project %>
+	    <li>
+	      <%= link_to "Unapproved projects", pending_projects_path %>
+	    </li>
+	  <% end %>
+
+	  <% if can? :create, Project %>
+	    <li><%= link_to "Propose a project", new_project_path %></li>
+	  <% end %>
+
+	</ul>
+	<!-- 	</div> -->
       </nav>
     </div>
   </div>
