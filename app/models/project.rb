@@ -14,6 +14,8 @@ class Project < ActiveRecord::Base
 
   delegate :email, to: :user, prefix: :advisor, allow_nil: true
 
+  attr_accessor :comments
+
   def Project.accepted_projects
     Project.where(status: "accepted")
   end

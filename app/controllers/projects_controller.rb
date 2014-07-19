@@ -53,41 +53,12 @@ class ProjectsController < ApplicationController
   def update_status
     if @project.update_attributes(project_params)
       Notifier.project_status_changed(@project.advisor,
-                                      @project, params[:comment]).deliver
+                                      @project, @project.comments)
       flash[:notice] = "Project status changed."
       redirect_to project_path
     else
       render 'edit_status'
     end    
-  end
-
-  def accept
-    if @project.update_attributes(status: "accepted")
-      Notifier.project_accepted(@project.advisor,
-                                @project).deliver
-      flash[:notice] = "Project accepted."
-      redirect_to project_path
-    else
-      render 'show'
-    end
-  end
-
-  def request_changes
-    # Notifier.project_needs_edits(@project.advisor,
-    #                              @project).deliver
-    # flash[:notice] = "Request for edits sent."
-    # redirect_to project_path
-  end
-
-  def reject
-    if @project.update_attributes(status: "rejected")
-      Notifier.project_rejected(@project.advisor,
-                                   @project).deliver
-      flash[:notice] = "Project rejected."
-      redirect_to project_path
-    else
-      render 'show'
-    end
   end
 
   private

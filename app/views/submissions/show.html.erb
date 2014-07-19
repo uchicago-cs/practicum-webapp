@@ -6,15 +6,17 @@
   <div>Qualifications: <%= @submission.qualifications %></div>
   <div>Courses: <%= @submission.courses %></div>
   <div>Status: <%= @submission.status.capitalize %> </div>
-  <% if (current_user.advisor?) && (current_user.made_project?(@project)) %>
+  <%# if ((current_user.advisor?) and (current_user.made_project?(@project))) or current_user.admin? %>
+    <!-- Just use CC abilities -->
+    <% if can? :accept, Submission %>
     
-    <% if !@submission.accepted? %>
+    <% if @submission.pending? %>
       You may 
       <%= link_to "accept", accept_project_submission_path(@project.id, @submission.id) %> or 
       <%= link_to "reject", reject_project_submission_path(@project.id, @submission.id) %> 
       this application.
     <% else %>
-      You have already accepted this applicant.
+      You have already <%= @submission.status %> this applicant.
     <% end %>
     
   <% end %>
