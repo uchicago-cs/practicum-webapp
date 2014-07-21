@@ -20,15 +20,15 @@
     <!-- Just use CC abilities -->
 
     <% if can? :accept, Submission %>
-    
-    <% if @submission.pending? %>
-      You may 
-      <%= link_to "accept", accept_project_submission_path(@project.id, @submission.id) %> or 
-      <%= link_to "reject", reject_project_submission_path(@project.id, @submission.id) %> 
-      this application.
-    <% else %>
-      You have already <%= @submission.status %> this applicant.
-    <% end %>
-    
+      
+      <% if @submission.pending? %>
+	You may 
+	<%= link_to "accept", accept_project_submission_path(@project.id, @submission.id) %> or 
+	<%= link_to "reject", reject_project_submission_path(@project.id, @submission.id) %> 
+	this application.
+      <% else %>
+	You have already <%= @submission.status %> this applicant.
+      <% end %>
+  
   <% end %>
 </div>

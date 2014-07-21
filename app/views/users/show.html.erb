@@ -32,7 +32,7 @@ This is your personal page for you to view your applications / projects.
 
 <% end %>
 
-<% if (@user.student? or @user.admin?) %>
+<% if @user.student? or @user.admin? %>
   
   <h2>Submitted applications</h2>
   <% if @user.submissions.count > 0 %>

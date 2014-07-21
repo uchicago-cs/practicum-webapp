@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  # Note: we use `self` instead of @user here
+
   has_many :projects, foreign_key: "advisor_id", dependent: :destroy
   has_many :submissions, foreign_key: "student_id", dependent: :destroy
 
@@ -60,7 +62,7 @@ class User < ActiveRecord::Base
   end
 
   def projects_made_by_id
-    Project.all.where(advisor_id: user.id).pluck(:id)
+    Project.all.where(advisor_id: self.id).pluck(:id)
   end
 
 end

@@ -18,17 +18,31 @@ class Ability
         can :update, Project, status: "pending"
         can :read, User, id: user.id
         can :update, User, id: user.id
-        can :accept, Submission
-        # Messy blocks.
+
+        # "The block is only evaluated when an actual instance object is
+        # present. It is not evaluated when checking permissions on the
+        # class (such as in the index action). This means any conditions
+        # which are not dependent on the object attributes should be moved
+        # outside of the block."
+        # https://github.com/ryanb/cancan/wiki/
+        # Defining-Abilities-with-Blocks#only-for-object-attributes
+
+        # Not DRY
+        can :accept, Submission do |submission|
+          submission.project_id.in? user.projects_made_by_id
+        end
+        can :reject, Submission do |submission|
+          submission.project_id.in? user.projects_made_by_id
+        end
         can :download_resume, Submission do |submission|
-          # project = Project.find_by(submission.try(:project_id))
-          # user.id == project.try(:advisor_id)
           submission.project_id.in? user.projects_made_by_id
         end
         can :read, Submission do |submission|
-          # project = Project.find_by(submission.try(:project_id))
-          # user.id == project.try(:advisor_id)
           submission.project_id.in? user.projects_made_by_id
+        end
+
+        can :read_submissions_of, Project do |project|
+          project_id.in? user.projects_made_by_id
         end
 
         can :create, Evaluation
