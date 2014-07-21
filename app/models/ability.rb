@@ -19,6 +19,7 @@ class Ability
         can :read, User, id: user.id
         can :update, User, id: user.id
         can :accept, Submission
+        can :create, Evaluation
 
         # Do block abilities work?
         can :read, Submission do |submission|

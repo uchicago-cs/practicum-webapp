@@ -7,6 +7,8 @@ class SubmissionsController < ApplicationController
   before_action :is_admin_or_advisor?, only: :index
   before_action :already_applied_to_project?, only: :new
 
+  # Getting a bit thick here -- slim it down
+
   def new
     @submission = Submission.new
   end
@@ -18,6 +20,9 @@ class SubmissionsController < ApplicationController
     if @submission.save
       Notifier.student_applied(@project.advisor, 
                                current_user).deliver
+      User.admins.each do |admin|
+        Notifier.student_applied(admin, current_user).deliver
+      end
       flash[:notice] = "Application submitted!"
       redirect_to current_user
     else
@@ -67,7 +72,7 @@ class SubmissionsController < ApplicationController
 
   def submission_params
     params.require(:submission).permit(:information, :student_id, :status,
-                                       :qualifications, :courses)
+                                       :qualifications, :courses, :resume)
   end
 
   def get_project

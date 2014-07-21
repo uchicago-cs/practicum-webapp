@@ -1,5 +1,8 @@
 Practicum::Application.routes.draw do
   
+  get "evaluations/show"
+  get "evaluations/new"
+  get "evaluations/create"
   root 'pages#home'
   
   #resources :messages, except: :new

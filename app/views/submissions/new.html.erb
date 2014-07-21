@@ -1,6 +1,6 @@
 <h1>Apply to <%= @project.name %></h1>
 
-<%= form_for([@project, @submission]) do |f| %>
+<%= form_for [@project, @submission], html: { multipart: true } do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
 
       <%= f.label :information, "Interests: explain, in 1-2 paragraphs, why you are interested in working on this project (:interest)." %>
@@ -12,8 +12,8 @@
       <%= f.label :courses, "Courses: list the MPCS courses you have taken so far, and the courses you are currently enrolled in." %>
       <%= f.text_area :courses %>
 
-      <%#= f.label :resume, "Resume (optional)" %>
-      <%#= f.text_area :resume %>
+      <%= f.label :resume, "Resume (optional)" %>
+      <%= f.file_field :resume %>
 
       <%= f.label :password_confirmation, "Password confirmation" %>
       <%= f.password_field :password_confirmation %>

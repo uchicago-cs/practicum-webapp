@@ -12,6 +12,7 @@ gem 'bootstrap-will_paginate', '0.0.9'
 gem 'rspec-its'
 gem 'cancancan', '~> 1.8'
 gem 'devise', '~> 3.2.4'
+gem 'paperclip', '~> 4.1'
 
 group :development, :test do
   gem 'sqlite3', '1.3.8'

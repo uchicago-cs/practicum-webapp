@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140718185528) do
+ActiveRecord::Schema.define(version: 20140721181231) do
+
+  create_table "evaluations", force: true do |t|
+    t.integer  "advisor_id"
+    t.integer  "student_id"
+    t.integer  "project_id"
+    t.text     "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "messages", force: true do |t|
     t.datetime "created_at"
@@ -40,11 +49,15 @@ ActiveRecord::Schema.define(version: 20140718185528) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "student_id"
-    t.text     "information",    default: "",        null: false
+    t.text     "information",         default: "",        null: false
     t.integer  "project_id"
-    t.string   "status",         default: "pending", null: false
-    t.text     "qualifications", default: "",        null: false
-    t.text     "courses",        default: "",        null: false
+    t.string   "status",              default: "pending", null: false
+    t.text     "qualifications",      default: "",        null: false
+    t.text     "courses",             default: "",        null: false
+    t.string   "resume_file_name"
+    t.string   "resume_content_type"
+    t.integer  "resume_file_size"
+    t.datetime "resume_updated_at"
   end
 
   add_index "submissions", ["student_id"], name: "index_submissions_on_student_id"

@@ -42,6 +42,7 @@ class Notifier < ActionMailer::Base
     @advisor = advisor
     @project = project
     @comment = comment
+    @status = project.status
     @to = @advisor.email
     @subject = "Your project status has been updated"
 

@@ -54,6 +54,7 @@ class ProjectsController < ApplicationController
     if @project.update_attributes(project_params)
       Notifier.project_status_changed(@project.advisor,
                                       @project, @project.comments)
+      # Do we need all these arguments here?
       flash[:notice] = "Project status changed."
       redirect_to project_path
     else

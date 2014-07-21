@@ -5,6 +5,12 @@
   <div>Interests: <%= @submission.information %></div>
   <div>Qualifications: <%= @submission.qualifications %></div>
   <div>Courses: <%= @submission.courses %></div>
+  <% if @submission.resume.exists? %>
+    <div>Resume: <%= link_to "download",
+    @submission.resume.url(:original, false) %></div>
+  <% else %>
+    <div>This student did not upload a resume.</div>
+  <% end %>
   <div>Status: <%= @submission.status.capitalize %> </div>
   <%# if ((current_user.advisor?) and (current_user.made_project?(@project))) or current_user.admin? %>
     <!-- Just use CC abilities -->

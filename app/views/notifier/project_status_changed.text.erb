@@ -1,5 +1,14 @@
-Congratulations ...
-(or)
-Your project proposal needs attention ...
-(or)
-Your project proposal has been rejected ...
+<% if @status == "accepted" %>
+  Congratulations: your project proposal has been accepted. It is now on the
+  public project list on the website, and students can apply to it. ...
+<% elsif @status == "pending" %>
+  Your project is still pending, and the administrators have decided that you
+  must make the following changes to your proposal before it can be posted:
+<% elsif @status == "rejected" %>
+  The administrators have decided not to accept your project proposal. ...
+<% end %>
+
+<% if !@comments.empty? %>
+  The administrators say:
+  <%= @comments %>
+<% end %>
