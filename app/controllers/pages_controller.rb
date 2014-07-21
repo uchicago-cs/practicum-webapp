@@ -1,7 +1,6 @@
 class PagesController < ApplicationController
 
-  # Too much authorization here.
-
+  # skip_before_action :authenticate_user!, except: :submissions
   before_action :authenticate_user!, only: :submissions
   before_action :is_admin?, only: :submissions
 

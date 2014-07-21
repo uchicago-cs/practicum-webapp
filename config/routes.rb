@@ -56,7 +56,8 @@ Practicum::Application.routes.draw do
   match "/users", to: "users#index", via: "get"
   match "/users/:id", to: "users#show", via: "get", as: "user"
   match "/users/:id", to: "users#update", via: "patch"
-
   match "/submissions", to: "pages#submissions", via: "get"
+  match "/projects/:project_id/submissions/:id/resume",
+    to: "submissions#download_resume", via: "get", as: "download_resume"
 
 end

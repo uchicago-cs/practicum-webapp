@@ -59,4 +59,8 @@ class User < ActiveRecord::Base
     self.projects.where(status: "pending")
   end
 
+  def projects_made_by_id
+    Project.all.where(advisor_id: user.id).pluck(:id)
+  end
+
 end

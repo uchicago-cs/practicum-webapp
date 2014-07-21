@@ -6,7 +6,8 @@ class SubmissionsController < ApplicationController
   before_action :project_accepted?, only: :new
   before_action :is_admin_or_advisor?, only: :index
   before_action :already_applied_to_project?, only: :new
-
+  before_action :right_project?, only: [:show, :edit, :update]
+  
   # Getting a bit thick here -- slim it down
 
   def new
@@ -68,6 +69,17 @@ class SubmissionsController < ApplicationController
     end
   end
 
+  def download_resume
+    if @submission.resume.exists?
+      send_file(@submission.resume.path,
+                type: @submission.resume.content_type,
+                x_sendfile: true)
+    else
+      flash[:notice] = "This student did not upload a resume."
+      render 'show'
+    end
+  end
+
   private
 
   def submission_params
@@ -90,8 +102,12 @@ class SubmissionsController < ApplicationController
   end
 
   def already_applied_to_project?
+    redirect_to root_url if current_user.applied_to_project?(@project)
+  end
+
+  def right_project?
     redirect_to root_url unless \
-      !current_user.applied_to_project?(@project)
+      params[:project_id].to_i == @submission.project_id
   end
 
 end

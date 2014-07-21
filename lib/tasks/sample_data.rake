@@ -63,7 +63,7 @@ def make_users
 end
 
 def make_projects
-  advisors = User.find_all_by_advisor(true)
+  advisors = User.where(advisor: true).all
   x = -1
   advisors.each do |advisor|
     x += 1
@@ -83,18 +83,23 @@ def make_projects
 end
 
 def make_submissions
-  students = User.find_all_by_student(true)
+  students = User.where(student: true).all
   students.each do |student|
     content = Faker::Lorem.sentence(30)
     project_id = (student.id % 50)+1
     status = ["pending", "accepted", "rejected"].sample
     if Project.find(project_id).accepted?
-      student.submissions.create!(information: content,
-                                  qualifications: content,
-                                  courses: content,
-                                  student_id: student.id,
-                                  project_id: project_id,
-                                  status: status)
+      sub = student.submissions.new(information: content,
+                                    qualifications: content,
+                                    courses: content,
+                                    student_id: student.id,
+                                    project_id: project_id,
+                                    status: status)
+      if [true, false].sample
+        sub.update_attributes(resume_file_name: "res2.pdf",
+                              resume_content_type: "application/pdf")
+      end
+      sub.save
     end
   end
 end

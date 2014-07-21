@@ -15,8 +15,8 @@ class Submission < ActiveRecord::Base
   delegate :email, to: :user, prefix: :student
 
   has_attached_file :resume,
-                    url: "/assets/submissions/:id/:style/:basename.:extension",
-                    path: ":rails_root/assets/submissions/:id/:style/:basename.:extension"
+                    url: "/projects/:project_id/submissions/:id/resume",
+                    path: ":rails_root/storage/assets/submissions/:id/:style/:basename.:extension"
   validates_attachment_content_type :resume,
     content_type: /\Aapplication\/(pdf|doc|docx)\z/,
     message: "Resume must be .pdf, .doc, or .docx"
