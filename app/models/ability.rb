@@ -49,10 +49,12 @@ class Ability
         end
 
         can :create_evaluation_for, Submission do |submission|
-          (submission.project.advisor_id == user.id) and submission.accepted?
+          (submission.project.advisor_id == user.id) \
+          and submission.accepted?
         end
 
         can :create, Evaluation
+        can :read, Evaluation, advisor_id: user.id
       end
 
       if user.student?

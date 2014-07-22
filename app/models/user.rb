@@ -66,4 +66,10 @@ class User < ActiveRecord::Base
     Project.all.where(advisor_id: self.id).pluck(:id)
   end
 
+  def evaluated_submission?(submission) # evaluated_student?(student, project)
+    Evaluation.where(advisor_id: self.id,
+                     student_id: submission.student_id,
+                     project_id: submission.project_id).exists?
+  end
+
 end

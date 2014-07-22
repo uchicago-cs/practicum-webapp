@@ -29,7 +29,9 @@
 
   <% end %>
 
-  <% if can? :create_evaluation_for, @submission %>
+  <!-- Weird that the evaluation is "for" the submission... -->
+  <% if !current_user.evaluated_submission?(@submission) and
+    can? :create_evaluation_for, @submission %>
     Click
     <%= link_to "here",
     new_evaluation_path(student_id: @submission.student_id,

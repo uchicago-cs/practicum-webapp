@@ -2,7 +2,6 @@ class Project < ActiveRecord::Base
 
   belongs_to :user, foreign_key: "advisor_id"
   has_many :submissions
-  # has_many :evaluations, foreign_key: "project_id"
 
   validates :name, presence: true, uniqueness: true
   validates :deadline, presence: true

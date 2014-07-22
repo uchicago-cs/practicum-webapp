@@ -1,2 +1,6 @@
-<h1>Evaluations#show</h1>
-<p>Find me in app/views/evaluations/show.html.erb</p>
+<h1>Evaluation for <%= @evaluation.student.email %> on project <%= @evaluation.project.name %></h1>
+
+<div>Student email: <%= @evaluation.student.email %></div>
+<div>Project name: <%= @evaluation.project.name %></div>
+<div>Advisor email: <%= @evaluation.advisor.email %></div>
+<div>Evaluation: <%= @evaluation.comments %></div>
