@@ -14,10 +14,13 @@ class Ability
 
       if user.advisor?
         can :create, Project
-        can :read, Project
         can :update, Project, status: "pending"
         can :read, User, id: user.id
         can :update, User, id: user.id
+
+        can :read, Project do |project|
+          project.status == "approved" or project.advisor_id == user.id
+        end
 
         # "The block is only evaluated when an actual instance object is
         # present. It is not evaluated when checking permissions on the
@@ -27,22 +30,23 @@ class Ability
         # https://github.com/ryanb/cancan/wiki/
         # Defining-Abilities-with-Blocks#only-for-object-attributes
 
-        # Not DRY
+        # Not DRY.
+        # Also, for blocks, need to pass in an instance variable in the view.
         can :accept, Submission do |submission|
-          submission.project_id.in? user.projects_made_by_id
+          submission.project.advisor_id == user.id
         end
         can :reject, Submission do |submission|
-          submission.project_id.in? user.projects_made_by_id
+          submission.project.advisor_id == user.id
         end
         can :download_resume, Submission do |submission|
-          submission.project_id.in? user.projects_made_by_id
+          submission.project.advisor_id == user.id
         end
         can :read, Submission do |submission|
-          submission.project_id.in? user.projects_made_by_id
+          submission.project.advisor_id == user.id
         end
 
         can :read_submissions_of, Project do |project|
-          project_id.in? user.projects_made_by_id
+          project.advisor_id == user.id
         end
 
         can :create, Evaluation

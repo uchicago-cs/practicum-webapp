@@ -53,7 +53,7 @@
 
 <br>
 
-<% if can? :read_submissions_of, Project %>
+<% if (can? :read_submissions_of, @project) %>
   <% if (@project.submissions.count > 0) %>
     <% @project.submissions.each do |submission| %>
       <div>

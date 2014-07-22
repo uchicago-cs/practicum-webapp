@@ -5,7 +5,7 @@
   <div>Interests: <%= @submission.information %></div>
   <div>Qualifications: <%= @submission.qualifications %></div>
   <div>Courses: <%= @submission.courses %></div>
-  <% if @submission.resume.exists? %>
+  <% if @submission.resume.exists? and can? :download_resume, @submission %>
     <div>
       Resume: <%= link_to "download",
       download_resume_path(project_id: @submission.project_id,
@@ -16,10 +16,7 @@
   <% end %>
   <div>Status: <%= @submission.status.capitalize %> </div>
 
-  <%# if ((current_user.advisor?) and (current_user.made_project?(@project))) or current_user.admin? %>
-    <!-- Just use CC abilities -->
-
-    <% if can? :accept, Submission %>
+    <% if can? :accept, @submission %>
       
       <% if @submission.pending? %>
 	You may 

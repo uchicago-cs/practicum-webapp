@@ -1,6 +1,6 @@
 <h1>Applications to <%= @project.name %></h1>
 
-<% if can? :read, Submission %>
+<% if can? :read_all, Submission %>
   <ol>
     <% @project.submissions.each do |submission| %>
       <div>
