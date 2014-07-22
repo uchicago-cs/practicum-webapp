@@ -5,15 +5,26 @@ namespace :db do
 
   task populate: :environment do
 
+    delete_evaluations
     delete_submissions
     delete_projects
     delete_users
+#    delete(:users)
 
     make_users
     make_projects
     make_submissions
+    make_evaluations
 
   end
+end
+
+def delete(table)
+  table_class = table.constantize
+  table_string = table.to_s
+
+  table_class.delete_all
+  ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = '#{table_string}'")
 end
 
 def delete_users
@@ -29,6 +40,11 @@ end
 def delete_submissions
   Submission.delete_all
   ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'submissions'")
+end
+
+def delete_evaluations
+  Evaluation.delete_all
+  ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'evaluations'")
 end
 
 def make_users
@@ -102,4 +118,7 @@ def make_submissions
       sub.save
     end
   end
+end
+
+def make_evaluations
 end

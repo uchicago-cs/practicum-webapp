@@ -10,6 +10,7 @@ class Submission < ActiveRecord::Base
   validates :courses, presence: true,
     length: { minimum: 100, maximum: 1500 }
   validates :student_id, presence: true
+  validates_uniqueness_of :student_id, scope: :project_id
 
   delegate :name, to: :project, prefix: true
   delegate :email, to: :user, prefix: :student

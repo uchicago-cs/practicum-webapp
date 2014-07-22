@@ -20,9 +20,9 @@ class SubmissionsController < ApplicationController
 
     if @submission.save
       Notifier.student_applied(@project.advisor,
-                               current_user).deliver
+                               @submission.student).deliver
       User.admins.each do |admin|
-        Notifier.student_applied(admin, current_user).deliver
+        Notifier.student_applied(admin, @submission.student).deliver
       end
       flash[:notice] = "Application submitted!"
       redirect_to current_user
@@ -49,8 +49,7 @@ class SubmissionsController < ApplicationController
 
   def accept
     if @submission.update_attributes(status: "accepted")
-      Notifier.accept_student(@submission.student,
-                              @submission.project).deliver
+      Notifier.accept_student(@submission).deliver
       flash[:notice] = "Application accepted."
       redirect_to project_submission_path
     else
@@ -60,8 +59,7 @@ class SubmissionsController < ApplicationController
 
   def reject
     if @submission.update_attributes(status: "rejected")
-      Notifier.reject_student(@submission.student,
-                              @submission.project).deliver
+      Notifier.reject_student(@submission).deliver
       flash[:notice] = "Application rejected."
       redirect_to project_submission_path
     else

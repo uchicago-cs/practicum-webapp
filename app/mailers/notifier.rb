@@ -1,8 +1,8 @@
 class Notifier < ActionMailer::Base
   default from: "do-not-reply@cs.uchicago.edu"
 
-  def project_proposed(advisor, project, admin)
-    @advisor = advisor
+  def project_proposed(project, admin)
+    @advisor = project.advisor
     @project = project
     @admin = admin
     @to = @admin.email
@@ -11,37 +11,10 @@ class Notifier < ActionMailer::Base
     mail(to: @to, subject: @subject)
   end
 
-  def project_accepted(advisor, project)
-    @advisor = advisor
+  def project_status_changed(project)
+    @advisor = project.advisor
     @project = project
-    @to = @advisor.email
-    @subject = "Your project \"#{@project.name}\" has been approved"
-
-    mail(to: @to, subject: @subject)
-  end
-
-  def project_needs_edits(advisor, project)
-    @advisor = advisor
-    @project = project
-    @to = @advisor.email
-    @subject = "Your project \"#{@project.name}\" requires attention"
-
-    mail(to: @to, subject: @subject)
-  end
-
-  def project_rejected(advisor, project)
-    @advisor = advisor
-    @project = project
-    @to = @advisor.email
-    @subject = "Your project \"#{@project.name}\""
-
-    mail(to: @to, subject: @subject)
-  end
-
-  def project_status_changed(advisor, project, comment)
-    @advisor = advisor
-    @project = project
-    @comment = comment
+    @comments = project.comments
     @status = project.status
     @to = @advisor.email
     @subject = "Your project status has been updated"
@@ -58,18 +31,18 @@ class Notifier < ActionMailer::Base
     mail(to: @to, subject: @subject)
   end
 
-  def accept_student(student, project)
-    @student = student
-    @project = project
+  def accept_student(submission)
+    @student = submission.student
+    @project = submission.project
     @to = @student.email
     @subject = "You have been accepted to #{@project.name}"
 
     mail(to: @to, subject: @subject)
   end
 
-  def reject_student(student, project)
-    @student = student
-    @project = project
+  def reject_student(submission)
+    @student = submission.student
+    @project = submission.project
     @to = @student.email
     @subject = "Your application to #{@project.name}"
 

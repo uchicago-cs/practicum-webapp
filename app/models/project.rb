@@ -13,6 +13,8 @@ class Project < ActiveRecord::Base
     length: { minimum: 100, maximum: 1500 }
 
   delegate :email, to: :user, prefix: :advisor, allow_nil: true
+  delegate :affiliation, to: :user, prefix: :advisor, allow_nil: true
+  delegate :department, to: :user, prefix: :advisor, allow_nil: true
 
   attr_accessor :comments
 

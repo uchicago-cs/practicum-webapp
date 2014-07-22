@@ -37,5 +37,8 @@
     new_evaluation_path(student_id: @submission.student_id,
 			project_id: @submission.project_id) %>
     to create an evaluation for this student.
+  <% else %>
+    You cannot create an evaluation for this student: either you already have,
+    or you have not yet accepted this student.
   <% end %>
 </div>
