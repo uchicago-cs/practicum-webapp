@@ -46,7 +46,7 @@ class UsersController < ApplicationController
                                    :affiliation, :department)
     else
       if current_user.advisor?
-        params.require(:user).permit(:affiliation, :department)        
+        params.require(:user).permit(:affiliation, :department)
       end
     end
   end

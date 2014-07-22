@@ -7,7 +7,7 @@ class SubmissionsController < ApplicationController
   before_action :is_admin_or_advisor?, only: :index
   before_action :already_applied_to_project?, only: :new
   before_action :right_project?, only: [:show, :edit, :update]
-  
+
   # Getting a bit thick here -- slim it down
 
   def new
@@ -19,7 +19,7 @@ class SubmissionsController < ApplicationController
     @submission.update_attributes(student_id: current_user.id)
 
     if @submission.save
-      Notifier.student_applied(@project.advisor, 
+      Notifier.student_applied(@project.advisor,
                                current_user).deliver
       User.admins.each do |admin|
         Notifier.student_applied(admin, current_user).deliver
@@ -43,7 +43,7 @@ class SubmissionsController < ApplicationController
   def index
     @submissions = Submission.all
   end
-  
+
   def show
   end
 
@@ -63,7 +63,7 @@ class SubmissionsController < ApplicationController
       Notifier.reject_student(@submission.student,
                               @submission.project).deliver
       flash[:notice] = "Application rejected."
-      redirect_to project_submission_path   
+      redirect_to project_submission_path
     else
       render 'show'
     end

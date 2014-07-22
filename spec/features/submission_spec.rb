@@ -35,12 +35,12 @@ feature "Creating a new submission" do
     end
 
     it "should make our ActionMailer instance send the advisor an email" do
-      visit new_project_submission_url(@project.id) 
+      visit new_project_submission_url(@project.id)
       expect { click_button "Submit my application" }.to \
              change(ActionMailer::Base.deliveries, :count).by(1)
     end
-    
-    
+
+
   end
 
 end

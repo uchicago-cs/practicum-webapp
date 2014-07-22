@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
 
   has_many :projects, foreign_key: "advisor_id", dependent: :destroy
   has_many :submissions, foreign_key: "student_id", dependent: :destroy
+  has_many :evaluations, foreign_key: "advisor_id", dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :rememberable, :trackable, :validatable
@@ -32,10 +33,10 @@ class User < ActiveRecord::Base
     #     roles << role.to_s
     #   end
     # end
-    
+
     roles
   end
-  
+
   def projects_applied_to
     Project.find(self.submissions.pluck(:project_id))
     # Not ideal...

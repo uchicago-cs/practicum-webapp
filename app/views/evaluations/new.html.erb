@@ -1,2 +1,13 @@
-<h1>Evaluations#new</h1>
-<p>Find me in app/views/evaluations/new.html.erb</p>
+<h1>New evaluation for <%= "#{@student}" %></h1>
+
+<%= form_for @evaluation, url: { action: :create,
+				 controller: :evaluations,
+				 student_id: params[:student_id],
+				 project_id: params[:project_id] } do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.label :comments %>
+  <%= f.text_area :comments %>
+
+  <%= f.submit "Submit evaluation", class: "btn btn-primary" %>
+<% end %>

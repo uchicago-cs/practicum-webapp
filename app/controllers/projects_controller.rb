@@ -12,10 +12,10 @@ class ProjectsController < ApplicationController
     if @project.save
 
       User.admins.each do |admin|
-        Notifier.project_proposed(@project.advisor, 
+        Notifier.project_proposed(@project.advisor,
                                   @project, admin).deliver
       end
-      
+
       flash[:notice] = "Project successfully proposed."
       redirect_to current_user
     else
@@ -61,7 +61,7 @@ class ProjectsController < ApplicationController
       redirect_to project_path
     else
       render 'edit_status'
-    end    
+    end
   end
 
   private

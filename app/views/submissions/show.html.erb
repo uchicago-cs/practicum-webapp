@@ -17,15 +17,23 @@
   <div>Status: <%= @submission.status.capitalize %> </div>
 
     <% if can? :accept, @submission %>
-      
+
       <% if @submission.pending? %>
-	You may 
-	<%= link_to "accept", accept_project_submission_path(@project.id, @submission.id) %> or 
-	<%= link_to "reject", reject_project_submission_path(@project.id, @submission.id) %> 
+	You may
+	<%= link_to "accept", accept_project_submission_path(@project.id, @submission.id) %> or
+	<%= link_to "reject", reject_project_submission_path(@project.id, @submission.id) %>
 	this application.
       <% else %>
 	You have already <%= @submission.status %> this applicant.
       <% end %>
-  
+
+  <% end %>
+
+  <% if can? :create_evaluation_for, @submission %>
+    Click
+    <%= link_to "here",
+    new_evaluation_path(student_id: @submission.student_id,
+			project_id: @submission.project_id) %>
+    to create an evaluation for this student.
   <% end %>
 </div>

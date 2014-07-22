@@ -4,15 +4,15 @@ namespace :db do
   desc "Fill database with sample data"
 
   task populate: :environment do
-    
+
     delete_submissions
     delete_projects
     delete_users
-    
+
     make_users
     make_projects
     make_submissions
-    
+
   end
 end
 
@@ -59,7 +59,7 @@ def make_users
     User.create!(email: email, password: password,
                  password_confirmation: password, student: true)
   end
-  
+
 end
 
 def make_projects

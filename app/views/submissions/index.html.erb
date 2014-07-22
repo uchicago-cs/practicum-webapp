@@ -1,13 +1,14 @@
 <h1>Applications to <%= @project.name %></h1>
 
-<% if can? :read_all, Submission %>
+<% if can? :read, Submission %>
+<!-- Also check that advisor has created these submissions? -->
   <ol>
     <% @project.submissions.each do |submission| %>
       <div>
 	<li>
-	  <%= submission.information %> | submitted by 
-	  <%= submission.student_email %> to project 
-	  <%= submission.project_id %>, which is entitled 
+	  <%= submission.information %> | submitted by
+	  <%= submission.student_email %> to project
+	  <%= submission.project_id %>, which is entitled
 	  "<%= submission.project_name %>" | status:
 	  <%= submission.status %>
 	</li>
@@ -16,4 +17,3 @@
     <% end %>
   </ol>
 <% end %>
-

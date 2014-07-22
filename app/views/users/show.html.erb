@@ -8,22 +8,22 @@ This is your personal page for you to view your applications / projects.
   <h2>Pending project proposals</h2>
   <% @user.pending_projects.each do |project| %>
     <div>
-      You proposed <%= link_to project.name, project %> with a deadline 
-      of <%= project.deadline %>. It is currently <%= project.status %>. 
-      You may edit your proposal 
+      You proposed <%= link_to project.name, project %> with a deadline
+      of <%= project.deadline %>. It is currently <%= project.status %>.
+      You may edit your proposal
       <%= link_to "here", edit_project_path(project.id) %>.
     </div>
   <% end %>
-  
+
   <br><br>
-  
+
   <h2>Approved projects</h2>
   <% @user.accepted_projects.each do |project| %>
     <div>
-      You proposed <%= link_to project.name, project %> with a deadline 
-      of <%= project.deadline %>. It is currently <%= project.status %>. 
-      You may no longer edit your proposal. You may view students' 
-      applications to this project 
+      You proposed <%= link_to project.name, project %> with a deadline
+      of <%= project.deadline %>. It is currently <%= project.status %>.
+      You may no longer edit your proposal. You may view students'
+      applications to this project
       <%= link_to "here", project_submissions_path(project.id) %>.
     </div>
   <% end %>
@@ -33,7 +33,7 @@ This is your personal page for you to view your applications / projects.
 <% end %>
 
 <% if @user.student? or @user.admin? %>
-  
+
   <h2>Submitted applications</h2>
   <% if @user.submissions.count > 0 %>
     <% @user.submissions.each do |submission| %>
@@ -47,20 +47,20 @@ This is your personal page for you to view your applications / projects.
   <% else %>
     You have not applied to any projects yet.
   <% end %>
-  
+
   <h2>Accepted applications</h2>
   <% @user.submissions.each do |submission| %>
     <div>
       <!-- ... -->
     </div>
   <% end %>
-  
+
 <% end %>
 
 <% if (current_user.advisor? and @user == current_user) or (current_user.admin?) %>
   <h3>Change your affiliation and department</h3>
   This will show up on your project proposals and postings.
-  
+
   <%= form_for(@user) do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
 

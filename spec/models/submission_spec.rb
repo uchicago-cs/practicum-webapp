@@ -30,7 +30,7 @@ describe "Submission pages" do
   #   #   it "should make our ActionMailer instance send the advisor an email" do
   #   #     expect { click_button "Submit my application" }.to change(ActionMailer::Base.deliveries, :count).by(1)
   #   #   end
-      
+
   #   # end
   # end
 end

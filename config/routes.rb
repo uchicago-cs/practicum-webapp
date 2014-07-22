@@ -1,10 +1,7 @@
 Practicum::Application.routes.draw do
-  
-  get "evaluations/show"
-  get "evaluations/new"
-  get "evaluations/create"
+
   root 'pages#home'
-  
+
   #resources :messages, except: :new
   #match "/projects/:id/request_changes", to: "messages#new", via: "get"
 
@@ -23,11 +20,11 @@ Practicum::Application.routes.draw do
     member do
       get "edit_status"
     end
-    
+
   end
 
   match "/projects/:id/edit_status", to: "projects#update_status", via: "patch"
-  
+  resources :evaluations, only: [:new, :create, :show]
   # Make devise resource routes for users controller, but do not use the
   # pre-packaged devise routes for sessions, registrations, and passwords.
   devise_for :users, skip: [:sessions, :registrations]#, :passwords]

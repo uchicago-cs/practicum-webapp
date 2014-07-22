@@ -2,11 +2,10 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    
+
     user ||= User.new
     if user.new_record?
       can :read, Project, status: "accepted"
-      # Do not restrict abilities by "cannot" here
     else
       if user.admin?
         can :manage, :all
@@ -49,6 +48,10 @@ class Ability
           project.advisor_id == user.id
         end
 
+        can :create_evaluation_for, Submission do |submission|
+          (submission.project.advisor_id == user.id) and submission.accepted?
+        end
+
         can :create, Evaluation
       end
 
@@ -60,6 +63,6 @@ class Ability
         can :download_resume, Submission, student_id: user.id
       end
     end
-    
+
   end
 end

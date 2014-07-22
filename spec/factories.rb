@@ -12,7 +12,7 @@ FactoryGirl.define do
     password_confirmation "foobarfoo"
   end
 
-  factory :advisor do 
+  factory :advisor do
     advisor true
     sequence(:email) { |n| "advisor_#{n+500}@blah.org" }
     password "foobarfoo"
