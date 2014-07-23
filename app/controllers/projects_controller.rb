@@ -10,11 +10,6 @@ class ProjectsController < ApplicationController
   def create
     @project = current_user.projects.build(project_params)
     if @project.save
-
-      User.admins.each do |admin|
-        Notifier.project_proposed(@project, admin).deliver
-      end
-
       flash[:notice] = "Project successfully proposed."
       redirect_to current_user
     else
@@ -53,8 +48,6 @@ class ProjectsController < ApplicationController
 
   def update_status
     if @project.update_attributes(project_params)
-      Notifier.project_status_changed(@project).deliver
-      # Do we need all these arguments here?
       flash[:notice] = "Project status changed."
       redirect_to project_path
     else

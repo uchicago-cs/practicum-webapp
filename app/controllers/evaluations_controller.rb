@@ -22,10 +22,6 @@ class EvaluationsController < ApplicationController
     @evaluation.update_attributes(student_id: params[:student_id],
                                   project_id: params[:project_id])
     if @evaluation.save
-      User.admins.each do |admin|
-        Notifier.evaluation_submitted(current_user, admin).deliver
-      end
-
       flash[:notice] = "Evaluation successfully submitted."
       redirect_to @evaluation
     else

@@ -18,6 +18,9 @@ class Project < ActiveRecord::Base
 
   attr_accessor :comments
 
+  after_create :send_project_proposed
+  after_update :send_project_status_changed
+
   def Project.accepted_projects
     Project.where(status: "accepted")
   end
@@ -45,6 +48,18 @@ class Project < ActiveRecord::Base
 
   def pending?
     status == "pending"
+  end
+
+  private
+
+  def send_project_proposed
+    User.admins.each do |admin|
+      Notifier.project_proposed(self, admin).deliver
+    end
+  end
+
+  def send_project_status_changed
+    Notifier.project_status_changed(self).deliver
   end
 
 end

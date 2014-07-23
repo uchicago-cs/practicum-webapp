@@ -44,7 +44,6 @@ class SubmissionsController < ApplicationController
 
   def accept
     if @submission.update_attributes(status: "accepted")
-      Notifier.accept_student(@submission).deliver
       flash[:notice] = "Application accepted."
       redirect_to project_submission_path
     else
@@ -54,7 +53,6 @@ class SubmissionsController < ApplicationController
 
   def reject
     if @submission.update_attributes(status: "rejected")
-      Notifier.reject_student(@submission).deliver
       flash[:notice] = "Application rejected."
       redirect_to project_submission_path
     else

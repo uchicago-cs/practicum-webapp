@@ -2,8 +2,7 @@ class UsersController < ApplicationController
 
   load_and_authorize_resource
 
-  before_action :is_admin?, only: [:index]#, :update]
-  # But advisors can update themselves!
+  before_action :is_admin?, only: [:index]
 
   # Ensure user cannot set self to admin, advisor, etc.
   # See, e.g., http://stackoverflow.com/a/8980190/3723769

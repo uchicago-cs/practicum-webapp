@@ -16,6 +16,7 @@ class Submission < ActiveRecord::Base
   delegate :email, to: :user, prefix: :student
 
   after_create :send_student_applied
+  after_update :send_respective_update
 
   has_attached_file :resume,
                     url: "/projects/:project_id/submissions/:id/resume",
@@ -54,6 +55,15 @@ class Submission < ActiveRecord::Base
                              self.student).deliver
     User.admins.each do |admin|
       Notifier.student_applied(admin, self.student).deliver
+    end
+  end
+
+  def send_respective_update
+    if self.accepted?
+      # Confusing name -- change to accept_submission?
+      Notifier.accept_student(self).deliver
+    elsif self.rejected?
+      Notifier.reject_student(self).deliver
     end
   end
 

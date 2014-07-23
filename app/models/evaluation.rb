@@ -11,6 +11,8 @@ class Evaluation < ActiveRecord::Base
             length: { minimum: 100, maximum: 1500 }
   validates_uniqueness_of :student_id, scope: :project_id
 
+  after_create :send_evaluation_submitted
+
   def student
     User.find(student_id)
   end
@@ -21,6 +23,14 @@ class Evaluation < ActiveRecord::Base
 
   def project
     Project.find(project_id)
+  end
+
+  private
+
+  def send_evaluation_submitted
+    User.admins.each do |admin|
+      Notifier.evaluation_submitted(current_user, admin).deliver
+    end
   end
 
 end
