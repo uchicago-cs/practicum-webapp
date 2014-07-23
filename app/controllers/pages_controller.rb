@@ -19,10 +19,4 @@ class PagesController < ApplicationController
   def submissions
   end
 
-  private
-
-    # def is_admin?
-    #   redirect_to(root_url) unless current_user.admin?
-    # end
-
 end

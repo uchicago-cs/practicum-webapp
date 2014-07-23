@@ -11,6 +11,10 @@ class Evaluation < ActiveRecord::Base
             length: { minimum: 100, maximum: 1500 }
   validates_uniqueness_of :student_id, scope: :project_id
 
+  delegate :email, to: :student, prefix: :student, allow_nil: true
+  delegate :email, to: :advisor, prefix: :advisor, allow_nil: true
+  delegate :name, to: :project, prefix: :project, allow_nil: true
+
   after_create :send_evaluation_submitted
 
   def student
@@ -29,7 +33,7 @@ class Evaluation < ActiveRecord::Base
 
   def send_evaluation_submitted
     User.admins.each do |admin|
-      Notifier.evaluation_submitted(current_user, admin).deliver
+      Notifier.evaluation_submitted(self, admin).deliver
     end
   end
 

@@ -1,9 +1,9 @@
 <h1>View all evaluations</h1>
 
-<% Evaluation.all.each do |evaluation| %>
-  <div><%= evaluation.advisor.email %> submitted an evaluation for
-    <%= evaluation.student.email %> on project
-    <%= evaluation.project.name %>. Click <%= link_to "here", evaluation %>
+<% @evaluations.each do |evaluation| %>
+  <div><%= evaluation.advisor_email %> submitted an evaluation for
+    <%= evaluation.student_email %> on project
+    <%= evaluation.project_name %>. Click <%= link_to "here", evaluation %>
     to read it.
   </div>
   <!-- ... -->

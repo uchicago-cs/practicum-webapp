@@ -32,16 +32,16 @@ class Ability
         # Not DRY.
         # Also, for blocks, need to pass in an instance variable in the view.
         can :accept, Submission do |submission|
-          submission.project.advisor_id == user.id
+          submission.project_advisor_id == user.id
         end
         can :reject, Submission do |submission|
-          submission.project.advisor_id == user.id
+          submission.project_advisor_id == user.id
         end
         can :download_resume, Submission do |submission|
-          submission.project.advisor_id == user.id
+          submission.project_advisor_id == user.id
         end
         can :read, Submission do |submission|
-          submission.project.advisor_id == user.id
+          submission.project_advisor_id == user.id
         end
 
         can :read_submissions_of, Project do |project|
@@ -49,7 +49,7 @@ class Ability
         end
 
         can :create_evaluation_for, Submission do |submission|
-          (submission.project.advisor_id == user.id) \
+          (submission.project_advisor_id == user.id) \
           and submission.accepted?
         end
 

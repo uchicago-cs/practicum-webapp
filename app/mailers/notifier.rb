@@ -49,8 +49,8 @@ class Notifier < ActionMailer::Base
     mail(to: @to, subject: @subject)
   end
 
-  def evaluation_submitted(advisor, admin) #, evaluation)
-    @advisor = advisor
+  def evaluation_submitted(evaluation, admin)
+    @advisor = evaluation.advisor
     @admin = admin
     @to = @admin.email
     @subject = "#{@advisor.email} has submitted a new evaluation"

@@ -85,19 +85,25 @@ class SubmissionsController < ApplicationController
   # Add flashes before these redirects?
 
   def project_accepted?
-    redirect_to root_url unless @project.accepted?
+    message = "Access denied."
+    redirect_to(root_url, { notice: message }) unless @project.accepted?
   end
 
   def is_admin_or_advisor?
-    redirect_to root_url unless current_user.admin? or current_user.advisor?
+    message = "Access denied."
+    redirect_to(root_url, { notice: message }) unless \
+      current_user.admin? or current_user.advisor?
   end
 
   def already_applied_to_project?
-    redirect_to root_url if current_user.applied_to_project?(@project)
+    message = "You have already applied to this project."
+    redirect_to(root_url, { notice: message }) if \
+      current_user.applied_to_project?(@project)
   end
 
   def right_project?
-    redirect_to root_url unless \
+    message = "Access denied."
+    redirect_to(root_url, { notice: message }) unless \
       params[:project_id].to_i == @submission.project_id
   end
 

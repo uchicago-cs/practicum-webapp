@@ -23,6 +23,9 @@ Practicum::Application.routes.draw do
 
   end
 
+  match "/projects/:project_id/submissions/:id/resume",
+    to: "submissions#download_resume", via: "get", as: "download_resume"
+
   match "/projects/:id/edit_status", to: "projects#update_status", via: "patch"
   resources :evaluations, only: [:new, :create, :show, :index]
   # Make devise resource routes for users controller, but do not use the
@@ -54,7 +57,5 @@ Practicum::Application.routes.draw do
   match "/users/:id", to: "users#show", via: "get", as: "user"
   match "/users/:id", to: "users#update", via: "patch"
   match "/submissions", to: "pages#submissions", via: "get"
-  match "/projects/:project_id/submissions/:id/resume",
-    to: "submissions#download_resume", via: "get", as: "download_resume"
 
 end

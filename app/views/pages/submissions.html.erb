@@ -2,7 +2,7 @@
 <% Submission.all.each do |submission| %>
   <div>
     <%= submission.student_email %> applied to
-    <%= submission.project.name %> on [date_applied]. Click
+    <%= submission.project_name %> on [date_applied]. Click
     <%= link_to "here", project_submission_path(submission.project_id,
 						submission.id) %>
     to read this student's application.

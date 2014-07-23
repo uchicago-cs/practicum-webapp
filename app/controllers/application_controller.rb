@@ -28,7 +28,8 @@ class ApplicationController < ActionController::Base
   end
 
   def is_admin?
-    redirect_to root_url unless current_user.admin?
+    message = "Access denied."
+    redirect_to(root_url, { notice: message }) unless current_user.admin?
   end
 
 end

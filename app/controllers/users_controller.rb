@@ -35,10 +35,6 @@ class UsersController < ApplicationController
 
   private
 
-  # def is_admin?
-  #   redirect_to root_url unless current_user.admin?
-  # end
-
   def user_params
     if current_user.admin?
       params.require(:user).permit(:student, :advisor, :admin,
