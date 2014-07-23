@@ -1,6 +1,6 @@
 shared_examples_for "an adapter with pre-count truncation" do
   describe "#pre_count_truncate_tables" do
-
+    
     context "with :reset_ids set true" do
       it "truncates the table" do
         2.times { User.create }
@@ -18,7 +18,7 @@ shared_examples_for "an adapter with pre-count truncation" do
       end
     end
 
-
+    
     context "with :reset_ids set false" do
       it "truncates the table" do
         2.times { User.create }

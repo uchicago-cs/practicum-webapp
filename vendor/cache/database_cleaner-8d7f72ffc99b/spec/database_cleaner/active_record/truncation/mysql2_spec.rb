@@ -6,7 +6,7 @@ require 'database_cleaner/active_record/truncation/shared_fast_truncation'
 
 module ActiveRecord
   module ConnectionAdapters
-    describe do
+    describe do 
       before(:all) { active_record_mysql2_setup }
 
       let(:adapter) { Mysql2Adapter }

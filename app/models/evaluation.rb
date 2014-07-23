@@ -1,6 +1,5 @@
 class Evaluation < ActiveRecord::Base
 
-
   belongs_to :advisor, -> { where advisor: true },
              class_name: "User", foreign_key: "advisor_id"
 
