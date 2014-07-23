@@ -2,12 +2,15 @@ class EvaluationsController < ApplicationController
 
   load_and_authorize_resource
 
-  before_action :get_evaluator
   before_action :get_submission
+  before_action :get_evaluator, only: :index
   before_action :already_evaluated_student?, only: [:new, :create]
+  before_action :is_admin?, only: :index
+
+  def index
+  end
 
   def show
-
   end
 
   def new
@@ -42,7 +45,7 @@ class EvaluationsController < ApplicationController
   end
 
   def get_evaluator
-    #@evaluator = current_user
+    #@evaluator = User.find(params[:id])
   end
 
   def already_evaluated_student?

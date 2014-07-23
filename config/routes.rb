@@ -24,7 +24,7 @@ Practicum::Application.routes.draw do
   end
 
   match "/projects/:id/edit_status", to: "projects#update_status", via: "patch"
-  resources :evaluations, only: [:new, :create, :show]
+  resources :evaluations, only: [:new, :create, :show, :index]
   # Make devise resource routes for users controller, but do not use the
   # pre-packaged devise routes for sessions, registrations, and passwords.
   devise_for :users, skip: [:sessions, :registrations]#, :passwords]

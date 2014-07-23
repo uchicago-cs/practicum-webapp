@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140722212112) do
+ActiveRecord::Schema.define(version: 20140723003805) do
 
   create_table "evaluations", force: true do |t|
     t.integer  "advisor_id"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20140722212112) do
     t.datetime "updated_at"
   end
 
+  add_index "evaluations", ["advisor_id"], name: "index_evaluations_on_advisor_id"
   add_index "evaluations", ["student_id", "project_id"], name: "index_evaluations_on_student_id_and_project_id", unique: true
 
   create_table "messages", force: true do |t|

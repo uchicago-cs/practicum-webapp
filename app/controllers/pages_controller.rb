@@ -21,8 +21,8 @@ class PagesController < ApplicationController
 
   private
 
-    def is_admin?
-      redirect_to(root_url) unless current_user.admin?
-    end
+    # def is_admin?
+    #   redirect_to(root_url) unless current_user.admin?
+    # end
 
 end

@@ -5,12 +5,13 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, notice: "Access denied."
   end
 
   before_action :authenticate_user!
+
+  helper_method :is_admin?
 
   protected
 
@@ -24,6 +25,10 @@ class ApplicationController < ActionController::Base
         end
       end
     end
+  end
+
+  def is_admin?
+    redirect_to root_url unless current_user.admin?
   end
 
 end

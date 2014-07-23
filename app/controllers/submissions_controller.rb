@@ -19,11 +19,6 @@ class SubmissionsController < ApplicationController
     @submission.update_attributes(student_id: current_user.id)
 
     if @submission.save
-      Notifier.student_applied(@project.advisor,
-                               @submission.student).deliver
-      User.admins.each do |admin|
-        Notifier.student_applied(admin, @submission.student).deliver
-      end
       flash[:notice] = "Application submitted!"
       redirect_to current_user
     else

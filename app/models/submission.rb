@@ -15,6 +15,8 @@ class Submission < ActiveRecord::Base
   delegate :name, to: :project, prefix: true
   delegate :email, to: :user, prefix: :student
 
+  after_create :send_student_applied
+
   has_attached_file :resume,
                     url: "/projects/:project_id/submissions/:id/resume",
                     path: ":rails_root/storage/assets/submissions/:id/:style/:basename.:extension"
@@ -43,6 +45,16 @@ class Submission < ActiveRecord::Base
 
   def pending?
     status == "pending"
+  end
+
+  private
+
+  def send_student_applied
+    Notifier.student_applied(self.project.advisor,
+                             self.student).deliver
+    User.admins.each do |admin|
+      Notifier.student_applied(admin, self.student).deliver
+    end
   end
 
 end
