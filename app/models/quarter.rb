@@ -11,10 +11,16 @@ class Quarter < ActiveRecord::Base
   validate :only_one_current_quarter, on: :save
 
   def Quarter.current_quarter
-    quarter = Quarter.where(current: true)
+    quarter = Quarter.where(current: true).take
     [quarter.season, quarter.year]
   end
 
+  def Quarter.formatted_current_quarter
+    quarter = Quarter.where(current: true).take
+    [quarter.season.capitalize, quarter.year].join(" ")
+  end
+
+  # Should this be public?
   def Quarter.set_current_false
     old = Quarter.where(current: true).take
     old.update_attributes(current: false) if old
@@ -25,4 +31,9 @@ class Quarter < ActiveRecord::Base
     #   errors.add(:current, "Only one quarter can be current")
     # end
   end
+
+  def formatted_quarter
+    [season.capitalize, year].join(" ")
+  end
+
 end

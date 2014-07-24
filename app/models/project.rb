@@ -16,6 +16,7 @@ class Project < ActiveRecord::Base
   delegate :email, to: :user, prefix: :advisor, allow_nil: true
   delegate :affiliation, to: :user, prefix: :advisor, allow_nil: true
   delegate :department, to: :user, prefix: :advisor, allow_nil: true
+  delegate :formatted_quarter, to: :quarter, prefix: false, allow_nil: true
 
   attr_accessor :comments
 

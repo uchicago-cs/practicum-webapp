@@ -4,52 +4,26 @@ namespace :db do
   desc "Fill database with sample data"
 
   task populate: :environment do
-
-    tables = [:users, :projects, :submissions, :evaluations, :quarters]
+    tables = [:evaluations, :submissions, :projects, :quarters, :users]
     tables.each do |table|
-#      delete(table)
+      delete_table(table)
     end
-    delete(:quarters)
-    delete_evaluations
-    delete_submissions
-    delete_projects
-    delete_users
-#    delete(:users)
 
     make_users
+    make_quarters
     make_projects
     make_submissions
     make_evaluations
-
+    make_quarters
   end
 end
 
-def delete(table)
+def delete_table(table)
   table_class = table.to_s.singularize.capitalize.constantize
   table_string = table.to_s
 
   table_class.delete_all
   ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = '#{table_string}'")
-end
-
-def delete_users
-  User.delete_all
-  ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'users'")
-end
-
-def delete_projects
-  Project.delete_all
-  ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'projects'")
-end
-
-def delete_submissions
-  Submission.delete_all
-  ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'submissions'")
-end
-
-def delete_evaluations
-  Evaluation.delete_all
-  ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = 'evaluations'")
 end
 
 def make_users
@@ -98,7 +72,8 @@ def make_projects
                                advisor_id: advisor.id,
                                name: "Some Project #{20*x + n + 1}",
                                deadline: DateTime.current,
-                               status: status)
+                               status: status,
+                               quarter_id: Quarter.ids.sample)
     end
   end
 end
@@ -126,4 +101,13 @@ def make_submissions
 end
 
 def make_evaluations
+end
+
+def make_quarters
+  3.times do |n|
+    season = %w(winter spring summer autumn).sample
+    year = 2012 + n
+    Quarter.new(season: season, year: year,
+               current: year == 2014 ? true : false).save
+  end
 end
