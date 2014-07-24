@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140724143709) do
+ActiveRecord::Schema.define(version: 20140724164012) do
 
   create_table "evaluations", force: true do |t|
     t.integer  "advisor_id"
@@ -45,10 +45,18 @@ ActiveRecord::Schema.define(version: 20140724143709) do
     t.text     "expected_deliverables", default: "",        null: false
     t.text     "prerequisites",         default: "",        null: false
     t.text     "related_work",          default: "",        null: false
+    t.integer  "quarter_id"
   end
 
   add_index "projects", ["advisor_id"], name: "index_projects_on_advisor_id"
-  add_index "projects", ["name"], name: "index_projects_on_name", unique: true
+  add_index "projects", ["name", "quarter_id"], name: "index_projects_on_name_and_quarter_id", unique: true
+
+  create_table "quarters", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "quarter",    default: "", null: false
+    t.integer  "year"
+  end
 
   create_table "submissions", force: true do |t|
     t.datetime "created_at"

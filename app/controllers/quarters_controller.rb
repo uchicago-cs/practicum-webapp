@@ -1,0 +1,2 @@
+class QuartersController < ApplicationController
+end
