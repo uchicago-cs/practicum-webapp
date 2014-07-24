@@ -10,16 +10,15 @@ Practicum::Application.routes.draw do
         get "reject"
       end
     end
-
     collection do
       get "pending"
     end
-
     member do
       get "edit_status"
     end
-
   end
+
+  resources :quarters, only: [:new, :create]
 
   match "/projects/:project_id/submissions/:id/resume",
     to: "submissions#download_resume", via: "get", as: "download_resume"

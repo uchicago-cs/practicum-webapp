@@ -61,7 +61,7 @@ This is your personal page for you to view your applications / projects.
   <h3>Change your affiliation and department</h3>
   This will show up on your project proposals and postings.
 
-  <%= form_for(@user) do |f| %>
+  <%= form_for @user do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
 
     <%= f.label :affiliation %>
@@ -78,7 +78,7 @@ This is your personal page for you to view your applications / projects.
 
 <% if current_user.admin? %>
   <h3>Change user roles</h3>
-  <%= form_for(@user) do |f| %>
+  <%= form_for @user do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
 
     <%= f.label :student %>
@@ -91,6 +91,6 @@ This is your personal page for you to view your applications / projects.
     <%= f.check_box :admin %>
 
     <%= f.submit "Change this user's roles",
-        class: "btn btn-large btn-primary" %>
+        class: "btn btn-primary" %>
   <% end %>
 <% end %>

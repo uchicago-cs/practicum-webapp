@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140724164012) do
+ActiveRecord::Schema.define(version: 20140724184254) do
 
   create_table "evaluations", force: true do |t|
     t.integer  "advisor_id"
@@ -54,8 +54,9 @@ ActiveRecord::Schema.define(version: 20140724164012) do
   create_table "quarters", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "quarter",    default: "", null: false
     t.integer  "year"
+    t.string   "season",     default: "", null: false
+    t.boolean  "current"
   end
 
   create_table "submissions", force: true do |t|

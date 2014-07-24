@@ -5,6 +5,11 @@ namespace :db do
 
   task populate: :environment do
 
+    tables = [:users, :projects, :submissions, :evaluations, :quarters]
+    tables.each do |table|
+#      delete(table)
+    end
+    delete(:quarters)
     delete_evaluations
     delete_submissions
     delete_projects
@@ -20,7 +25,7 @@ namespace :db do
 end
 
 def delete(table)
-  table_class = table.constantize
+  table_class = table.to_s.singularize.capitalize.constantize
   table_string = table.to_s
 
   table_class.delete_all
