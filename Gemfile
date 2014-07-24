@@ -26,7 +26,8 @@ group :development, :test do
   gem 'brakeman'
   gem 'launchy'
   gem 'pry', github: 'pry/pry'
-#  gem 'pry_debug'
+  gem 'spring'
+  gem 'spring-commands-rspec'
 end
 
 group :test do

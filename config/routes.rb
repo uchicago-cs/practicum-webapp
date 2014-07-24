@@ -2,11 +2,9 @@ Practicum::Application.routes.draw do
 
   root 'pages#home'
 
-  #resources :messages, except: :new
-  #match "/projects/:id/request_changes", to: "messages#new", via: "get"
-
   resources :projects do
     resources :submissions do
+      resources :evaluations, only: [:new, :create, :show, :index]
       member do
         get "accept"
         get "reject"
@@ -27,20 +25,13 @@ Practicum::Application.routes.draw do
     to: "submissions#download_resume", via: "get", as: "download_resume"
 
   match "/projects/:id/edit_status", to: "projects#update_status", via: "patch"
-  resources :evaluations, only: [:new, :create, :show, :index]
-  # Make devise resource routes for users controller, but do not use the
-  # pre-packaged devise routes for sessions, registrations, and passwords.
-  devise_for :users, skip: [:sessions, :registrations]#, :passwords]
+  devise_for :users, skip: [:sessions, :registrations]
 
-  # Customized Devise routes for users.
   devise_scope :user do
-    # Sessions.
     get "/signin" => "devise/sessions#new", as: :new_user_session
     post "/signin" => "devise/sessions#create", as: :user_session
     delete "/signout" => "devise/sessions#destroy", as: :destroy_user_session
 
-    # Registrations. Will later be removed when we incorporate CNetID
-    # authentication.
     get "/signup" => "devise/registrations#new", as: :new_user_registration
     post "/signup" => "devise/registrations#create", as: :user_registration
 

@@ -8,8 +8,6 @@ class SubmissionsController < ApplicationController
   before_action :already_applied_to_project?, only: :new
   before_action :right_project?, only: [:show, :edit, :update]
 
-  # Getting a bit thick here -- slim it down
-
   def new
     @submission = Submission.new
   end
@@ -19,7 +17,7 @@ class SubmissionsController < ApplicationController
     @submission.update_attributes(student_id: current_user.id)
 
     if @submission.save
-      flash[:notice] = "Application submitted!"
+      flash[:notice] = "Application submitted."
       redirect_to current_user
     else
       render 'new'

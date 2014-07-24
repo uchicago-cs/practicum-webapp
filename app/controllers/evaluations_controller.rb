@@ -2,9 +2,8 @@ class EvaluationsController < ApplicationController
 
   load_and_authorize_resource
 
-  before_action :get_submission
-  before_action :get_evaluator, only: :index
-  before_action :already_evaluated_student?, only: [:new, :create]
+  before_action :get_project_and_submission
+  before_action :already_evaluated?, only: [:new, :create]
   before_action :is_admin?, only: :index
 
   def index
@@ -18,12 +17,13 @@ class EvaluationsController < ApplicationController
   end
 
   def create
-    @evaluation = current_user.evaluations.build(evaluation_params)
-    @evaluation.update_attributes(student_id: params[:student_id],
-                                  project_id: params[:project_id])
+    @evaluation = @submission.build_evaluation(evaluation_params)
+    @evaluation.update_attributes(student_id: @submission.student_id,
+                                  project_id: @submission.project_id,
+                                  advisor_id: @submission.project_advisor_id)
     if @evaluation.save
       flash[:notice] = "Evaluation successfully submitted."
-      redirect_to @evaluation
+      redirect_to [@project, @submission, @evaluation]
     else
       render 'new'
     end
@@ -32,19 +32,21 @@ class EvaluationsController < ApplicationController
   private
 
   def evaluation_params
-    params.require(:evaluation).permit(:student_id, :advisor_id, :project_id,
-                                       :comments)
+    params.require(:evaluation).permit(:submission_id, :student_id,
+                                       :advisor_id, :project_id, :comments)
   end
 
-  def get_submission
-
+  def get_project_and_submission
+    @submission = Submission.find(params[:submission_id])
+    @project = Project.find(params[:project_id])
   end
 
-  def get_evaluator
-    #@evaluator = User.find(params[:id])
-  end
+  def already_evaluated?
+    # Messy -- refactor this.
+    advisor = Project.find(params[:project_id]).advisor
 
-  def already_evaluated_student?
-    #redirect_to root_url if @evaluator.evaluated_submission?(@submission)
+    message = "You have already submitted an evaluation for this student."
+    redirect_to(root_url, { notice: message }) if \
+      advisor.evaluated_submission?(@submission)
   end
 end

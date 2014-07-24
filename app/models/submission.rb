@@ -2,6 +2,7 @@ class Submission < ActiveRecord::Base
 
   belongs_to :user, foreign_key: "student_id"
   belongs_to :project
+  has_one :evaluation, foreign_key: "submission_id", dependent: :destroy
 
   validates :information, presence: true,
     length: { minimum: 100, maximum: 1500 }

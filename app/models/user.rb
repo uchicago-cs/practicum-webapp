@@ -1,10 +1,7 @@
 class User < ActiveRecord::Base
 
-  # Note: we use `self` instead of @user here
-
   has_many :projects, foreign_key: "advisor_id", dependent: :destroy
   has_many :submissions, foreign_key: "student_id", dependent: :destroy
-  has_many :evaluations, foreign_key: "advisor_id", dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :rememberable, :trackable, :validatable
@@ -66,7 +63,7 @@ class User < ActiveRecord::Base
     Project.all.where(advisor_id: self.id).pluck(:id)
   end
 
-  def evaluated_submission?(submission) # evaluated_student?(student, project)
+  def evaluated_submission?(submission)
     Evaluation.where(advisor_id: self.id,
                      student_id: submission.student_id,
                      project_id: submission.project_id).exists?

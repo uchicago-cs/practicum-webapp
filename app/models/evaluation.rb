@@ -1,7 +1,7 @@
 class Evaluation < ActiveRecord::Base
 
-  belongs_to :advisor, -> { where advisor: true },
-             class_name: "User", foreign_key: "advisor_id"
+  belongs_to :submission, -> { where status: "accepted" },
+             foreign_key: "submission_id"
 
   validates :advisor_id, presence: true
   validates :student_id, presence: true

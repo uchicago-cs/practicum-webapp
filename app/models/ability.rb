@@ -18,7 +18,7 @@ class Ability
         can :update, User, id: user.id
         can :create, Evaluation
         can :read, Evaluation, advisor_id: user.id
-        submission_abilities(:accept, :reject, :download_resume, :read)
+        submission_abilities(user, :accept, :reject, :download_resume, :read)
 
         can :read, Project do |project|
           project.status == "approved" or project.advisor_id == user.id
@@ -45,7 +45,7 @@ class Ability
 
   end
 
-  def submission_abilities(*actions)
+  def submission_abilities(user, *actions)
     actions.each do |take_action|
       can take_action, Submission do |submission|
         submission.project_advisor_id == user.id

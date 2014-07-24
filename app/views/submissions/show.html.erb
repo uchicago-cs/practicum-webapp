@@ -34,8 +34,9 @@
     can? :create_evaluation_for, @submission %>
     Click
     <%= link_to "here",
-    new_evaluation_path(student_id: @submission.student_id,
-			project_id: @submission.project_id) %>
+    new_project_submission_evaluation_path(submission_id: @submission.id,
+					   project_id: @submission.project_id)
+    %>
     to create an evaluation for this student.
   <% else %>
     You cannot create an evaluation for this student: either you already have,

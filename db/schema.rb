@@ -11,15 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140723003805) do
+ActiveRecord::Schema.define(version: 20140724143709) do
 
   create_table "evaluations", force: true do |t|
     t.integer  "advisor_id"
     t.integer  "student_id"
     t.integer  "project_id"
-    t.text     "comments"
+    t.text     "comments",      default: "", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "submission_id"
   end
 
   add_index "evaluations", ["advisor_id"], name: "index_evaluations_on_advisor_id"
