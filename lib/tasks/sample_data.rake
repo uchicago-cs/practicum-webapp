@@ -14,7 +14,6 @@ namespace :db do
     make_projects
     make_submissions
     make_evaluations
-    make_quarters
   end
 end
 

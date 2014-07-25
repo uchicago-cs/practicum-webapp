@@ -3,10 +3,12 @@ class SubmissionsController < ApplicationController
   load_and_authorize_resource
 
   before_action :get_project
-  before_action :project_accepted?, only: :new
+  before_action :project_accepted?, only: [:new, :create]
   before_action :is_admin_or_advisor?, only: :index
-  before_action :already_applied_to_project?, only: :new
+  before_action :already_applied_to_project?, only: [:new, :create]
   before_action :right_project?, only: [:show, :edit, :update]
+  before_action :project_in_current_quarter?, only: [:new, :create]
+  # before_actions on both new and create?
 
   def new
     @submission = Submission.new
@@ -103,6 +105,12 @@ class SubmissionsController < ApplicationController
     message = "Access denied."
     redirect_to(root_url, { notice: message }) unless \
       params[:project_id].to_i == @submission.project_id
+  end
+
+  def project_in_current_quarter?
+    message = "That project is no longer available."
+    redirect_to(root_url, { notice: message }) unless \
+      @project.quarter == Quarter.current_quarter
   end
 
 end

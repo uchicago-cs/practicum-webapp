@@ -9,6 +9,8 @@ class ProjectsController < ApplicationController
 
   def create
     @project = current_user.projects.build(project_params)
+    @project.quarter_id = Quarter.current_quarter.id
+
     if @project.save
       flash[:notice] = "Project successfully proposed."
       redirect_to current_user
@@ -33,7 +35,7 @@ class ProjectsController < ApplicationController
   end
 
   def index
-    @projects = Project.accepted_projects
+    @projects = Project.current_accepted_projects
   end
 
   def show

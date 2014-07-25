@@ -5,14 +5,15 @@ class Quarter < ActiveRecord::Base
   validates :season, presence: true,
             inclusion: { in:  %w(winter spring summer autumn) }
   validates :year, presence: true, numericality: true, length: { is: 4 }
-  validates :current, presence: true
   validates_uniqueness_of :season, scope: :year,
                           message: "That's already the current quarter."
   validate :only_one_current_quarter, on: :save
 
   def Quarter.current_quarter
-    quarter = Quarter.where(current: true).take
-    [quarter.season, quarter.year]
+    Quarter.where(current: true).take
+    # Use `uniq`?
+    # Also, this returns a Quarter instance, not just an ID.
+    # (Compare with project.rb, L20.)
   end
 
   def Quarter.formatted_current_quarter

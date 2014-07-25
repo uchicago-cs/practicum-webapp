@@ -17,6 +17,9 @@ class Project < ActiveRecord::Base
   delegate :affiliation, to: :user, prefix: :advisor, allow_nil: true
   delegate :department, to: :user, prefix: :advisor, allow_nil: true
   delegate :formatted_quarter, to: :quarter, prefix: false, allow_nil: true
+  delegate :current, to: :quarter, prefix: true, allow_nil: true
+  # Note: this returns an ID.
+  # (Compare with quarter.rb, Quarter.current_quarter.)
 
   attr_accessor :comments
 
@@ -35,6 +38,11 @@ class Project < ActiveRecord::Base
     Project.where(status: "pending")
   end
 
+  def Project.current_accepted_projects
+    Project.where(status: "accepted"). \
+      joins(:quarter).where(quarters: { current: true })
+  end
+
   def advisor
     User.find(advisor_id)
     # Not ideal
@@ -50,6 +58,10 @@ class Project < ActiveRecord::Base
 
   def pending?
     status == "pending"
+  end
+
+  def in_current_quarter?
+    self.quarter == Quarter.current_quarter
   end
 
   private
