@@ -1,0 +1,5 @@
+<h1>List of Quarters</h1>
+
+<% @quarters.each do |quarter| %>
+  <div><%= link_to quarter.formatted_quarter, quarter %></div>
+<% end %>

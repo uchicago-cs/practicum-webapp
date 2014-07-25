@@ -4,6 +4,7 @@ class Ability
   def initialize(user)
 
     user ||= User.new
+    can :read, Quarter
     if user.new_record?
       can :read, Project, status: "accepted"
     else

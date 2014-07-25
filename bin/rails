@@ -11,7 +11,7 @@ module Rails
   class Server
     def default_options
       super.merge({
-        :Host        => '127.0.0.1',
+        :Host        => (ENV['DYNO'] ? '0.0.0.0' : '127.0.0.1'),
         :Port        => 3000,
         :environment => (ENV['RAILS_ENV'] || "development").dup,
         :daemonize   => false,
@@ -24,3 +24,9 @@ module Rails
 end
 
 require 'rails/commands'
+
+# Note on the Host line above:
+# We use 0.0.0.0 on Heroku, where DYNO is defined as an
+# environment variable, as Heroku requires 0.0.0.0. We
+# use 127.0.0.1 locally, as per http://blog.codeclimate.com
+# /blog/2013/03/27/rails-insecure-defaults/.

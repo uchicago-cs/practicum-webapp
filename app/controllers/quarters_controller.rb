@@ -3,7 +3,14 @@ class QuartersController < ApplicationController
   load_and_authorize_resource
 
   before_action :downcase_season, only: :create
-  before_action :is_admin?
+  before_action :is_admin?, only: [:new, :create]
+
+  def index
+  end
+
+  def show
+    @quarter_projects = Project.quarter_accepted_projects(@quarter)
+  end
 
   def new
   end

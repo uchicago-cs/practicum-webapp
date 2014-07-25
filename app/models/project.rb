@@ -43,6 +43,11 @@ class Project < ActiveRecord::Base
       joins(:quarter).where(quarters: { current: true })
   end
 
+  def Project.quarter_accepted_projects(quarter)
+    Project.where(status: "accepted"). \
+      joins(:quarter).where(quarters: { id: quarter.id })
+  end
+
   def advisor
     User.find(advisor_id)
     # Not ideal

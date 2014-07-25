@@ -169,6 +169,7 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
       mime-types
+    pg (0.15.1)
     polyglot (0.3.5)
     rack (1.5.2)
     rack-test (0.6.2)
@@ -324,6 +325,7 @@ DEPENDENCIES
   launchy
   libnotify (= 0.8.0)
   paperclip (~> 4.1)
+  pg (= 0.15.1)
   pry!
   rails (= 4.0.8)
   rails_12factor (= 0.0.2)

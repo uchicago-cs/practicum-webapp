@@ -3,6 +3,7 @@ Practicum::Application.routes.draw do
   root 'pages#home'
 
   resources :projects do
+
     resources :submissions do
       resources :evaluations, only: [:new, :create, :show, :index]
       member do
@@ -12,6 +13,7 @@ Practicum::Application.routes.draw do
     end
     collection do
       get "pending"
+      resources :quarters, only: [:show, :index]
     end
     member do
       get "edit_status"

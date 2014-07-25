@@ -1,0 +1,8 @@
+<h1><%= @quarter.formatted_quarter %> Projects</h1>
+
+<% @quarter_projects.each do |project| %>
+  <div>
+    <%= link_to project.name, project %> proposed by
+    <%= project.advisor_email %>
+  </div>
+<% end %>
