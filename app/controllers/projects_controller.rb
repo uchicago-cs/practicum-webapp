@@ -57,6 +57,21 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def clone
+    # Essentially the same as #create.
+    @old_project = Project.find(params[:id])
+    @new_project = @old_project.dup
+    @new_project.quarter_id = Quarter.current_quarter.id
+
+    if @new_project.save
+      flash[:notice] = "Project successfully cloned."
+      redirect_to @new_project
+    else
+      flash[:notice] = "Project was not successfully cloned."
+      render 'show'
+    end
+  end
+
   private
 
   def project_params

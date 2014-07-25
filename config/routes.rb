@@ -53,5 +53,6 @@ Practicum::Application.routes.draw do
                             via: "get", as: "manage_quarters"
   match "/manage_quarters", to: "quarters#update_quarters",
                             via: "post", as: "update_quarters"
+  match "/projects/:id", to: "projects#clone", via: "post"
 
 end

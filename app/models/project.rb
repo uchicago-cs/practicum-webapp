@@ -69,6 +69,10 @@ class Project < ActiveRecord::Base
     self.quarter == Quarter.current_quarter
   end
 
+  def accepted_submissions
+    self.submissions.where(status: "accepted")
+  end
+
   private
 
   def send_project_proposed

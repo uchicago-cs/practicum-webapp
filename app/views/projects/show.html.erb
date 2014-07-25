@@ -79,3 +79,16 @@
     No one has applied to this project yet.
   <% end %>
 <% end %>
+
+<% if (can? :create, Project) and
+  (current_user.made_project?(@project) or current_user.admin?) and
+  @project.quarter != Quarter.current_quarter and
+  @project.accepted_submissions.count == 0 %>
+  <h3>Clone project</h3>
+  <div>
+    No student completed this project, so you may clone it into the
+    current quarter. Click
+    <%= link_to "here", @project, method: :clone %>
+    to do so.
+  </div>
+<% end %>
