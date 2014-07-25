@@ -18,7 +18,11 @@ class Quarter < ActiveRecord::Base
 
   def Quarter.formatted_current_quarter
     quarter = Quarter.where(current: true).take
-    [quarter.season.capitalize, quarter.year].join(" ")
+    if quarter
+      [quarter.season.capitalize, quarter.year].join(" ")
+    else
+      "this quarter"
+    end
   end
 
   # Should this be public?

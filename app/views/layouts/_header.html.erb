@@ -42,6 +42,10 @@
 	    <li><%= link_to "Propose a project", new_project_path %></li>
 	  <% end %>
 
+	  <% if can? :create, Quarter %>
+	    <li><%= link_to "Manage quarters", manage_quarters_path %></li>
+	  <% end %>
+
 	</ul>
 	<!-- 	</div> -->
       </nav>

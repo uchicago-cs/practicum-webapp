@@ -1,21 +1,23 @@
 <h1>Approved projects for <%= Quarter.formatted_current_quarter%></h1>
 
-<% if can? :read, Project %>
-  <ol>
-    <% @projects.each do |project| %>
-      <div>
-	<li>
-	  <%= project.name %>
-	  | <%= project.formatted_quarter %>
-	  | posted by <%= project.advisor_email %>
-	  | application deadline: <%= project.deadline %>
-	</li>
+<% if !@projects.empty? %>
+<ol>
+  <% @projects.each do |project| %>
+    <div>
+      <li>
+	<%= project.name %>
+	| <%= project.formatted_quarter %>
+	| posted by <%= project.advisor_email %>
+	| application deadline: <%= project.deadline %>
+      </li>
 
-	<div>
-	  Find out more information <%= link_to "here", project %>.
-	</div>
+      <div>
+	Find out more information <%= link_to "here", project %>.
       </div>
-      <br>
-    <% end %>
-  </ol>
+    </div>
+    <br>
+  <% end %>
+</ol>
+<% else %>
+There are currently no projects available during this quarter.
 <% end %>

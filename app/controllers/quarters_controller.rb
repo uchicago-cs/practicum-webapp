@@ -5,6 +5,20 @@ class QuartersController < ApplicationController
   before_action :downcase_season, only: :create
   before_action :is_admin?, only: [:new, :create]
 
+  def manage_quarters
+  end
+
+  def update_quarters
+    @quarters.each do |quarter|
+      unless quarter.update_attributes(quarter_params)#[:quarters][:quarter])
+        flash[:notice] = "Unable to update all quarters. #{params[:quarters][:quarter_id]}"
+        render 'manage_quarters'
+      end
+    end
+    flash[:notice] = "Successfully updated quarter attributes. #{params[:quarters][]}"
+    render 'manage_quarters'
+  end
+
   def index
   end
 
@@ -28,10 +42,13 @@ class QuartersController < ApplicationController
     end
   end
 
+  def destroy
+  end
+
   private
 
   def quarter_params
-    params.require(:quarter).permit(:season, :year)
+    params.require(:quarter).permit(:season, :year, :current)
   end
 
   def downcase_season

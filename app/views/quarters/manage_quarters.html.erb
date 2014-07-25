@@ -1,0 +1,18 @@
+<h3>Manage Quarters</h3>
+
+<!-- POST? -->
+<%= form_tag update_quarters_path method: :post do %>
+  <% @quarters.each do |quarter| %>
+    <div>
+    <%= link_to quarter.formatted_quarter, quarter %>
+    <%= fields_for "quarters[]", quarter do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+      <%= f.text_field :season %>
+      <%= f.text_field :year %>
+      <%= f.label :current, "Current quarter?" %>
+      <%= f.check_box :current %>
+    <% end %>
+    </div><br />
+  <% end %>
+  <%= submit_tag "Update Quarters" %>
+<% end %>

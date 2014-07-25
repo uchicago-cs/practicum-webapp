@@ -20,7 +20,7 @@ Practicum::Application.routes.draw do
     end
   end
 
-  resources :quarters, only: [:new, :create]
+  resources :quarters, only: [:new, :create, :destroy]
 
   match "/projects/:project_id/submissions/:id/resume",
     to: "submissions#download_resume", via: "get", as: "download_resume"
@@ -49,5 +49,9 @@ Practicum::Application.routes.draw do
   match "/users/:id", to: "users#show", via: "get", as: "user"
   match "/users/:id", to: "users#update", via: "patch"
   match "/submissions", to: "pages#submissions", via: "get"
+  match "/manage_quarters", to: "quarters#manage_quarters",
+                            via: "get", as: "manage_quarters"
+  match "/manage_quarters", to: "quarters#update_quarters",
+                            via: "post", as: "update_quarters"
 
 end
