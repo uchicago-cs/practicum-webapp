@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140724184254) do
+ActiveRecord::Schema.define(version: 20140726011350) do
 
   create_table "evaluations", force: true do |t|
     t.integer  "advisor_id"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 20140724184254) do
     t.text     "prerequisites",         default: "",        null: false
     t.text     "related_work",          default: "",        null: false
     t.integer  "quarter_id"
+    t.boolean  "cloned",                default: false,     null: false
   end
 
   add_index "projects", ["advisor_id"], name: "index_projects_on_advisor_id"

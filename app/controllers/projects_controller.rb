@@ -58,12 +58,13 @@ class ProjectsController < ApplicationController
   end
 
   def clone
-    # Essentially the same as #create.
     @old_project = Project.find(params[:id])
     @new_project = @old_project.dup
-    @new_project.quarter_id = Quarter.current_quarter.id
-
+    @new_project.update_attributes(quarter_id: Quarter.current_quarter.id,
+                                   status: "pending")
     if @new_project.save
+      @old_project.cloned = true
+      @old_project.save
       flash[:notice] = "Project successfully cloned."
       redirect_to @new_project
     else
@@ -77,7 +78,7 @@ class ProjectsController < ApplicationController
   def project_params
     params.require(:project).permit(:name, :description, :deadline, :status,
                                     :expected_deliverables, :prerequisites,
-                                    :related_work, :comments)
+                                    :related_work, :comments, :cloned)
   end
 
 end

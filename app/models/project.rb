@@ -73,6 +73,12 @@ class Project < ActiveRecord::Base
     self.submissions.where(status: "accepted")
   end
 
+  def cloneable?
+    self.quarter != Quarter.current_quarter \
+      and self.accepted_submissions.count == 0 \
+      and !self.cloned?
+  end
+
   private
 
   def send_project_proposed
