@@ -40,7 +40,7 @@ This is your personal page for you to view your applications / projects.
       <div>
 	You submitted an application for <%= submission.project_name %>
 	on <%= submission.created_at.to_date %>. Click
-	<%= link_to "here", project_submission_path(submission.project_id, submission.id) %>
+	<%= link_to "here", submission_path(submission.id) %>
 	to view your application and its status.
       </div>
     <% end %>

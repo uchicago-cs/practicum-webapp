@@ -12,7 +12,7 @@
 	  "<%= submission.project_name %>" | status:
 	  <%= submission.status %>
 	</li>
-	<%= link_to "View this application.", project_submission_path(@project.id, submission.id) %>
+	<%= link_to "View this application.", submission_path(submission.id) %>
       </div>
     <% end %>
   </ol>

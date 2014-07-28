@@ -8,8 +8,7 @@
   <% if @submission.resume.exists? and can? :download_resume, @submission %>
     <div>
       Resume: <%= link_to "download",
-      download_resume_path(project_id: @submission.project_id,
-			   id: @submission.id) %>
+      download_resume_path(id: @submission.id) %>
     </div>
   <% else %>
     <div>This student did not upload a resume.</div>
@@ -20,8 +19,8 @@
 
       <% if @submission.pending? %>
 	You may
-	<%= link_to "accept", accept_project_submission_path(@project.id, @submission.id) %> or
-	<%= link_to "reject", reject_project_submission_path(@project.id, @submission.id) %>
+	<%= link_to "accept", accept_submission_path(@submission.id) %> or
+	<%= link_to "reject", reject_submission_path(@submission.id) %>
 	this application.
       <% else %>
 	You have already <%= @submission.status %> this applicant.
@@ -34,8 +33,7 @@
     can? :create_evaluation_for, @submission %>
     Click
     <%= link_to "here",
-    new_project_submission_evaluation_path(submission_id: @submission.id,
-					   project_id: @submission.project_id)
+    new_submission_evaluation_path(submission_id: @submission.id)
     %>
     to create an evaluation for this student.
   <% else %>

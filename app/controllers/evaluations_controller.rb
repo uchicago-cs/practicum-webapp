@@ -2,7 +2,7 @@ class EvaluationsController < ApplicationController
 
   load_and_authorize_resource
 
-  before_action :get_project_and_submission
+  before_action :get_project_and_submission, only: [:new, :create, :index]
   before_action :already_evaluated?, only: [:new, :create]
   before_action :is_admin?, only: :index
 
@@ -23,7 +23,7 @@ class EvaluationsController < ApplicationController
                                   advisor_id: @submission.project_advisor_id)
     if @evaluation.save
       flash[:notice] = "Evaluation successfully submitted."
-      redirect_to [@project, @submission, @evaluation]
+      redirect_to @evaluation
     else
       render 'new'
     end
@@ -38,15 +38,15 @@ class EvaluationsController < ApplicationController
 
   def get_project_and_submission
     @submission = Submission.find(params[:submission_id])
-    @project = Project.find(params[:project_id])
+    @project = @submission.project
   end
 
   def already_evaluated?
     # Messy -- refactor this.
-    advisor = Project.find(params[:project_id]).advisor
+    advisor = @project.advisor
 
     message = "You have already submitted an evaluation for this student."
-    redirect_to(root_url, { notice: message }) if \
+    redirect_to(root_url, { alert: message }) if \
       advisor.evaluated_submission?(@submission)
   end
 end

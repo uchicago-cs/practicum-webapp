@@ -68,7 +68,7 @@ class ProjectsController < ApplicationController
       flash[:notice] = "Project successfully cloned."
       redirect_to @new_project
     else
-      flash[:notice] = "Project was not successfully cloned."
+      flash[:alert] = "Project was not successfully cloned."
       render 'show'
     end
   end

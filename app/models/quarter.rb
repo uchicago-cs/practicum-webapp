@@ -6,7 +6,7 @@ class Quarter < ActiveRecord::Base
             inclusion: { in:  %w(winter spring summer autumn) }
   validates :year, presence: true, numericality: true, length: { is: 4 }
   validates_uniqueness_of :season, scope: :year,
-                          message: "That's already the current quarter."
+                          message: "That quarter already exists."
   validate :only_one_current_quarter, on: :save
 
   def Quarter.current_quarter

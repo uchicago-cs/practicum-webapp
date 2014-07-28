@@ -72,7 +72,7 @@
       <div>
 	<%= submission.student_email %> applied for this project. View
 	this student's application
-	<%= link_to "here", project_submission_path(@project.id, submission.id) %>.
+	<%= link_to "here", submission_path(submission.id) %>.
       </div>
     <% end %>
   <% else %>

@@ -2,9 +2,9 @@ Practicum::Application.routes.draw do
 
   root 'pages#home'
 
-  resources :projects do
+  resources :projects, shallow: true do
 
-    resources :submissions do
+    resources :submissions, shallow: true do
       resources :evaluations, only: [:new, :create, :show, :index]
       member do
         get "accept"
@@ -22,7 +22,7 @@ Practicum::Application.routes.draw do
 
   resources :quarters, only: [:new, :create]
 
-  match "/projects/:project_id/submissions/:id/resume",
+  match "/submissions/:id/resume",
     to: "submissions#download_resume", via: "get", as: "download_resume"
 
   match "/projects/:id/edit_status", to: "projects#update_status", via: "patch"

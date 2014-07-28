@@ -2,11 +2,10 @@ class SubmissionsController < ApplicationController
 
   load_and_authorize_resource
 
-  before_action :get_project
-  before_action :project_accepted?, only: [:new, :create]
-  before_action :is_admin_or_advisor?, only: :index
+  before_action :get_project,                 only: [:index, :new, :create]
+  before_action :project_accepted?,           only: [:new, :create]
+  before_action :is_admin_or_advisor?,        only: :index
   before_action :already_applied_to_project?, only: [:new, :create]
-  before_action :right_project?, only: [:show, :edit, :update]
   before_action :project_in_current_quarter?, only: [:new, :create]
   # before_actions on both new and create?
 
@@ -45,7 +44,7 @@ class SubmissionsController < ApplicationController
   def accept
     if @submission.update_attributes(status: "accepted")
       flash[:notice] = "Application accepted."
-      redirect_to project_submission_path
+      redirect_to submission_path
     else
       render 'show'
     end
@@ -54,7 +53,7 @@ class SubmissionsController < ApplicationController
   def reject
     if @submission.update_attributes(status: "rejected")
       flash[:notice] = "Application rejected."
-      redirect_to project_submission_path
+      redirect_to submission_path
     else
       render 'show'
     end
@@ -66,7 +65,7 @@ class SubmissionsController < ApplicationController
                 type: @submission.resume.content_type,
                 x_sendfile: true)
     else
-      flash[:notice] = "This student did not upload a resume."
+      flash[:alert] = "This student did not upload a resume."
       render 'show'
     end
   end
@@ -86,30 +85,24 @@ class SubmissionsController < ApplicationController
 
   def project_accepted?
     message = "Access denied."
-    redirect_to(root_url, { notice: message }) unless @project.accepted?
+    redirect_to(root_url, { alert: message }) unless @project.accepted?
   end
 
   def is_admin_or_advisor?
     message = "Access denied."
-    redirect_to(root_url, { notice: message }) unless \
+    redirect_to(root_url, { alert: message }) unless \
       current_user.admin? or current_user.advisor?
   end
 
   def already_applied_to_project?
     message = "You have already applied to this project."
-    redirect_to(root_url, { notice: message }) if \
+    redirect_to(root_url, { alert: message }) if \
       current_user.applied_to_project?(@project)
-  end
-
-  def right_project?
-    message = "Access denied."
-    redirect_to(root_url, { notice: message }) unless \
-      params[:project_id].to_i == @submission.project_id
   end
 
   def project_in_current_quarter?
     message = "That project is no longer available."
-    redirect_to(root_url, { notice: message }) unless \
+    redirect_to(root_url, { alert: message }) unless \
       @project.quarter == Quarter.current_quarter
   end
 

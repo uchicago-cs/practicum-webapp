@@ -24,7 +24,7 @@ class QuartersController < ApplicationController
       flash[:notice] = "Successfully set the current quarter."
       redirect_to current_user
     else
-      flash[:notice] = "Unable to set the current quarter."
+      flash[:alert] = "Unable to set the current quarter."
       render 'new'
     end
   end
@@ -34,10 +34,10 @@ class QuartersController < ApplicationController
 
   def update
     if @quarter.update_attributes(quarter_params)
-      flash[:notice] = "Successfully updated quarter to #{@quarter.formatted_quarter}."
+      flash[:notice] = "Successfully updated quarter."
       redirect_to quarters_path
     else
-      flash[:alert] = "Failed to update the quarter #{@quarter.formatted_quarter}."
+      flash[:alert] = "Failed to update the quarter."
       render 'edit'
     end
   end
