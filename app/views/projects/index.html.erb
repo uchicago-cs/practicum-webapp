@@ -1,6 +1,6 @@
 <h1>Approved projects for <%= Quarter.formatted_current_quarter%></h1>
 
-<% if !@projects.empty? %>
+<% if @projects.present? %>
 <ol>
   <% @projects.each do |project| %>
     <div>

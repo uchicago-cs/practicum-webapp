@@ -15,6 +15,8 @@ class Ability
       if user.advisor?
         can :create, Project
         can :update, Project, status: "pending"
+        # As long as the project belongs to the advisor.
+        # etc., edit others
         can :read, User, id: user.id
         can :update, User, id: user.id
         can :create, Evaluation

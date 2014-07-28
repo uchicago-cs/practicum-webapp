@@ -32,9 +32,9 @@ class Quarter < ActiveRecord::Base
   end
 
   def only_one_current_quarter
-    # if ...
-    #   errors.add(:current, "Only one quarter can be current")
-    # end
+    if self.current? and Quarter.where(current: true).count > 0
+      errors.add(:current, "can only be 'true' for one quarter")
+    end
   end
 
   def formatted_quarter

@@ -26,14 +26,20 @@
 	    <li><%= link_to "Projects", projects_path %></li>
 	  <% end %>
 
-	  <% if can? :manage, Submission %>
-	    <li><%= link_to "Applications", submissions_path %></li>
-	  <% end %>
-
 	  <% if can? :accept, Project %>
 	    <li>
 	      <%= link_to "Pending projects", pending_projects_path %>
 	    </li>
+	  <% end %>
+
+	  <% if nil %>
+	    <li>
+	      <%= link_to "Admin dashboard", admin_dashboard_path %>
+	    </li>
+	  <% end %>
+
+	  <% if can? :manage, Submission %>
+	    <li><%= link_to "Applications", submissions_path %></li>
 	  <% end %>
 
 	  <!-- Rejected project list, and link to it? Option to un-reject? -->

@@ -28,7 +28,7 @@
 <div>
   Prerequisites: <%= @project.prerequisites %>
 </div>
-<% if !@project.related_work.empty? %>
+<% if !@project.related_work.blank? %>
   <div>
     Related work: <%= @project.related_work %>
   </div>

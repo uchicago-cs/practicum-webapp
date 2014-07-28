@@ -17,14 +17,13 @@ class QuartersController < ApplicationController
   end
 
   def create
-    @quarter.current = true
     if @quarter.valid?
-      Quarter.set_current_false
+      Quarter.set_current_false if @quarter.current?
       @quarter.save
-      flash[:notice] = "Successfully set the current quarter."
-      redirect_to current_user
+      flash[:notice] = "Quarter successfully created."
+      redirect_to quarters_path
     else
-      flash[:alert] = "Unable to set the current quarter."
+      flash[:alert] = "Quarter could not be created."
       render 'new'
     end
   end
@@ -33,7 +32,10 @@ class QuartersController < ApplicationController
   end
 
   def update
-    if @quarter.update_attributes(quarter_params)
+    @quarter.attributes = quarter_params
+    if @quarter.valid?
+      Quarter.set_current_false if @quarter.current?
+      @quarter.save
       flash[:notice] = "Successfully updated quarter."
       redirect_to quarters_path
     else
