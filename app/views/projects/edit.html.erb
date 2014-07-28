@@ -1,6 +1,6 @@
 <h1>Edit proposal for <%= @project.name %></h1>
 
-<%= form_for(@project) do |f| %>
+<%= form_for @project do |f| %>
 
   <%= f.label :name %>
   <%= f.text_field :name %>
@@ -26,4 +26,3 @@
   <%= f.submit "Edit my proposal", class: "btn btn-large btn-primary" %>
 
 <% end %>
-

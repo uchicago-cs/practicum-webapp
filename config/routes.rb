@@ -13,14 +13,14 @@ Practicum::Application.routes.draw do
     end
     collection do
       get "pending"
-      resources :quarters, only: [:show, :index]
+      resources :quarters, only: [:show, :index, :edit, :update, :destroy]
     end
     member do
       get "edit_status"
     end
   end
 
-  resources :quarters, only: [:new, :create, :destroy]
+  resources :quarters, only: [:new, :create]
 
   match "/projects/:project_id/submissions/:id/resume",
     to: "submissions#download_resume", via: "get", as: "download_resume"
@@ -49,10 +49,6 @@ Practicum::Application.routes.draw do
   match "/users/:id", to: "users#show", via: "get", as: "user"
   match "/users/:id", to: "users#update", via: "patch"
   match "/submissions", to: "pages#submissions", via: "get"
-  match "/manage_quarters", to: "quarters#manage_quarters",
-                            via: "get", as: "manage_quarters"
-  match "/manage_quarters", to: "quarters#update_quarters",
-                            via: "post", as: "update_quarters"
   match "/projects/:id", to: "projects#clone", via: "post"
 
 end

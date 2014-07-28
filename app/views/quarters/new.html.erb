@@ -1,4 +1,8 @@
 <h3>Set the current quarter</h3>
+
+Note that this quarter will automatically be set to the current quarter. You
+can change the current quarter by navigating to the edit page for the quarter
+you want to make current.
 <%= form_for @quarter do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
@@ -9,5 +13,5 @@
   <%= f.text_field :year %>
 
   <%= f.submit "Set the current quarter",
-  class: "btn btn-large btn-primary" %>
+  class: "btn btn-primary" %>
 <% end %>

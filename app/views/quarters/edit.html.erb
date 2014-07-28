@@ -1,0 +1,17 @@
+<h1>Edit <%= @quarter.formatted_quarter %></h1>
+
+<%= form_for @quarter do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.label :season %>
+  <%= f.text_field :season %>
+
+  <%= f.label :year %>
+  <%= f.text_field :year %>
+
+  <%= f.label :current, "Current quarter?" %>
+  <%= f.check_box :current %>
+
+  <%= f.submit "Update quarter",
+  class: "btn btn-primary" %>
+<% end %>

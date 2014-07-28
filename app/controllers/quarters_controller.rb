@@ -4,20 +4,7 @@ class QuartersController < ApplicationController
 
   before_action :downcase_season, only: :create
   before_action :is_admin?, only: [:new, :create]
-
-  def manage_quarters
-  end
-
-  def update_quarters
-    @quarters.each do |quarter|
-      unless quarter.update_attributes(quarter_params)#[:quarters][:quarter])
-        flash[:notice] = "Unable to update all quarters. #{params[:quarters][:quarter_id]}"
-        render 'manage_quarters'
-      end
-    end
-    flash[:notice] = "Successfully updated quarter attributes. #{params[:quarters][]}"
-    render 'manage_quarters'
-  end
+  before_action :quarter_belongs_to_projects?, only: :destroy
 
   def index
   end
@@ -42,7 +29,27 @@ class QuartersController < ApplicationController
     end
   end
 
+  def edit
+  end
+
+  def update
+    if @quarter.update_attributes(quarter_params)
+      flash[:notice] = "Successfully updated quarter to #{@quarter.formatted_quarter}."
+      redirect_to quarters_path
+    else
+      flash[:alert] = "Failed to update the quarter #{@quarter.formatted_quarter}."
+      render 'edit'
+    end
+  end
+
   def destroy
+    if @quarter.destroy
+      flash[:notice] = "Successfully deleted quarter."
+      redirect_to quarters_path
+    else
+      flash[:alert] = "Unable to delete quarter."
+      render 'index'
+    end
   end
 
   private
@@ -54,4 +61,13 @@ class QuartersController < ApplicationController
   def downcase_season
     @quarter.season.downcase!
   end
+
+  def quarter_belongs_to_projects?
+    if @quarter.projects.count > 0
+      flash[:alert] = "Projects have already been made in this quarter, "\
+      "so you cannot delete it."
+      redirect_to quarters_path
+    end
+  end
+
 end

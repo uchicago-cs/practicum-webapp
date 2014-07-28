@@ -1,5 +1,12 @@
 <h1>List of Quarters</h1>
 
 <% @quarters.each do |quarter| %>
-  <div><%= link_to quarter.formatted_quarter, quarter %></div>
+  <div>
+    <%= link_to quarter.formatted_quarter, quarter %>
+    <% if can? :manage, Quarter %>
+      | <%= link_to "Edit", edit_quarter_path(quarter.id) %>
+      | <%= link_to "Delete", quarter, method: :delete,
+                                       confirm: "Are you sure?" %>
+    <% end %>
+  </div>
 <% end %>
