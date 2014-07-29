@@ -4,10 +4,12 @@
   <%= render 'shared/error_messages', object: f.object %>
 
   <%= f.label :season %>
-  <%= f.text_field :season %>
+  <%= f.select :season, %w(Spring Summer Autumn Winter),
+                        selected: @quarter.season.capitalize %>
 
   <%= f.label :year %>
-  <%= f.text_field :year %>
+  <%= f.select :year, (Time.now.year - 5..Time.now.year + 5),
+                      selected: @quarter.year %>
 
   <%= f.label :current, "Current quarter?" %>
   <%= f.check_box :current %>

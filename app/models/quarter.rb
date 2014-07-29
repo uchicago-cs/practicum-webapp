@@ -10,6 +10,7 @@ class Quarter < ActiveRecord::Base
 
   before_destroy :prevent_if_current
   after_validation :set_current_false
+  before_validation :downcase_season
 
   def Quarter.current_quarter
     Quarter.where(current: true).take
@@ -36,8 +37,11 @@ class Quarter < ActiveRecord::Base
   end
 
   def prevent_if_current
-    self.errors[:base] << "You cannot delete the current quarter." \
-      if self.current?
+    self.errors[:base] << "Cannot delete the current quarter." if self.current?
+  end
+
+  def downcase_season
+    self.season.downcase!
   end
 
 end
