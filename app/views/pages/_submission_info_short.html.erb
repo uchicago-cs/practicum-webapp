@@ -1,0 +1,7 @@
+<%= submission.student_email %> applied to
+<%= submission.project_name %> on
+<%= submission.created_at %>. Click
+<%= link_to "here", submission_path(submission.id) %>
+to read this student's application.
+<br>
+Status: <%= submission.status %>

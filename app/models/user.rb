@@ -13,25 +13,17 @@ class User < ActiveRecord::Base
   def roles
     roles = []
 
-    if self.admin?
-      roles << "admin"
+    [:admin, :advisor, :student].each do |role|
+      if self.send(role)
+        roles << role.to_s
+      end
     end
-
-    if self.advisor?
-      roles << "advisor"
-    end
-
-    if self.student?
-      roles << "student"
-    end
-
-    # [:student, :advisor, :admin].each do |role|
-    #   if self.send(role)
-    #     roles << role.to_s
-    #   end
-    # end
 
     roles
+  end
+
+  def formatted_roles
+    roles.join(", ")
   end
 
   def projects_applied_to

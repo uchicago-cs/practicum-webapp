@@ -1,17 +1,13 @@
 <h1><%= @user.email %></h1>
 
 This is your personal page for you to view your applications / projects.
-<!-- @user is the user the page is displaying -->
-<!-- current_user is the user browsing the form -->
+
 <% if @user.advisor? or @user.admin? %>
 
   <h2>Pending project proposals</h2>
   <% @user.pending_projects.each do |project| %>
     <div>
-      You proposed <%= link_to project.name, project %> with a deadline
-      of <%= project.deadline %>. It is currently <%= project.status %>.
-      You may edit your proposal
-      <%= link_to "here", edit_project_path(project.id) %>.
+      <%= render partial: 'pending_project', locals: { project: project } %>
     </div>
   <% end %>
 
@@ -20,15 +16,9 @@ This is your personal page for you to view your applications / projects.
   <h2>Approved projects</h2>
   <% @user.accepted_projects.each do |project| %>
     <div>
-      You proposed <%= link_to project.name, project %> with a deadline
-      of <%= project.deadline %>. It is currently <%= project.status %>.
-      You may no longer edit your proposal. You may view students'
-      applications to this project
-      <%= link_to "here", project_submissions_path(project.id) %>.
+      <%= render partial: 'accepted_project', locals: { project: project } %>
     </div>
   <% end %>
-
-  <!-- If there are any rejected projects to show, then show them here -->
 
 <% end %>
 
@@ -38,10 +28,7 @@ This is your personal page for you to view your applications / projects.
   <% if @user.submissions.count > 0 %>
     <% @user.submissions.each do |submission| %>
       <div>
-	You submitted an application for <%= submission.project_name %>
-	on <%= submission.created_at.to_date %>. Click
-	<%= link_to "here", submission_path(submission.id) %>
-	to view your application and its status.
+	<%= render partial: 'submission', locals: { submission: submission } %>
       </div>
     <% end %>
   <% else %>
@@ -51,16 +38,15 @@ This is your personal page for you to view your applications / projects.
   <h2>Accepted applications</h2>
   <% @user.submissions.each do |submission| %>
     <div>
-      <!-- ... -->
+      You application for <%= submission.project_name %> has been accepted.
     </div>
   <% end %>
 
 <% end %>
 
-<% if (current_user.advisor? and @user == current_user) or (current_user.admin?) %>
+<% if can? :update_affiliation_of, current_user %>
   <h3>Change your affiliation and department</h3>
   This will show up on your project proposals and postings.
-
   <%= form_for @user do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
 

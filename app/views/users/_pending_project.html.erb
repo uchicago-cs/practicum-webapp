@@ -1,0 +1,4 @@
+You proposed <%= link_to project.name, project %> with a deadline
+of <%= project.deadline %>. It is currently <%= project.status %>.
+You may edit your proposal
+<%= link_to "here", edit_project_path(project.id) %>.

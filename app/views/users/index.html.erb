@@ -2,6 +2,6 @@
 
 <% if @users.count > 0 %>
   <% @users.each do |user| %>
-    <div><%= link_to user.email, user %> | <%= user.roles.join(", ") %></div>
+    <div><%= link_to user.email, user %> | <%= user.formatted_roles %></div>
   <% end %>
 <% end %>

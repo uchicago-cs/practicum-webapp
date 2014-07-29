@@ -19,6 +19,7 @@ class Ability
         can :update, User, id: user.id
         can :create, Evaluation
         can :read, Evaluation, advisor_id: user.id
+        can :update_affiliation_of, User, id: user.id
         submission_abilities(user, :accept, :reject, :download_resume, :read)
 
         can :read, Project do |project|

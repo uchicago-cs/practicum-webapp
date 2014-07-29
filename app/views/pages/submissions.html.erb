@@ -1,12 +1,7 @@
 <h1>All students' applications</h1>
 <% Submission.all.each do |submission| %>
   <div>
-    <%= submission.student_email %> applied to
-    <%= submission.project_name %> on
-    <%= submission.created_at %>. Click
-    <%= link_to "here", submission_path(submission.id) %>
-    to read this student's application.
-    <br>
-    Status: <%= submission.status %>
+    <%= render partial: 'submission_short',
+               locals: { submission: submission } %>
   </div>
 <% end %>

@@ -33,7 +33,7 @@ class Quarter < ActiveRecord::Base
   private
 
   def set_current_false
-    Quarter.where(current: true).update_all(current: false)
+    Quarter.where(current: true).update_all(current: false) if self.current?
   end
 
   def prevent_if_current
