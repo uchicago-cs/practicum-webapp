@@ -8,7 +8,7 @@
   The administrators have decided not to accept your project proposal. ...
 <% end %>
 
-<% if !@comments.blank? %>
+<% if @comments.present? %>
   The administrators say:
   <%= @comments %>
 <% end %>

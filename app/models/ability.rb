@@ -10,13 +10,11 @@ class Ability
     else
       if user.admin?
         can :manage, :all
+        can :destroy, Quarter, current: false
       end
 
       if user.advisor?
         can :create, Project
-        can :update, Project, status: "pending"
-        # As long as the project belongs to the advisor.
-        # etc., edit others
         can :read, User, id: user.id
         can :update, User, id: user.id
         can :create, Evaluation
@@ -24,7 +22,11 @@ class Ability
         submission_abilities(user, :accept, :reject, :download_resume, :read)
 
         can :read, Project do |project|
-          project.status == "approved" or project.advisor_id == user.id
+          project.status == "accepted" or project.advisor_id == user.id
+        end
+
+        can :update, Project do |project|
+          project.status == "pending" and project.advisor_id == user.id
         end
 
         can :read_submissions_of, Project do |project|
@@ -55,15 +57,5 @@ class Ability
       end
     end
   end
-
-  # "The block is only evaluated when an actual instance object is
-  # present. It is not evaluated when checking permissions on the
-  # class (such as in the index action). This means any conditions
-  # which are not dependent on the object attributes should be moved
-  # outside of the block."
-  # https://github.com/ryanb/cancan/wiki/
-  # Defining-Abilities-with-Blocks#only-for-object-attributes
-
-  # For blocks, need to pass in an instance variable in the view.
 
 end

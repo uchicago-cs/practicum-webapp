@@ -17,9 +17,7 @@ class QuartersController < ApplicationController
   end
 
   def create
-    if @quarter.valid?
-      Quarter.set_current_false if @quarter.current?
-      @quarter.save
+    if @quarter.save
       flash[:notice] = "Quarter successfully created."
       redirect_to quarters_path
     else
@@ -33,10 +31,8 @@ class QuartersController < ApplicationController
 
   def update
     @quarter.attributes = quarter_params
-    if @quarter.valid?
-      Quarter.set_current_false if @quarter.current?
-      @quarter.save
-      flash[:notice] = "Successfully updated quarter."
+    if @quarter.save
+      flash[:notice] = "Quarter successfully updated."
       redirect_to quarters_path
     else
       flash[:alert] = "Failed to update the quarter."
@@ -45,11 +41,12 @@ class QuartersController < ApplicationController
   end
 
   def destroy
+    redirect_to quarters_path and return if @quarter.current?
     if @quarter.destroy
-      flash[:notice] = "Successfully deleted quarter."
-      redirect_to quarters_path
+      flash[:notice] = "Quarter successfully deleted."
+      redirect_to quarters_path and return
     else
-      flash[:alert] = "Unable to delete quarter."
+      flash[:alert] = "Failed to delete the quarter."
       render 'index'
     end
   end

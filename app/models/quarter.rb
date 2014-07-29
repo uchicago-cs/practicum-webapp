@@ -3,17 +3,17 @@ class Quarter < ActiveRecord::Base
   has_many :projects
 
   validates :season, presence: true,
-            inclusion: { in:  %w(winter spring summer autumn) }
+                     uniqueness: { scope:   :year,
+                                   message: "That quarter already exists." },
+                     inclusion:  { in:      %w(winter spring summer autumn) }
   validates :year, presence: true, numericality: true, length: { is: 4 }
-  validates_uniqueness_of :season, scope: :year,
-                          message: "That quarter already exists."
-  validate :only_one_current_quarter, on: :save
+
+  before_destroy :prevent_if_current
+  after_validation :set_current_false
 
   def Quarter.current_quarter
     Quarter.where(current: true).take
     # Use `uniq`?
-    # Also, this returns a Quarter instance, not just an ID.
-    # (Compare with project.rb, L20.)
   end
 
   def Quarter.formatted_current_quarter
@@ -25,20 +25,19 @@ class Quarter < ActiveRecord::Base
     end
   end
 
-  # Should this be public?
-  def Quarter.set_current_false
-    old = Quarter.where(current: true).take
-    old.update_attributes(current: false) if old
-  end
-
-  def only_one_current_quarter
-    if self.current? and Quarter.where(current: true).count > 0
-      errors.add(:current, "can only be 'true' for one quarter")
-    end
-  end
-
   def formatted_quarter
     [season.capitalize, year].join(" ")
+  end
+
+  private
+
+  def set_current_false
+    Quarter.where(current: true).update_all(current: false)
+  end
+
+  def prevent_if_current
+    self.errors[:base] << "You cannot delete the current quarter." \
+      if self.current?
   end
 
 end

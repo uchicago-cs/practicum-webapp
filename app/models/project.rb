@@ -4,7 +4,8 @@ class Project < ActiveRecord::Base
   belongs_to :user, foreign_key: "advisor_id"
   has_many :submissions
 
-  validates :name, presence: true, uniqueness: { scope: :quarter_id }
+  validates :name, presence: true, uniqueness: { scope: :quarter_id,
+                                                 case_sensitive: false }
   validates :deadline, presence: true
   validates :description, presence: true,
     length: { minimum: 100, maximum: 1500 }
