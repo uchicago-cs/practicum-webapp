@@ -13,8 +13,14 @@ class Ability
       if user.admin?
         can :manage, :all
         can :destroy, Quarter, current: false
-        can :accept, Project do |project|
-          project.pending?
+        cannot :accept, Project do |project|
+          !project.pending?
+        end
+        cannot :clone, Project do |project|
+          !project.cloneable?
+        end
+        cannot :download_resume, Submission do |submission|
+          !submission.resume.exists?
         end
       end
 

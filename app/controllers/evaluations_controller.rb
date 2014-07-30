@@ -18,12 +18,12 @@ class EvaluationsController < ApplicationController
 
   def create
     @evaluation = @submission.build_evaluation(evaluation_params)
-    @evaluation.update_attributes(student_id: @submission.student_id,
+    @evaluation.assign_attributes(student_id: @submission.student_id,
                                   project_id: @submission.project_id,
                                   advisor_id: @submission.project_advisor_id)
     if @evaluation.save
       flash[:notice] = "Evaluation successfully submitted."
-      redirect_to @evaluation
+      redirect_to @evaluation, only_path: true
     else
       render 'new'
     end
@@ -42,11 +42,8 @@ class EvaluationsController < ApplicationController
   end
 
   def already_evaluated?
-    # Messy -- refactor this.
-    advisor = @project.advisor
-
     message = "You have already submitted an evaluation for this student."
     redirect_to(root_url, { alert: message }) if \
-      advisor.evaluated_submission?(@submission)
+      @project.advisor.evaluated_submission?(@submission)
   end
 end

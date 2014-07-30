@@ -57,16 +57,16 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def clone
+  def clone_project
     @old_project = Project.find(params[:id])
     @new_project = @old_project.dup
-    @new_project.update_attributes(quarter_id: Quarter.current_quarter.id,
+    @new_project.assign_attributes(quarter_id: Quarter.current_quarter.id,
                                    status: "pending")
     if @new_project.save
       @old_project.cloned = true
       @old_project.save
       flash[:notice] = "Project successfully cloned."
-      redirect_to @new_project
+      redirect_to @new_project, only_path: true
     else
       flash[:alert] = "Project was not successfully cloned."
       render 'show'
