@@ -6,10 +6,10 @@ Practicum::Application.routes.draw do
 
     resources :submissions, path: 'applications', shallow: true do
       resources :evaluations, only: [:new, :create, :show, :index]
-      member do
-        get "accept"
-        get "reject"
-      end
+       # member do
+       #   patch "accept", as: "accept_submission"
+       #   patch "reject", as: "reject_submission"
+       # end
     end
     collection do
       get "pending"
@@ -20,8 +20,12 @@ Practicum::Application.routes.draw do
     end
   end
 
-  match "/applications/:id/resume",
+  match "/applications/:id",
     to: "submissions#download_resume", via: "get", as: "download_resume"
+  match "/applications/:id",
+    to: "submissions#accept", via: "post", as: "accept_submission"
+  match "/applications/:id",
+    to: "submissions#reject", via: "post", as: "reject_submission"
 
   match "/projects/:id/edit_status", to: "projects#update_status", via: "patch"
   devise_for :users, skip: [:sessions, :registrations]

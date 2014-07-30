@@ -32,7 +32,8 @@ class Ability
         can :create, Evaluation
         can :read, Evaluation, advisor_id: user.id
         can :update_affiliation_of, User, id: user.id
-        submission_abilities(user, :accept, :reject, :read)
+        submission_abilities(user, :accept, :reject, :read,
+                             :accept_submission, :reject_submission)
 
         can :download_resume, Submission do |submission|
           submission.project_advisor_id == user.id and \

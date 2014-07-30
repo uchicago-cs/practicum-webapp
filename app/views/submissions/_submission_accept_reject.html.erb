@@ -1,7 +1,9 @@
 <% if @submission.pending? %>
   You may
-  <%= link_to "accept", accept_submission_path(@submission.id) %> or
-  <%= link_to "reject", reject_submission_path(@submission.id) %>
+  <%= link_to "accept", accept_submission_path(@submission.id),
+                        method: :accept %> or
+  <%= link_to "reject", reject_submission_path(@submission.id),
+                        method: :reject %>
   this application.
 <% else %>
   You have already <%= @submission.status %> this applicant.
