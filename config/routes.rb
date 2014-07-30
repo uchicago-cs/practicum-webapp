@@ -4,7 +4,7 @@ Practicum::Application.routes.draw do
 
   resources :projects, shallow: true do
 
-    resources :submissions, shallow: true do
+    resources :submissions, path: 'applications', shallow: true do
       resources :evaluations, only: [:new, :create, :show, :index]
       member do
         get "accept"
@@ -13,16 +13,14 @@ Practicum::Application.routes.draw do
     end
     collection do
       get "pending"
-      resources :quarters#, only: [:show, :index, :edit, :update, :destroy]
+      resources :quarters
     end
     member do
       get "edit_status"
     end
   end
 
-#  resources :quarters, only: [:new, :create]
-
-  match "/submissions/:id/resume",
+  match "/applications/:id/resume",
     to: "submissions#download_resume", via: "get", as: "download_resume"
 
   match "/projects/:id/edit_status", to: "projects#update_status", via: "patch"
@@ -48,7 +46,7 @@ Practicum::Application.routes.draw do
   match "/users", to: "users#index", via: "get"
   match "/users/:id", to: "users#show", via: "get", as: "user"
   match "/users/:id", to: "users#update", via: "patch"
-  match "/submissions", to: "pages#submissions", via: "get"
+  match "/applications", to: "pages#submissions", via: "get", as: "submissions"
   match "/projects/:id", to: "projects#clone_project", via: "post"
   match "/admin", to: "pages#admin", via: "get", as: "admin_dashboard"
 
