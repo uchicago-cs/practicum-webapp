@@ -13,6 +13,7 @@ class Ability
       if user.admin?
         can :manage, :all
         can :destroy, Quarter, current: false
+        # The `cannots` below don't quite work (accept?, download_resume)
         cannot :accept, Project do |project|
           !project.pending?
         end

@@ -1,3 +1,11 @@
 <h1>Create a new project proposal</h1>
 
+<% if current_user.missing_proposal_info? %>
+  <div class="alert alert-warning" role="alert">
+    <strong>Note:</strong> You have not set your affiliation and / or
+    department. We suggest that you set them before proposing a project,
+    which you can do by visitng your account settings page.
+  </div>
+<% end %>
+
 <%= render 'new_edit_project_form', change: 'create' %>

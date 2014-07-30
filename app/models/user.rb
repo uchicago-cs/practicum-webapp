@@ -69,4 +69,8 @@ class User < ActiveRecord::Base
     self.department.present? ? " | #{department} " : ""
   end
 
+  def missing_proposal_info?
+    self.affiliation.blank? or self.department.blank?
+  end
+
 end
