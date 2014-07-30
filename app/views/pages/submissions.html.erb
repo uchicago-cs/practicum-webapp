@@ -1,7 +1,6 @@
 <h1>All students' applications</h1>
 <% Submission.all.each do |submission| %>
   <div>
-    <%= render partial: 'submission_short',
-               locals: { submission: submission } %>
+    <%= render 'submission_short', submission: submission %>
   </div>
 <% end %>

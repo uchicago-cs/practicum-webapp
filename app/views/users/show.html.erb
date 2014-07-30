@@ -7,7 +7,7 @@ This is your personal page for you to view your applications / projects.
   <h2>Pending project proposals</h2>
   <% @user.pending_projects.each do |project| %>
     <div>
-      <%= render partial: 'pending_project', locals: { project: project } %>
+      <%= render 'pending_project', project: project %>
     </div>
   <% end %>
 
@@ -16,7 +16,7 @@ This is your personal page for you to view your applications / projects.
   <h2>Approved projects</h2>
   <% @user.accepted_projects.each do |project| %>
     <div>
-      <%= render partial: 'accepted_project', locals: { project: project } %>
+      <%= render 'accepted_project', project: project %>
     </div>
   <% end %>
 
@@ -28,7 +28,7 @@ This is your personal page for you to view your applications / projects.
   <% if @user.submissions.count > 0 %>
     <% @user.submissions.each do |submission| %>
       <div>
-	<%= render partial: 'submission', locals: { submission: submission } %>
+	<%= render 'submission', submission: submission %>
       </div>
     <% end %>
   <% else %>
@@ -46,37 +46,10 @@ This is your personal page for you to view your applications / projects.
 
 <% if can? :update_affiliation_of, current_user %>
   <h3>Change your affiliation and department</h3>
-  This will show up on your project proposals and postings.
-  <%= form_for @user do |f| %>
-    <%= render 'shared/error_messages', object: f.object %>
-
-    <%= f.label :affiliation %>
-    <%= f.text_field :affiliation %>
-
-    <%= f.label :department, "Department, institution, etc." %>
-    <%= f.text_field :department %>
-
-    <%= f.submit "Update your information",
-        class: "btn btn-large btn-primary" %>
-
-    <% end %>
+  <%= render 'affiliation_form' %>
 <% end %>
 
 <% if current_user.admin? %>
   <h3>Change user roles</h3>
-  <%= form_for @user do |f| %>
-    <%= render 'shared/error_messages', object: f.object %>
-
-    <%= f.label :student %>
-    <%= f.check_box :student %>
-
-    <%= f.label :advisor %>
-    <%= f.check_box :advisor %>
-
-    <%= f.label :admin %>
-    <%= f.check_box :admin %>
-
-    <%= f.submit "Change this user's roles",
-        class: "btn btn-primary" %>
-  <% end %>
+  <%= render 'roles_form' %>
 <% end %>

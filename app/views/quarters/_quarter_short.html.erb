@@ -1,0 +1,9 @@
+<%= link_to quarter.formatted_quarter, quarter %>
+<% if can? :manage, Quarter %>
+  | <%= link_to "Edit", edit_quarter_path(quarter.id) %>
+  | <%= link_to "Delete", quarter, method: :delete,
+                                   data: { confirm: "Are you sure?" } %>
+<% end %>
+<% if quarter.current? %>
+  | current
+<% end %>

@@ -1,0 +1,15 @@
+<%= form_for @user do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.label :student %>
+  <%= f.check_box :student %>
+
+  <%= f.label :advisor %>
+  <%= f.check_box :advisor %>
+
+  <%= f.label :admin %>
+  <%= f.check_box :admin %>
+
+  <%= f.submit "Change this user's roles",
+  class: "btn btn-primary" %>
+<% end %>

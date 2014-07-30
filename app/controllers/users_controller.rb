@@ -20,7 +20,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update_attributes(user_params)
-      flash[:notice] = "User roles successfully updated."
+      flash[:notice] = "Settings successfully updated."
       redirect_to @user
     else
       render 'show'

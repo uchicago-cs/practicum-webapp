@@ -1,0 +1,27 @@
+<%= form_for @project do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.label :description, "Description: summarize the project in 2-3 paragraphs." %>
+  <%= f.text_area :description %>
+
+  <%= f.label :expected_deliverables, "Expected deliverables: a list of specific deliverables that you would expect to see by the end of the quarter." %>
+  <%= f.text_area :expected_deliverables %>
+
+  <%= f.label :prerequisites, "Prerequisites: Please list any programming languages or technologies that the student must be familiar with in order to work on this project. If possible, please specify the level of proficiency expected (e.g., if you require students to \"know\" Python, does that mean they will have to occasionally edit some simple Python scripts, or would they be developing the entire project in Python?)." %>
+  <%= f.text_area :prerequisites %>
+
+  <%= f.label :related_work, "Related work (optional): list any publications, software projects, etc. that students can read to learn more about the project." %>
+  <%= f.text_area :related_work %>
+
+  <%= f.label :deadline %>
+  <%= f.datetime_select :deadline, ampm: true, minute_step: 15 %>
+
+  <%= f.label :password_confirmation, "Password confirmation" %>
+  <%= f.password_field :password_confirmation %>
+
+  <%= f.submit "#{change.capitalize} my proposal", class: "btn btn-primary" %>
+
+<% end %>

@@ -1,0 +1,14 @@
+This will show up on your project proposals and postings.
+<%= form_for @user do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.label :affiliation %>
+  <%= f.text_field :affiliation %>
+
+  <%= f.label :department, "Department, institution, etc." %>
+  <%= f.text_field :department %>
+
+  <%= f.submit "Update your information",
+    class: "btn btn-large btn-primary" %>
+
+<% end %>
