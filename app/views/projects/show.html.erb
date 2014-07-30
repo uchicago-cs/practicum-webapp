@@ -1,94 +1,39 @@
 <h1><%= @project.name %></h1>
-<!-- Messy logic -->
-<div>
-  Quarter: <%= @project.formatted_quarter %>
-</div>
-<% if (can? :create, Project) and
-  (current_user.made_project?(@project) or current_user.admin?) %>
+
+<%= render 'project_long', object: @project%>
+
+<% if can? :apply_to, @project %>
+  Click <%= link_to "here", new_project_submission_path(@project.id) %>
+  to apply.
+<% else %>
+  You may not apply to this project.
+  <!-- You have already applied to participate in this project. Please wait
+  for the advisors to review your application. You will be notified by
+  e-mail when they have made their decision. -->
+<% end %>
+
+<% if can? :update, @project %>
   <div>
-    Project status: <%= @project.status.capitalize %>
-  </div>
-<% end %>
-<div>
-  Project advisor: <%= @project.advisor_email %>
-  <% if !@project.advisor_affiliation.blank? %>
-    | <%= @project.advisor_affiliation %>
-  <% end %>
-
-  <% if !@project.advisor_department.blank? %>
-    | <%= @project.advisor_department %>
-  <% end %>
-</div>
-<div>
-  Project description: <%= @project.description %>
-</div>
-<div>
-  Expected deliverables: <%= @project.expected_deliverables %>
-</div>
-<div>
-  Prerequisites: <%= @project.prerequisites %>
-</div>
-<% if !@project.related_work.blank? %>
-  <div>
-    Related work: <%= @project.related_work %>
-  </div>
-<% end %>
-<div>
-  Project deadline: <%= @project.deadline %>
-</div>
-
-<!-- Need to clean this up. -->
-<% if can? :create, Submission %>
-  <% if @project.accepted? and !current_user.applied_to_project?(@project) \
-    and @project.in_current_quarter? %>
-    <%= link_to "Click here to apply.", new_project_submission_path(@project.id) %>
-    <% elsif !@project.accepted? and !current_user.applied_to_project?(@project) %>
-    <!-- This project is currently awaiting approval. -->
-  <% else %>
-    You may not apply to this project.
-    <!-- You have already applied to participate in this project. Please wait
-    for the advisors to review your application. You will be notified by
-    e-mail when they have made their decision. -->
-  <% end %>
-<% end %>
-
-<% if (can? :create, Project) and current_user.made_project?(@project) and @project.pending? %>
-  <%= link_to "Click here to edit the project information.", edit_project_path  %>
-<% end %>
-
-<br>
-
-<% if (can? :accept, Project) and @project.pending? %>
-  <div>
-    Click <%= link_to "here", edit_status_project_path %>  to change this project's status or request changes to the proposal.
+    Click <%= link_to "here", edit_project_path %>
+    to edit the project information.
   </div>
 <% end %>
 
-<br>
+<% if can? :accept, @project %>
+  <div>
+    Click <%= link_to "here", edit_status_project_path %>
+    to change this project's status or request changes to the proposal.
+  </div>
+<% end %>
 
-<% if (can? :read_submissions_of, @project) %>
-  <% if (@project.submissions.count > 0) %>
-    <% @project.submissions.each do |submission| %>
-      <div>
-	<%= submission.student_email %> applied for this project. View
-	this student's application
-	<%= link_to "here", submission_path(submission.id) %>.
-      </div>
-    <% end %>
-  <% else %>
-    No one has applied to this project yet.
+<% if can? :read_submissions_of, @project %>
+  <% @project.submissions.each do |submission| %>
+    <div>
+      <%= render 'project_submission', submission: submission %>
+    </div>
   <% end %>
 <% end %>
 
-<%# if @project.cloneable? and can? :update, @project %>
-<% if (can? :create, Project) and
-  (current_user.made_project?(@project) or current_user.admin?) and
-  @project.cloneable? %>
-  <h3>Clone project</h3>
-  <div>
-    No student completed this project, so you may clone it into the
-    current quarter. Click
-    <%= link_to "here", @project, method: :clone %>
-    to do so.
-  </div>
+<% if can? :clone, @project %>
+  <%= render 'project_clone', object: @project %>
 <% end %>

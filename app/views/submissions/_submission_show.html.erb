@@ -1,0 +1,13 @@
+<div>Status: <%= @submission.status.capitalize %> </div>
+<div>Applicant: <%= @submission.student_email %></div>
+<div>Interests: <%= @submission.information %></div>
+<div>Qualifications: <%= @submission.qualifications %></div>
+<div>Courses: <%= @submission.courses %></div>
+<% if can? :download_resume, @submission %>
+  <div>
+    Resume: <%= link_to "download",
+    download_resume_path(id: @submission.id) %>
+  </div>
+<% else %>
+  <div>This student did not upload a resume.</div>
+<% end %>

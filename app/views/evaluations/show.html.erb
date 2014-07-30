@@ -1,6 +1,3 @@
 <h1>Evaluation for <%= @evaluation.student_email %> on project <%= @evaluation.project_name %></h1>
 
-<div>Student email: <%= @evaluation.student_email %></div>
-<div>Project name: <%= @evaluation.project_name %></div>
-<div>Advisor email: <%= @evaluation.advisor_email %></div>
-<div>Evaluation: <%= @evaluation.comments %></div>
+<%= render 'evaluation_show', object: @evaluation %>

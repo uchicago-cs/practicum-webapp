@@ -61,4 +61,12 @@ class User < ActiveRecord::Base
                      project_id: submission.project_id).exists?
   end
 
+  def formatted_affiliation
+    self.affiliation.present? ? " | #{affiliation} " : ""
+  end
+
+  def formatted_department
+    self.department.present? ? " | #{department} " : ""
+  end
+
 end

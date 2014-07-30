@@ -14,13 +14,11 @@ class Project < ActiveRecord::Base
   validates :prerequisites, presence: true,
     length: { minimum: 100, maximum: 1500 }
 
-  delegate :email, to: :user, prefix: :advisor, allow_nil: true
-  delegate :affiliation, to: :user, prefix: :advisor, allow_nil: true
-  delegate :department, to: :user, prefix: :advisor, allow_nil: true
+  delegate :email, :affiliation, :formatted_affiliation, :formatted_department,
+           :department, to: :user, prefix: :advisor, allow_nil: true
   delegate :formatted_quarter, to: :quarter, prefix: false, allow_nil: true
+  # prefix true on this?
   delegate :current, to: :quarter, prefix: true, allow_nil: true
-  # Note: this returns an ID.
-  # (Compare with quarter.rb, Quarter.current_quarter.)
 
   attr_accessor :comments
 
@@ -78,6 +76,10 @@ class Project < ActiveRecord::Base
     self.quarter != Quarter.current_quarter \
       and self.accepted_submissions.count == 0 \
       and !self.cloned?
+  end
+
+  def formatted_related_work
+    self.related_work.present? ? self.related_work : ""
   end
 
   private

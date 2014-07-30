@@ -106,4 +106,11 @@ class SubmissionsController < ApplicationController
       @project.quarter == Quarter.current_quarter
   end
 
+  def is_admin_or_advisor?
+    if !current_user.admin? and !current_user.made_project?(@project)
+      message = "Access denied."
+      redirect_to(root_url, { alert: message })
+    end
+  end
+
 end

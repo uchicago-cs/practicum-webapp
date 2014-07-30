@@ -5,12 +5,17 @@ class Ability
 
     user ||= User.new
     can :read, Quarter
+
     if user.new_record?
       can :read, Project, status: "accepted"
     else
+
       if user.admin?
         can :manage, :all
         can :destroy, Quarter, current: false
+        can :accept, Project do |project|
+          project.pending?
+        end
       end
 
       if user.advisor?
@@ -20,7 +25,12 @@ class Ability
         can :create, Evaluation
         can :read, Evaluation, advisor_id: user.id
         can :update_affiliation_of, User, id: user.id
-        submission_abilities(user, :accept, :reject, :download_resume, :read)
+        submission_abilities(user, :accept, :reject, :read)
+
+        can :download_resume, Submission do |submission|
+          submission.project_advisor_id == user.id and \
+            submission.resume.exists?
+        end
 
         can :read, Project do |project|
           project.status == "accepted" or project.advisor_id == user.id
@@ -31,12 +41,17 @@ class Ability
         end
 
         can :read_submissions_of, Project do |project|
-          project.advisor_id == user.id
+          project.advisor_id == user.id and project.submissions.count > 0
+          # user.made_project?(project)
+        end
+
+        can :clone, Project do |project|
+          user.made_project?(project) and project.cloneable?
         end
 
         can :create_evaluation_for, Submission do |submission|
           (submission.project_advisor_id == user.id) \
-            and submission.accepted?
+            and submission.accepted? and !submission.evaluation
         end
       end
 
@@ -46,7 +61,12 @@ class Ability
         can :create, Submission
         can :read, Submission, student_id: user.id
         can :download_resume, Submission, student_id: user.id
+        can :apply_to, Project do |project|
+          project.accepted? and !user.applied_to_project?(project) \
+            and project.in_current_quarter?
+        end
       end
+
     end
 
   end

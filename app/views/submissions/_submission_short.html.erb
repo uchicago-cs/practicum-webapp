@@ -1,0 +1,8 @@
+<li>
+  <%= submission.information %> | submitted by
+  <%= submission.student_email %> to project
+  <%= submission.project_id %>, which is entitled
+  "<%= submission.project_name %>" | status:
+  <%= submission.status %>
+</li>
+<%= link_to "View this application.", submission_path(submission.id) %>

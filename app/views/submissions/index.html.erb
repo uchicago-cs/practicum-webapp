@@ -1,19 +1,12 @@
 <h1>Applications to <%= @project.name %></h1>
 
-<% if can? :read, Submission %>
-<!-- Also check that advisor has created these submissions? -->
+<% if can? :read_submissions_of, @project %>
   <ol>
     <% @project.submissions.each do |submission| %>
       <div>
-	<li>
-	  <%= submission.information %> | submitted by
-	  <%= submission.student_email %> to project
-	  <%= submission.project_id %>, which is entitled
-	  "<%= submission.project_name %>" | status:
-	  <%= submission.status %>
-	</li>
-	<%= link_to "View this application.", submission_path(submission.id) %>
+	<%= render 'submission_short', submission: submission %>
       </div>
+      <br>
     <% end %>
   </ol>
 <% end %>

@@ -1,0 +1,28 @@
+<div>
+  Quarter: <%= @project.formatted_quarter %>
+</div>
+<% if can? :read_submissions_of, @project %>
+  <div>
+    Project status: <%= @project.status.capitalize %>
+  </div>
+<% end %>
+<div>
+  Project advisor: <%= @project.advisor_email %>
+  <%= @project.advisor_formatted_affiliation %>
+  <%= @project.advisor_formatted_department %>
+</div>
+<div>
+  Project description: <%= @project.description %>
+</div>
+<div>
+  Expected deliverables: <%= @project.expected_deliverables %>
+</div>
+<div>
+  Prerequisites: <%= @project.prerequisites %>
+</div>
+<div>
+  Related work: <%= @project.formatted_related_work %>
+</div>
+<div>
+  Project deadline: <%= @project.deadline %>
+</div>

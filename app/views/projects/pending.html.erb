@@ -1,10 +1,10 @@
 <h1>Pending projects</h1>
 
-<% @pending_projects.each do |project| %>
-  <ul>
+<ol>
+  <% @pending_projects.each do |project| %>
     <div>
       <%= render 'project_short', project: project %>
     </div>
-  </ul>
-  <br>
-<% end %>
+    <br>
+  <% end %>
+</ol>
