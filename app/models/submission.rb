@@ -15,7 +15,8 @@ class Submission < ActiveRecord::Base
 
   delegate :name, to: :project, prefix: true, allow_nil: true
   delegate :email, to: :user, prefix: :student, allow_nil: true
-  delegate :advisor_id, to: :project, prefix: true, allow_nil: true
+  delegate :advisor_id, :advisor_email,
+           to: :project, prefix: true, allow_nil: true
 
   after_create :send_student_applied
   after_update :send_respective_update

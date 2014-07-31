@@ -1,43 +1,55 @@
 FactoryGirl.define do
   factory :user do
-    sequence(:email) { |n| "student_#{n+500}@blah.org" }
+    sequence(:email) { |n| "student_#{n}@university.edu" }
     password "foobarfoo"
     password_confirmation "foobarfoo"
+
+    factory :student do
+      student true
+    end
+
+    factory :advisor do
+      student true
+      advisor true
+    end
+
+    factory :admin do
+      student true
+      admin   true
+    end
   end
 
-  factory :student do
-    student true
-    sequence(:email) { |n| "student_#{n+500}@blah.org" }
-    password "foobarfoo"
-    password_confirmation "foobarfoo"
-  end
-
-  factory :advisor do
-    advisor true
-    sequence(:email) { |n| "advisor_#{n+500}@blah.org" }
-    password "foobarfoo"
-    password_confirmation "foobarfoo"
-  end
-
-  factory :admin do
-    admin true
-    sequence(:email) { |n| "admin_#{n+500}@blah.org" }
-    password "foobarfoo"
-    password_confirmation "foobarfoo"
+  factory :quarter do
+    year { Date.today.year }
+    season { %w(spring summer autumn winter).sample }
+    current false
   end
 
   factory :project do
-    sequence(:name) { |n| "Project #{n+500} "}
+    sequence(:name) { |n| "Project #{n}" }
     advisor_id 1
+    quarter_id 1
     status "pending"
-    deadline DateTime.current
-    description Faker::Lorem.sentence(20)
+    deadline { DateTime.current }
+    description { "a"*500 }
+    expected_deliverables { "a"*500 }
+    prerequisites { "a"*500 }
+    related_work { "a"*500 }
   end
 
   factory :submission do
     student_id 1
     project_id 1
     status "pending"
-    information Faker::Lorem.sentence(20)
+    information { "a"*500 }
+    qualifications { "a"*500 }
+    courses { "a"*500 }
+  end
+
+  factory :evaluation do
+    advisor_id 1
+    project_id 1
+    student_id 1
+    comments { "a"*500 }
   end
 end

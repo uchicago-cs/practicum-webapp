@@ -6,6 +6,7 @@ require 'active_support/inflector'
 guard :rspec, all_after_pass: false,
               all_on_start: true, cmd: 'spring rspec --drb' do
   watch(%r{^spec/.+_spec\.rb$})
+  watch('spec/factories.rb')
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
   watch(%r{^spec/features/(.+)\.rb$}) { "spec/features" }

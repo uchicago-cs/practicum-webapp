@@ -19,9 +19,6 @@
   <%= f.label :deadline %>
   <%= f.datetime_select :deadline, ampm: true, minute_step: 15 %>
 
-  <%= f.label :password_confirmation, "Password confirmation" %>
-  <%= f.password_field :password_confirmation %>
-
   <%= f.submit "#{change.capitalize} my proposal", class: "btn btn-primary" %>
 
 <% end %>

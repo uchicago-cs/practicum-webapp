@@ -9,7 +9,7 @@ class ProjectsController < ApplicationController
 
   def create
     @project = current_user.projects.build(project_params)
-    @project.quarter_id = Quarter.current_quarter.id
+    @project.assign_attributes(quarter_id: Quarter.current_quarter.id)
 
     if @project.save
       flash[:notice] = "Project successfully proposed."
