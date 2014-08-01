@@ -3,10 +3,10 @@ require 'spec_helper'
 
 RSpec.describe User, :type => :model do
 
-  describe "user" do
+  describe "guest user" do
 
     before(:each) do
-      @user    = User.new(email: "test@university.edu",
+      @user = User.create(email: "test@university.edu",
                           password: "foobarfoo")
     end
 
@@ -31,7 +31,7 @@ RSpec.describe User, :type => :model do
 
     it { should be_valid }
 
-    it "should have an empty roles hash" do
+    it "should have an (almost) empty roles hash" do
       expect(@user.student).to be_truthy
       expect(@user.roles).to include "student"
       expect(@user.formatted_roles).to eq "student"
@@ -48,6 +48,23 @@ RSpec.describe User, :type => :model do
         expect(@user.accepted_projects).to be_empty
         expect(@user.pending_projects).to be_empty
         expect(@user.projects_made_by_id).to be_empty
+      end
+    end
+
+    describe "who tries to propose a project" do
+      it "should fail" do
+        expect{FactoryGirl.create(:project, user: @user)}.to raise_error
+      end
+    end
+
+    describe "who tries to create a submission" do
+      before { @project = FactoryGirl.create(:project) }
+      it "should fail" do
+        expect{FactoryGirl.create(:submission, project: @project,
+                                  user: @user)}.to raise_error
+        # @err = FactoryGirl.create(:submission, project: @project, student: @user)
+        # Rails.logger.debug "#{@err.errors.full_messages}\n\n"*50
+        # Rails.logger.debug "#{FactoryGirl.create(:submission, project: @project, user: @user)}\n\n"*50
       end
     end
 

@@ -2,6 +2,7 @@ require 'rubygems'
 require 'spork'
 require 'capybara/rspec'
 require 'database_cleaner'
+require 'factory_girl_rails'
 
 # Loading more in this block will cause your tests to run faster. However,
 # if you change any configuration or code from libraries loaded here, you'll

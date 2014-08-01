@@ -13,6 +13,7 @@ class Project < ActiveRecord::Base
     length: { minimum: 100, maximum: 1500 }
   validates :prerequisites, presence: true,
     length: { minimum: 100, maximum: 1500 }
+  validate :creator_role
 
   delegate :email, :affiliation, :formatted_affiliation, :formatted_department,
            :department, to: :user, prefix: :advisor, allow_nil: true
@@ -92,6 +93,11 @@ class Project < ActiveRecord::Base
 
   def send_project_status_changed
     Notifier.project_status_changed(self).deliver
+  end
+
+  def creator_role
+    errors.add(:user, "must be an advisor or admin") if \
+      ( user.roles == ["student"] or user.roles == [] )
   end
 
 end

@@ -4,23 +4,30 @@ FactoryGirl.define do
   # belongs_to: Write `thing_this_belong_to` in the belonging model.
 
   factory :user do
-    sequence(:email) { |n| "student_#{n}@university.edu" }
+    sequence(:email) { |n| "user_#{n}@university.edu" }
     password "foobarfoo"
     password_confirmation "foobarfoo"
 
-    factory :student do
+    trait :student do
+      sequence(:email) { |n| "student_#{n}@university.edu" }
       student true
     end
 
-    factory :advisor do
+    trait :advisor do
+      sequence(:email) { |n| "advisor_#{n}@university.edu" }
       student true
       advisor true
     end
 
-    factory :admin do
+    trait :admin do
+      sequence(:email) { |n| "admin_#{n}@university.edu" }
       student true
       admin   true
     end
+
+    factory :student, traits: [:student]
+    factory :advisor, traits: [:advisor]
+    factory :admin,   traits: [:admin]
   end
 
   factory :quarter do
@@ -31,32 +38,34 @@ FactoryGirl.define do
 
   factory :project do
     sequence(:name) { |n| "Project #{n}" }
-    advisor_id 1
-    quarter_id 1
+    sequence(:advisor_id) { |n| n }
+    sequence(:quarter_id) { |n| n }
     status "pending"
     deadline { DateTime.current }
     description { "a"*500 }
     expected_deliverables { "a"*500 }
     prerequisites { "a"*500 }
     related_work { "a"*500 }
-    user
+    # `user`s should _not_ be allowed to create projects!
+    association :user, factory: [:user, :advisor]
   end
 
   factory :submission do
-    student_id 1
-    project_id 1
+    sequence(:student_id) { |n| n }
+    sequence(:project_id) { |n| n }
     status "pending"
     information { "a"*500 }
     qualifications { "a"*500 }
     courses { "a"*500 }
     project
-    user
+    # `user`s should _not_ be allowed to create submissions!
+    association :user, factory: [:user, :student]
   end
 
   factory :evaluation do
-    advisor_id 1
-    project_id 1
-    student_id 1
+    sequence(:advisor_id) { |n| n }
+    sequence(:project_id) { |n| n }
+    sequence(:student_id) { |n| n }
     comments { "a"*500 }
     submission
   end
