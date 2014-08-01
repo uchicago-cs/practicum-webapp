@@ -64,4 +64,16 @@ RSpec.describe Notifier, :type => :mailer do
     end
   end
 
+  context "when an evaluation is created" do
+    before do
+      # Create an admin, whom we send the "new proposal" e-mail to.
+      @admin = FactoryGirl.create(:admin)
+      @submission = FactoryGirl.create(:submission)
+    end
+    it "should send an e-mail" do
+      expect{ FactoryGirl.create(:evaluation, submission: @submission) }.to \
+        change{ ActionMailer::Base.deliveries.count }.by(1)
+    end
+  end
+
 end
