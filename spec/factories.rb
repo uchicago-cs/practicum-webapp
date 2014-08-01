@@ -1,4 +1,8 @@
 FactoryGirl.define do
+
+  # has_many:   Use FactoryGirl's callbacks.
+  # belongs_to: Write `thing_this_belong_to` in the belonging model.
+
   factory :user do
     sequence(:email) { |n| "student_#{n}@university.edu" }
     password "foobarfoo"
@@ -35,6 +39,7 @@ FactoryGirl.define do
     expected_deliverables { "a"*500 }
     prerequisites { "a"*500 }
     related_work { "a"*500 }
+    user
   end
 
   factory :submission do
@@ -44,6 +49,8 @@ FactoryGirl.define do
     information { "a"*500 }
     qualifications { "a"*500 }
     courses { "a"*500 }
+    project
+    user
   end
 
   factory :evaluation do
@@ -51,5 +58,6 @@ FactoryGirl.define do
     project_id 1
     student_id 1
     comments { "a"*500 }
+    submission
   end
 end

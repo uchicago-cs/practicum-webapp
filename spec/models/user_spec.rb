@@ -76,7 +76,7 @@ RSpec.describe User, :type => :model do
       end
     end
 
-    describe "with affiliation and department" do
+    context "with affiliation and department" do
       before do
         @advisor.update_attributes(affiliation: "Professor",
                                    department: "Computer Science")
@@ -88,7 +88,7 @@ RSpec.describe User, :type => :model do
       end
     end
 
-    describe "without affiliation or department" do
+    context "without affiliation or department" do
       before do
         @advisor.update_attributes(affiliation: "",
                                    department: "Computer Science")
