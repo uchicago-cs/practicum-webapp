@@ -51,5 +51,7 @@ Practicum::Application.routes.draw do
   match "/admin", to: "pages#admin", via: "get", as: "admin_dashboard"
   match "/request_advisor_access", to: "pages#request_advisor_access",
         via: "get"
+  match "/request_advisor_access", to: "pages#send_request_for_advisor_access",
+        via: "post"
 
 end

@@ -58,4 +58,13 @@ class Notifier < ActionMailer::Base
     mail(to: @to, subject: @subject)
   end
 
+  def request_for_advisor_access(user, admin)
+    @user = user
+    @admin = admin
+    @to = @admin.email
+    @subject = "#{@user.email} has requested advisor privileges"
+
+    mail(to: @to, subject: @subject)
+  end
+
 end

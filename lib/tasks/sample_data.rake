@@ -23,6 +23,8 @@ def delete_table(table)
 
   table_class.delete_all
   ActiveRecord::Base.connection.execute("select setval(pg_get_serial_sequence('#{table}', 'id'), 1, false);")
+  # Or "truncate tablename restart identity;" to delete records and
+  # reset ID sequence.
 end
 
 def make_users
@@ -32,7 +34,7 @@ def make_users
     # name = "Admin Number #{n+1}"
     email = "admin-#{n+1}@blah.org"
     password = "foobarfoo"
-    User.create!(email: email, password: password,
+    User.create!(email: email, password: password, student: false,
                  password_confirmation: password, admin: true)
   end
 
@@ -41,7 +43,7 @@ def make_users
     # name = "Advisor Number #{n+1}"
     email = "advisor-#{n+1}@blah.org"
     password = "foobarfoo"
-    User.create!(email: email, password: password,
+    User.create!(email: email, password: password, student: false,
                  password_confirmation: password, advisor: true)
   end
 
