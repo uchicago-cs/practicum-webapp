@@ -1,28 +1,50 @@
-<div>
-  Quarter: <%= @project.formatted_quarter %>
-</div>
-<% if can? :read_submissions_of, @project %>
-  <div>
-    Project status: <%= @project.status.capitalize %>
-  </div>
-<% end %>
-<div>
-  Project advisor: <%= @project.advisor_email %>
-  <%= @project.advisor_formatted_affiliation %>
-  <%= @project.advisor_formatted_department %>
-</div>
-<div>
-  Project description: <%= @project.description %>
-</div>
-<div>
-  Expected deliverables: <%= @project.expected_deliverables %>
-</div>
-<div>
-  Prerequisites: <%= @project.prerequisites %>
-</div>
-<div>
-  Related work: <%= @project.formatted_related_work %>
-</div>
-<div>
-  Project deadline: <%= @project.deadline %>
-</div>
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <th>Project name</th>
+      <td><%= @project.name %></td>
+    </tr>
+
+    <% if can? :read_submissions_of, @project %>
+      <tr>
+	<th>Quarter</th>
+	<td><%= @project.formatted_quarter %></td>
+      </tr>
+    <% end %>
+
+    <tr>
+      <th>Status</th>
+      <td><%= @project.status.capitalize %></td>
+    </tr>
+
+    <tr>
+      <th>Advisor</th>
+      <td><%= @project.advisor_formatted_info %></td>
+    </tr>
+
+    <tr>
+      <th>Description</th>
+      <td><%= @project.description %></td>
+    </tr>
+
+    <tr>
+      <th>Expected deliverables</th>
+      <td><%= @project.expected_deliverables %></td>
+    </tr>
+
+    <tr>
+      <th>Prerequisites</th>
+      <td><%= @project.prerequisites %></td>
+    </tr>
+
+    <tr>
+      <th>Related work</th>
+      <td><%= @project.formatted_related_work %></td>
+    </tr>
+
+    <tr>
+      <th>Application deadline</th>
+      <td><%= @project.quarter.application_deadline %></td>
+    </tr>
+  </tbody>
+</table>

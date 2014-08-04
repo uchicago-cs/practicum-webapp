@@ -5,6 +5,4 @@
   <%= link_to "reject", reject_submission_path(@submission.id),
                         method: :patch %>
   this application.
-<% else %>
-  You have already <%= @submission.status %> this applicant.
 <% end %>

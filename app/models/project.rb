@@ -16,7 +16,8 @@ class Project < ActiveRecord::Base
   validate :creator_role
 
   delegate :email, :affiliation, :formatted_affiliation, :formatted_department,
-           :department, to: :user, prefix: :advisor, allow_nil: true
+           :department, :formatted_info, to: :user, prefix: :advisor,
+           allow_nil: true
   delegate :formatted_quarter, to: :quarter, prefix: false, allow_nil: true
   # prefix true on this?
   delegate :current, to: :quarter, prefix: true, allow_nil: true

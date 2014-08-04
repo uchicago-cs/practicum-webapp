@@ -7,15 +7,12 @@
   to apply.
 <% else %>
   You may not apply to this project.
-  <!-- You have already applied to participate in this project. Please wait
-  for the advisors to review your application. You will be notified by
-  e-mail when they have made their decision. -->
 <% end %>
 
 <% if can? :update, @project %>
   <div>
     Click <%= link_to "here", edit_project_path %>
-    to edit the project information.
+    to edit this project's information.
   </div>
 <% end %>
 
