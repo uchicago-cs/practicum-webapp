@@ -2,48 +2,6 @@
 
 This is your personal page.
 
-<% if @user.advisor? or @user.admin? %>
-
-  <h2>Pending project proposals</h2>
-  <% @user.pending_projects.each do |project| %>
-    <div>
-      <%= render 'pending_project', project: project %>
-    </div>
-  <% end %>
-
-  <br><br>
-
-  <h2>Approved projects</h2>
-  <% @user.accepted_projects.each do |project| %>
-    <div>
-      <%= render 'accepted_project', project: project %>
-    </div>
-  <% end %>
-
-<% end %>
-
-<% if @user.student? or @user.admin? %>
-
-  <h2>Submitted applications</h2>
-  <% if @user.submissions.count > 0 %>
-    <% @user.submissions.each do |submission| %>
-      <div>
-	<%= render 'submission', submission: submission %>
-      </div>
-    <% end %>
-  <% else %>
-    You have not applied to any projects yet.
-  <% end %>
-
-  <h2>Accepted applications</h2>
-  <% @user.submissions.each do |submission| %>
-    <div>
-      You application for <%= submission.project_name %> has been accepted.
-    </div>
-  <% end %>
-
-<% end %>
-
 <% if can? :update_affiliation_of, current_user %>
   <h3>Change your affiliation and department</h3>
   <%= render 'affiliation_form' %>

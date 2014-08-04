@@ -23,10 +23,13 @@ class UsersController < ApplicationController
     end
   end
 
-  def submissions_made
-  end
+  # def submissions_made
+  # end
 
-  def projects_created
+  # def projects_created
+  # end
+
+  def my_projects
   end
 
   private

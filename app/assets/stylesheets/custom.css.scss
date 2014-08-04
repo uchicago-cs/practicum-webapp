@@ -58,3 +58,20 @@ footer {
   margin-top: 45px;
   @include box_sizing;
 }
+
+table {
+  width: 100%;
+}
+
+table th {
+  background-color: #ddd;
+  padding: 3px;
+}
+
+table tbody {
+  background-color: #eee;
+}
+
+table tbody {
+  background-color: #eee;
+}

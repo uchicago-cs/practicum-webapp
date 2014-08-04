@@ -1,14 +1,18 @@
-<h1>Approved projects for <%= Quarter.formatted_current_quarter%></h1>
+<h1><%= Quarter.formatted_current_quarter%> Projects</h1>
 
 <% if @projects.present? %>
-<ol>
-  <% @projects.each do |project| %>
-    <div>
-      <%= render 'project_short', project: project %>
-    </div>
-    <br>
-  <% end %>
-</ol>
+  <table class="table table-bordered">
+    <tr>
+      <th>Title</th>
+      <th>Advisor</th>
+      <!-- Summary column? -->
+    </tr>
+    <tbody>
+      <% @projects.each do |project| %>
+	<%= render 'project_short', project: project %>
+      <% end %>
+    </tbody>
+  </table>
 <% else %>
-There are currently no projects available during this quarter.
+  There are currently no projects available.
 <% end %>

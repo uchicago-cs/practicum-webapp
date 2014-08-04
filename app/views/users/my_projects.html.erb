@@ -1,0 +1,50 @@
+<h1><%= @user.email %>'s Projects</h1>
+
+<% if @user.advisor? or @user.admin? %>
+
+  <% if @user.projects.count > 0 %>
+    <table class="table table-bordered">
+      <tr>
+	<th>Project name</th>
+	<th>Quarter</th>
+	<th>Date proposed</th>
+	<th>Status</th>
+	<th>Applicants</th>
+	<th>Notes</th>
+      </tr>
+      <tbody>
+	<% @user.projects.each do |project| %>
+	  <%= render 'project', project: project %>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    You have not proposed any projects yet.
+  <% end %>
+
+<% end %>
+
+<% if @user.student? or @user.admin? %>
+
+  <br><br>
+
+  <h2>Your applications</h2>
+  <% if @user.submissions.count > 0 %>
+     <table class="table table-bordered">
+      <tr>
+	<th>Project name</th>
+	<th>Date applied</th>
+	<th>Status</th>
+	<th>Notes</th>
+      </tr>
+      <tbody>
+	<% @user.submissions.each do |submission| %>
+	  <%= render 'submission', submission: submission %>
+        <% end %>
+      </tbody>
+     </table>
+  <% else %>
+    You have not applied to any projects yet.
+  <% end %>
+
+<% end %>

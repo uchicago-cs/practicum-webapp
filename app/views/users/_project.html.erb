@@ -1,7 +1,13 @@
 <tr>
   <td><%= link_to project.name, project %></td>
-  <td><%= project.created_at %></td>
-  <td><%= project.status %></td>
+  <td><%= project.formatted_quarter %></td>
+  <td><%= project.created_at.to_date %></td>
+  <td><%= project.status.capitalize %></td>
+  <td>
+    <% if project.submissions.count > 0 %>
+      <%= project.submissions.count %>
+    <% end %>
+  </td>
   <td>
     <% if project.pending? %>
       You may edit this proposal

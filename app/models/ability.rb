@@ -27,6 +27,7 @@ class Ability
 
       if user.advisor?
         can :create, Project
+        can :my_projects, User
         can :read, User, id: user.id
         can :update, User, id: user.id
         can :create, Evaluation

@@ -19,4 +19,7 @@ class PagesController < ApplicationController
   def submissions
   end
 
+  def request_advisor_access
+  end
+
 end
