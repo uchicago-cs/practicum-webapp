@@ -22,7 +22,7 @@ def delete_table(table)
   table_string = table.to_s
 
   table_class.delete_all
-  ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = '#{table_string}'")
+  ActiveRecord::Base.connection.execute("select setval(pg_get_serial_sequence('#{table}', 'id'), 1, false);")
 end
 
 def make_users

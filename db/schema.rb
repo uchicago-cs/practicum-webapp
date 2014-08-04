@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20140726011350) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "evaluations", force: true do |t|
     t.integer  "advisor_id"
     t.integer  "student_id"
@@ -23,8 +26,8 @@ ActiveRecord::Schema.define(version: 20140726011350) do
     t.integer  "submission_id"
   end
 
-  add_index "evaluations", ["advisor_id"], name: "index_evaluations_on_advisor_id"
-  add_index "evaluations", ["student_id", "project_id"], name: "index_evaluations_on_student_id_and_project_id", unique: true
+  add_index "evaluations", ["advisor_id"], name: "index_evaluations_on_advisor_id", using: :btree
+  add_index "evaluations", ["student_id", "project_id"], name: "index_evaluations_on_student_id_and_project_id", unique: true, using: :btree
 
   create_table "messages", force: true do |t|
     t.datetime "created_at"
@@ -49,8 +52,8 @@ ActiveRecord::Schema.define(version: 20140726011350) do
     t.boolean  "cloned",                default: false,     null: false
   end
 
-  add_index "projects", ["advisor_id"], name: "index_projects_on_advisor_id"
-  add_index "projects", ["name", "quarter_id"], name: "index_projects_on_name_and_quarter_id", unique: true
+  add_index "projects", ["advisor_id"], name: "index_projects_on_advisor_id", using: :btree
+  add_index "projects", ["name", "quarter_id"], name: "index_projects_on_name_and_quarter_id", unique: true, using: :btree
 
   create_table "quarters", force: true do |t|
     t.datetime "created_at"
@@ -75,8 +78,8 @@ ActiveRecord::Schema.define(version: 20140726011350) do
     t.datetime "resume_updated_at"
   end
 
-  add_index "submissions", ["student_id", "project_id"], name: "index_submissions_on_student_id_and_project_id", unique: true
-  add_index "submissions", ["student_id"], name: "index_submissions_on_student_id"
+  add_index "submissions", ["student_id", "project_id"], name: "index_submissions_on_student_id_and_project_id", unique: true, using: :btree
+  add_index "submissions", ["student_id"], name: "index_submissions_on_student_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "",    null: false
@@ -100,7 +103,7 @@ ActiveRecord::Schema.define(version: 20140726011350) do
     t.string   "department",             default: "",    null: false
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end

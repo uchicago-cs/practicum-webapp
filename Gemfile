@@ -15,7 +15,7 @@ gem 'devise', '~> 3.2.4'
 gem 'paperclip', '~> 4.1'
 
 group :development, :test do
-  gem 'sqlite3', '1.3.8'
+  gem 'pg', '~> 0.17.1'
   gem 'rspec-rails', '3.0.0'
   gem 'spork-rails', '4.0.0'
   gem 'guard-rspec', '4.2.10'
@@ -50,7 +50,7 @@ group :doc do
 end
 
 group :production do
-  gem 'pg', '0.15.1'
+  gem 'pg', '~> 0.17.1'
   gem 'rails_12factor', '0.0.2'
 end
 
