@@ -30,6 +30,11 @@ class Quarter < ActiveRecord::Base
     [season.capitalize, year].join(" ")
   end
 
+  def application_deadline
+    Date.today
+    # Based on what? And format it
+  end
+
   private
 
   def set_current_false

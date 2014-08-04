@@ -1,12 +1,17 @@
 <h1>Applications to <%= @project.name %></h1>
 
 <% if can? :read_submissions_of, @project %>
-  <ol>
+  <table class="table table-bordered">
+    <tr>
+      <th>Applicant</th>
+      <th>Date submitted</th>
+      <th>Status</th>
+      <th>Notes</th>
+    </tr>
+    <tbody>
     <% @project.submissions.each do |submission| %>
-      <div>
-	<%= render 'submission_short', submission: submission %>
-      </div>
-      <br>
+      <%= render 'submission_short', submission: submission %>
     <% end %>
-  </ol>
+    </tbody>
+  </table>
 <% end %>

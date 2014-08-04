@@ -69,6 +69,13 @@ class User < ActiveRecord::Base
     self.department.present? ? " | #{department} " : ""
   end
 
+  def formatted_info
+    info = self.email
+    info << ", #{self.department}"  if self.department.present?
+    info << ", #{self.affiliation}" if self.affiliation.present?
+    info
+  end
+
   def missing_proposal_info?
     self.affiliation.blank? or self.department.blank?
   end

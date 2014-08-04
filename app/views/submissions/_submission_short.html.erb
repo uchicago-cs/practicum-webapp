@@ -1,8 +1,9 @@
-<li>
-  <%= submission.information %> | submitted by
-  <%= submission.student_email %> to project
-  <%= submission.project_id %>, which is entitled
-  "<%= submission.project_name %>" | status:
-  <%= submission.status %>
-</li>
-<%= link_to "View this application.", submission_path(submission.id) %>
+<tr>
+  <td><%= submission.student_email %></td>
+  <td><%= submission.created_at.to_date %></td>
+  <td><%= submission.status.capitalize %></td>
+  <td>
+    Click <%= link_to "here", submission_path(submission.id) %>
+    to view this application.
+  </td>
+</tr>

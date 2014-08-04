@@ -3,6 +3,10 @@
 @import "bootstrap";
 
 $grayMediumLight: #eaeaea;
+$bgDefault      : #800000;
+$bgHighlight    : #9b1111;
+$colDefault     : #ecf0f1;
+$colHighlight   : #ffffff;
 
 @mixin box_sizing {
   -moz-box-sizing: border-box;
@@ -61,17 +65,14 @@ footer {
 
 table {
   width: 100%;
-}
 
-table th {
-  background-color: #ddd;
-  padding: 3px;
-}
+  th {
+    background-color: #ddd;
+    padding: 3px;
+  }
 
-table tbody {
-  background-color: #eee;
-}
+  tbody {
+    background-color: #eee;
+  }
 
-table tbody {
-  background-color: #eee;
 }

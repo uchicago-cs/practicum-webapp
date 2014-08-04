@@ -1,17 +1,48 @@
-<div>Status: <%= @submission.status.capitalize %> </div>
-<div>Applicant: <%= @submission.student_email %></div>
-<div>
-  Project: <%= link_to @submission.project_name, @submission.project %>,
-  by <%= @submission.project_advisor_email %>
-</div>
-<div>Interests: <%= @submission.information %></div>
-<div>Qualifications: <%= @submission.qualifications %></div>
-<div>Courses: <%= @submission.courses %></div>
-<% if can? :download_resume, @submission %>
-  <div>
-    Resume: <%= link_to "download",
-    download_resume_path(id: @submission.id) %>
-  </div>
-<% else %>
-  <div>This student did not upload a resume.</div>
-<% end %>
+
+<table class="table table-bordered">
+
+  <tbody>
+    <tr>
+      <th>Applicant</th>
+      <td><%= @submission.student_email %></td>
+    </tr>
+
+    <tr>
+      <th>Project</th>
+      <td><%= @submission.project_name %></td>
+    </tr>
+
+    <tr>
+      <th>Status</th>
+      <td><%= @submission.status.capitalize %></td>
+    </tr>
+
+    <tr>
+      <th>Interests</th>
+      <td><%= @submission.information %></td>
+    </tr>
+
+    <tr>
+      <th>Qualifications</th>
+      <td><%= @submission.qualifications %></td>
+    </tr>
+
+    <tr>
+      <th>Courses</th>
+      <td><%= @submission.courses %></td>
+    </tr>
+
+    <tr>
+      <th>Resume</th>
+      <td>
+	<% if can? :download_resume, @submission %>
+	  <%= link_to "download",
+	  download_resume_path(id: @submission.id) %>
+	<% else %>
+	  This student did not upload a resume.
+	<% end %>
+      </td>
+    </tr>
+  </tbody>
+
+</table>
