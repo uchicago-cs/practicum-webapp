@@ -18,6 +18,7 @@ class PagesController < ApplicationController
   end
 
   def submissions
+    @current_submissions = Submission.current_submissions
   end
 
   def request_advisor_access

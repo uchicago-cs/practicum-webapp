@@ -34,6 +34,11 @@ class Submission < ActiveRecord::Base
   validates_attachment_size :resume, less_than: 5.megabytes
   # Could even use 1.megabyte.
 
+  def Submission.current_submissions
+    Submission.joins(:project). \
+      where(projects: { quarter_id: Quarter.current_quarter.id })
+  end
+
   def student
     User.find(student_id)
     # Not ideal

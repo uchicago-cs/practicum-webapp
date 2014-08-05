@@ -1,10 +1,17 @@
 <h1>Pending projects</h1>
 
-<ol>
-  <% @pending_projects.each do |project| %>
-    <div>
-      <%= render 'project_short', project: project %>
-    </div>
-    <br>
-  <% end %>
-</ol>
+<% if @current_pending_projects.count > 0 %>
+  <table class="table table-bordered">
+    <tr>
+      <th>Project title</th>
+      <th>Advisor</th>
+    </tr>
+    <tbody>
+      <% @current_pending_projects.each do |project| %>
+	<%= render 'project_short', project: project %>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  No projects have been proposed for this quarter.
+<% end %>

@@ -42,7 +42,7 @@ class ProjectsController < ApplicationController
   end
 
   def pending
-    @pending_projects = Project.pending_projects
+    @current_pending_projects = Project.current_pending_projects
   end
 
   def edit_status

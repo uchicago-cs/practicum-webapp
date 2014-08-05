@@ -39,6 +39,10 @@ class Project < ActiveRecord::Base
     Project.where(status: "pending")
   end
 
+  def Project.current_pending_projects
+    Project.where(status: "pending", quarter: Quarter.current_quarter)
+  end
+
   def Project.current_accepted_projects
     Project.where(status: "accepted"). \
       joins(:quarter).where(quarters: { current: true })

@@ -1,6 +1,20 @@
-<h1>All students' applications</h1>
-<% Submission.all.each do |submission| %>
-  <div>
-    <%= render 'submission_short', submission: submission %>
-  </div>
+<h1>Students' applications for <%= Quarter.formatted_current_quarter %></h1>
+
+<% if @current_submissions.count > 0 %>
+  <table class="table table-bordered">
+    <tr>
+      <th>Student e-mail</th>
+      <th>Project name</th>
+      <th>Date applied</th>
+      <th>Status</th>
+      <th>Notes</th>
+    </tr>
+    <tbody>
+      <% @current_submissions.each do |submission| %>
+	<%= render 'submission_short', submission: submission %>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  There are no applications for this quarter.
 <% end %>
