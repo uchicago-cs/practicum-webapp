@@ -80,4 +80,8 @@ class User < ActiveRecord::Base
     self.affiliation.blank? or self.department.blank?
   end
 
+  def current_projects
+    self.projects.where(quarter: Quarter.current_quarter)
+  end
+
 end
