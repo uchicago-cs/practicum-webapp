@@ -22,29 +22,6 @@
     You have not proposed any projects yet.
   <% end %>
 
-<% end %>
-
-<% if @user.student? or @user.admin? %>
-
-  <br><br>
-
-  <h2>Your applications</h2>
-  <% if @user.submissions.count > 0 %>
-     <table class="table table-bordered">
-      <tr>
-	<th>Project name</th>
-	<th>Date applied</th>
-	<th>Status</th>
-	<th>Notes</th>
-      </tr>
-      <tbody>
-	<% @user.submissions.each do |submission| %>
-	  <%= render 'submission', submission: submission %>
-        <% end %>
-      </tbody>
-     </table>
-  <% else %>
-    You have not applied to any projects yet.
-  <% end %>
+  Click <%= link_to "here", '#' %> to show projects from previous quarters.
 
 <% end %>

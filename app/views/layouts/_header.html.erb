@@ -19,6 +19,13 @@
 	    <li><%= link_to "My account", current_user %></li>
 	  <% end %>
 
+	  <% if can? :create, Submission %>
+	    <li>
+	      <%= link_to "My applications",
+	      users_submissions_path(current_user.id) %>
+	    </li>
+	  <% end %>
+
 	  <% if can? :manage, User %>
 	    <li><%= link_to "Users", users_path %></li>
 	  <% end %>

@@ -46,6 +46,8 @@ Practicum::Application.routes.draw do
   match "/users/:id", to: "users#update", via: "patch"
   match "/users/:id/my_projects", to: "users#my_projects", via: "get",
         as: "users_projects"
+  match "/users/:id/my_applications", to: "users#my_submissions", via: "get",
+        as: "users_submissions"
   match "/applications", to: "pages#submissions", via: "get", as: "submissions"
   match "/projects/:id", to: "projects#clone_project", via: "post"
   match "/admin", to: "pages#admin", via: "get", as: "admin_dashboard"

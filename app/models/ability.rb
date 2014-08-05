@@ -66,6 +66,7 @@ class Ability
 
       if user.student?
         can :read, Project, status: "accepted"
+        can :my_submissions, User
         can :read, User, id: user.id
         can :create, Submission
         can :read, Submission, student_id: user.id
