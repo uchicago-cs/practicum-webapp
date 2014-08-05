@@ -13,6 +13,10 @@
       <% end %>
     </tbody>
   </table>
+
+  <strong>Application deadline</strong>:
+  <%= Quarter.current_quarter.student_submission_deadline %>
+
 <% else %>
   There are currently no projects available.
 <% end %>

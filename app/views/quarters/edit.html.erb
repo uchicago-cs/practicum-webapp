@@ -11,6 +11,15 @@
   <%= f.select :year, (Time.now.year - 5..Time.now.year + 5),
                       selected: @quarter.year %>
 
+  <%= f.label :project_proposal_deadline %>
+  <%= f.datetime_select :project_proposal_deadline %>
+
+  <%= f.label :student_submission_deadline %>
+  <%= f.datetime_select :student_submission_deadline %>
+
+  <%= f.label :advisor_decision_deadline %>
+  <%= f.datetime_select :advisor_decision_deadline %>
+
   <%= f.label :current, "Current quarter?" %>
   <%= f.check_box :current %>
 
