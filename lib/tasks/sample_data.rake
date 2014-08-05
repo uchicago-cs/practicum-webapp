@@ -59,7 +59,7 @@ def make_users
 end
 
 def make_projects
-  advisors = User.where(advisor: true).all
+  advisors = User.where(advisor: true)
   x = -1
   advisors.each do |advisor|
     x += 1
@@ -80,7 +80,7 @@ def make_projects
 end
 
 def make_submissions
-  students = User.where(student: true).all
+  students = User.where(student: true)
   students.each do |student|
     content = Faker::Lorem.sentence(30)
     project_id = (student.id % 50)+1
@@ -105,10 +105,25 @@ def make_evaluations
 end
 
 def make_quarters
+  # Not DRY (see quarters_helper.rb)
+  season_dates = { "spring" => "4th Monday in March",
+                   "summer" => "4th Monday in June",
+                   "autumn" => "4th Monday in September",
+                   "winter" => "1st Monday in January" }
+  deadline_weeks = { "proposal" => 2, "submission" => 5, "decision" => 7 }
   3.times do |n|
     season = %w(winter spring summer autumn).sample
     year = 2012 + n
+    start_date = Chronic.parse(season_dates[season.downcase],
+                 now: Time.local(year, 1, 1, 12, 0, 0)).to_datetime
+    ppd = start_date + deadline_weeks["proposal"].weeks + 4.days + 5.hours
+    ssd = start_date + deadline_weeks["submission"].weeks + 4.days + 5.hours
+    add = start_date + deadline_weeks["decision"].weeks + 4.days + 5.hours
+
     Quarter.new(season: season, year: year,
-               current: year == 2014 ? true : false).save
+                current: year == 2014 ? true : false,
+                project_proposal_deadline: ppd,
+                student_submission_deadline: ssd,
+                advisor_decision_deadline: add).save
   end
 end

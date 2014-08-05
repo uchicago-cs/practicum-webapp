@@ -1,0 +1,13 @@
+<%= form_for @submission, url: { controller: "submissions",
+				 action: "update_status" } do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.label :status_approved %>
+  <%= f.check_box :status_approved %>
+
+  <%= f.label :status_published %>
+  <%= f.check_box :status_published %>
+
+  <%= f.submit "Update application status", class: "btn btn-primary",
+      data: { confirm: "Are you sure?" } %>
+<% end %>

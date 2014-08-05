@@ -14,3 +14,9 @@
     or you have not yet accepted this student.
   <% end %>
 </div>
+
+<div>
+  Advisor's decision: <%= @submission.status.capitalize %>
+</div>
+
+<%= render 'update_submission_status', objects: @submission %>

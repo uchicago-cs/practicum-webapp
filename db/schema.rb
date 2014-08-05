@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140804213513) do
+ActiveRecord::Schema.define(version: 20140805195547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,8 @@ ActiveRecord::Schema.define(version: 20140804213513) do
     t.string   "resume_content_type"
     t.integer  "resume_file_size"
     t.datetime "resume_updated_at"
+    t.boolean  "status_published",    default: false
+    t.boolean  "status_approved",     default: false
   end
 
   add_index "submissions", ["student_id", "project_id"], name: "index_submissions_on_student_id_and_project_id", unique: true, using: :btree

@@ -8,6 +8,7 @@ Practicum::Application.routes.draw do
       member do
         patch "accept"
         patch "reject"
+        patch "update_status"
       end
     end
     collection do

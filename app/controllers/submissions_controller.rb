@@ -70,28 +70,31 @@ class SubmissionsController < ApplicationController
     end
   end
 
+  def update_status
+    if @submission.update_attributes(submission_params)
+      flash[:notice] = "Application status updated."
+      redirect_to @submission
+    else
+      flash[:notice] = "Application status could not be updated."
+      render 'show'
+    end
+  end
+
   private
 
   def submission_params
     params.require(:submission).permit(:information, :student_id, :status,
-                                       :qualifications, :courses, :resume)
+                                       :qualifications, :courses, :resume,
+                                       :status_approved, :status_published)
   end
 
   def get_project
     @project = Project.find(params[:project_id])
   end
 
-  # Add flashes before these redirects?
-
   def project_accepted?
     message = "Access denied."
     redirect_to(root_url, { alert: message }) unless @project.accepted?
-  end
-
-  def is_admin_or_advisor?
-    message = "Access denied."
-    redirect_to(root_url, { alert: message }) unless \
-      current_user.admin? or current_user.advisor?
   end
 
   def already_applied_to_project?
@@ -107,10 +110,9 @@ class SubmissionsController < ApplicationController
   end
 
   def is_admin_or_advisor?
-    if !current_user.admin? and !current_user.made_project?(@project)
-      message = "Access denied."
-      redirect_to(root_url, { alert: message })
-    end
+    message = "Access denied."
+    redirect_to(root_url, { alert: message }) unless \
+      current_user.admin? or current_user.made_project?(@project)
   end
 
 end

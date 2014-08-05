@@ -15,7 +15,8 @@
   </table>
 
   <strong>Application deadline</strong>:
-  <%= Quarter.current_quarter.student_submission_deadline %>
+  <%= Quarter.current_quarter.student_submission_deadline. \
+  strftime(" %I:%M %p on %D (%A, %B %d, %Y)") %>
 
 <% else %>
   There are currently no projects available.
