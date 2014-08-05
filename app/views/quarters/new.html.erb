@@ -4,20 +4,24 @@
   <%= render 'shared/error_messages', object: f.object %>
 
   <%= f.label :season %>
-  <%= f.select :season, %w(Spring Summer Autumn Winter) %>
+  <%= f.select :season, %w(Spring Summer Autumn Winter),
+               selected: default_season %>
 
   <%= f.label :year %>
   <%= f.select :year, (Time.now.year - 5..Time.now.year + 5),
-                      selected: Time.now.year %>
+               selected: Time.now.year %>
 
   <%= f.label :project_proposal_deadline %>
-  <%= f.datetime_select :project_proposal_deadline %>
+  <%= f.datetime_select :project_proposal_deadline, minute_step: 15,
+                        selected: default_deadline("proposal") %>
 
   <%= f.label :student_submission_deadline %>
-  <%= f.datetime_select :student_submission_deadline %>
+  <%= f.datetime_select :student_submission_deadline, minute_step: 15,
+                        selected: default_deadline("submission") %>
 
   <%= f.label :advisor_decision_deadline %>
-  <%= f.datetime_select :advisor_decision_deadline %>
+  <%= f.datetime_select :advisor_decision_deadline, minute_step: 15,
+                        selected: default_deadline("decision") %>
 
   <%= f.label :current, "Make this the current quarter?" %>
   <%= f.check_box :current %>

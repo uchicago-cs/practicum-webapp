@@ -5,20 +5,20 @@
 
   <%= f.label :season %>
   <%= f.select :season, %w(Spring Summer Autumn Winter),
-                        selected: @quarter.season.capitalize %>
+               selected: @quarter.season.capitalize %>
 
   <%= f.label :year %>
   <%= f.select :year, (Time.now.year - 5..Time.now.year + 5),
-                      selected: @quarter.year %>
+               selected: @quarter.year %>
 
   <%= f.label :project_proposal_deadline %>
-  <%= f.datetime_select :project_proposal_deadline %>
+  <%= f.datetime_select :project_proposal_deadline, minute_step: 15 %>
 
   <%= f.label :student_submission_deadline %>
-  <%= f.datetime_select :student_submission_deadline %>
+  <%= f.datetime_select :student_submission_deadline, minute_step: 15 %>
 
   <%= f.label :advisor_decision_deadline %>
-  <%= f.datetime_select :advisor_decision_deadline %>
+  <%= f.datetime_select :advisor_decision_deadline, minute_step: 15 %>
 
   <%= f.label :current, "Current quarter?" %>
   <%= f.check_box :current %>

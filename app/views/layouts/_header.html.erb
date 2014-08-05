@@ -19,7 +19,7 @@
 	    <li><%= link_to "My account", current_user %></li>
 	  <% end %>
 
-	  <% if can? :create, Submission %>
+	  <% if current_user.student? %>
 	    <li>
 	      <%= link_to "My applications",
 	      users_submissions_path(current_user.id) %>
@@ -34,7 +34,7 @@
 	    <li><%= link_to "Projects", projects_path %></li>
 	  <% end %>
 
-	  <% if can? :accept, Project %>
+	  <% if current_user.admin? %>
 	    <li>
 	      <%= link_to "Pending projects", pending_projects_path %>
 	    </li>
@@ -44,7 +44,7 @@
 	    <li><%= link_to "Applications", submissions_path %></li>
 	  <% end %>
 
-	  <% if can? :create, Project %>
+	  <% if current_user.advisor? %>
 	    <li><%= link_to "Propose a project", new_project_path %></li>
 	    <li>
 	      <%= link_to "My projects",

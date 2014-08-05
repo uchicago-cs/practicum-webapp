@@ -72,6 +72,7 @@ GEM
       timers (~> 1.1.0)
     childprocess (0.3.6)
       ffi (~> 1.0, >= 1.0.6)
+    chronic (0.10.2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.4)
@@ -311,6 +312,7 @@ DEPENDENCIES
   cancancan (~> 1.8)
   capybara (= 2.4.1)
   childprocess (= 0.3.6)
+  chronic (~> 0.10.2)
   coffee-rails (= 4.0.1)
   cucumber-rails (= 1.4.0)
   database_cleaner!

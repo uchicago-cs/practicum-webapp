@@ -5,7 +5,8 @@ class Quarter < ActiveRecord::Base
   validates :season, presence: true,
                      uniqueness: { scope:   :year,
                                    message: "That quarter already exists." },
-                     inclusion:  { in:      %w(winter spring summer autumn) }
+                     inclusion:  { in:      %w(winter spring summer autumn),
+                                   message: "Invalid quarter." }
   validates :year, presence: true, numericality: true, length: { is: 4 }
 
   before_destroy :prevent_if_current
@@ -31,8 +32,7 @@ class Quarter < ActiveRecord::Base
   end
 
   def application_deadline
-    Date.today
-    # Based on what? And format it
+    self.student_submission_deadline
   end
 
   private
