@@ -6,7 +6,7 @@
       <th>Student e-mail</th>
       <th>Project title</th>
       <th>Date applied</th>
-      <th>Decision</th>
+      <th>Advisor's decision</th>
       <th>Decision approved?</th>
       <th>Decision published?</th>
       <th>Notes</th>
@@ -24,6 +24,12 @@
   View previous quarters' applications by clicking <%= link_to "here", '#' %>.
 </div>
 <div>
-  Click <%= link_to "here", '#' %> to make all application decisions available
-  to students.
+  Click <%= link_to "here", approve_all_statuses_path, method: :patch,
+	data: { confirm: "Are you sure?" } %>
+  to approve every advisor's decision.
+</div>
+<div>
+  Click <%= link_to "here", publish_all_statuses_path, method: :patch,
+	data: { confirm: "Are you sure?" } %>
+  to allow all students to see their application decisions.
 </div>

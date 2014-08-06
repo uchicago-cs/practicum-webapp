@@ -4,6 +4,9 @@ class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:submissions,
                                             :request_advisor_access]
   before_action :is_admin?, only: :submissions
+  before_action :get_current_submissions, only: [:submissions,
+                                                 :publish_all_statuses,
+                                                 :approve_all_statuses]
 
   def home
   end
@@ -18,7 +21,29 @@ class PagesController < ApplicationController
   end
 
   def submissions
-    @current_submissions = Submission.current_submissions
+  end
+
+  def publish_all_statuses
+    # Will this check for validations the way we want?
+    if @current_submissions.update_all(status_published: true)
+      flash[:notice] = "Successfully published all statuses."
+      redirect_to submissions_path
+    else
+      flash[:alert] = "Unable to publish all statuses."
+      render 'submissions'
+    end
+  end
+
+  def approve_all_statuses
+    # Not DRY.
+    # Will this check for validations the way we want?
+    if @current_submissions.update_all(status_approved: true)
+      flash[:notice] = "Successfully approved all statuses."
+      redirect_to submissions_path
+    else
+      flash[:alert] = "Unable to approve all statuses."
+      render 'submissions'
+    end
   end
 
   def request_advisor_access
@@ -30,6 +55,12 @@ class PagesController < ApplicationController
     end
 
     redirect_to root_url, notice: "You have requested advisor privileges."
+  end
+
+  private
+
+  def get_current_submissions
+    @current_submissions = Submission.current_submissions
   end
 
 end

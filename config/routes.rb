@@ -2,22 +2,32 @@ Practicum::Application.routes.draw do
 
   root 'pages#home'
 
+  match "/applications/publish_all_statuses", to: "pages#publish_all_statuses",
+        via: "patch", as: "publish_all_statuses"
+  match "/applications/approve_all_statuses", to: "pages#approve_all_statuses",
+        via: "patch", as: "approve_all_statuses"
+
   resources :projects, shallow: true do
     resources :submissions, path: 'applications', shallow: true do
       resources :evaluations, only: [:new, :create, :show, :index]
+
       member do
         patch "accept"
         patch "reject"
         patch "update_status"
       end
+
     end
+
     collection do
       get "pending"
       resources :quarters
     end
+
     member do
       get "edit_status"
     end
+
   end
 
   match "/applications/:id",
@@ -56,5 +66,4 @@ Practicum::Application.routes.draw do
         via: "get"
   match "/request_advisor_access", to: "pages#send_request_for_advisor_access",
         via: "post"
-
 end
