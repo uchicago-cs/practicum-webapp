@@ -18,9 +18,10 @@ class Submission < ActiveRecord::Base
   validate :status_approved_before_published
   validate :status_approved_after_advisor_deadline
   validate :status_published_after_advisor_deadline
-  validate :created_before_submission_dealine, on: :create
+  validate :created_before_submission_deadline, on: :create
 
   delegate :name, to: :project, prefix: true, allow_nil: true
+  delegate :quarter, to: :project, prefix: false, allow_nil: true
   delegate :email, to: :user, prefix: :student, allow_nil: true
   delegate :advisor_id, :advisor_email,
            to: :project, prefix: true, allow_nil: true
@@ -71,6 +72,10 @@ class Submission < ActiveRecord::Base
 
   def formatted_status_for_student
     status_published ? status.capitalize : "Pending"
+  end
+
+  def in_current_quarter?
+    self.quarter == Quarter.current_quarter
   end
 
   private

@@ -112,8 +112,9 @@ def make_quarters
                    "winter" => "1st Monday in January" }
   deadline_weeks = { "proposal" => 2, "submission" => 5, "decision" => 7 }
   3.times do |n|
-    season = %w(winter spring summer autumn).sample
     year = 2012 + n
+    season = ((year == 2014) ? "summer" :
+              %w(winter spring summer autumn).sample)
     start_date = Chronic.parse(season_dates[season.downcase],
                  now: Time.local(year, 1, 1, 12, 0, 0)).to_datetime
     ppd = start_date + deadline_weeks["proposal"].weeks + 4.days + 5.hours

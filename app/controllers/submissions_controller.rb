@@ -7,6 +7,8 @@ class SubmissionsController < ApplicationController
   before_action :is_admin_or_advisor?,        only: :index
   before_action :already_applied_to_project?, only: [:new, :create]
   before_action :project_in_current_quarter?, only: [:new, :create]
+  before_action :get_statuses,                only: [:show, :update_status]
+  before_action :before_submission_deadline?, only: [:new, :create]
   # before_actions on both new and create?
 
   def new
@@ -113,6 +115,11 @@ class SubmissionsController < ApplicationController
     message = "Access denied."
     redirect_to(root_url, { alert: message }) unless \
       current_user.admin? or current_user.made_project?(@project)
+  end
+
+  def get_statuses
+    @status_approved = @submission.status_approved
+    @status_published = @submission.status_published
   end
 
 end
