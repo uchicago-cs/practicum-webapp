@@ -1,8 +1,10 @@
 <tr>
   <td><%= submission.student_email %></td>
-  <td><%= submission.project_name %></td>
+  <td><%= link_to submission.project_name, submission.project %></td>
   <td><%= submission.created_at.to_date %></td>
-  <td><%= submission.status %></td>
+  <td><%= formatted_status(submission) %></td>
+  <td><%= formatted_status_approved?(submission) %></td>
+  <td><%= formatted_status_published?(submission) %></td>
   <td>
     Click <%= link_to "here", submission_path(submission.id) %>
     to read this student's application.

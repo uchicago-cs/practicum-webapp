@@ -85,7 +85,7 @@ class Project < ActiveRecord::Base
   end
 
   def formatted_related_work
-    self.related_work.present? ? self.related_work : ""
+    self.related_work.present? ? self.related_work : "N/A"
   end
 
   private

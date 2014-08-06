@@ -56,6 +56,16 @@ class Submission < ActiveRecord::Base
     status == "pending"
   end
 
+  def formatted_status_for_advisor
+    # Put in helper, presenter, or decorator.
+    message = "#{status.capitalize} (pending administrator approval)"
+    (!status_approved and !pending?) ? message : status.capitalize
+  end
+
+  def formatted_status_for_student
+    status_published ? status.capitalize : "Pending"
+  end
+
   private
 
   def send_student_applied

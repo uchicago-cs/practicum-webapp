@@ -5,17 +5,17 @@
       <td><%= @project.name %></td>
     </tr>
 
-    <% if can? :read_submissions_of, @project %>
-      <tr>
-	<th>Quarter</th>
-	<td><%= @project.formatted_quarter %></td>
-      </tr>
-    <% end %>
+    <tr>
+      <th>Quarter</th>
+      <td><%= @project.formatted_quarter %></td>
+    </tr>
 
+    <% if can? :read_submissions_of, @project %>
     <tr>
       <th>Status</th>
       <td><%= @project.status.capitalize %></td>
     </tr>
+    <% end %>
 
     <tr>
       <th>Advisor</th>
@@ -42,9 +42,11 @@
       <td><%= @project.formatted_related_work %></td>
     </tr>
 
+    <!--
     <tr>
       <th>Application deadline</th>
-      <td><%= @project.quarter.application_deadline %></td>
+      <td><%= @project.quarter.formatted_submission_deadline %></td>
     </tr>
+    -->
   </tbody>
 </table>

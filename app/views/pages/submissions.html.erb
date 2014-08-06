@@ -1,4 +1,4 @@
-<h1>Students' applications for <%= Quarter.formatted_current_quarter %></h1>
+<h1><%= Quarter.formatted_current_quarter %> applications</h1>
 
 <% if @current_submissions.count > 0 %>
   <table class="table table-bordered">
@@ -6,7 +6,9 @@
       <th>Student e-mail</th>
       <th>Project title</th>
       <th>Date applied</th>
-      <th>Status</th>
+      <th>Decision</th>
+      <th>Decision approved?</th>
+      <th>Decision published?</th>
       <th>Notes</th>
     </tr>
     <tbody>
@@ -18,4 +20,10 @@
 <% else %>
   There are no applications for this quarter.
 <% end %>
-View previous quarters' applications by clicking <%= link_to "here", '#' %>.
+<div>
+  View previous quarters' applications by clicking <%= link_to "here", '#' %>.
+</div>
+<div>
+  Click <%= link_to "here", '#' %> to make all application decisions available
+  to students.
+</div>

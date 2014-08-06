@@ -43,6 +43,10 @@ class User < ActiveRecord::Base
     project.in?(self.projects)
   end
 
+  def made_submission?(submission)
+    submission.in? self.submissions
+  end
+
   def accepted_projects
     self.projects.where(status: "accepted")
   end

@@ -15,8 +15,9 @@
   <% end %>
 </div>
 
-<div>
-  Advisor's decision: <%= @submission.status.capitalize %>
-</div>
-
-<%= render 'update_submission_status', objects: @submission %>
+<% if can? :update_status_of, @submission %>
+  <div>
+    Advisor's decision: <%= @submission.status.capitalize %>
+  </div>
+  <%= render 'update_submission_status', objects: @submission %>
+<% end %>

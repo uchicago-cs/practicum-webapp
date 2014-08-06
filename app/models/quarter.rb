@@ -31,8 +31,8 @@ class Quarter < ActiveRecord::Base
     [season.capitalize, year].join(" ")
   end
 
-  def application_deadline
-    self.student_submission_deadline
+  def formatted_submission_deadline
+    self.student_submission_deadline.to_date
   end
 
   private

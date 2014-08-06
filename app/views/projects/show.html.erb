@@ -24,11 +24,10 @@
 <% end %>
 
 <% if can? :read_submissions_of, @project %>
-  <% @project.submissions.each do |submission| %>
-    <div>
-      <%= render 'project_submission', submission: submission %>
-    </div>
-  <% end %>
+  <div>
+    Click <%= link_to "here", project_submissions_path(@project.id) %> to view
+    students' applications to this project.
+  </div>
 <% end %>
 
 <% if can? :clone, @project %>
