@@ -13,7 +13,9 @@ class Project < ActiveRecord::Base
     length: { minimum: 100, maximum: 1500 }
   validates :prerequisites, presence: true,
     length: { minimum: 100, maximum: 1500 }
+
   validate :creator_role
+  validate :created_before_proposal_deadline, on: :create
 
   delegate :email, :affiliation, :formatted_affiliation, :formatted_department,
            :department, :formatted_info, to: :user, prefix: :advisor,
@@ -103,6 +105,16 @@ class Project < ActiveRecord::Base
   def creator_role
     errors.add(:user, "must be an advisor or admin") if \
       ( user.roles == ["student"] or user.roles == [] )
+  end
+
+  def created_before_proposal_deadline
+    errors.add_to_base("The proposal deadline has passed.") if \
+      DateTime.now <= Quarter.current_quarter.project_proposal_deadline
+  end
+
+  def accepted_before_submission_deadline
+    errors.add(:status) if self.status_changed? and self.accepted? and \
+      DateTime.now <= Quarter.current_quarter.student_submission_deadline
   end
 
 end

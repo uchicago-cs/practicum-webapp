@@ -24,7 +24,7 @@ class PagesController < ApplicationController
   end
 
   def publish_all_statuses
-    # Will this check for validations the way we want?
+    # Note: #update_all skips validations! Fix this!
     if @current_submissions.update_all(status_published: true)
       flash[:notice] = "Successfully published all statuses."
       redirect_to submissions_path
@@ -36,7 +36,7 @@ class PagesController < ApplicationController
 
   def approve_all_statuses
     # Not DRY.
-    # Will this check for validations the way we want?
+    # Note: #update_all skips validations! Fix this!
     if @current_submissions.update_all(status_approved: true)
       flash[:notice] = "Successfully approved all statuses."
       redirect_to submissions_path

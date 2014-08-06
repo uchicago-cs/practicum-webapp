@@ -11,7 +11,14 @@ class Submission < ActiveRecord::Base
   validates :courses, presence: true,
     length: { minimum: 100, maximum: 1500 }
   validates :student_id, presence: true
-  validates_uniqueness_of :student_id, scope: :project_id, message: "eh"
+  validates_uniqueness_of :student_id, scope: :project_id
+
+  validate :status_not_pending_before_approved
+  validate :status_not_pending_before_published
+  validate :status_approved_before_published
+  validate :status_approved_after_advisor_deadline
+  validate :status_published_after_advisor_deadline
+  validate :created_before_submission_dealine, on: :create
 
   delegate :name, to: :project, prefix: true, allow_nil: true
   delegate :email, to: :user, prefix: :student, allow_nil: true
@@ -83,6 +90,41 @@ class Submission < ActiveRecord::Base
     elsif self.rejected?
       Notifier.reject_student(self).deliver
     end
+  end
+
+  # Make #in_current_quarter? its own check
+
+  def status_not_pending_before_approved
+    errors.add(:status_approved) if self.pending? and self.status_approved? \
+      and self.in_current_quarter?
+  end
+
+  def status_not_pending_before_published
+    errors.add(:status_published) if self.pending? \
+      and self.status_published? and self.in_current_quarter?
+  end
+
+  def status_approved_before_published
+    errors.add(:status_approved) if !self.status_approved? \
+      and self.status_published? and self.in_current_quarter?
+  end
+
+  def status_approved_after_advisor_deadline
+    errors.add(:status_approved) if self.status_approved \
+      and DateTime.now <= Quarter.current_quarter.advisor_decision_deadline \
+      and self.in_current_quarter?
+  end
+
+  def status_published_after_advisor_deadline
+    errors.add(:status_published) if self.status_published \
+      and DateTime.now <= Quarter.current_quarter.advisor_decision_deadline \
+      and self.in_current_quarter?
+  end
+
+  def created_before_submission_deadline
+    errors.add_to_base("The application deadline has passed") if \
+      DateTime.now <= Quarter.current_quarter.student_submission_deadline \
+      and self.in_current_quarter?
   end
 
 end
