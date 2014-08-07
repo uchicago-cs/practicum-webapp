@@ -27,6 +27,11 @@
   <%= f.datetime_select :advisor_decision_deadline, minute_step: 15,
                         selected: default_deadline("decision") %>
 
+  <%= f.label :admin_publish_deadline,
+      "Admin application publishing deadline (soft, not strict)" %>
+  <%= f.datetime_select :admin_publish_deadline, minute_step: 15,
+                        selected: default_deadline("admin") %>
+
   <%= f.label :end_date %>
   <%= f.datetime_select :end_date, minute_step: 15,
                         selected: end_date %>

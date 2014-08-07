@@ -25,7 +25,8 @@ module QuartersHelper
 
   def default_deadline(deadline_type)
     # Friday 5pm of 3rd, 6th, and 8th weeks.
-    deadline_weeks = { "proposal" => 2, "submission" => 5, "decision" => 7 }
+    deadline_weeks = { "proposal" => 2, "submission" => 5, "decision" => 7,
+                       "admin" => 8 }
     start_date + deadline_weeks[deadline_type].weeks + 4.days + 5.hours
   end
 

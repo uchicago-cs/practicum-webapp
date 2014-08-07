@@ -23,6 +23,10 @@
   <%= f.label :advisor_decision_deadline %>
   <%= f.datetime_select :advisor_decision_deadline, minute_step: 15 %>
 
+  <%= f.label :admin_publish_deadline,
+      "Admin application publishing deadline (soft, not strict)" %>
+  <%= f.datetime_select :admin_publish_deadline, minute_step: 15 %>
+
   <%= f.label :end_date %>
   <%= f.datetime_select :end_date, minute_step: 15 %>
 

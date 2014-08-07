@@ -58,7 +58,8 @@ class QuartersController < ApplicationController
                                     :project_proposal_deadline,
                                     :student_submission_deadline,
                                     :advisor_decision_deadline,
-                                    :start_date, :end_date)
+                                    :start_date, :end_date,
+                                    :admin_publish_deadline)
   end
 
   def downcase_season

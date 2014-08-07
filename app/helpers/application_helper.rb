@@ -16,6 +16,11 @@ module ApplicationHelper
       strftime("%I:%M %p on %D (%A, %B %d, %Y)")
   end
 
+  def admin_publish_deadline
+    Quarter.current_quarter.admin_publish_deadline. \
+      strftime("%I:%M %p on %D (%A, %B %d, %Y)")
+  end
+
   # Refactor these three into one method.
   def before_proposal_deadline?
     DateTime.now <= Quarter.current_quarter.project_proposal_deadline
