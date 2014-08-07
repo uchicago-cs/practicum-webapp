@@ -5,6 +5,7 @@ class EvaluationsController < ApplicationController
   before_action :get_project_and_submission, only: [:new, :create, :index]
   before_action :already_evaluated?, only: [:new, :create]
   before_action :is_admin?, only: :index
+  before_action :submission_status_sufficient?, only: [:new, :create]
 
   def index
   end
@@ -45,5 +46,13 @@ class EvaluationsController < ApplicationController
     message = "You have already submitted an evaluation for this student."
     redirect_to(root_url, { alert: message }) if \
       @project.advisor.evaluated_submission?(@submission)
+  end
+
+  def submission_status_sufficient?
+    message = "Application status must be approved, published, and accepted."
+    redirect_to(root_url, { alert: message }) unless \
+      @evaluation.submission_accepted? and \
+      @evaluation.submission_status_approved? and \
+      @evaluation.submission_status_published?
   end
 end

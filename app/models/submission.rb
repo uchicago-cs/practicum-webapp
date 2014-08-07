@@ -80,6 +80,10 @@ class Submission < ActiveRecord::Base
     self.quarter == Quarter.current_quarter
   end
 
+  def status_sufficient?
+    self.accepted? and self.status_approved? and self.status_published?
+  end
+
   private
 
   def send_student_applied
