@@ -13,6 +13,13 @@
       <% end %>
     </tbody>
   </table>
+
+  <div>
+    Click <%= link_to "here", publish_all_pending_projects_path,
+              method: :patch, data: { confirm: "Are you sure?" } %>
+    to approve all flagged (non-pending) project proposals.
+  </div>
+
 <% else %>
   No projects have been proposed for this quarter.
 <% end %>

@@ -35,4 +35,37 @@ module ApplicationHelper
   #   DateTime.now <= Quarter.current_quarter.send(types[deadline_type])
   # end
 
+  # def formatted_project_status(project)
+  #   cap_stat = project.status.capitalize
+  #   status_for_admins = project.pending? ? cap_stat : \
+  #   "#{cap_stat} (flagged, not published)"
+  #   current_user.admin? ? status_for_admins : "Pending"
+  # end
+
+  def formatted_project_status(project)
+    if current_user.admin?
+
+      if project.pending? or project.status_published?
+        project.status.capitalize
+      elsif !project.status_published?
+        "#{project.status.capitalize} (flagged, not published)"
+      end
+
+    else # elsif current_user.advisor?
+
+      if project.status_published?
+        project.status.capitalize
+      else
+        "Pending"
+      end
+
+    end
+  end
+
+  def formatted_submission_count(project)
+    if project.accepted? and project.status_published?
+      project.submissions.count
+    end
+  end
+
 end

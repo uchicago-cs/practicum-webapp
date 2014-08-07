@@ -10,10 +10,10 @@
       <td><%= @project.formatted_quarter %></td>
     </tr>
 
-    <% if can? :read_submissions_of, @project %>
+    <% if can? :read_status_of, @project %>
     <tr>
       <th>Status</th>
-      <td><%= @project.status.capitalize %></td>
+      <td><%= formatted_project_status(@project) %></td>
     </tr>
     <% end %>
 

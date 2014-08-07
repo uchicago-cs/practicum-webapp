@@ -51,6 +51,11 @@ class Project < ActiveRecord::Base
       joins(:quarter).where(quarters: { current: true })
   end
 
+  def Project.current_accepted_published_projects
+    Project.where(status: "accepted", status_published: true). \
+    joins(:quarter).where(quarters: { current: true })
+  end
+
   def Project.quarter_accepted_projects(quarter)
     Project.where(status: "accepted"). \
       joins(:quarter).where(quarters: { id: quarter.id })

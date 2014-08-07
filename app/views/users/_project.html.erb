@@ -2,14 +2,10 @@
   <td><%= link_to project.name, project %></td>
   <td><%= project.formatted_quarter %></td>
   <td><%= project.created_at.to_date %></td>
-  <td><%= project.status.capitalize %></td>
+  <td><%= formatted_project_status(project) %></td>
+  <td><%= formatted_submission_count(project) %></td>
   <td>
-    <% if project.submissions.count > 0 %>
-      <%= project.submissions.count %>
-    <% end %>
-  </td>
-  <td>
-    <% if project.pending? %>
+    <% if !project.status_published? %>
       You may edit this proposal
       <%= link_to "here", edit_project_path(project.id) %>.
     <% elsif project.accepted? %>

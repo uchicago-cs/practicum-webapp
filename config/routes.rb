@@ -6,6 +6,8 @@ Practicum::Application.routes.draw do
         via: "patch", as: "publish_all_statuses"
   match "/applications/approve_all_statuses", to: "pages#approve_all_statuses",
         via: "patch", as: "approve_all_statuses"
+  match "/projects/pending/publish_all", to: "projects#publish_all_pending",
+        via: "patch", as: "publish_all_pending_projects"
 
   resources :projects, shallow: true do
     resources :submissions, path: 'applications', shallow: true do
@@ -21,6 +23,7 @@ Practicum::Application.routes.draw do
 
     collection do
       get "pending"
+
       resources :quarters
     end
 

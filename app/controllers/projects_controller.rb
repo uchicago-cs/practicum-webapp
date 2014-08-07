@@ -36,7 +36,7 @@ class ProjectsController < ApplicationController
   end
 
   def index
-    @projects = Project.current_accepted_projects
+    @projects = Project.current_accepted_published_projects
   end
 
   def show
@@ -55,6 +55,18 @@ class ProjectsController < ApplicationController
       redirect_to project_path
     else
       render 'edit_status'
+    end
+  end
+
+  def publish_all_pending
+    projects = Project.current_pending_projects.where.not(status: "pending")
+    # #update_all skips validations!
+    if projects.update_all(status_published: true)
+      flash[:notice] = "Published all flagged project statuses."
+      redirect_to pending_projects_path
+    else
+      flash[:alert] = "Unable to publish all flagged project statuses."
+      render 'pending'
     end
   end
 

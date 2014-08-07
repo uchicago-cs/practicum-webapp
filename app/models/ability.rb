@@ -54,6 +54,10 @@ class Ability
           # user.made_project?(project)
         end
 
+        can :read_status_of, Project do |project|
+          project.advisor_id == user.id
+        end
+
         can :clone, Project do |project|
           user.made_project?(project) and project.cloneable?
         end

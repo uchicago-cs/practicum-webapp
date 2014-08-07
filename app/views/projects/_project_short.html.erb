@@ -1,5 +1,5 @@
 <tr>
   <td><%= link_to project.name, project %></td>
   <td><%= project.advisor_email %></td>
-  <td><%= project.formatted_status_for_admins %></td>
+  <td><%= formatted_project_status(project) %></td>
 </tr>
