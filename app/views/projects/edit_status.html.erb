@@ -1,5 +1,13 @@
 <h3>Edit status of <%= @project.name %></h3>
 
+<% if @project.has_submissions? %>
+  <div class="alert alert-warning" role="alert">
+    <strong>Note:</strong> Students have applied to this project. If you
+    change the status of this project, you may wish to tell these students
+    that you have done so.
+  </div>
+<% end %>
+
 <%= form_for(@project, url: { controller: "projects",
 			      action: "update_status" } ) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>

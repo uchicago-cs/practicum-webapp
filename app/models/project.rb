@@ -101,6 +101,10 @@ class Project < ActiveRecord::Base
     self.pending? ? cap_stat : "#{cap_stat} (flagged, not published)"
   end
 
+  def has_submissions?
+    self.submissions.count > 0
+  end
+
   private
 
   def send_project_proposed
