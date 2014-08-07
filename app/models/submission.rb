@@ -1,5 +1,7 @@
 class Submission < ActiveRecord::Base
 
+  attr_accessor :this_user
+
   belongs_to :user, foreign_key: "student_id"
   belongs_to :project
   has_one :evaluation, foreign_key: "submission_id", dependent: :destroy
@@ -146,7 +148,7 @@ class Submission < ActiveRecord::Base
     message = "Status cannot be updated past the advisor's decision deadline."
     errors.add(:base, message) if !self.pending? and self.status_changed? \
       and DateTime.now > Quarter.current_quarter.advisor_decision_deadline \
-      and self.in_current_quarter?
+      and !self.this_user.admin? and self.in_current_quarter?
   end
 
 end

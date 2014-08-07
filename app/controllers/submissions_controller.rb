@@ -74,6 +74,7 @@ class SubmissionsController < ApplicationController
   end
 
   def update_status
+    @submission.this_user = current_user
     if @submission.update_attributes(submission_params)
       flash[:notice] = "Application status updated."
       redirect_to @submission
