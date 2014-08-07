@@ -1,5 +1,10 @@
 <h1><%= Quarter.formatted_current_quarter%> Projects</h1>
 
+<div>
+  <strong>Application deadline</strong>: <%= student_submission_deadline %>
+</div>
+<br>
+
 <% if @projects.present? %>
   <table class="table table-bordered">
     <tr>
@@ -13,10 +18,6 @@
       <% end %>
     </tbody>
   </table>
-
-  <strong>Application deadline</strong>:
-  <%= Quarter.current_quarter.student_submission_deadline. \
-  strftime(" %I:%M %p on %D (%A, %B %d, %Y)") %>
 
 <% else %>
   There are currently no projects available.

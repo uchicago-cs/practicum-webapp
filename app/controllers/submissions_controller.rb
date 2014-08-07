@@ -9,6 +9,7 @@ class SubmissionsController < ApplicationController
   before_action :project_in_current_quarter?, only: [:new, :create]
   before_action :get_statuses,                only: [:show, :update_status]
   before_action :before_submission_deadline?, only: [:new, :create]
+  before_action :before_decision_deadline?,   only: [:accept, :reject]
   # before_actions on both new and create?
 
   def new
@@ -46,7 +47,7 @@ class SubmissionsController < ApplicationController
   def accept
     if @submission.update_attributes(status: "accepted")
       flash[:notice] = "Application accepted."
-      redirect_to submission_path
+      redirect_to @submission
     else
       render 'show'
     end
@@ -55,7 +56,7 @@ class SubmissionsController < ApplicationController
   def reject
     if @submission.update_attributes(status: "rejected")
       flash[:notice] = "Application rejected."
-      redirect_to submission_path
+      redirect_to @submission
     else
       render 'show'
     end

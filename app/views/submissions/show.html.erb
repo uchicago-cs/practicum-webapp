@@ -10,8 +10,7 @@
   <% if can? :create_evaluation_for, @submission %>
     <%= render 'submission_create_evaluation', object: @submission %>
   <% else %>
-    You cannot create an evaluation for this student: either you already have,
-    or you have not yet accepted this student.
+    You cannot create an evaluation for this student.
   <% end %>
 </div>
 

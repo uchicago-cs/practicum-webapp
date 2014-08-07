@@ -107,14 +107,15 @@ class Project < ActiveRecord::Base
       ( user.roles == ["student"] or user.roles == [] )
   end
 
+  # Do we also need to check that this is a current project?
   def created_before_proposal_deadline
     errors.add_to_base("The proposal deadline has passed.") if \
-      DateTime.now <= Quarter.current_quarter.project_proposal_deadline
+      DateTime.now > Quarter.current_quarter.project_proposal_deadline
   end
 
   def accepted_before_submission_deadline
     errors.add(:status) if self.status_changed? and self.accepted? and \
-      DateTime.now <= Quarter.current_quarter.student_submission_deadline
+      DateTime.now > Quarter.current_quarter.student_submission_deadline
   end
 
 end

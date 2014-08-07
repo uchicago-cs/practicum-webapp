@@ -35,15 +35,21 @@ class ApplicationController < ActionController::Base
 
   # Not DRY: see application_helper.erb
   def before_proposal_deadline?
-    message = "You can only do that before the project proposal deadline."
+    message = "The project proposal deadline for this quarter has passed."
     redirect_to(root_url, { notice: message }) unless \
-      DateTime.now <= Quarter.current_quarter.project_porposal_deadline
+      DateTime.now <= Quarter.current_quarter.project_proposal_deadline
   end
 
   def before_submission_deadline?
-    message = "You can only do that before the application deadline."
+    message = "The application deadline for this quarter has passed."
     redirect_to(root_url, { notice: message }) unless \
       DateTime.now <= Quarter.current_quarter.student_submission_deadline
+  end
+
+  def before_decision_deadline?
+    message = "The decision deadline for this quarter has passed."
+    redirect_to(root_url, { notice: message }) unless \
+      DateTime.now <= Quarter.current_quarter.advisor_decision_deadline
   end
 
 end

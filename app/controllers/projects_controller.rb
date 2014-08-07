@@ -2,7 +2,8 @@ class ProjectsController < ApplicationController
 
   load_and_authorize_resource
 
-  skip_before_action :authenticate_user!, only: [:index, :show]
+  skip_before_action :authenticate_user!,        only: [:index, :show]
+  before_action      :before_proposal_deadline?, only: [:new, :create]
 
   def new
   end

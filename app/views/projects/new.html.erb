@@ -1,5 +1,8 @@
 <h1>Create a new project proposal</h1>
 
+<strong>Project proposal deadline</strong>: <%= project_proposal_deadline %>
+
+
 <% if current_user.missing_proposal_info? %>
   <div class="alert alert-warning" role="alert">
     <strong>Note:</strong> You have not set your affiliation and / or

@@ -10,10 +10,6 @@ module SubmissionsHelper
     end
   end
 
-  def formatted_status(submission)
-    submission.status.capitalize
-  end
-
   def formatted_status_approved?(submission)
     submission.status_approved?.to_s.capitalize
   end
