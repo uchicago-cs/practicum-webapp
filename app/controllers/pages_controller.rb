@@ -7,6 +7,8 @@ class PagesController < ApplicationController
   before_action :get_current_submissions, only: [:submissions,
                                                  :publish_all_statuses,
                                                  :approve_all_statuses]
+  before_action :get_current_decided_submissions, only: [:publish_all_statuses,
+                                                         :approve_all_statuses]
 
   def home
   end
@@ -25,7 +27,7 @@ class PagesController < ApplicationController
 
   def publish_all_statuses
     # Note: #update_all skips validations! Fix this!
-    if @current_submissions.update_all(status_published: true)
+    if @current_decided_submissions.update_all(status_published: true)
       flash[:notice] = "Successfully published all statuses."
       redirect_to submissions_path
     else
@@ -37,7 +39,7 @@ class PagesController < ApplicationController
   def approve_all_statuses
     # Not DRY.
     # Note: #update_all skips validations! Fix this!
-    if @current_submissions.update_all(status_approved: true)
+    if @current_decided_submissions.update_all(status_approved: true)
       flash[:notice] = "Successfully approved all statuses."
       redirect_to submissions_path
     else
@@ -61,6 +63,11 @@ class PagesController < ApplicationController
 
   def get_current_submissions
     @current_submissions = Submission.current_submissions
+  end
+
+  def get_current_decided_submissions
+    @current_decided_submissions = @current_submissions. \
+      where.not(status: "pending")
   end
 
 end
