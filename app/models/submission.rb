@@ -19,7 +19,6 @@ class Submission < ActiveRecord::Base
   validate :status_not_pending_before_approved
   validate :status_not_pending_before_published
   validate :status_approved_before_published
-  # validate :status_approved_after_advisor_deadline
   validate :status_published_after_advisor_deadline
   validate :created_before_submission_deadline, on: :create
   validate :decision_made_before_decision_deadline
@@ -30,8 +29,9 @@ class Submission < ActiveRecord::Base
   delegate :advisor_id, :advisor_email,
            to: :project, prefix: true, allow_nil: true
 
-  after_create :send_student_applied
-  after_update :send_respective_update
+  after_create      :send_student_applied
+  after_update      :send_respective_update
+  before_validation :downcase_status
 
   has_attached_file :resume,
                     url: "/projects/:project_id/submissions/:id/resume",
@@ -109,7 +109,7 @@ class Submission < ActiveRecord::Base
   def status_not_pending_before_approved
     message = "Status must not be pending before an admin can approve it."
     errors.add(:base, message) if self.pending? and self.status_approved? \
-      and self.in_current_quarter?
+      and self.status_approved_changed? and self.in_current_quarter?
   end
 
   def status_not_pending_before_published
@@ -123,12 +123,6 @@ class Submission < ActiveRecord::Base
     errors.add(:base, message) if !self.status_approved? \
       and self.status_published? and self.in_current_quarter?
   end
-
-  # def status_approved_after_advisor_deadline
-  #   errors.add(:status_approved) if self.status_approved \
-  #     and DateTime.now <= Quarter.current_quarter.advisor_decision_deadline \
-  #     and self.in_current_quarter?
-  # end
 
   def status_published_after_advisor_deadline
     message = "Cannot publish status before the advisor's decision deadline."
@@ -149,6 +143,10 @@ class Submission < ActiveRecord::Base
     errors.add(:base, message) if !self.pending? and self.status_changed? \
       and DateTime.now > Quarter.current_quarter.advisor_decision_deadline \
       and !self.this_user.admin? and self.in_current_quarter?
+  end
+
+  def downcase_status
+    self.status.downcase!
   end
 
 end
