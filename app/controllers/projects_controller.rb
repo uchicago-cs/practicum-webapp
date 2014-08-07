@@ -77,9 +77,16 @@ class ProjectsController < ApplicationController
   private
 
   def project_params
-    params.require(:project).permit(:name, :description, :deadline, :status,
-                                    :expected_deliverables, :prerequisites,
-                                    :related_work, :comments, :cloned)
+    if current_user.admin?
+      params.require(:project).permit(:name, :description, :deadline, :status,
+                                      :expected_deliverables, :prerequisites,
+                                      :related_work, :comments, :cloned,
+                                      :status_published)
+    elsif current_user.advisor?
+      params.require(:project).permit(:name, :description, :deadline,
+                                      :expected_deliverables, :prerequisites,
+                                      :related_work, :comments, :cloned)
+    end
   end
 
 end

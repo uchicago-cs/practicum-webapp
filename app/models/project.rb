@@ -16,6 +16,7 @@ class Project < ActiveRecord::Base
 
   validate :creator_role
   validate :created_before_proposal_deadline, on: :create
+  validate :status_not_pending_when_published
 
   delegate :email, :affiliation, :formatted_affiliation, :formatted_department,
            :department, :formatted_info, to: :user, prefix: :advisor,
@@ -42,7 +43,7 @@ class Project < ActiveRecord::Base
   end
 
   def Project.current_pending_projects
-    Project.where(status: "pending", quarter: Quarter.current_quarter)
+    Project.where(status_published: false, quarter: Quarter.current_quarter)
   end
 
   def Project.current_accepted_projects
@@ -90,6 +91,11 @@ class Project < ActiveRecord::Base
     self.related_work.present? ? self.related_work : "N/A"
   end
 
+  def formatted_status_for_admins
+    cap_stat = self.status.capitalize
+    self.pending? ? cap_stat : "#{cap_stat} (flagged, not published)"
+  end
+
   private
 
   def send_project_proposed
@@ -114,8 +120,16 @@ class Project < ActiveRecord::Base
   end
 
   def accepted_before_submission_deadline
-    errors.add(:status) if self.status_changed? and self.accepted? and \
+    message = "Cannot accept projects after the application deadline."
+    errors.add_to_base(message) if self.status_changed? and \
+      self.accepted? and \
       DateTime.now > Quarter.current_quarter.student_submission_deadline
+  end
+
+  def status_not_pending_when_published
+    message = "Status must be accepted or rejected before it " \
+              "can be published."
+    errors.add_to_base(message) if self.pending? and self.status_published?
   end
 
 end

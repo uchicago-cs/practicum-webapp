@@ -16,6 +16,10 @@
   <%= f.label :comments %>
   <%= f.text_area :comments %>
 
-  <%= f.submit "Update project status", class: "btn btn-primary" %>
+  <%= f.label :status_published, "Publish status?" %>
+  <%= f.check_box :status_published %>
+
+  <%= f.submit "Update project status", class: "btn btn-primary",
+      data: { confirm: "Are you sure?" } %>
 
 <% end %>

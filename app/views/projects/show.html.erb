@@ -16,7 +16,7 @@
   </div>
 <% end %>
 
-<% if can? :accept, @project %>
+<% if can? :edit_status_of, @project %>
   <div>
     Click <%= link_to "here", edit_status_project_path %>
     to change this project's status or request changes to the proposal.

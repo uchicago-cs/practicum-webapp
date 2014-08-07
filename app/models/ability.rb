@@ -13,9 +13,9 @@ class Ability
       if user.admin?
         can :manage, :all
         can :destroy, Quarter, current: false
-        # The `cannots` below don't quite work (accept?, download_resume)
-        cannot :accept, Project do |project|
-          !project.pending?
+        # The `cannots` below don't quite work (download_resume)
+        cannot :edit_status_of, Project do |project|
+          project.status_published?
         end
         cannot :clone, Project do |project|
           !project.cloneable?
