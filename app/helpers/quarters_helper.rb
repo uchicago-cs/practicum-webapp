@@ -19,6 +19,10 @@ module QuartersHelper
                   now: Time.local(Time.now.year, 1, 1, 17, 0, 0)).to_datetime
   end
 
+  def end_date
+    start_date + 10.weeks + 5.days
+  end
+
   def default_deadline(deadline_type)
     # Friday 5pm of 3rd, 6th, and 8th weeks.
     deadline_weeks = { "proposal" => 2, "submission" => 5, "decision" => 7 }

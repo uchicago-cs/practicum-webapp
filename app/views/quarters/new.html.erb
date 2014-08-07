@@ -11,6 +11,10 @@
   <%= f.select :year, (Time.now.year - 5..Time.now.year + 5),
                selected: Time.now.year %>
 
+  <%= f.label :start_date %>
+  <%= f.datetime_select :start_date, minute_step: 15,
+                        selected: start_date %>
+
   <%= f.label :project_proposal_deadline %>
   <%= f.datetime_select :project_proposal_deadline, minute_step: 15,
                         selected: default_deadline("proposal") %>
@@ -22,6 +26,10 @@
   <%= f.label :advisor_decision_deadline %>
   <%= f.datetime_select :advisor_decision_deadline, minute_step: 15,
                         selected: default_deadline("decision") %>
+
+  <%= f.label :end_date %>
+  <%= f.datetime_select :end_date, minute_step: 15,
+                        selected: end_date %>
 
   <%= f.label :current, "Make this the current quarter?" %>
   <%= f.check_box :current %>

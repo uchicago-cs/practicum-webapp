@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140807021328) do
+ActiveRecord::Schema.define(version: 20140807204542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,11 +60,13 @@ ActiveRecord::Schema.define(version: 20140807021328) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "year"
-    t.string   "season",                      default: "", null: false
+    t.string   "season",                      default: "",                    null: false
     t.boolean  "current"
     t.datetime "project_proposal_deadline"
     t.datetime "student_submission_deadline"
     t.datetime "advisor_decision_deadline"
+    t.datetime "start_date",                  default: '2014-08-07 21:19:53', null: false
+    t.datetime "end_date",                    default: '2014-10-21 21:19:53', null: false
   end
 
   create_table "submissions", force: true do |t|

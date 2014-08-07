@@ -9,6 +9,8 @@ class Quarter < ActiveRecord::Base
                                    message: "Invalid quarter." }
   validates :year, presence: true, numericality: true, length: { is: 4 }
 
+  validate :deadlines_between_start_and_end_dates
+
   before_destroy :prevent_if_current
   after_validation :set_current_false
   before_validation :downcase_season
@@ -48,6 +50,19 @@ class Quarter < ActiveRecord::Base
 
   def downcase_season
     self.season.downcase!
+  end
+
+  # We might change this later (e.g., allow deadlines beyond the end_date).
+  def deadlines_between_start_and_end_dates
+    message = "Deadlines must be between the quarter's start and end dates."
+    if project_proposal_deadline <= start_date \
+      or student_submission_deadline <= start_date \
+      or advisor_decision_deadline <= start_date \
+      or end_date < project_proposal_deadline \
+      or end_date < student_submission_deadline \
+      or end_date < advisor_decision_deadline
+        errors.add(:base, message)
+    end
   end
 
 end
