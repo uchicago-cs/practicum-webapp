@@ -50,9 +50,10 @@ class EvaluationsController < ApplicationController
 
   def submission_status_sufficient?
     message = "Application status must be approved, published, and accepted."
+    submission = Submission.find(params[:submission_id])
     redirect_to(root_url, { alert: message }) unless \
-      @evaluation.submission_accepted? and \
-      @evaluation.submission_status_approved? and \
-      @evaluation.submission_status_published?
+      submission.accepted? and \
+      submission.status_approved? and \
+      submission.status_published?
   end
 end

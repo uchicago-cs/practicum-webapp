@@ -1,4 +1,23 @@
-<div>Student email: <%= @evaluation.student_email %></div>
-<div>Project name: <%= @evaluation.project_name %></div>
-<div>Advisor email: <%= @evaluation.advisor_email %></div>
-<div>Evaluation: <%= @evaluation.comments %></div>
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <th>Student e-mail</th>
+      <td><%= @evaluation.student_email %></td>
+    </tr>
+
+    <tr>
+      <th>Project title</th>
+      <td><%= @evaluation.project_name %></td>
+    </tr>
+
+    <tr>
+      <th>Advisor e-mail</th>
+      <td><%= @evaluation.advisor_email %></td>
+    </tr>
+
+    <tr>
+      <th>Evaluation</th>
+      <td><%= @evaluation.comments %></td>
+    </tr>
+  </tbody>
+</table>
