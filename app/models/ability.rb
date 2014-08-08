@@ -23,7 +23,7 @@ class Ability
 
       if user.advisor?
         can :create, Project
-        can :my_projects, User
+        can :my_projects, User, id: user.id
         can :read, User, id: user.id
         can :update, User, id: user.id
         can :create, Evaluation
@@ -66,7 +66,7 @@ class Ability
 
       if user.student?
         can :read, Project, status: "accepted"
-        can :my_submissions, User
+        can :my_submissions, User, id: user.id
         can :read, User, id: user.id
         can :create, Submission
         can :read, Submission, student_id: user.id

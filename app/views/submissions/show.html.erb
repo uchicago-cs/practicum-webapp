@@ -8,7 +8,7 @@
   <% end %>
 
   <% if (can? :create_evaluation_for, @submission) and \
-    @submission.status_sufficient? %>
+    @submission_status_sufficient %>
     <%= render 'submission_create_evaluation', object: @submission %>
   <%# else %>
     <!-- You cannot create an evaluation for this student. -->

@@ -22,7 +22,7 @@ class SubmissionsController < ApplicationController
 
     if @submission.save
       flash[:notice] = "Application submitted."
-      redirect_to current_user
+      redirect_to users_submissions_path(current_user)
     else
       render 'new'
     end
@@ -42,6 +42,7 @@ class SubmissionsController < ApplicationController
   end
 
   def show
+    @submission_status_sufficient = @submission.status_sufficient?
   end
 
   def accept

@@ -1,5 +1,7 @@
 require 'faker'
 
+# Also need to mark objects as published in some of these methods.
+
 namespace :db do
   desc "Fill database with sample data"
 
