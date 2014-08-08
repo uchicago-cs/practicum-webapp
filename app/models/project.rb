@@ -1,5 +1,7 @@
 class Project < ActiveRecord::Base
 
+  default_scope order('created_at DESC')
+
   belongs_to :quarter
   belongs_to :user, foreign_key: "advisor_id"
   has_many :submissions

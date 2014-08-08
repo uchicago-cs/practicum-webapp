@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  default_scope order('created_at DESC')
+
   has_many :projects, foreign_key: "advisor_id", dependent: :destroy
   has_many :submissions, foreign_key: "student_id", dependent: :destroy
 

@@ -1,5 +1,7 @@
 class Submission < ActiveRecord::Base
 
+  default_scope order('created_at DESC')
+
   attr_accessor :this_user
 
   belongs_to :user, foreign_key: "student_id"

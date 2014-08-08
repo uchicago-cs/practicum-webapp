@@ -1,5 +1,7 @@
 class Quarter < ActiveRecord::Base
 
+  default_scope order('created_at DESC')
+
   has_many :projects
 
   validates :season, presence: true,
