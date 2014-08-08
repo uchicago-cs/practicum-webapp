@@ -66,15 +66,16 @@ def make_projects
     20.times do |n|
       content = Faker::Lorem.sentence(30)
       status = ["pending", "accepted", "rejected"].sample
-      advisor.projects.create!(description: content,
-                               expected_deliverables: content,
-                               prerequisites: content,
-                               related_work: [content, ""].sample,
-                               advisor_id: advisor.id,
-                               name: "Some Project #{20*x + n + 1}",
-                               deadline: DateTime.current,
-                               status: status,
-                               quarter_id: Quarter.ids.sample)
+      p = advisor.projects.build(description: content,
+                                 expected_deliverables: content,
+                                 prerequisites: content,
+                                 related_work: [content, ""].sample,
+                                 advisor_id: advisor.id,
+                                 name: "Some Project #{20*x + n + 1}",
+                                 deadline: DateTime.current,
+                                 status: status,
+                                 quarter_id: Quarter.ids.sample)
+      p.save(validate: false)
     end
   end
 end
@@ -110,8 +111,9 @@ def make_quarters
                    "summer" => "4th Monday in June",
                    "autumn" => "4th Monday in September",
                    "winter" => "1st Monday in January" }
-  deadline_weeks = { "proposal" => 2, "submission" => 5, "decision" => 7 }
-  3.times do |n|
+  deadline_weeks = { "proposal" => 2, "submission" => 5, "decision" => 7,
+                     "admin" => 8 }
+  5.times do |n|
     year = 2012 + n
     season = ((year == 2014) ? "summer" :
               %w(winter spring summer autumn).sample)
@@ -120,11 +122,16 @@ def make_quarters
     ppd = start_date + deadline_weeks["proposal"].weeks + 4.days + 5.hours
     ssd = start_date + deadline_weeks["submission"].weeks + 4.days + 5.hours
     add = start_date + deadline_weeks["decision"].weeks + 4.days + 5.hours
+    apd = start_date + deadline_weeks["admin"].weeks + 4.days + 5.hours
+    end_date = start_date + 9.weeks + 5.days
 
     Quarter.new(season: season, year: year,
                 current: year == 2014 ? true : false,
+                start_date: start_date,
                 project_proposal_deadline: ppd,
                 student_submission_deadline: ssd,
-                advisor_decision_deadline: add).save
+                advisor_decision_deadline: add,
+                admin_publish_deadline: apd,
+                end_date: end_date).save
   end
 end
