@@ -124,13 +124,13 @@ class Project < ActiveRecord::Base
 
   # Do we also need to check that this is a current project?
   def created_before_proposal_deadline
-    errors.add_to_base("The proposal deadline has passed.") if \
+    errors.add(:base, "The proposal deadline has passed.") if \
       DateTime.now > Quarter.current_quarter.project_proposal_deadline
   end
 
   def accepted_before_submission_deadline
     message = "Cannot accept projects after the application deadline."
-    errors.add_to_base(message) if self.status_changed? and \
+    errors.add(:base, message) if self.status_changed? and \
       self.accepted? and \
       DateTime.now > Quarter.current_quarter.student_submission_deadline
   end
@@ -138,7 +138,7 @@ class Project < ActiveRecord::Base
   def status_not_pending_when_published
     message = "Status must be accepted or rejected before it " \
               "can be published."
-    errors.add_to_base(message) if self.pending? and self.status_published?
+    errors.add(:base, message) if self.pending? and self.status_published?
   end
 
 end

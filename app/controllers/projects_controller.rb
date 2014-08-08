@@ -47,6 +47,7 @@ class ProjectsController < ApplicationController
   end
 
   def edit_status
+    @project_status_published = @project.status_published
   end
 
   def update_status
