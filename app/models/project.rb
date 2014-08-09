@@ -1,6 +1,21 @@
 class Project < ActiveRecord::Base
 
-  default_scope order('created_at DESC')
+  default_scope { order('projects.created_at DESC') }
+  scope :accepted_projects, -> { where(status: "accepted") }
+  scope :rejected_projects, -> { where(status: "rejected") }
+  scope :pending_projects,  -> { where(status: "pending") }
+  scope :current_pending_projects, \
+    -> { where(status_published: false,
+               quarter: Quarter.current_quarter) }
+  scope :current_accepted_projects, \
+    -> { where(status: "accepted"). \
+    joins(:quarter).where(quarters: { current: true }) }
+  scope :current_accepted_published_projects, \
+    -> { where(status: "accepted", status_published: true). \
+    joins(:quarter).where(quarters: { current: true }) }
+  scope :quarter_accepted_proects, \
+    ->(quarter) { where(status: "accepted"). \
+    joins(:quarter).where(quarters: { id: quarter.id }) }
 
   belongs_to :quarter
   belongs_to :user, foreign_key: "advisor_id"
@@ -31,37 +46,6 @@ class Project < ActiveRecord::Base
 
   after_create :send_project_proposed
   after_update :send_project_status_changed
-
-  def Project.accepted_projects
-    Project.where(status: "accepted")
-  end
-
-  def Project.rejected_projects
-    Project.where(status: "rejected")
-  end
-
-  def Project.pending_projects
-    Project.where(status: "pending")
-  end
-
-  def Project.current_pending_projects
-    Project.where(status_published: false, quarter: Quarter.current_quarter)
-  end
-
-  def Project.current_accepted_projects
-    Project.where(status: "accepted"). \
-      joins(:quarter).where(quarters: { current: true })
-  end
-
-  def Project.current_accepted_published_projects
-    Project.where(status: "accepted", status_published: true). \
-    joins(:quarter).where(quarters: { current: true })
-  end
-
-  def Project.quarter_accepted_projects(quarter)
-    Project.where(status: "accepted"). \
-      joins(:quarter).where(quarters: { id: quarter.id })
-  end
 
   def advisor
     User.find(advisor_id)
