@@ -1,16 +1,13 @@
 class User < ActiveRecord::Base
 
-  default_scope order('created_at DESC')
+  default_scope { order('created_at DESC') }
+  scope :admins, -> { where(admin: true) }
 
   has_many :projects, foreign_key: "advisor_id", dependent: :destroy
   has_many :submissions, foreign_key: "student_id", dependent: :destroy
 
   devise :database_authenticatable, :registerable,
          :rememberable, :trackable, :validatable
-
-  def User.admins
-    User.where(admin: true)
-  end
 
   def roles
     roles = []

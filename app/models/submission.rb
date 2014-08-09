@@ -1,6 +1,8 @@
 class Submission < ActiveRecord::Base
 
-  default_scope order('created_at DESC')
+  default_scope { order('created_at DESC') }
+  scope :current_submissions, -> { joins(:project). \
+      where(projects: { quarter_id: Quarter.current_quarter.id }) }
 
   attr_accessor :this_user
 
@@ -47,11 +49,6 @@ class Submission < ActiveRecord::Base
   validates_attachment_file_name :resume, matches: /(pdf|doc|docx)\z/
   validates_attachment_size :resume, less_than: 5.megabytes
   # Could even use 1.megabyte.
-
-  def Submission.current_submissions
-    Submission.joins(:project). \
-      where(projects: { quarter_id: Quarter.current_quarter.id })
-  end
 
   def student
     User.find(student_id)

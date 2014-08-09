@@ -1,6 +1,7 @@
 class Quarter < ActiveRecord::Base
 
-  default_scope order('created_at DESC')
+  default_scope { order('created_at DESC') }
+  scope :current_quarter, -> { where(current: true).take }
 
   has_many :projects
 
@@ -17,13 +18,8 @@ class Quarter < ActiveRecord::Base
   after_validation :set_current_false
   before_validation :downcase_season
 
-  def Quarter.current_quarter
-    Quarter.where(current: true).take
-    # Use `uniq`?
-  end
-
   def Quarter.formatted_current_quarter
-    quarter = Quarter.where(current: true).take
+    quarter = Quarter.current_quarter
     if quarter
       [quarter.season.capitalize, quarter.year].join(" ")
     else
