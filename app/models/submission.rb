@@ -1,6 +1,6 @@
 class Submission < ActiveRecord::Base
 
-  default_scope { order('created_at DESC') }
+  default_scope { order('submissions.created_at DESC') }
   scope :current_submissions, -> { joins(:project). \
       where(projects: { quarter_id: Quarter.current_quarter.id }) }
 

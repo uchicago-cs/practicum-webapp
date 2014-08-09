@@ -14,7 +14,7 @@ class ProjectsController < ApplicationController
 
     if @project.save
       flash[:notice] = "Project successfully proposed."
-      redirect_to current_user
+      redirect_to users_projects_path(current_user)
     else
       render 'new'
     end

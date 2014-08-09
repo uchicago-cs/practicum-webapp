@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  default_scope { order('created_at DESC') }
+  default_scope { order('users.created_at DESC') }
   scope :admins, -> { where(admin: true) }
 
   has_many :projects, foreign_key: "advisor_id", dependent: :destroy

@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
 
-  default_scope { order('created_at DESC') }
+  default_scope { order('projects.created_at DESC') }
   scope :accepted_projects, -> { where(status: "accepted") }
   scope :rejected_projects, -> { where(status: "rejected") }
   scope :pending_projects,  -> { where(status: "pending") }

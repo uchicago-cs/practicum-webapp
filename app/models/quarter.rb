@@ -1,6 +1,6 @@
 class Quarter < ActiveRecord::Base
 
-  default_scope { order('created_at DESC') }
+  default_scope { order('quarters.created_at DESC') }
   scope :current_quarter, -> { where(current: true).take }
 
   has_many :projects
