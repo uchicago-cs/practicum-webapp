@@ -66,10 +66,28 @@ FactoryGirl.define do
       advisor_decision_deadline { DateTime.tomorrow }
     end
 
+    trait :cannot_create_submission do
+      student_submission_deadline { DateTime.yesterday }
+    end
+
+    trait :cannot_create_project do
+      project_proposal_deadline { DateTime.yesterday }
+    end
+
+    trait :advisor_cannot_decide do
+      advisor_decision_deadline { DateTime.yesterday }
+    end
+
     trait :no_deadlines_passed do
       can_create_submission
       can_create_project
       advisor_can_decide
+    end
+
+    trait :all_deadlines_passed do
+      cannot_create_submission
+      cannot_create_project
+      advisor_cannot_decide
     end
 
     # trait :current_quarter do
