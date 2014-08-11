@@ -6,23 +6,18 @@ feature "Creating a new submission" do
   subject { page }
 
   before(:each) do
-    @advisor = User.create!(email: "advisor@school.edu",
-                            advisor: true,
-                            password: "foobarfoo",
-                            password_confirmation: "foobarfoo")
+    @quarter = FactoryGirl.create(:quarter, :no_deadlines_passed)
+    @advisor = FactoryGirl.create(:advisor)
+    @project = FactoryGirl.create(:project, :accepted_and_published,
+                                  :in_current_quarter)
+    @student = FactoryGirl.create(:student)
 
-    @project = @advisor.projects.create!(name: "project",
-                                         deadline: DateTime.current,
-                                         description: "b"*100,
-                                         expected_deliverables: "b"*100,
-                                         prerequisites: "b"*100,
-                                         status: "accepted")
+    #Rails.logger.debug("\n\nIs the project valid? #{@project.valid?}\n\n"*10)
+    #Rails.logger.debug("\n\nIs the quarter valid? #{@quarter.valid?}\n\n"*10)
+    #Rails.logger.debug("\n\nProject: #{@project.inspect}\n\n"*10)
+    #Rails.logger.debug("\n\nQuarter: #{@quarter.inspect}\n\n"*10)
 
-    @student = User.new(email: "student@school.edu",
-                        student: true,
-                        password: "foobarfoo",
-                        password_confirmation: "foobarfoo")
-    @student.save!
+    # @student.save!
     sign_in(@student)
   end
 

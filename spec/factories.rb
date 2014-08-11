@@ -31,9 +31,50 @@ FactoryGirl.define do
   end
 
   factory :quarter do
+    # Not DRY
+    season_dates = { "spring" => "4th Monday in March",
+                     "summer" => "4th Monday in June",
+                     "autumn" => "4th Monday in September",
+                     "winter" => "1st Monday in January" }
+    deadline_weeks = { "proposal" => 2, "submission" => 5, "decision" => 7,
+                       "admin" => 8 }
+
     year { Date.today.year }
-    season { %w(spring summer autumn winter).sample }
-    current false
+    season { %w(spring summer autumn winter)[((Time.now.month - 1) / 3)-1] }
+    start_date { Chronic.parse(season_dates[season.downcase],
+                 now: Time.local(year, 1, 1, 12, 0, 0)).to_datetime }
+    project_proposal_deadline { start_date + \
+      deadline_weeks["proposal"].weeks + 4.days + 5.hours }
+    student_submission_deadline { start_date + \
+      deadline_weeks["submission"].weeks + 4.days + 5.hours }
+    advisor_decision_deadline { start_date + \
+      deadline_weeks["decision"].weeks + 4.days + 5.hours }
+    admin_publish_deadline { start_date + \
+      deadline_weeks["admin"].weeks + 4.days + 5.hours }
+    end_date { start_date + 9.weeks + 5.days }
+    current { true }
+
+    trait :can_create_submission do
+      student_submission_deadline { DateTime.tomorrow }
+    end
+
+    trait :can_create_project do
+      project_proposal_deadline { DateTime.tomorrow }
+    end
+
+    trait :advisor_can_decide do
+      advisor_decision_deadline { DateTime.tomorrow }
+    end
+
+    trait :no_deadlines_passed do
+      can_create_submission
+      can_create_project
+      advisor_can_decide
+    end
+
+    # trait :current_quarter do
+    #   current { true }
+    # end
   end
 
   factory :project do
@@ -48,6 +89,23 @@ FactoryGirl.define do
     related_work { "a"*500 }
     # `user`s should _not_ be allowed to create projects!
     association :user, factory: [:user, :advisor]
+
+    trait :accepted do
+      status { "accepted" }
+    end
+
+    trait :published do
+      status_published { true }
+    end
+
+    trait :accepted_and_published do
+      accepted
+      published
+    end
+
+    trait :in_current_quarter do
+      quarter_id { Quarter.current_quarter.id }
+    end
   end
 
   factory :submission do

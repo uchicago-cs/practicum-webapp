@@ -26,6 +26,7 @@ class Submission < ActiveRecord::Base
   validate :status_published_after_advisor_deadline
   validate :created_before_submission_deadline, on: :create
   validate :decision_made_before_decision_deadline
+  validate :creator_role, on: :create
 
   delegate :name, to: :project, prefix: true, allow_nil: true
   delegate :quarter, to: :project, prefix: false, allow_nil: true
@@ -142,6 +143,11 @@ class Submission < ActiveRecord::Base
     errors.add(:base, message) if !self.pending? and self.status_changed? \
       and DateTime.now > Quarter.current_quarter.advisor_decision_deadline \
       and !self.this_user.admin? and self.in_current_quarter?
+  end
+
+  def creator_role
+    errors.add(:user, "must be a student") if \
+      !("student".in? user.roles)
   end
 
   def downcase_status

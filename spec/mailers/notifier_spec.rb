@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe Notifier, :type => :mailer do
 
   before(:each) do
+    @quarter = FactoryGirl.create(:quarter, :no_deadlines_passed)
     ActionMailer::Base.delivery_method = :test
     ActionMailer::Base.perform_deliveries = true
     ActionMailer::Base.deliveries = []
@@ -18,6 +19,7 @@ RSpec.describe Notifier, :type => :mailer do
       # Create admins, whom we send the "new proposal" e-mail to.
       @admins = []
       (@num = rand(1..10)).times { @admins << FactoryGirl.create(:admin) }
+
       @project = FactoryGirl.create(:project)
     end
 
@@ -92,10 +94,16 @@ RSpec.describe Notifier, :type => :mailer do
     before do
       # Create admins, whom we send the "new proposal" e-mail to.
       (@num = rand(1..10)).times { FactoryGirl.create(:admin) }
-      @submission = FactoryGirl.create(:submission)
+      @advisor = FactoryGirl.create(:advisor)
+      @project = FactoryGirl.create(:project)
+      @submission = FactoryGirl.create(:submission, project: @project)
+      @submission.status = "accepted"
+      @submission.status_approved = true
+      @submission.status_published = true
     end
     it "should send an e-mail" do
-      expect{ FactoryGirl.create(:evaluation, submission: @submission) }.to \
+      expect{ FactoryGirl.create(:evaluation, submission: @submission,
+                                 advisor_id: @advisor.id) }.to \
         change{ ActionMailer::Base.deliveries.count }.by(@num)
     end
   end

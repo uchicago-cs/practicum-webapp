@@ -7,7 +7,8 @@ RSpec.describe User, :type => :model do
 
     before(:each) do
       @user = User.create(email: "test@university.edu",
-                          password: "foobarfoo")
+                          password: "foobarfoo",
+                          student: false)
     end
 
     subject { @user }
@@ -31,14 +32,17 @@ RSpec.describe User, :type => :model do
 
     it { should be_valid }
 
-    it "should have an (almost) empty roles hash" do
-      expect(@user.student).to be_truthy
-      expect(@user.roles).to include "student"
-      expect(@user.formatted_roles).to eq "student"
+    it "should have an empty roles hash" do
+      #expect(@user.student).to be_truthy
+      #expect(@user.roles).to include "student"
+      expect(@user.formatted_roles).to eq ""
     end
 
     describe "projects" do
-      before { @project = FactoryGirl.create(:project) }
+      before do
+        @quarter = FactoryGirl.create(:quarter, :no_deadlines_passed)
+        @project = FactoryGirl.create(:project)
+      end
 
       it "should not exist" do
         expect(@user.projects_applied_to).to be_empty
@@ -58,13 +62,15 @@ RSpec.describe User, :type => :model do
     end
 
     describe "who tries to create a submission" do
-      before { @project = FactoryGirl.create(:project) }
+      before do
+        @quarter = FactoryGirl.create(:quarter, :no_deadlines_passed)
+        @project = FactoryGirl.create(:project)
+      end
       it "should fail" do
         expect{FactoryGirl.create(:submission, project: @project,
                                   user: @user)}.to raise_error
-        # @err = FactoryGirl.create(:submission, project: @project, student: @user)
-        # Rails.logger.debug "#{@err.errors.full_messages}\n\n"*50
-        # Rails.logger.debug "#{FactoryGirl.create(:submission, project: @project, user: @user)}\n\n"*50
+
+        #Rails.logger.debug "#{FactoryGirl.create(:submission, project: @project, user: @user)}\n\n"*50
       end
     end
 

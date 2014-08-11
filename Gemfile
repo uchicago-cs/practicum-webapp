@@ -34,7 +34,7 @@ end
 group :test do
   gem 'selenium-webdriver', '2.35.1'
   gem 'capybara', '2.4.1'
-  gem 'factory_girl_rails', '4.2.0'
+  gem 'factory_girl_rails', '4.4.0'
   gem 'cucumber-rails', '1.4.0', :require => false
   gem 'libnotify', '0.8.0'
 end

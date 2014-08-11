@@ -35,8 +35,8 @@ class Project < ActiveRecord::Base
   validate :created_before_proposal_deadline, on: :create
   validate :status_not_pending_when_published
 
-  delegate :email, :affiliation, :formatted_affiliation, :formatted_department,
-           :department, :formatted_info, to: :user, prefix: :advisor,
+  delegate :email, :affiliation, :formatted_affiliation, :formatted_info,
+           :formatted_department, :department, to: :user, prefix: :advisor,
            allow_nil: true
   delegate :formatted_quarter, to: :quarter, prefix: false, allow_nil: true
   # prefix true on this?
