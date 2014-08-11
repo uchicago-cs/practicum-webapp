@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'spec_helper'
+require 'selenium-webdriver'
 
 feature "Creating a project" do
   subject { page }
@@ -138,17 +139,46 @@ feature "Project visibility" do
         expect(page.text).not_to have_content(@project.name)
       end
 
-      describe "after an admin changes its status to accepted" do
+      describe "an admin viewing the project" do
         before do
           click_link("Sign out")
           sign_in(@admin)
           click_link("Pending projects")
-          #click_link(@project.name)
         end
 
-        it "should show 'pending' to the admin" do
+        it "should show 'pending'" do
           within("table") do
             expect(page).to have_content("Pending")
+          end
+        end
+
+        describe "an admin changing its status to 'accepted'" do
+          before do
+            click_link(@project.name)
+            #click_link("Click here to change this project's status")
+            find(:linkhref, edit_status_project_path(@project)).click
+            choose "Approve"
+            click_button "Update project status"
+            save_and_open_page
+            page.driver.browser.switch_to.alert.accept
+          end
+
+          it "should have changed its status to 'accepted'" do
+            expect(@project.status).to eq "accepted"
+          end
+
+          it "should show 'accepted / pending' message on its page" do
+            expect(page).to have_selector('div.alert.alert-notice')
+            within("table") do
+              expect(page).to have_content("Accepted (flagged")
+            end
+          end
+
+          it "should show 'accepted / pending' on pendng projects page" do
+            before { click_link "Pending projects" }
+            within("table") do
+              expect(page).to have_content("Accepted (flagged")
+            end
           end
         end
       end
