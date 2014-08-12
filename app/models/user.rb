@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   has_many :submissions, foreign_key: "student_id", dependent: :destroy
 
   devise :database_authenticatable, :registerable,
-         :rememberable, :trackable, :validatable, :ldap_authenticatable
+         :rememberable, :trackable, :validatable#, :ldap_authenticatable
 
   def roles
     roles = []
