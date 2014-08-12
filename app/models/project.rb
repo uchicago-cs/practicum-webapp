@@ -137,7 +137,7 @@ class Project < ActiveRecord::Base
   def advisor_cannot_edit_if_pending
     message = "Advisors can only edit proposals that are pending " \
               "approval."
-    if this_user.advisor and !this_user.admin? and !self.pending?
+    if this_user.advisor? and !this_user.admin? and !self.pending?
       errors.add(:base, message)
     end
   end

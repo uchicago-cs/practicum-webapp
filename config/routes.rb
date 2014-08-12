@@ -16,26 +16,23 @@ Practicum::Application.routes.draw do
       member do
         patch "accept"
         patch "reject"
-        patch "update_status"
       end
 
     end
 
     collection do
       get "pending"
-
       resources :quarters
     end
 
     member do
-      get "edit_status"
+      patch "update_status"
     end
 
   end
 
   match "/applications/:id",
   to: "submissions#download_resume", via: "get", as: "download_resume"
-  match "/projects/:id/edit_status", to: "projects#update_status", via: "patch"
 
   devise_for :users, skip: [:sessions, :registrations]
   devise_scope :user do

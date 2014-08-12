@@ -5,7 +5,6 @@ class ProjectsController < ApplicationController
   skip_before_action :authenticate_user!,        only: [:index, :show]
   before_action      :before_proposal_deadline?, only: [:new, :create]
   before_action      :get_status_published,      only: [:show,
-                                                        :edit_status,
                                                         :update_status]
 
   def new
@@ -47,9 +46,6 @@ class ProjectsController < ApplicationController
 
   def pending
     @current_pending_projects = Project.current_pending_projects
-  end
-
-  def edit_status
   end
 
   def update_status
