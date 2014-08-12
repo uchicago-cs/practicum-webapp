@@ -6,9 +6,8 @@ class ProjectsController < ApplicationController
   before_action      :before_proposal_deadline?, only: [:new, :create]
   before_action      :get_status_published,      only: [:show,
                                                         :update_status]
-  before_action      :get_old_project,           only: :clone_project
-  before_action      :get_this_user,             only: [:update_status,
-                                                        :clone_project]
+  before_action      :get_old_project_info,      only: :clone_project
+  before_action      :get_this_user,             only: :update_status
 
   def new
   end
@@ -108,11 +107,12 @@ class ProjectsController < ApplicationController
     @project_status_published = @project.status_published
   end
 
-  def get_old_project
+  def get_old_project_info
     @old_project = Project.find(params[:id])
+    @old_project.this_user = current_user
   end
 
   def get_this_user
-    @old_project.this_user = current_user
+    @project.this_user = current_user
   end
 end

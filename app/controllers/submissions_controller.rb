@@ -69,7 +69,7 @@ class SubmissionsController < ApplicationController
                 type: @submission.resume.content_type,
                 x_sendfile: true)
     else
-      flash[:alert] = "This student did not upload a resume."
+      flash.now[:alert] = "This student did not upload a resume."
       render 'show'
     end
   end
@@ -80,7 +80,7 @@ class SubmissionsController < ApplicationController
       flash[:notice] = "Application status updated."
       redirect_to @submission
     else
-      flash[:notice] = "Application status could not be updated."
+      flash.now[:notice] = "Application status could not be updated."
       render 'show'
     end
   end

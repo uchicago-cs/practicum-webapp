@@ -1,5 +1,13 @@
 <h1><%= @project.name %></h1>
 
+<% if can? :update, @project %>
+  <div>
+    Click <%= link_to "here", edit_project_path %>
+    to edit this project's information.
+  </div>
+  <br>
+<% end %>
+
 <%= render 'project_long', object: @project%>
 
 <% if (can? :apply_to, @project) and before_submission_deadline? %>
@@ -7,11 +15,4 @@
   to apply.
 <%# else %>
   <!-- You may not apply to this project. -->
-<% end %>
-
-<% if can? :update, @project %>
-  <div>
-    Click <%= link_to "here", edit_project_path %>
-    to edit this project's information.
-  </div>
 <% end %>
