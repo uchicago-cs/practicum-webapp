@@ -21,7 +21,9 @@ class QuartersController < ApplicationController
       flash[:notice] = "Quarter successfully created."
       redirect_to quarters_path
     else
-      flash[:alert] = "Quarter could not be created."
+      # We need #now since we are rendering and not redirecting (not making an
+      # extra request).
+      flash.now[:alert] = "Quarter could not be created."
       render 'new'
     end
   end
@@ -35,7 +37,7 @@ class QuartersController < ApplicationController
       flash[:notice] = "Quarter successfully updated."
       redirect_to quarters_path
     else
-      flash[:alert] = "Failed to update the quarter."
+      flash.now[:alert] = "Failed to update the quarter."
       render 'edit'
     end
   end
@@ -46,7 +48,7 @@ class QuartersController < ApplicationController
       flash[:notice] = "Quarter successfully deleted."
       redirect_to quarters_path and return
     else
-      flash[:alert] = "Failed to delete the quarter."
+      flash.now[:alert] = "Failed to delete the quarter."
       render 'index'
     end
   end
