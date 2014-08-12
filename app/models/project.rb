@@ -17,6 +17,8 @@ class Project < ActiveRecord::Base
     ->(quarter) { where(status: "accepted"). \
     joins(:quarter).where(quarters: { id: quarter.id }) }
 
+  attr_accessor :this_user
+
   belongs_to :quarter
   belongs_to :user, foreign_key: "advisor_id"
   has_many :submissions
@@ -34,6 +36,7 @@ class Project < ActiveRecord::Base
   validate :creator_role
   validate :created_before_proposal_deadline, on: :create
   validate :status_not_pending_when_published
+  validate :advisor_cannot_edit_if_pending, on: :update
 
   delegate :email, :affiliation, :formatted_affiliation, :formatted_info,
            :formatted_department, :department, to: :user, prefix: :advisor,
@@ -125,6 +128,14 @@ class Project < ActiveRecord::Base
     message = "Status must be accepted or rejected before it " \
               "can be published."
     errors.add(:base, message) if self.pending? and self.status_published?
+  end
+
+  def advisor_cannot_edit_if_pending
+    message = "Advisors can only edit proposals that are pending " \
+              "approval."
+    if this_user.advisor and !this_user.admin? and !self.pending?
+      errors.add(:base, message)
+    end
   end
 
 end

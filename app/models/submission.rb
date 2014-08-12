@@ -22,7 +22,6 @@ class Submission < ActiveRecord::Base
   validate :status_not_pending_before_approved
   validate :status_not_pending_before_published
   validate :status_approved_before_published
-  # validate :status_published_after_advisor_deadline
   validate :created_before_submission_deadline, on: :create
   validate :decision_made_before_decision_deadline
   validate :creator_role, on: :create
