@@ -1,4 +1,7 @@
-<h1>Application from <%= @submission.student_email %></h1>
+<h1>
+  Application from <%= @submission.student_email %> for
+  <%= @submission.project_name %>
+</h1>
 
 <div>
   <%= render 'submission_show', object: @submission %>
@@ -14,7 +17,3 @@
     <!-- You cannot create an evaluation for this student. -->
   <% end %>
 </div>
-
-<% if can? :update_status_of, @submission %>
-  <%= render 'update_submission_status', objects: @submission %>
-<% end %>

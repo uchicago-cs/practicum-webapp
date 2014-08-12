@@ -99,7 +99,7 @@ def make_submissions
         sub.update_attributes(resume_file_name: "res2.pdf",
                               resume_content_type: "application/pdf")
       end
-      sub.save
+      sub.save(validate:false)
     end
   end
 end
