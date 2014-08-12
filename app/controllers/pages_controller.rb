@@ -31,7 +31,7 @@ class PagesController < ApplicationController
       flash[:notice] = "Successfully published all statuses."
       redirect_to submissions_path
     else
-      flash[:alert] = "Unable to publish all statuses."
+      flash.now[:alert] = "Unable to publish all statuses."
       render 'submissions'
     end
   end
@@ -43,7 +43,7 @@ class PagesController < ApplicationController
       flash[:notice] = "Successfully approved all statuses."
       redirect_to submissions_path
     else
-      flash[:alert] = "Unable to approve all statuses."
+      flash.now[:alert] = "Unable to approve all statuses."
       render 'submissions'
     end
   end

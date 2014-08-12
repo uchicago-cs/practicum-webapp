@@ -6,6 +6,9 @@ class ProjectsController < ApplicationController
   before_action      :before_proposal_deadline?, only: [:new, :create]
   before_action      :get_status_published,      only: [:show,
                                                         :update_status]
+  before_action      :get_old_project,           only: :clone_project
+  before_action      :get_this_user,             only: [:update_status,
+                                                        :clone_project]
 
   def new
   end
@@ -49,7 +52,6 @@ class ProjectsController < ApplicationController
   end
 
   def update_status
-    @project.this_user = current_user
     if @project.update_attributes(project_params)
       flash[:notice] = "Project status changed."
       redirect_to project_path
@@ -65,23 +67,24 @@ class ProjectsController < ApplicationController
       flash[:notice] = "Published all flagged project statuses."
       redirect_to pending_projects_path
     else
-      flash[:alert] = "Unable to publish all flagged project statuses."
+      flash.now[:alert] = "Unable to publish all flagged project statuses."
       render 'pending'
     end
   end
 
+  # `clone` is a keyword, so we use #clone_project instead of #clone.
   def clone_project
-    @old_project = Project.find(params[:id])
     @new_project = @old_project.dup
     @new_project.assign_attributes(quarter_id: Quarter.current_quarter.id,
-                                   status: "pending")
+                                   status: "pending",
+                                   status_published: false)
+    Rails.logger.debug("\n\nnew_project: #{@new_project.valid?}\n\nerrors: #{@new_project.errors.full_messages}\n\n"*17)
     if @new_project.save
-      @old_project.cloned = true
-      @old_project.save
+      @old_project.update_attributes(cloned: true)
       flash[:notice] = "Project successfully cloned."
-      redirect_to @new_project, only_path: true
+      redirect_to @new_project#, only_path: true
     else
-      flash[:alert] = "Project was not successfully cloned."
+      flash.now[:alert] = "Project was not successfully cloned."
       render 'show'
     end
   end
@@ -103,5 +106,13 @@ class ProjectsController < ApplicationController
 
   def get_status_published
     @project_status_published = @project.status_published
+  end
+
+  def get_old_project
+    @old_project = Project.find(params[:id])
+  end
+
+  def get_this_user
+    @old_project.this_user = current_user
   end
 end

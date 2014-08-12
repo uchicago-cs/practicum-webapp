@@ -13,7 +13,7 @@ class Project < ActiveRecord::Base
   scope :current_accepted_published_projects, \
     -> { where(status: "accepted", status_published: true). \
     joins(:quarter).where(quarters: { current: true }) }
-  scope :quarter_accepted_proects, \
+  scope :quarter_accepted_projects, \
     ->(quarter) { where(status: "accepted"). \
     joins(:quarter).where(quarters: { id: quarter.id }) }
 
@@ -96,6 +96,11 @@ class Project < ActiveRecord::Base
 
   def submittable_to?
     self.accepted? and self.status_published?
+  end
+
+  def format_cloned
+    self.cloned? ? "This project has been cloned." : \
+      "This project has not been cloned."
   end
 
   private

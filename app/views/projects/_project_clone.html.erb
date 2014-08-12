@@ -1,7 +1,5 @@
-<h3>Clone project</h3>
-<div>
-  No student completed this project, so you may clone it into the
-  current quarter. Click
-  <%= link_to "here", @project, method: :clone_project %>
-  to do so.
-</div>
+<%= @project.format_cloned %>
+No student completed this project, so you may
+<%= link_to "clone", @project, method: 'clone_project',
+    data: { confirm: "Are you sure?" } %>
+it into the current quarter.

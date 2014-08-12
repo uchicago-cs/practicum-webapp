@@ -21,6 +21,16 @@
 	<% end %>
       </td>
     </tr>
+
+    <% if can? :clone, @project %>
+      <tr>
+	<th>Cloned</th>
+	<td>
+	  <%= render 'project_clone', object: @project %>
+	</td>
+      </tr>
+    <% end %>
+
       <% if @project.submittable_to? %>
 	<tr>
 	  <th>Applicants</th>
