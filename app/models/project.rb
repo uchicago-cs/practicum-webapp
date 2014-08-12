@@ -94,6 +94,10 @@ class Project < ActiveRecord::Base
     self.submissions.count > 0
   end
 
+  def submittable_to?
+    self.accepted? and self.status_published?
+  end
+
   private
 
   def send_project_proposed

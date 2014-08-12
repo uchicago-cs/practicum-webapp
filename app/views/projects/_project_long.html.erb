@@ -13,8 +13,27 @@
     <% if can? :read_status_of, @project %>
     <tr>
       <th>Status</th>
-      <td><%= formatted_project_status(@project) %></td>
+      <td>
+	<% if can? :manage, @project %>
+	  <%= render 'edit_status', object: @project %>
+        <% else %>
+	  <%= formatted_project_status(@project) %>
+	<% end %>
+      </td>
     </tr>
+      <% if @project.submittable_to? %>
+	<tr>
+	  <th>Applicants</th>
+	  <td>
+	    <%= @project.submissions.count %>
+	    <% if @project.has_submissions? %>
+	      (click <%= link_to "here",
+	      project_submissions_path(@project.id) %>
+	      to view students' applications to this project)
+            <% end %>
+	  </td>
+	</tr>
+      <% end %>
     <% end %>
 
     <tr>

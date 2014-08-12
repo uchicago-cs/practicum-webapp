@@ -16,20 +16,6 @@
   </div>
 <% end %>
 
-<% if can? :edit_status_of, @project %>
-  <div>
-    Click <%= link_to "here", edit_status_project_path %>
-    to change this project's status or request changes to the proposal.
-  </div>
-<% end %>
-
-<% if can? :read_submissions_of, @project %>
-  <div>
-    Click <%= link_to "here", project_submissions_path(@project.id) %> to view
-    students' applications to this project.
-  </div>
-<% end %>
-
 <% if can? :clone, @project %>
   <%= render 'project_clone', object: @project %>
 <% end %>
