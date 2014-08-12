@@ -23,19 +23,21 @@
       <% end %>
     </tbody>
   </table>
+
+  <div>
+    Click <%= link_to "here", approve_all_statuses_path, method: :patch,
+    data: { confirm: "Are you sure?" } %>
+    to approve every advisor's decision.
+  </div>
+  <div>
+    Click <%= link_to "here", publish_all_statuses_path, method: :patch,
+    data: { confirm: "Are you sure?" } %>
+    to allow all students to see their application decisions.
+  </div>
+
 <% else %>
   There are no applications for this quarter.
 <% end %>
 <div>
   View previous quarters' applications by clicking <%= link_to "here", '#' %>.
-</div>
-<div>
-  Click <%= link_to "here", approve_all_statuses_path, method: :patch,
-	data: { confirm: "Are you sure?" } %>
-  to approve every advisor's decision.
-</div>
-<div>
-  Click <%= link_to "here", publish_all_statuses_path, method: :patch,
-	data: { confirm: "Are you sure?" } %>
-  to allow all students to see their application decisions.
 </div>
