@@ -4,6 +4,8 @@ class ProjectsController < ApplicationController
 
   skip_before_action :authenticate_user!,        only: [:index, :show]
   before_action      :before_proposal_deadline?, only: [:new, :create]
+  before_action      :get_status_published,      only: [:edit_status,
+                                                        :update_status]
 
   def new
   end
@@ -47,10 +49,10 @@ class ProjectsController < ApplicationController
   end
 
   def edit_status
-    @project_status_published = @project.status_published
   end
 
   def update_status
+    @project.this_user = current_user
     if @project.update_attributes(project_params)
       flash[:notice] = "Project status changed."
       redirect_to project_path
@@ -102,4 +104,7 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def get_status_published
+    @project_status_published = @project.status_published
+  end
 end
