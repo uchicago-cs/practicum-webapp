@@ -7,7 +7,8 @@ class ProjectsController < ApplicationController
   before_action      :get_status_published,      only: [:show,
                                                         :update_status]
   before_action      :get_old_project_info,      only: :clone_project
-  before_action      :get_this_user,             only: :update_status
+  before_action      :get_this_user,             only: [:update_status,
+                                                        :update]
 
   def new
   end
@@ -17,7 +18,7 @@ class ProjectsController < ApplicationController
     @project.assign_attributes(quarter_id: Quarter.current_quarter.id)
 
     if @project.save
-      flash[:notice] = "Project successfully proposed."
+      flash[:success] = "Project successfully proposed."
       redirect_to users_projects_path(current_user)
     else
       render 'new'
@@ -29,7 +30,7 @@ class ProjectsController < ApplicationController
 
   def update
     if @project.update_attributes(project_params)
-      flash[:notice] = "Project proposal successfully updated."
+      flash[:success] = "Project proposal successfully updated."
       redirect_to @project
     else
       render 'edit'
@@ -52,7 +53,7 @@ class ProjectsController < ApplicationController
 
   def update_status
     if @project.update_attributes(project_params)
-      flash[:notice] = "Project status changed."
+      flash[:success] = "Project status changed."
       redirect_to project_path
     else
       render 'show'
@@ -63,10 +64,10 @@ class ProjectsController < ApplicationController
     projects = Project.current_pending_projects.where.not(status: "pending")
     # #update_all skips validations!
     if projects.update_all(status_published: true)
-      flash[:notice] = "Published all flagged project statuses."
+      flash[:success] = "Published all flagged project statuses."
       redirect_to pending_projects_path
     else
-      flash.now[:alert] = "Unable to publish all flagged project statuses."
+      flash.now[:error] = "Unable to publish all flagged project statuses."
       render 'pending'
     end
   end
@@ -77,13 +78,12 @@ class ProjectsController < ApplicationController
     @new_project.assign_attributes(quarter_id: Quarter.current_quarter.id,
                                    status: "pending",
                                    status_published: false)
-    Rails.logger.debug("\n\nnew_project: #{@new_project.valid?}\n\nerrors: #{@new_project.errors.full_messages}\n\n"*17)
     if @new_project.save
       @old_project.update_attributes(cloned: true)
-      flash[:notice] = "Project successfully cloned."
-      redirect_to @new_project#, only_path: true
+      flash[:success] = "Project successfully cloned."
+      redirect_to @new_project#, only_path: true (?)
     else
-      flash.now[:alert] = "Project was not successfully cloned."
+      flash.now[:error] = "Project was not successfully cloned."
       render 'show'
     end
   end

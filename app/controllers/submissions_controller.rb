@@ -21,7 +21,7 @@ class SubmissionsController < ApplicationController
     @submission.assign_attributes(student_id: current_user.id)
 
     if @submission.save
-      flash[:notice] = "Application submitted."
+      flash[:success] = "Application submitted."
       redirect_to users_submissions_path(current_user)
     else
       render 'new'
@@ -47,7 +47,7 @@ class SubmissionsController < ApplicationController
 
   def accept
     if @submission.update_attributes(status: "accepted")
-      flash[:notice] = "Application accepted."
+      flash[:success] = "Application accepted."
       redirect_to @submission
     else
       render 'show'
@@ -56,7 +56,7 @@ class SubmissionsController < ApplicationController
 
   def reject
     if @submission.update_attributes(status: "rejected")
-      flash[:notice] = "Application rejected."
+      flash[:success] = "Application rejected."
       redirect_to @submission
     else
       render 'show'
@@ -69,7 +69,7 @@ class SubmissionsController < ApplicationController
                 type: @submission.resume.content_type,
                 x_sendfile: true)
     else
-      flash.now[:alert] = "This student did not upload a resume."
+      flash.now[:error] = "This student did not upload a resume."
       render 'show'
     end
   end
@@ -77,10 +77,10 @@ class SubmissionsController < ApplicationController
   def update_status
     @submission.this_user = current_user
     if @submission.update_attributes(submission_params)
-      flash[:notice] = "Application status updated."
+      flash[:success] = "Application status updated."
       redirect_to @submission
     else
-      flash.now[:notice] = "Application status could not be updated."
+      flash.now[:error] = "Application status could not be updated."
       render 'show'
     end
   end
@@ -99,24 +99,24 @@ class SubmissionsController < ApplicationController
 
   def project_accepted?
     message = "Access denied."
-    redirect_to(root_url, { alert: message }) unless @project.accepted?
+    redirect_to(root_url, { error: message }) unless @project.accepted?
   end
 
   def already_applied_to_project?
     message = "You have already applied to this project."
-    redirect_to(root_url, { alert: message }) if \
+    redirect_to(root_url, { error: message }) if \
       current_user.applied_to_project?(@project)
   end
 
   def project_in_current_quarter?
     message = "That project is no longer available."
-    redirect_to(root_url, { alert: message }) unless \
+    redirect_to(root_url, { error: message }) unless \
       @project.quarter == Quarter.current_quarter
   end
 
   def is_admin_or_advisor?
     message = "Access denied."
-    redirect_to(root_url, { alert: message }) unless \
+    redirect_to(root_url, { error: message }) unless \
       current_user.admin? or current_user.made_project?(@project)
   end
 

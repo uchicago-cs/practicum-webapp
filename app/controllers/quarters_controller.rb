@@ -18,12 +18,12 @@ class QuartersController < ApplicationController
 
   def create
     if @quarter.save
-      flash[:notice] = "Quarter successfully created."
+      flash[:success] = "Quarter successfully created."
       redirect_to quarters_path
     else
       # We need #now since we are rendering and not redirecting (not making an
       # extra request).
-      flash.now[:alert] = "Quarter could not be created."
+      flash.now[:error] = "Quarter could not be created."
       render 'new'
     end
   end
@@ -34,10 +34,10 @@ class QuartersController < ApplicationController
   def update
     @quarter.attributes = quarter_params
     if @quarter.save
-      flash[:notice] = "Quarter successfully updated."
+      flash[:success] = "Quarter successfully updated."
       redirect_to quarters_path
     else
-      flash.now[:alert] = "Failed to update the quarter."
+      flash.now[:error] = "Failed to update the quarter."
       render 'edit'
     end
   end
@@ -45,10 +45,10 @@ class QuartersController < ApplicationController
   def destroy
     redirect_to quarters_path and return if @quarter.current?
     if @quarter.destroy
-      flash[:notice] = "Quarter successfully deleted."
+      flash[:success] = "Quarter successfully deleted."
       redirect_to quarters_path and return
     else
-      flash.now[:alert] = "Failed to delete the quarter."
+      flash.now[:error] = "Failed to delete the quarter."
       render 'index'
     end
   end
@@ -70,7 +70,7 @@ class QuartersController < ApplicationController
 
   def quarter_belongs_to_projects?
     if @quarter.projects.count > 0
-      flash[:alert] = "Projects have already been made in this quarter, "\
+      flash[:error] = "Projects have already been made in this quarter, "\
       "so you cannot delete it."
       redirect_to quarters_path
     end

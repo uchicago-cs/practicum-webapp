@@ -28,10 +28,10 @@ class PagesController < ApplicationController
   def publish_all_statuses
     # Note: #update_all skips validations! Fix this!
     if @current_decided_submissions.update_all(status_published: true)
-      flash[:notice] = "Successfully published all statuses."
+      flash[:success] = "Successfully published all statuses."
       redirect_to submissions_path
     else
-      flash.now[:alert] = "Unable to publish all statuses."
+      flash.now[:error] = "Unable to publish all statuses."
       render 'submissions'
     end
   end
@@ -40,10 +40,10 @@ class PagesController < ApplicationController
     # Not DRY.
     # Note: #update_all skips validations! Fix this!
     if @current_decided_submissions.update_all(status_approved: true)
-      flash[:notice] = "Successfully approved all statuses."
+      flash[:success] = "Successfully approved all statuses."
       redirect_to submissions_path
     else
-      flash.now[:alert] = "Unable to approve all statuses."
+      flash.now[:error] = "Unable to approve all statuses."
       render 'submissions'
     end
   end
@@ -56,7 +56,7 @@ class PagesController < ApplicationController
       Notifier.request_for_advisor_access(current_user, admin).deliver
     end
 
-    redirect_to root_url, notice: "You have requested advisor privileges."
+    redirect_to root_url, success: "You have requested advisor privileges."
   end
 
   private
