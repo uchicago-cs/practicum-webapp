@@ -14,6 +14,15 @@ gem 'cancancan', '~> 1.8'
 gem 'devise', '~> 3.2.4'
 gem 'paperclip', '~> 4.1'
 gem 'chronic', '~> 0.10.2'
+gem 'sass-rails', '4.0.1'
+gem 'uglifier', '2.1.1'
+gem 'coffee-rails', '4.0.1'
+gem 'jquery-rails', '3.0.4'
+gem 'turbolinks', '1.1.1'
+gem 'jbuilder', '1.0.2'
+gem 'devise_ldap_authenticatable'
+gem 'rb-readline'
+gem 'rails_best_practices'
 
 group :development, :test do
   gem 'pg', '~> 0.17.1'
@@ -35,17 +44,9 @@ group :test do
   gem 'selenium-webdriver', '2.42.0'
   gem 'capybara', '2.4.1'
   gem 'factory_girl_rails', '4.4.0'
-  gem 'cucumber-rails', '1.4.0', :require => false
+  gem 'cucumber-rails', '1.4.0', require: false
   gem 'libnotify', '0.8.0'
 end
-
-gem 'sass-rails', '4.0.1'
-gem 'uglifier', '2.1.1'
-gem 'coffee-rails', '4.0.1'
-gem 'jquery-rails', '3.0.4'
-gem 'turbolinks', '1.1.1'
-gem 'jbuilder', '1.0.2'
-gem 'devise_ldap_authenticatable'
 
 group :doc do
   gem 'sdoc', '0.3.20', require: false
@@ -55,6 +56,3 @@ group :production do
   gem 'pg', '~> 0.17.1'
   gem 'rails_12factor', '0.0.2'
 end
-
-gem 'rb-readline'
-gem 'rails_best_practices'
