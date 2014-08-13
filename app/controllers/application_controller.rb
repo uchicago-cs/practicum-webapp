@@ -33,12 +33,8 @@ class ApplicationController < ActionController::Base
     end
 
     devise_parameter_sanitizer.for(:sign_in) do |user|
-      user.permit(:email, :password, :remember_me)
+      user.permit(:cnet, :email, :password, :remember_me)
     end
-
-    # devise_parameter_sanitizer.for(:sign_up) do |user|
-    #   user.permit(:email)
-    # end
   end
 
   def is_admin?

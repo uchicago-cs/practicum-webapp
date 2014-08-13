@@ -6,10 +6,12 @@ class User < ActiveRecord::Base
   has_many :projects, foreign_key: "advisor_id", dependent: :destroy
   has_many :submissions, foreign_key: "student_id", dependent: :destroy
 
-  devise :registerable, :rememberable, :trackable, :validatable,
+  devise :registerable, :rememberable, :trackable, #:validatable,
          :ldap_authenticatable, authentication_keys: [:cnet]
 
   before_create :get_ldap_info
+
+  attr_accessor :cnet
 
   def roles
     roles = []
@@ -90,13 +92,15 @@ class User < ActiveRecord::Base
   end
 
   def get_ldap_info
-    if Devise::LdapAdapter.get_ldap_param(self.cnet, "uid")
-      self.email = Devise::LdapAdapter.get_ldap_param(self.cnet, "mail")
-      self.first_name = (Devise::LdapAdapter. \
+    if Devise::LDAP::Adapter.get_ldap_param(self.cnet, "uid")
+      self.email = Devise::LDAP::Adapter.get_ldap_param(self.cnet, "mail")
+      self.first_name = (Devise::LDAP::Adapter. \
                          get_ldap_param(self.cnet, "givenName") rescue nil)
-      self.last_name = (Devise::LdapAdapter. \
+      self.last_name = (Devise::LDAP::Adapter. \
                         get_ldap_param(self.cnet, "sn") rescue nil)
       self.student = true
+      Rails.logger.debug "WE GOT HERE"*50
+      Rails.logger.debug self.inspect*50
     end
   end
 
