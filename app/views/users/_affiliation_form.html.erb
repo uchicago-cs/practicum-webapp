@@ -1,13 +1,16 @@
-This will show up on your project proposals and postings.
+<p>This will show up on your project proposals and postings.</p>
+
+<br>
+
 <%= form_for @user do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%= f.label :affiliation %>
   <%= f.text_field :affiliation %>
-
-  <%= f.label :department, "Department, institution, etc." %>
+  <%= f.label :affiliation, class: "inline" %>
+  <br>
   <%= f.text_field :department %>
-
+  <%= f.label :department, "Department, institution, etc.", class: "inline" %>
+  <br>
   <%= f.submit "Update your information",
     class: "btn btn-primary" %>
 

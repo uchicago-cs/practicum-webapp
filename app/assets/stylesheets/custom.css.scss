@@ -63,6 +63,10 @@ footer {
   @include box_sizing;
 }
 
+.inline {
+  display: inline;
+}
+
 table {
   width: 100%;
 
