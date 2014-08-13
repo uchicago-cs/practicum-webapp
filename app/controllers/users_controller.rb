@@ -44,7 +44,8 @@ class UsersController < ApplicationController
 
   def prevent_self_demotion
     if params[:id].to_i == current_user.id and
-        params[:user][:admin].to_i == 0 and
+        params[:user][:admin]              and
+        params[:user][:admin].to_i == 0    and
         current_user.admin?
       message = "You cannot demote yourself."
       redirect_to @user, notice: message
