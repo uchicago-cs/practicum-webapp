@@ -99,24 +99,24 @@ class SubmissionsController < ApplicationController
 
   def project_accepted?
     message = "Access denied."
-    redirect_to(root_url, { error: message }) unless @project.accepted?
+    redirect_to root_url, flash: { error: message } unless @project.accepted?
   end
 
   def already_applied_to_project?
     message = "You have already applied to this project."
-    redirect_to(root_url, { error: message }) if \
+    redirect_to root_url, flash: { error: message } if \
       current_user.applied_to_project?(@project)
   end
 
   def project_in_current_quarter?
     message = "That project is no longer available."
-    redirect_to(root_url, { error: message }) unless \
+    redirect_to root_url, flash: { error: message } unless \
       @project.quarter == Quarter.current_quarter
   end
 
   def is_admin_or_advisor?
     message = "Access denied."
-    redirect_to(root_url, { error: message }) unless \
+    redirect_to root_url, flash: { error: message } unless \
       current_user.admin? or current_user.made_project?(@project)
   end
 

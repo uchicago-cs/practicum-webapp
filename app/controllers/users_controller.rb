@@ -48,7 +48,7 @@ class UsersController < ApplicationController
         params[:user][:admin].to_i == 0    and
         current_user.admin?
       message = "You cannot demote yourself."
-      redirect_to @user, notice: message
+      redirect_to @user, flash: { error: message }
     end
   end
 

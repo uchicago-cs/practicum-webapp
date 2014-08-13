@@ -44,14 +44,14 @@ class EvaluationsController < ApplicationController
 
   def already_evaluated?
     message = "You have already submitted an evaluation for this student."
-    redirect_to(root_url, { error: message }) if \
+    redirect_to root_url, flash: { error: message } if \
       @project.advisor.evaluated_submission?(@submission)
   end
 
   def submission_status_sufficient?
     message = "Application status must be approved, published, and accepted."
     submission = Submission.find(params[:submission_id])
-    redirect_to(root_url, { error: message }) unless \
+    redirect_to root_url, flash: { error: message } unless \
       submission.accepted? and \
       submission.status_approved? and \
       submission.status_published?

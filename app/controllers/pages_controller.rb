@@ -56,7 +56,8 @@ class PagesController < ApplicationController
       Notifier.request_for_advisor_access(current_user, admin).deliver
     end
 
-    redirect_to root_url, success: "You have requested advisor privileges."
+    redirect_to root_url, flash: \
+      { success: "You have requested advisor privileges." }
   end
 
   private
