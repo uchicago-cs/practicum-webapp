@@ -3,7 +3,7 @@ This will show up on your project proposals and postings.
   <%= render 'shared/error_messages', object: f.object %>
 
   <%= f.label :affiliation %>
-  <%= f.text_field :affiliation %>
+  <%= f.text_field :affiliation, display: "inline" %>
 
   <%= f.label :department, "Department, institution, etc." %>
   <%= f.text_field :department %>

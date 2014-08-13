@@ -5,16 +5,17 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  # rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
-  #   #render :text => exception, :status => 500
-  #   redirect_to root_url, alert: "Access denied: #{exception}"
-  # end
+  rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
+    #render :text => exception, :status => 500
+    redirect_to root_url, alert: "Access denied: #{exception}"
+  end
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: "Access denied: #{exception}"
   end
 
   before_action :authenticate_user!
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   helper_method :is_admin?
 
@@ -30,6 +31,14 @@ class ApplicationController < ActionController::Base
         end
       end
     end
+
+    devise_parameter_sanitizer.for(:sign_in) do |user|
+      user.permit(:email, :password, :remember_me)
+    end
+
+    # devise_parameter_sanitizer.for(:sign_up) do |user|
+    #   user.permit(:email)
+    # end
   end
 
   def is_admin?
