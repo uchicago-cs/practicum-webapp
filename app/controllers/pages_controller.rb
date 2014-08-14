@@ -26,26 +26,32 @@ class PagesController < ApplicationController
   end
 
   def publish_all_statuses
-    # Note: #update_all skips validations! Fix this!
-    if @current_decided_submissions.update_all(status_published: true)
-      flash[:success] = "Successfully published all statuses."
-      redirect_to submissions_path
-    else
-      flash.now[:error] = "Unable to publish all statuses."
-      render 'submissions'
+    @current_decided_submissions.each do |sub|
+      sub.status_published = true
+      if sub.valid?
+        sub.save
+      else
+        flash.now[:error] = "Unable to publish all statuses."
+        render 'submissions' and return
+      end
     end
+    flash[:success] = "Successfully published all statuses."
+    redirect_to submissions_path
   end
 
   def approve_all_statuses
     # Not DRY.
-    # Note: #update_all skips validations! Fix this!
-    if @current_decided_submissions.update_all(status_approved: true)
-      flash[:success] = "Successfully approved all statuses."
-      redirect_to submissions_path
-    else
-      flash.now[:error] = "Unable to approve all statuses."
-      render 'submissions'
+    @current_decided_submissions.each do |sub|
+      sub.status_approved = true
+      if sub.valid?
+        sub.save
+      else
+        flash.now[:error] = "Unable to approve all statuses."
+        render 'submissions' and return
+      end
     end
+    flash[:success] = "Successfully approved all statuses."
+    redirect_to submissions_path
   end
 
   def request_advisor_access
