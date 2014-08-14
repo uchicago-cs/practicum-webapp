@@ -34,26 +34,26 @@ class ApplicationController < ActionController::Base
 
   def is_admin?
     message = "Access denied."
-    redirect_to root_url, flash: { error: message } and return unless \
+    redirect_to root_url, flash: { error: message } and return unless
       current_user.admin?
   end
 
   # Not DRY: see application_helper.erb
   def before_proposal_deadline?
     message = "The project proposal deadline for this quarter has passed."
-    redirect_to root_url, flash: { error: message } unless \
+    redirect_to root_url, flash: { error: message } unless
       DateTime.now <= Quarter.current_quarter.project_proposal_deadline
   end
 
   def before_submission_deadline?
     message = "The application deadline for this quarter has passed."
-    redirect_to root_url, flash: { error: message } unless \
+    redirect_to root_url, flash: { error: message } unless
       DateTime.now <= Quarter.current_quarter.student_submission_deadline
   end
 
   def before_decision_deadline?
     message = "The decision deadline for this quarter has passed."
-    redirect_to root_url, flash: { error: message } unless \
+    redirect_to root_url, flash: { error: message } unless
       DateTime.now <= Quarter.current_quarter.advisor_decision_deadline
   end
 

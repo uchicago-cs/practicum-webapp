@@ -4,17 +4,17 @@ class Project < ActiveRecord::Base
   scope :accepted_projects, -> { where(status: "accepted") }
   scope :rejected_projects, -> { where(status: "rejected") }
   scope :pending_projects,  -> { where(status: "pending") }
-  scope :current_pending_projects, \
+  scope :current_pending_projects,
     -> { where(status_published: false,
                quarter: Quarter.current_quarter) }
-  scope :current_accepted_projects, \
-    -> { where(status: "accepted"). \
+  scope :current_accepted_projects,
+    -> { where(status: "accepted").
     joins(:quarter).where(quarters: { current: true }) }
-  scope :current_accepted_published_projects, \
-    -> { where(status: "accepted", status_published: true). \
+  scope :current_accepted_published_projects,
+    -> { where(status: "accepted", status_published: true).
     joins(:quarter).where(quarters: { current: true }) }
-  scope :quarter_accepted_projects, \
-    ->(quarter) { where(status: "accepted"). \
+  scope :quarter_accepted_projects,
+    ->(quarter) { where(status: "accepted").
     joins(:quarter).where(quarters: { id: quarter.id }) }
 
   attr_accessor :this_user
@@ -76,9 +76,9 @@ class Project < ActiveRecord::Base
   end
 
   def cloneable?
-    self.quarter != Quarter.current_quarter \
-      and self.accepted_submissions.count == 0 \
-      and !self.cloned?
+    self.quarter != Quarter.current_quarter and
+      self.accepted_submissions.count == 0 and
+      !self.cloned?
   end
 
   def formatted_related_work
@@ -99,7 +99,7 @@ class Project < ActiveRecord::Base
   end
 
   def format_cloned
-    self.cloned? ? "This project has been cloned." : \
+    self.cloned? ? "This project has been cloned." :
       "This project has not been cloned."
   end
 
@@ -116,20 +116,20 @@ class Project < ActiveRecord::Base
   end
 
   def creator_role
-    errors.add(:user, "must be an advisor or admin") if \
+    errors.add(:user, "must be an advisor or admin") if
       ( user.roles == ["student"] or user.roles == [] )
   end
 
   # Do we also need to check that this is a current project?
   def created_before_proposal_deadline
-    errors.add(:base, "The proposal deadline has passed.") if \
+    errors.add(:base, "The proposal deadline has passed.") if
       DateTime.now > Quarter.current_quarter.project_proposal_deadline
   end
 
   def accepted_before_submission_deadline
     message = "Cannot accept projects after the application deadline."
-    errors.add(:base, message) if self.status_changed? and \
-      self.accepted? and \
+    errors.add(:base, message) if self.status_changed? and
+      self.accepted? and
       DateTime.now > Quarter.current_quarter.student_submission_deadline
   end
 

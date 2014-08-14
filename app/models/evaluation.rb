@@ -45,7 +45,7 @@ class Evaluation < ActiveRecord::Base
 
   def submission_status_is_sufficient
     message = "status must be approved, published, and accepted."
-    errors.add(:submission, message) unless self.submission_accepted? and \
+    errors.add(:submission, message) unless self.submission_accepted? and
       self.submission_status_approved? and self.submission_status_published?
   end
 

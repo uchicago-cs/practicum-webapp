@@ -1,7 +1,7 @@
 class Submission < ActiveRecord::Base
 
   default_scope { order('submissions.created_at DESC') }
-  scope :current_submissions, -> { joins(:project). \
+  scope :current_submissions, -> { joins(:project).
       where(projects: { quarter_id: Quarter.current_quarter.id }) }
 
   attr_accessor :this_user
@@ -106,45 +106,45 @@ class Submission < ActiveRecord::Base
   # Make #in_current_quarter? its own check. Also, add error messages.
   def status_not_pending_before_approved
     message = "Status must not be pending before an admin can approve it."
-    errors.add(:base, message) if self.pending? and self.status_approved? \
-      and self.status_approved_changed? and self.in_current_quarter?
+    errors.add(:base, message) if self.pending? and self.status_approved? and
+      self.status_approved_changed? and self.in_current_quarter?
   end
 
   def status_not_pending_before_published
     message = "Status must not be pending before an admin can publish it."
-    errors.add(:base, message) if self.pending? \
-      and self.status_published? and self.in_current_quarter?
+    errors.add(:base, message) if self.pending? and
+      self.status_published? and self.in_current_quarter?
   end
 
   def status_approved_before_published
     message = "Status must be approved before it can be published."
-    errors.add(:base, message) if !self.status_approved? \
-      and self.status_published? and self.in_current_quarter?
+    errors.add(:base, message) if !self.status_approved? and
+      self.status_published? and self.in_current_quarter?
   end
 
   def status_published_after_advisor_deadline
     message = "Cannot publish status before the advisor's decision deadline."
-    errors.add(:base, message) if self.status_published \
-      and DateTime.now <= Quarter.current_quarter.advisor_decision_deadline \
-      and self.in_current_quarter?
+    errors.add(:base, message) if self.status_published and
+      DateTime.now <= Quarter.current_quarter.advisor_decision_deadline and
+      self.in_current_quarter?
   end
 
   def created_before_submission_deadline
     message = "The application deadline has passed."
-    errors.add(:base, message) if \
-      DateTime.now > Quarter.current_quarter.student_submission_deadline \
-      and self.in_current_quarter?
+    errors.add(:base, message) if
+      DateTime.now > Quarter.current_quarter.student_submission_deadline and
+      self.in_current_quarter?
   end
 
   def decision_made_before_decision_deadline
     message = "Status cannot be updated past the advisor's decision deadline."
-    errors.add(:base, message) if !self.pending? and self.status_changed? \
-      and DateTime.now > Quarter.current_quarter.advisor_decision_deadline \
-      and !self.this_user.admin? and self.in_current_quarter?
+    errors.add(:base, message) if !self.pending? and self.status_changed? and
+      DateTime.now > Quarter.current_quarter.advisor_decision_deadline and
+      !self.this_user.admin? and self.in_current_quarter?
   end
 
   def creator_role
-    errors.add(:user, "must be a student") if \
+    errors.add(:user, "must be a student") if
       !("student".in? user.roles)
   end
 

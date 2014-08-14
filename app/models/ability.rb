@@ -33,7 +33,7 @@ class Ability
                              :accept_submission, :reject_submission)
 
         can :download_resume, Submission do |submission|
-          submission.project_advisor_id == user.id and \
+          submission.project_advisor_id == user.id and
             submission.resume.exists?
         end
 
@@ -59,8 +59,8 @@ class Ability
         end
 
         can :create_evaluation_for, Submission do |submission|
-          (submission.project_advisor_id == user.id) \
-            and submission.accepted? and !submission.evaluation
+          (submission.project_advisor_id == user.id) and
+            submission.accepted? and !submission.evaluation
         end
       end
 
@@ -72,8 +72,8 @@ class Ability
         can :read, Submission, student_id: user.id
         can :download_resume, Submission, student_id: user.id
         can :apply_to, Project do |project|
-          project.accepted? and !user.applied_to_project?(project) \
-            and project.in_current_quarter?
+          project.accepted? and !user.applied_to_project?(project) and
+            project.in_current_quarter?
         end
       end
 

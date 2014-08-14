@@ -10,7 +10,7 @@
     <%= render 'submission_accept_reject', object: @submission %>
   <% end %>
 
-  <% if (can? :create_evaluation_for, @submission) and \
+  <% if (can? :create_evaluation_for, @submission) and
     @submission_status_sufficient %>
     <%= render 'submission_create_evaluation', object: @submission %>
   <%# else %>

@@ -62,7 +62,7 @@ class PagesController < ApplicationController
       Notifier.request_for_advisor_access(current_user, admin).deliver
     end
 
-    redirect_to root_url, flash: \
+    redirect_to root_url, flash:
       { success: "You have requested advisor privileges." }
   end
 
@@ -73,7 +73,7 @@ class PagesController < ApplicationController
   end
 
   def get_current_decided_submissions
-    @current_decided_submissions = @current_submissions. \
+    @current_decided_submissions = @current_submissions.
       where.not(status: "pending")
   end
 

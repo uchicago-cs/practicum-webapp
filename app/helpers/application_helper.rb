@@ -12,22 +12,22 @@ module ApplicationHelper
 
   # Refactor these four into one method.
   def project_proposal_deadline
-    Quarter.current_quarter.project_proposal_deadline. \
+    Quarter.current_quarter.project_proposal_deadline.
       strftime("%I:%M %p on %D (%A, %B %d, %Y)")
   end
 
   def student_submission_deadline
-    Quarter.current_quarter.student_submission_deadline. \
+    Quarter.current_quarter.student_submission_deadline.
       strftime("%I:%M %p on %D (%A, %B %d, %Y)")
   end
 
   def advisor_decision_deadline
-    Quarter.current_quarter.advisor_decision_deadline. \
+    Quarter.current_quarter.advisor_decision_deadline.
       strftime("%I:%M %p on %D (%A, %B %d, %Y)")
   end
 
   def admin_publish_deadline
-    Quarter.current_quarter.admin_publish_deadline. \
+    Quarter.current_quarter.admin_publish_deadline.
       strftime("%I:%M %p on %D (%A, %B %d, %Y)")
   end
 
