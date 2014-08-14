@@ -6,10 +6,11 @@ class User < ActiveRecord::Base
   has_many :projects, foreign_key: "advisor_id", dependent: :destroy
   has_many :submissions, foreign_key: "student_id", dependent: :destroy
 
-  devise :registerable, :rememberable, :trackable, #:validatable,
+  devise :registerable, :rememberable, :trackable, :validatable,
          :ldap_authenticatable, authentication_keys: [:cnet]
 
-  before_create :get_ldap_info
+  before_validation :get_ldap_info
+  # before_validation :get_ldap_email
 
   def roles
     roles = []
@@ -106,7 +107,6 @@ class User < ActiveRecord::Base
       self.last_name = \
         (Devise::LDAP::Adapter.get_ldap_param(self.cnet, "sn") rescue nil).first
       self.student = true
-    else
     end
   end
 
