@@ -41,9 +41,6 @@ Practicum::Application.routes.draw do
     post "/signin" => "sessions/sessions#create", as: :user_session
     delete "/signout" => "sessions/sessions#destroy", as: :destroy_user_session
 
-    get "/signup" => "devise/registrations#new", as: :new_user_registration
-    post "/signup" => "devise/registrations#create", as: :user_registration
-
     # Prevent users from deleting their own accounts.
     resource :registration,
     only: [:new, :create, :edit, :update],

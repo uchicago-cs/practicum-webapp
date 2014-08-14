@@ -84,7 +84,7 @@ class User < ActiveRecord::Base
   end
 
   def formatted_info
-    info = self.email
+    info = self.display_name
     info << ", #{self.department}"  if self.department.present?
     info << ", #{self.affiliation}" if self.affiliation.present?
     info
