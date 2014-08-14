@@ -23,6 +23,14 @@ class User < ActiveRecord::Base
     roles
   end
 
+  def display_name
+    if first_name.present? and last_name.present?
+      "#{first_name} #{last_name}"
+    else
+      cnet
+    end
+  end
+
   def formatted_roles
     roles.join(", ")
   end

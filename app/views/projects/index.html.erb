@@ -16,7 +16,7 @@
       <% @projects.each do |project| %>
 	<tr>
 	  <td><%= link_to project.name, project %></td>
-	  <td><%= project.advisor_email %></td>
+	  <td><%= project.advisor_display_name %></td>
 	</tr>
       <% end %>
     </tbody>
