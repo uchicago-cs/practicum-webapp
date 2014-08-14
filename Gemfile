@@ -20,16 +20,19 @@ gem 'coffee-rails', '4.0.1'
 gem 'jquery-rails', '3.0.4'
 gem 'turbolinks', '1.1.1'
 gem 'jbuilder', '1.0.2'
-gem 'devise_ldap_authenticatable'
+gem 'devise_ldap_authenticatable', '0.8.1'
 gem 'rb-readline'
 gem 'rails_best_practices'
 
-group :development, :test do
+group :development, :test, :production do
   gem 'pg', '~> 0.17.1'
+end
+
+group :development, :test do
   gem 'rspec-rails', '3.0.0'
-  gem 'spork-rails', '4.0.0'
+#  gem 'spork-rails', '4.0.0'
   gem 'guard-rspec', '4.2.10'
-  gem 'guard-spork', '1.5.1'
+#  gem 'guard-spork', '1.5.1'
   gem 'childprocess', '0.5.0'
   gem 'webrat'
   gem 'database_cleaner', github: 'bmabey/database_cleaner'
@@ -38,6 +41,7 @@ group :development, :test do
   gem 'pry', github: 'pry/pry'
   gem 'spring'
   gem 'spring-commands-rspec'
+  gem 'debugger'
 end
 
 group :test do
@@ -53,6 +57,5 @@ group :doc do
 end
 
 group :production do
-  gem 'pg', '~> 0.17.1'
   gem 'rails_12factor', '0.0.2'
 end

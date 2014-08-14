@@ -11,8 +11,6 @@ class User < ActiveRecord::Base
 
   before_create :get_ldap_info
 
-  attr_accessor :cnet
-
   def roles
     roles = []
 
@@ -92,15 +90,15 @@ class User < ActiveRecord::Base
   end
 
   def get_ldap_info
-    if Devise::LDAP::Adapter.get_ldap_param(self.cnet, "uid")
-      self.email = Devise::LDAP::Adapter.get_ldap_param(self.cnet, "mail")
-      self.first_name = (Devise::LDAP::Adapter. \
-                         get_ldap_param(self.cnet, "givenName") rescue nil)
-      self.last_name = (Devise::LDAP::Adapter. \
-                        get_ldap_param(self.cnet, "sn") rescue nil)
+    if Devise::LDAP::Adapter.get_ldap_param(self.cnet, 'uid')
+      self.email = Devise::LDAP::Adapter.get_ldap_param(self.cnet, "mail").first
+      self.first_name = \
+        (Devise::LDAP::Adapter.get_ldap_param(self.cnet,
+                                              "givenName") rescue nil).first
+      self.last_name = \
+        (Devise::LDAP::Adapter.get_ldap_param(self.cnet, "sn") rescue nil).first
       self.student = true
-      Rails.logger.debug "WE GOT HERE"*50
-      Rails.logger.debug self.inspect*50
+    else
     end
   end
 
