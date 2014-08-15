@@ -31,4 +31,7 @@ Practicum::Application.configure do
 
   # Tell Paperclip where to look for ImageMagick and GhostScript
   Paperclip.options[:command_path] = "/usr/bin/"
+
+  # Set log level
+  config.log_level = :debug
 end

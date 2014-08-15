@@ -12,23 +12,29 @@
                selected: @quarter.year %>
 
   <%= f.label :start_date %>
-  <%= f.datetime_select :start_date, minute_step: 15 %>
+  <%= f.datetime_field :start_date,
+  value: @quarter.start_date.strftime("%m/%d/%Y %I:%M %p") %>
 
   <%= f.label :project_proposal_deadline %>
-  <%= f.datetime_select :project_proposal_deadline, minute_step: 15 %>
+  <%= f.datetime_field :project_proposal_deadline,
+  value: @quarter.project_proposal_deadline.strftime("%m/%d/%Y %I:%M %p") %>
 
   <%= f.label :student_submission_deadline %>
-  <%= f.datetime_select :student_submission_deadline, minute_step: 15 %>
+  <%= f.datetime_field :student_submission_deadline,
+  value: @quarter.student_submission_deadline.strftime("%m/%d/%Y %I:%M %p") %>
 
   <%= f.label :advisor_decision_deadline %>
-  <%= f.datetime_select :advisor_decision_deadline, minute_step: 15 %>
+  <%= f.datetime_field :advisor_decision_deadline,
+  value: @quarter.advisor_decision_deadline.strftime("%m/%d/%Y %I:%M %p") %>
 
   <%= f.label :admin_publish_deadline,
       "Admin application publishing deadline (soft, not strict)" %>
-  <%= f.datetime_select :admin_publish_deadline, minute_step: 15 %>
+  <%= f.datetime_field :admin_publish_deadline,
+  value: @quarter.admin_publish_deadline.strftime("%m/%d/%Y %I:%M %p") %>
 
   <%= f.label :end_date %>
-  <%= f.datetime_select :end_date, minute_step: 15 %>
+  <%= f.datetime_field :end_date,
+  value: @quarter.end_date.strftime("%m/%d/%Y %I:%M %p") %>
 
   <%= f.label :current, "Current quarter?" %>
   <%= f.check_box :current %>

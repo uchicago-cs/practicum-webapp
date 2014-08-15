@@ -23,6 +23,7 @@ gem 'jbuilder', '1.0.2'
 gem 'devise_ldap_authenticatable'
 gem 'rb-readline'
 gem 'rails_best_practices'
+gem 'bootstrap-datetimepicker-rails', github: 'lubieniebieski/bootstrap-datetimepicker-rails'
 
 group :development, :test do
   gem 'pg', '~> 0.17.1'
@@ -38,6 +39,7 @@ group :development, :test do
   gem 'pry', github: 'pry/pry'
   gem 'spring'
   gem 'spring-commands-rspec'
+  gem 'debugger'
 end
 
 group :test do

@@ -11,34 +11,62 @@
   <%= f.select :year, (Time.now.year - 5..Time.now.year + 5),
                selected: Time.now.year %>
 
+  <%#= f.label :start_date, wrapper: :append # Needed? %>
   <%= f.label :start_date %>
-  <%= f.datetime_select :start_date, minute_step: 15,
-                        selected: start_date %>
+  <div class="datetimepicker input-append">
+    <%= f.text_field :start_date, value: start_date, as: :string %>
+    <span class="add-on">
+      <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
+    </span>
+  </div>
 
   <%= f.label :project_proposal_deadline %>
-  <%= f.datetime_select :project_proposal_deadline, minute_step: 15,
-                        selected: default_deadline("proposal") %>
+  <div class="datetimepicker input-append">
+    <%= f.text_field :project_proposal_deadline,
+    value: default_deadline("proposal"), as: :string %>
+    <span class="add-on">
+      <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
+    </span>
+  </div>
 
   <%= f.label :student_submission_deadline %>
-  <%= f.datetime_select :student_submission_deadline, minute_step: 15,
-                        selected: default_deadline("submission") %>
+  <div class="datetimepicker input-append">
+    <%= f.text_field :student_submission_deadline,
+    value: default_deadline("submission"), as: :string %>
+    <span class="add-on">
+      <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
+    </span>
+  </div>
 
   <%= f.label :advisor_decision_deadline %>
-  <%= f.datetime_select :advisor_decision_deadline, minute_step: 15,
-                        selected: default_deadline("decision") %>
+  <div class="datetimepicker input-append">
+    <%= f.text_field :advisor_decision_deadline,
+    value: default_deadline("decision"), as: :string %>
+    <span class="add-on">
+      <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
+    </span>
+  </div>
 
   <%= f.label :admin_publish_deadline,
       "Admin application publishing deadline (soft, not strict)" %>
-  <%= f.datetime_select :admin_publish_deadline, minute_step: 15,
-                        selected: default_deadline("admin") %>
+  <div class="datetimepicker input-append">
+    <%= f.text_field :admin_publish_deadline,
+    value: default_deadline("admin"), as: :string %>
+    <span class="add-on">
+      <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
+    </span>
+  </div>
 
   <%= f.label :end_date %>
-  <%= f.datetime_select :end_date, minute_step: 15,
-                        selected: end_date %>
+  <div class="datetimepicker input-append">
+    <%= f.text_field :end_date, value: end_date, as: :string %>
+    <span class="add-on">
+      <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
+    </span>
+  </div>
 
   <%= f.label :current, "Make this the current quarter?" %>
   <%= f.check_box :current %>
 
-  <%= f.submit "Create quarter",
-  class: "btn btn-primary" %>
+  <%= f.submit "Create quarter", class: "btn btn-primary" %>
 <% end %>

@@ -2,9 +2,10 @@ class QuartersController < ApplicationController
 
   load_and_authorize_resource
 
-  before_action :downcase_season, only: :create
-  before_action :is_admin?, only: [:new, :create]
+  before_action :downcase_season,              only: :create
+  before_action :is_admin?,                    only: [:new, :create]
   before_action :quarter_belongs_to_projects?, only: :destroy
+  before_action :format_datetimes,             only: [:update]
 
   def index
   end
@@ -17,12 +18,10 @@ class QuartersController < ApplicationController
   end
 
   def create
-    if @quarter.save
+    if @quarter.update_attributes(quarter_params)
       flash[:success] = "Quarter successfully created."
       redirect_to quarters_path
     else
-      # We need #now since we are rendering and not redirecting (not making an
-      # extra request).
       flash.now[:error] = "Quarter could not be created."
       render 'new'
     end
@@ -32,8 +31,8 @@ class QuartersController < ApplicationController
   end
 
   def update
-    @quarter.attributes = quarter_params
-    if @quarter.save
+    Rails.logger.debug "HELLO" * 50
+    if @quarter.update_attributes(quarter_params)
       flash[:success] = "Quarter successfully updated."
       redirect_to quarters_path
     else
@@ -74,6 +73,14 @@ class QuartersController < ApplicationController
       "so you cannot delete it."
       redirect_to quarters_path
     end
+  end
+
+  def format_datetimes
+    Quarter.deadlines.each do |dl|
+      params[:quarter][dl] = DateTime.strptime(params[:quarter][dl],
+                                               "%m/%d/%Y %I:%M %p")
+    end
+
   end
 
 end

@@ -27,6 +27,11 @@ class Quarter < ActiveRecord::Base
     end
   end
 
+  def Quarter.deadlines
+    [:start_date, :project_proposal_deadline, :student_submission_deadline,
+     :advisor_decision_deadline, :admin_publish_deadline, :end_date]
+  end
+
   def formatted_quarter
     [season.capitalize, year].join(" ")
   end
