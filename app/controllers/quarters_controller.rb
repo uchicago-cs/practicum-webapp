@@ -5,6 +5,7 @@ class QuartersController < ApplicationController
   before_action :downcase_season,              only: :create
   before_action :is_admin?,                    only: [:new, :create]
   before_action :quarter_belongs_to_projects?, only: :destroy
+  before_action :all_fields_present?,          only: [:create, :update]
 
   def index
   end
@@ -67,9 +68,21 @@ class QuartersController < ApplicationController
 
   def quarter_belongs_to_projects?
     if @quarter.projects.count > 0
-      flash[:error] = "Projects have already been made in this quarter, "\
+      flash.now[:error] = "Projects have already been made in this quarter, "\
       "so you cannot delete it."
-      redirect_to quarters_path
+      render 'index'
+    end
+  end
+
+  def all_fields_present?
+    # Not DRY.
+    unless (@quarter.start_date.present? and
+            @quarter.project_proposal_deadline.present? and
+            @quarter.student_submission_deadline.present? and
+            @quarter.advisor_decision_deadline.present? and
+            @quarter.end_date.present?)
+      flash.now[:error] = "You must enter each date and deadline."
+        render 'new'
     end
   end
 
