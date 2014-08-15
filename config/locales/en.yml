@@ -34,3 +34,6 @@ en:
               status_approved_before_published: "cannot be published before it is approved"
             status_published:
               status_not_pending_before_published: "cannot be pending before it is published"
+  time:
+    formats:
+      twb: "%Y-%m-%d %H:%M:%S"

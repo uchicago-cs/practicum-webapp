@@ -13,7 +13,8 @@
 
   <%= f.label :start_date %>
   <div class="datetimepicker input-append">
-    <%= f.text_field :start_date, value: @quarter.start_date, as: :string %>
+    <%= f.text_field :start_date,
+    placeholder: l(@quarter.start_date, format: :twb), as: :string %>
     <span class="add-on">
       <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
     </span>
@@ -22,7 +23,8 @@
   <%= f.label :project_proposal_deadline %>
   <div class="datetimepicker input-append">
     <%= f.text_field :project_proposal_deadline,
-    value: @quarter.project_proposal_deadline, as: :string %>
+    placeholder: l(@quarter.project_proposal_deadline, format: :twb),
+      as: :string %>
     <span class="add-on">
       <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
     </span>
@@ -31,7 +33,8 @@
   <%= f.label :student_submission_deadline %>
   <div class="datetimepicker input-append">
     <%= f.text_field :student_submission_deadline,
-    value: @quarter.student_submission_deadline, as: :string %>
+    placeholder: l(@quarter.student_submission_deadline, format: :twb),
+      as: :string %>
     <span class="add-on">
       <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
     </span>
@@ -40,7 +43,8 @@
   <%= f.label :advisor_decision_deadline %>
   <div class="datetimepicker input-append">
     <%= f.text_field :advisor_decision_deadline,
-    value: @quarter.advisor_decision_deadline, as: :string %>
+    placeholder: l(@quarter.advisor_decision_deadline, format: :twb),
+      as: :string %>
     <span class="add-on">
       <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
     </span>
@@ -51,7 +55,8 @@
       "Admin application publishing deadline (soft, not strict)" %>
   <div class="datetimepicker input-append">
     <%= f.text_field :admin_publish_deadline,
-    value: @quarter.admin_publish_deadline, as: :string %>
+    placeholder: l(@quarter.admin_publish_deadline, format: :twb),
+      as: :string %>
     <span class="add-on">
       <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
     </span>
@@ -60,7 +65,7 @@
   <%= f.label :end_date %>
   <div class="datetimepicker input-append">
     <%= f.text_field :end_date,
-    value: @quarter.end_date, as: :string %>
+    placeholder: l(@quarter.end_date, format: :twb), as: :string %>
     <span class="add-on">
       <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
     </span>

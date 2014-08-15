@@ -24,6 +24,8 @@ gem 'devise_ldap_authenticatable'
 gem 'rb-readline'
 gem 'rails_best_practices'
 gem 'bootstrap-datetimepicker-rails', github: 'lubieniebieski/bootstrap-datetimepicker-rails'
+# gem 'formtastic'
+# gem 'simple_form'
 
 group :development, :test do
   gem 'pg', '~> 0.17.1'
