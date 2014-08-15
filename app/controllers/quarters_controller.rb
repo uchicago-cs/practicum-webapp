@@ -5,7 +5,6 @@ class QuartersController < ApplicationController
   before_action :downcase_season,              only: :create
   before_action :is_admin?,                    only: [:new, :create]
   before_action :quarter_belongs_to_projects?, only: :destroy
-  before_action :format_datetimes,             only: [:update]
 
   def index
   end
@@ -31,7 +30,6 @@ class QuartersController < ApplicationController
   end
 
   def update
-    Rails.logger.debug "HELLO" * 50
     if @quarter.update_attributes(quarter_params)
       flash[:success] = "Quarter successfully updated."
       redirect_to quarters_path
@@ -73,14 +71,6 @@ class QuartersController < ApplicationController
       "so you cannot delete it."
       redirect_to quarters_path
     end
-  end
-
-  def format_datetimes
-    Quarter.deadlines.each do |dl|
-      params[:quarter][dl] = DateTime.strptime(params[:quarter][dl],
-                                               "%m/%d/%Y %I:%M %p")
-    end
-
   end
 
 end
