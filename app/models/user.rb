@@ -6,11 +6,10 @@ class User < ActiveRecord::Base
   has_many :projects, foreign_key: "advisor_id", dependent: :destroy
   has_many :submissions, foreign_key: "student_id", dependent: :destroy
 
-  devise :registerable, :rememberable, :trackable, :validatable,
+  devise :rememberable, :trackable, :validatable,
          :ldap_authenticatable, authentication_keys: [:cnet]
 
   before_validation :get_ldap_info
-  # before_validation :get_ldap_email
 
   def roles
     roles = []
