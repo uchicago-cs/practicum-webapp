@@ -107,40 +107,38 @@ class Submission < ActiveRecord::Base
   def status_not_pending_before_approved
     message = "Status must not be pending before an admin can approve it."
     errors.add(:base, message) if self.pending? and self.status_approved? and
-      self.status_approved_changed? and self.in_current_quarter?
+      self.status_approved_changed?
   end
 
   def status_not_pending_before_published
     message = "Status must not be pending before an admin can publish it."
     errors.add(:base, message) if self.pending? and
-      self.status_published? and self.in_current_quarter?
+      self.status_published?
   end
 
   def status_approved_before_published
     message = "Status must be approved before it can be published."
     errors.add(:base, message) if !self.status_approved? and
-      self.status_published? and self.in_current_quarter?
+      self.status_published?
   end
 
   def status_published_after_advisor_deadline
     message = "Cannot publish status before the advisor's decision deadline."
     errors.add(:base, message) if self.status_published and
-      DateTime.now <= Quarter.current_quarter.advisor_decision_deadline and
-      self.in_current_quarter?
+      DateTime.now <= Quarter.current_quarter.advisor_decision_deadline
   end
 
   def created_before_submission_deadline
     message = "The application deadline has passed."
     errors.add(:base, message) if
-      DateTime.now > Quarter.current_quarter.student_submission_deadline and
-      self.in_current_quarter?
+      DateTime.now > Quarter.current_quarter.student_submission_deadline
   end
 
   def decision_made_before_decision_deadline
     message = "Status cannot be updated past the advisor's decision deadline."
     errors.add(:base, message) if !self.pending? and self.status_changed? and
       DateTime.now > Quarter.current_quarter.advisor_decision_deadline and
-      !self.this_user.admin? and self.in_current_quarter?
+      !self.this_user.admin?
   end
 
   def creator_role
