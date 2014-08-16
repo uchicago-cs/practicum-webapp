@@ -3,15 +3,17 @@
 <%= form_for @quarter do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%= f.label :season %>
+
   <%= f.select :season, %w(Spring Summer Autumn Winter),
                selected: @quarter.season.capitalize %>
+  <%= f.label :season, class: 'inline' %>
+  <br />
 
-  <%= f.label :year %>
   <%= f.select :year, (Time.now.year - 5..Time.now.year + 5),
                selected: @quarter.year %>
+  <%= f.label :year, class: 'inline' %>
+  <br />
 
-  <%= f.label :start_date %>
   <div class="datetimepicker input-append">
     <%= f.text_field :start_date,
     placeholder: l(@quarter.start_date, format: :twb), as: :string %>
@@ -19,8 +21,10 @@
       <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
     </span>
   </div>
+  <%= f.label :start_date, class: 'inline' %>
+  <br />
 
-  <%= f.label :project_proposal_deadline %>
+
   <div class="datetimepicker input-append">
     <%= f.text_field :project_proposal_deadline,
     placeholder: l(@quarter.project_proposal_deadline, format: :twb),
@@ -29,8 +33,10 @@
       <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
     </span>
   </div>
+  <%= f.label :project_proposal_deadline, class: 'inline' %>
+  <br />
 
-  <%= f.label :student_submission_deadline %>
+
   <div class="datetimepicker input-append">
     <%= f.text_field :student_submission_deadline,
     placeholder: l(@quarter.student_submission_deadline, format: :twb),
@@ -39,8 +45,9 @@
       <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
     </span>
   </div>
+  <%= f.label :student_submission_deadline, class: 'inline' %>
+  <br />
 
-  <%= f.label :advisor_decision_deadline %>
   <div class="datetimepicker input-append">
     <%= f.text_field :advisor_decision_deadline,
     placeholder: l(@quarter.advisor_decision_deadline, format: :twb),
@@ -49,10 +56,9 @@
       <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
     </span>
   </div>
+  <%= f.label :advisor_decision_deadline, class: 'inline' %>
+  <br />
 
-
-  <%= f.label :admin_publish_deadline,
-      "Admin application publishing deadline (soft, not strict)" %>
   <div class="datetimepicker input-append">
     <%= f.text_field :admin_publish_deadline,
     placeholder: l(@quarter.admin_publish_deadline, format: :twb),
@@ -61,8 +67,11 @@
       <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
     </span>
   </div>
+  <%= f.label :admin_publish_deadline,
+      "Admin application publishing deadline (soft, not strict)",
+      class: 'inline' %>
+  <br />
 
-  <%= f.label :end_date %>
   <div class="datetimepicker input-append">
     <%= f.text_field :end_date,
     placeholder: l(@quarter.end_date, format: :twb), as: :string %>
@@ -70,9 +79,12 @@
       <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
     </span>
   </div>
+  <%= f.label :end_date, class: 'inline' %>
+  <br />
 
-  <%= f.label :current, "Current quarter?" %>
   <%= f.check_box :current %>
+  <%= f.label :current, "Current quarter?", class: 'inline' %>
+  <br />
 
   <%= f.submit "Update quarter", class: "btn btn-primary" %>
 <% end %>
