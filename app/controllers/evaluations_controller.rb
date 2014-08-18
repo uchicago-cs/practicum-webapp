@@ -14,7 +14,6 @@ class EvaluationsController < ApplicationController
   end
 
   def new
-    # @student = User.find(params[:student_id])
   end
 
   def create
@@ -24,7 +23,7 @@ class EvaluationsController < ApplicationController
                                   advisor_id: @submission.project_advisor_id)
     if @evaluation.save
       flash[:success] = "Evaluation successfully submitted."
-      redirect_to @evaluation, only_path: true
+      redirect_to @evaluation
     else
       render 'new'
     end

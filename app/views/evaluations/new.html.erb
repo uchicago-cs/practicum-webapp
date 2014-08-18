@@ -1,10 +1,14 @@
-<h1>New evaluation for <%= true %> <%# @student.email %></h1>
+<h1>New evaluation for <%= @submission.student_email %></h1>
 
 <%= form_for [@submission, @evaluation] do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%= f.label :comments %>
-  <%= f.text_area :comments %>
+  <% EvaluationQuestion.active.each do |question| %>
+    <%= f.fields_for :evaluation_answer do |answer_form| %>
+      <%= answer_form.label :response, question.prompt %>
+      <%= answer_form.send(question.question_type_symbol, :response) %>
+    <% end %>
+  <% end %>
 
   <%= f.submit "Submit evaluation", class: "btn btn-primary" %>
 <% end %>

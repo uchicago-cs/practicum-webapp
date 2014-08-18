@@ -5,14 +5,14 @@ class Evaluation < ActiveRecord::Base
   belongs_to :submission, -> { where status: "accepted" },
              foreign_key: "submission_id"
 
-  has_many :evaluation_questions
+  has_and_belongs_to_many :evaluation_questions
   has_many :evaluation_answers, through: :evaluation_questions
+
+  accepts_nested_attributes_for :evaluation_answers
 
   validates :advisor_id, presence: true
   validates :student_id, presence: true
   validates :project_id, presence: true
-  validates :comments, presence: true,
-            length: { minimum: 100, maximum: 1500 }
   validates_uniqueness_of :student_id, scope: :project_id
 
   validate :submission_status_is_sufficient, on: :create
