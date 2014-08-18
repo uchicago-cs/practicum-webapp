@@ -4,7 +4,9 @@ class EvaluationQuestion < ActiveRecord::Base
 
   scope :active, -> { where(active: true) }
 
-  has_and_belongs_to_many :evaluations
+  has_many :evaluation_questions_evaluations,
+           class_name: EvaluationQuestionEvaluationJoin
+  has_many :evaluations, through: :evaluation_questions_evaluations
   has_many :evaluation_answers
 
   def question_type_symbol

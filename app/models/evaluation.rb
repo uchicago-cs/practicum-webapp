@@ -5,7 +5,9 @@ class Evaluation < ActiveRecord::Base
   belongs_to :submission, -> { where status: "accepted" },
              foreign_key: "submission_id"
 
-  has_and_belongs_to_many :evaluation_questions
+  has_many :evaluation_questions_evaluations,
+           class_name: EvaluationQuestionEvaluationJoin
+  has_many :evaluation_questions, through: :evaluation_questions_evaluations
   has_many :evaluation_answers, through: :evaluation_questions
 
   accepts_nested_attributes_for :evaluation_answers
