@@ -5,6 +5,7 @@ class Submission < ActiveRecord::Base
       where(projects: { quarter_id: Quarter.current_quarter.id }) }
 
   attr_accessor :this_user
+  # Make a method #this_user_admin? to check whether this_user exists, also?
 
   belongs_to :user, foreign_key: "student_id"
   belongs_to :project

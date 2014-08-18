@@ -95,11 +95,12 @@ def make_submissions
                                     student_id: student.id,
                                     project_id: project_id,
                                     status: status)
+      sub.this_user = User.find(1)
       if [true, false].sample
         sub.update_attributes(resume_file_name: "res2.pdf",
                               resume_content_type: "application/pdf")
       end
-      sub.save(validate:false)
+      sub.save(validate: false)
     end
   end
 end
