@@ -1,8 +1,15 @@
+Edit the evaluation template
+<%= link_to "here", evaluation_template_edit_path %>.
+
 <h1>View all evaluations</h1>
 
-<% @evaluations.each do |evaluation| %>
-  <div>
-    <%= render 'evaluation_short', evaluation: evaluation %>
-  </div>
-  <br>
+<% if @evaluations.count > 0 %>
+  <% @evaluations.each do |evaluation| %>
+    <div>
+      <%= render 'evaluation_short', evaluation: evaluation %>
+    </div>
+    <br />
+  <% end %>
+<% else %>
+  There are no evaluations.
 <% end %>

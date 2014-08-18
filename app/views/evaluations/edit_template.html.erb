@@ -1,0 +1,52 @@
+<h1>Edit the evaluation template</h1>
+
+<div>
+<% if @evaluation_questions.count > 0 %>
+  <table class="table table-bordered">
+    <tr>
+      <th>Question number</th>
+      <th>Type</th>
+      <th>Question</th>
+      <th>Status</th>
+    </tr>
+    <tbody>
+  <% @evaluation_questions.each_with_index do |question, index| %>
+    <tr>
+      <td><%= index+1 %></td>
+      <td><%= question.question_type %></td>
+      <td><%= question.prompt %></td>
+      <td><%= question.active ? "Active" : "Inactive" %></td>
+    <!-- Form to change question to inactive (checkbox here) -->
+    </tr>
+  <% end %>
+    </tbody>
+  </table>
+<% else %>
+  The template is blank.
+<% end %>
+</div>
+
+<br />
+
+<div>
+  <h2>Add a question</h2>
+
+<%= form_for @evaluation_question,
+  url: { action: 'add_question_to_template' } do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.label :question_type, "The question's form type" %>
+  <%= f.select :question_type, ["Text field", "Text area",
+				"Check box", "Radio button"],
+               selected: "Text field" %>
+
+  <%= f.label :prompt, "The question" %>
+  <%= f.text_area :prompt %>
+
+  <%= f.label :active,
+  "Should the question be included in all new evaluations?" %>
+  <%= f.check_box :active, checked: true %>
+
+  <%= f.submit "Add question to template", class: "btn btn-primary" %>
+<% end %>
+</div>

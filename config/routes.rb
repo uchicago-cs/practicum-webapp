@@ -9,8 +9,11 @@ Practicum::Application.routes.draw do
   match "/projects/pending/publish_all", to: "projects#publish_all_pending",
         via: "patch", as: "publish_all_pending_projects"
   match "/evaluations", to: "evaluations#index", via: "get"
-  match "/evaluations/edit", to: "evaluations#edit_template", via: "get"
+  match "/evaluations/edit", to: "evaluations#edit_template", via: "get",
+        as: "evaluation_template_edit"
   match "/evaluations/edit", to: "evaluations#update_template", via: "patch"
+  match "/evaluations/edit", to: "evaluations#add_question_to_template",
+        via: "post"
 
   resources :projects, shallow: true do
     resources :submissions, path: 'applications', shallow: true do
