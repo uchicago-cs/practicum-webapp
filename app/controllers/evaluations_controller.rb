@@ -14,10 +14,14 @@ class EvaluationsController < ApplicationController
   end
 
   def new
+    EvaluationQuestion.active.count.times do
+      #
+    end
   end
 
   def create
     @evaluation = @submission.build_evaluation(evaluation_params)
+    #@evaluation.evaluation_answers.build
     @evaluation.assign_attributes(student_id: @submission.student_id,
                                   project_id: @submission.project_id,
                                   advisor_id: @submission.project_advisor_id)
