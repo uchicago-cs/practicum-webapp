@@ -11,10 +11,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140808152034) do
+ActiveRecord::Schema.define(version: 20140819202026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "evaluation_answers", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "response"
+    t.integer  "evaluation_id"
+    t.integer  "evaluation_question_id"
+  end
+
+  create_table "evaluation_question_evaluation_joins", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "evaluation_questions", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "question_type"
+    t.text     "prompt"
+    t.boolean  "active"
+  end
+
+  create_table "evaluation_questions_evaluations", force: true do |t|
+    t.integer "evaluation_id",          null: false
+    t.integer "evaluation_question_id", null: false
+  end
 
   create_table "evaluations", force: true do |t|
     t.integer  "advisor_id"
@@ -42,7 +68,6 @@ ActiveRecord::Schema.define(version: 20140808152034) do
     t.datetime "updated_at"
     t.string   "name",                  default: "",        null: false
     t.integer  "advisor_id"
-    t.datetime "deadline"
     t.text     "description",           default: "",        null: false
     t.string   "status",                default: "pending", null: false
     t.text     "expected_deliverables", default: "",        null: false
