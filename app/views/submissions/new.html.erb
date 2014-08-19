@@ -3,12 +3,16 @@
 <%= form_for [@project, @submission], html: { multipart: true } do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <table>
+  <table class="table table-bordered submission-form" >
     <tbody>
 
       <tr>
 	<th>
-	  <%= f.label :information, "Interests: explain, in 1-2 paragraphs, why you are interested in working on this project (:interest)." %>
+	  <%= f.label :information, "Interests", class: "table-col-name" %>
+	  <span class="table-col-desc">
+	    Explain, in 1-2 paragraphs, why you are interested in working on
+	    this project.
+	  </span>
 	</th>
 	<td>
 	  <%= f.text_area :information %>
@@ -18,7 +22,12 @@
       <tr>
 
 	<th>
-	  <%= f.label :qualifications, "Qualifications: explain, in 1-2 paragraphs, why you feel you are qualified to work on this project." %>
+	  <%= f.label :qualifications, "Qualifications",
+	    class: "table-col-name" %>
+	  <span class="table-col-desc">
+	    Explain, in 1-2 paragraphs, why you feel you are qualified to work
+	    on this project.
+	  </span>
 	</th>
 	<td>
 	  <%= f.text_area :qualifications %>
@@ -27,7 +36,11 @@
 
       <tr>
 	<th>
-	  <%= f.label :courses, "Courses: list the MPCS courses you have taken so far, and the courses you are currently enrolled in." %>
+	  <%= f.label :courses, "Courses", class: "table-col-name" %>
+	  <span class="table-col-desc">
+	    List the MPCS courses you have taken so far, and the courses you
+	    are currently enrolled in.
+	  </span>
 	</th>
 	<td>
 	  <%= f.text_area :courses %>
@@ -36,7 +49,7 @@
 
       <tr>
 	<th>
-	  <%= f.label :resume, "Resume (optional)" %>
+	  <%= f.label :resume, "Resume (optional)", class: "table-col-name" %>
 	</th>
 	<td>
 	  <%= f.file_field :resume %>
