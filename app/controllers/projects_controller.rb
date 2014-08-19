@@ -92,12 +92,12 @@ class ProjectsController < ApplicationController
 
   def project_params
     if current_user.admin?
-      params.require(:project).permit(:name, :description, :deadline, :status,
+      params.require(:project).permit(:name, :description, :status,
                                       :expected_deliverables, :prerequisites,
                                       :related_work, :comments, :cloned,
                                       :status_published)
     elsif current_user.advisor?
-      params.require(:project).permit(:name, :description, :deadline,
+      params.require(:project).permit(:name, :description,
                                       :expected_deliverables, :prerequisites,
                                       :related_work, :comments, :cloned)
     end
