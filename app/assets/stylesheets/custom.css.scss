@@ -81,6 +81,36 @@ table {
 
 }
 
+.table-col-name {
+  font-weight: bold;
+}
+
+.table-col-desc {
+  font-weight: normal;
+}
+
+.project-new {
+  th {
+    width: 300px;
+  }
+
+  td {
+    width: 600px;
+  }
+
+  textarea {
+    min-width: 603px;
+    min-height: 250px;
+    resize: none;
+    margin: 0;
+  }
+
+  input {
+    min-width: 603px;
+    margin: 0;
+  }
+}
+
 .bootstrap-datetimepicker-widget thead tr:first-child th {
     background-color: white;
 }

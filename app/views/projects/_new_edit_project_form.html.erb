@@ -1,23 +1,78 @@
 <%= form_for @project do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%= f.label :name %>
-  <%= f.text_field :name %>
+  <table class="table table-bordered project-new">
+    <tbody>
 
-  <%= f.label :description, "Description: summarize the project in 2-3 paragraphs." %>
-  <%= f.text_area :description %>
+      <tr>
+	<th>
+	  <%= f.label :name, "Title", class: "table-col-name" %>
+	</th>
+	<td>
+	  <%= f.text_field :name %>
+	</td>
+      </tr>
 
-  <%= f.label :expected_deliverables, "Expected deliverables: a list of specific deliverables that you would expect to see by the end of the quarter." %>
-  <%= f.text_area :expected_deliverables %>
+      <tr>
+	<th>
+	  <%= f.label :description, "Description", class: "table-col-name" %>
+	  <span class="table-col-desc">
+	    Summarize the project in 2-3 paragraphs.
+	  </span>
+	</th>
+	<td>
+	  <%= f.text_area :description %>
+	</td>
+      </tr>
 
-  <%= f.label :prerequisites, "Prerequisites: Please list any programming languages or technologies that the student must be familiar with in order to work on this project. If possible, please specify the level of proficiency expected (e.g., if you require students to \"know\" Python, does that mean they will have to occasionally edit some simple Python scripts, or would they be developing the entire project in Python?)." %>
-  <%= f.text_area :prerequisites %>
+      <tr>
+	<th>
+	  <%= f.label :expected_deliverables, "Expected deliverables",
+	  class: "table-col-name" %>
+	  <span class="table-col-desc">
+	    List specific deliverables that you would expect to see by
+	    the end of the quarter.
+	  </span>
+	</th>
+	<td>
+	  <%= f.text_area :expected_deliverables %>
+	</td>
+      </tr>
 
-  <%= f.label :related_work, "Related work (optional): list any publications, software projects, etc. that students can read to learn more about the project." %>
-  <%= f.text_area :related_work %>
+      <tr>
+	<th>
+	  <%= f.label :prerequisites, "Prerequisites",
+	  class: "table-col-name" %>
+	  <span class="table-col-desc">
+	    List any programming languages or technologies that the
+	    student must be familiar with in order to work on this project.
+	    If possible, please specify the level of proficiency expected
+	    (e.g., if you require students to "know" Python, does that mean
+	    they will have to occasionally edit some simple Python scripts, or
+	    would they be developing the entire project in Python?).
+	  </span>
+	</th>
+	<td>
+	  <%= f.text_area :prerequisites %>
+	</td>
+      </tr>
 
-  <%= f.label :deadline %>
-  <%= f.datetime_select :deadline, ampm: true, minute_step: 15 %>
+      <tr>
+	<th>
+	  <%= f.label :related_work, "Related work (optional)",
+	  class: "table-col-name" %>
+	  <span class="table-col-desc">
+	    list any publications, software projects, etc. that students can
+	    read to learn more about the project.
+	  </span>
+	</th>
+	<td>
+	  <%= f.text_area :related_work %>
+	</td>
+      </tr>
+
+    </tbody>
+  </table>
 
   <%= f.submit "#{change.capitalize} my proposal", class: "btn btn-primary" %>
 
