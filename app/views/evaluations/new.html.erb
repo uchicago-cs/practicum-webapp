@@ -1,14 +1,19 @@
 <h1>New evaluation for <%= @submission.student_email %></h1>
 
-<%= form_for [@submission, @evaluation] do |f| %>
-  <%= render 'shared/error_messages', object: f.object %>
+<% if EvaluationQuestion.active.count > 0 %>
 
-  <% EvaluationQuestion.active.each do |question| %>
-    <%= f.fields_for :evaluation_answer do |answer_form| %>
-      <%= answer_form.label :response, question.prompt %>
-      <%= answer_form.send(question.question_type_symbol, :response) %>
+  <%= form_for :evaluation_answers, as: :evaluation_answers, url: { action: 'create' } do |af| %>
+
+    <% EvaluationQuestion.active.each_with_index do |question, index| %>
+      <%= af.fields_for :evaluation_answer, index: index do |answer_form| %>
+	<%= answer_form.label :response, question.prompt %>
+	<%= answer_form.send(question.question_type_symbol, :response) %>
+      <% end %>
     <% end %>
+
+    <%= af.submit "Submit evaluation", class: "btn btn-primary" %>
   <% end %>
 
-  <%= f.submit "Submit evaluation", class: "btn btn-primary" %>
+<% else %>
+  The evaluation template has no active questions.
 <% end %>

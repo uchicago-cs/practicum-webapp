@@ -6,9 +6,10 @@ class Evaluation < ActiveRecord::Base
              foreign_key: "submission_id"
 
   has_many :evaluation_questions_evaluations,
-           class_name: EvaluationQuestionEvaluationJoin
+           class_name: EvaluationQuestionEvaluationJoin, dependent: :destroy
   has_many :evaluation_questions, through: :evaluation_questions_evaluations
-  has_many :evaluation_answers, through: :evaluation_questions
+  has_many :evaluation_answers, through: :evaluation_questions,
+           dependent: :destroy
 
   accepts_nested_attributes_for :evaluation_answers
 

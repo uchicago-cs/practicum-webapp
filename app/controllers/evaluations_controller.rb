@@ -14,18 +14,36 @@ class EvaluationsController < ApplicationController
   end
 
   def new
-    EvaluationQuestion.active.count.times do
-      #
+    @evaluation_answers = []
+    EvaluationQuestion.active.each do |question|
+      EvaluationQuestionEvaluationJoin.new(evaluation: @evaluation,
+                                           evaluation_question: question)
+      @evaluation_answers <<
+        question.evaluation_answers.build(evaluation: @evaluation)
+
     end
   end
 
   def create
-    @evaluation = @submission.build_evaluation(evaluation_params)
-    #@evaluation.evaluation_answers.build
+    @evaluation = @submission.build_evaluation
     @evaluation.assign_attributes(student_id: @submission.student_id,
                                   project_id: @submission.project_id,
                                   advisor_id: @submission.project_advisor_id)
     if @evaluation.save
+
+      EvaluationQuestion.active.each_with_index do |question, index|
+        EvaluationQuestionEvaluationJoin.create(evaluation: @evaluation,
+                                                evaluation_question: question)
+
+        @evaluation_answer =
+          question.
+          evaluation_answers.
+          build(response: params[:evaluation_answers] \
+                [:evaluation_answer][index.to_s][:response])
+        @evaluation_answer.evaluation = @evaluation
+        @evaluation_answer.save
+      end
+
       flash[:success] = "Evaluation successfully submitted."
       redirect_to @evaluation
     else
@@ -53,14 +71,23 @@ class EvaluationsController < ApplicationController
 
   private
 
-  def evaluation_params
-    params.require(:evaluation).permit(:submission_id, :student_id,
-                                       :advisor_id, :project_id, :comments)
-  end
+  # def evaluation_params
+  #   params.require(:evaluation).permit(:submission_id, :student_id,
+  #                                      :advisor_id, :project_id, :comments,
+  #                                      :evaluation_answer,
+  #                                      {evaluation_answers_attributes:
+  #                                      [:response]},
+  #                                      :evaluation_questions)
+  # end
 
   def evaluation_question_params
     params.require(:evaluation_question).permit(:question_type, :prompt,
                                                 :active)
+  end
+
+  def evaluation_answer_params
+    params.require(:evaluation_answers).
+      permit(:evaluation_answer => [:response])
   end
 
   def get_project_and_submission
