@@ -1,5 +1,6 @@
 /* Adapted from Michael Hartl's Rails Tutorial. */
 
+@import "bootstrap-sprockets";
 @import "bootstrap";
 
 $grayMediumLight: #eaeaea;
@@ -35,11 +36,11 @@ footer {
   margin-top: 45px;
   padding-top: 5px;
   border-top: 1px solid $grayMediumLight;
-  color: $grayLight;
+  color: $gray-light;
   a {
     color: $gray;
     &:hover {
-      color: $grayDarker;
+      color: $gray-darker;
     }
   }
   small {
