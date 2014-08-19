@@ -74,7 +74,6 @@ def make_projects
                                  related_work: [content, ""].sample,
                                  advisor_id: advisor.id,
                                  name: "Some Project #{20*x + n + 1}",
-                                 deadline: DateTime.current,
                                  status: status,
                                  quarter_id: Quarter.ids.sample)
       p.save(validate: false)
@@ -96,10 +95,10 @@ def make_submissions
                                     project_id: project_id,
                                     status: status)
       if [true, false].sample
-        sub.update_attributes(resume_file_name: "res2.pdf",
+        sub.assign_attributes(resume_file_name: "res2.pdf",
                               resume_content_type: "application/pdf")
       end
-      sub.save(validate:false)
+      sub.save(validate: false)
     end
   end
 end

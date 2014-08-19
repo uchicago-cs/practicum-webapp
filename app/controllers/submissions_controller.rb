@@ -10,6 +10,7 @@ class SubmissionsController < ApplicationController
   before_action :get_statuses,                only: [:show, :update_status]
   before_action :before_submission_deadline?, only: [:new, :create]
   before_action :before_decision_deadline?,   only: [:accept, :reject]
+  before_action :get_this_user
   # before_actions on both new and create?
 
   def new
@@ -75,7 +76,6 @@ class SubmissionsController < ApplicationController
   end
 
   def update_status
-    @submission.this_user = current_user
     if @submission.update_attributes(submission_params)
       flash[:success] = "Application status updated."
       redirect_to @submission
@@ -123,6 +123,10 @@ class SubmissionsController < ApplicationController
   def get_statuses
     @status_approved = @submission.status_approved
     @status_published = @submission.status_published
+  end
+
+  def get_this_user
+    @submission.this_user = current_user
   end
 
 end

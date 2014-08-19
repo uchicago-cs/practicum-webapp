@@ -25,7 +25,6 @@ class Project < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: { scope: :quarter_id,
                                                  case_sensitive: false }
-  validates :deadline, presence: true
   validates :description, presence: true,
     length: { minimum: 100, maximum: 1500 }
   validates :expected_deliverables, presence: true,
