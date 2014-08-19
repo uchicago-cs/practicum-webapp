@@ -1,20 +1,51 @@
 <h1>Apply to <%= @project.name %></h1>
 
 <%= form_for [@project, @submission], html: { multipart: true } do |f| %>
-      <%= render 'shared/error_messages', object: f.object %>
+  <%= render 'shared/error_messages', object: f.object %>
 
-      <%= f.label :information, "Interests: explain, in 1-2 paragraphs, why you are interested in working on this project (:interest)." %>
-      <%= f.text_area :information %>
+  <table>
+    <tbody>
 
-      <%= f.label :qualifications, "Qualifications: explain, in 1-2 paragraphs, why you feel you are qualified to work on this project." %>
-      <%= f.text_area :qualifications %>
+      <tr>
+	<th>
+	  <%= f.label :information, "Interests: explain, in 1-2 paragraphs, why you are interested in working on this project (:interest)." %>
+	</th>
+	<td>
+	  <%= f.text_area :information %>
+	</td>
+      </tr>
 
-      <%= f.label :courses, "Courses: list the MPCS courses you have taken so far, and the courses you are currently enrolled in." %>
-      <%= f.text_area :courses %>
+      <tr>
 
-      <%= f.label :resume, "Resume (optional)" %>
-      <%= f.file_field :resume %>
+	<th>
+	  <%= f.label :qualifications, "Qualifications: explain, in 1-2 paragraphs, why you feel you are qualified to work on this project." %>
+	</th>
+	<td>
+	  <%= f.text_area :qualifications %>
+	</td>
+      </tr>
 
-      <%= f.submit "Submit my application", class: "btn btn-large btn-primary" %>
+      <tr>
+	<th>
+	  <%= f.label :courses, "Courses: list the MPCS courses you have taken so far, and the courses you are currently enrolled in." %>
+	</th>
+	<td>
+	  <%= f.text_area :courses %>
+	</td>
+      </tr>
+
+      <tr>
+	<th>
+	  <%= f.label :resume, "Resume (optional)" %>
+	</th>
+	<td>
+	  <%= f.file_field :resume %>
+	</td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <%= f.submit "Submit my application", class: "btn btn-primary" %>
 
 <% end %>
