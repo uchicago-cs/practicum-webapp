@@ -14,34 +14,25 @@ class EvaluationsController < ApplicationController
   end
 
   def new
-    @evaluation_answers = []
     EvaluationQuestion.active.each do |question|
-      EvaluationQuestionEvaluationJoin.new(evaluation: @evaluation,
-                                           evaluation_question: question)
-      @evaluation_answers <<
-        question.evaluation_answers.build(evaluation: @evaluation)
-
+      question.evaluation_answers.build
     end
   end
 
   def create
-    @evaluation = @submission.build_evaluation
-    @evaluation.assign_attributes(student_id: @submission.student_id,
-                                  project_id: @submission.project_id,
-                                  advisor_id: @submission.project_advisor_id)
+    @evaluation = @submission.
+      build_evaluation(student_id: @submission.student_id,
+                       project_id: @submission.project_id,
+                       advisor_id: @submission.project_advisor_id)
     if @evaluation.save
 
       EvaluationQuestion.active.each_with_index do |question, index|
         EvaluationQuestionEvaluationJoin.create(evaluation: @evaluation,
                                                 evaluation_question: question)
-
-        @evaluation_answer =
-          question.
-          evaluation_answers.
-          build(response: params[:evaluation_answers] \
-                [:evaluation_answer][index.to_s][:response])
-        @evaluation_answer.evaluation = @evaluation
-        @evaluation_answer.save
+        question.evaluation_answers.
+          create(response: params[:evaluation_answers] \
+                 [:evaluation_answer][index.to_s][:response],
+                 evaluation: @evaluation)
       end
 
       flash[:success] = "Evaluation successfully submitted."
@@ -70,25 +61,6 @@ class EvaluationsController < ApplicationController
   end
 
   private
-
-  # def evaluation_params
-  #   params.require(:evaluation).permit(:submission_id, :student_id,
-  #                                      :advisor_id, :project_id, :comments,
-  #                                      :evaluation_answer,
-  #                                      {evaluation_answers_attributes:
-  #                                      [:response]},
-  #                                      :evaluation_questions)
-  # end
-
-  def evaluation_question_params
-    params.require(:evaluation_question).permit(:question_type, :prompt,
-                                                :active)
-  end
-
-  def evaluation_answer_params
-    params.require(:evaluation_answers).
-      permit(:evaluation_answer => [:response])
-  end
 
   def get_project_and_submission
     @submission = Submission.find(params[:submission_id])

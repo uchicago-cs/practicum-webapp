@@ -6,7 +6,9 @@ namespace :db do
   desc "Fill database with sample data"
 
   task populate: :environment do
-    tables = [:evaluations, :submissions, :projects, :quarters, :users]
+    tables = [:evaluations, :evaluation_answers, :evaluation_questions,
+              :evaluation_questions_evaluations, :submissions, :projects,
+              :quarters, :users]
     tables.each do |table|
       delete_table(table)
     end
