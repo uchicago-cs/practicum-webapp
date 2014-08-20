@@ -4,6 +4,7 @@ ruby '1.9.3'
 
 gem 'rails', '4.0.8'
 gem 'bootstrap-sass', '~> 3.2.0'
+gem 'bootstrap_form', github: 'bootstrap-ruby/rails-bootstrap-forms'
 gem 'sprockets', '2.11.0'
 gem 'bcrypt-ruby', '3.1.2'
 gem 'faker', '1.1.2'

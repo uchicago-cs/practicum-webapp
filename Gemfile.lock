@@ -5,6 +5,12 @@ GIT
     database_cleaner (1.3.0)
 
 GIT
+  remote: git://github.com/bootstrap-ruby/rails-bootstrap-forms.git
+  revision: e21a746661d851e38b5f8545af1a2eaa81c4a27c
+  specs:
+    bootstrap_form (2.1.1)
+
+GIT
   remote: git://github.com/lubieniebieski/bootstrap-datetimepicker-rails.git
   revision: 34388f37a6b917a582bd9f05dd1339e8dcc7ffda
   specs:
@@ -326,6 +332,7 @@ DEPENDENCIES
   bootstrap-datetimepicker-rails!
   bootstrap-sass (~> 3.2.0)
   bootstrap-will_paginate (= 0.0.9)
+  bootstrap_form!
   brakeman
   cancancan (~> 1.8)
   capybara (= 2.4.1)
