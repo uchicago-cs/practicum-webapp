@@ -5,6 +5,8 @@
   data: { deadlines: @deadlines } do %>
 <% end %>
 
+<%= render 'date_notification' %>
+
 <!-- Not DRY. -->
 <%= bootstrap_form_for(@quarter, layout: :horizontal,
 		       control_col: "col-sm-2") do |f| %>
