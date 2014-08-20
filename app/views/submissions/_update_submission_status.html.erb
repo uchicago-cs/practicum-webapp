@@ -3,20 +3,17 @@
 	     html: { class: "form-inline" } do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%= f.label :status, "Advisor's decision" %>
-  <%= f.select :status, hide_label: true,
+  <%# Ideally, add a label here. Use i18n? %>
+  <%= f.select :status,
       options_for_select(["Pending", "Accepted", "Rejected"],
 			 @submission.status.capitalize),
       {}, { class: "span2" } %> |
 
-
   <%= f.check_box :status_approved, checked: @status_approved,
-      hide_label: true %>
-  <%= f.label :status_approved, "Approve advisor's decision?" %> |
+  label: "Status approved?" %> |
 
   <%= f.check_box :status_published, checked: @status_published,
-      hide_label: true %>
-  <%= f.label :status_published, "Publish advisor's decision?" %>
+  label: "Status published?" %>
 
   <%= f.submit "Update application status", class: "btn btn-primary",
       data: { confirm: "Are you sure?" } %>
