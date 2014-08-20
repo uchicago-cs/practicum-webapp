@@ -11,12 +11,6 @@ GIT
     bootstrap_form (2.1.1)
 
 GIT
-  remote: git://github.com/lubieniebieski/bootstrap-datetimepicker-rails.git
-  revision: 34388f37a6b917a582bd9f05dd1339e8dcc7ffda
-  specs:
-    bootstrap-datetimepicker-rails (0.0.11)
-
-GIT
   remote: git://github.com/pry/pry.git
   revision: c6f8d5c632d5609402da6bc49c289798ce872238
   specs:
@@ -61,6 +55,8 @@ GEM
       sass (~> 3.2)
     bootstrap-will_paginate (0.0.9)
       will_paginate
+    bootstrap3-datetimepicker-rails (3.1.1)
+      momentjs-rails (>= 2.8.1)
     brakeman (2.6.1)
       erubis (~> 2.6)
       fastercsv (~> 1.5)
@@ -182,6 +178,8 @@ GEM
     mime-types (1.25.1)
     mini_portile (0.6.0)
     minitest (4.7.5)
+    momentjs-rails (2.8.1)
+      railties (>= 3.1)
     multi_json (1.10.1)
     multi_test (0.1.1)
     net-ldap (0.5.1)
@@ -329,9 +327,9 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt-ruby (= 3.1.2)
-  bootstrap-datetimepicker-rails!
   bootstrap-sass (~> 3.2.0)
   bootstrap-will_paginate (= 0.0.9)
+  bootstrap3-datetimepicker-rails (~> 3.1.1)
   bootstrap_form!
   brakeman
   cancancan (~> 1.8)
@@ -352,6 +350,7 @@ DEPENDENCIES
   jquery-rails (= 3.0.4)
   launchy
   libnotify (= 0.8.0)
+  momentjs-rails (>= 2.8.1)
   paperclip (~> 4.1)
   pg (~> 0.17.1)
   pry!
