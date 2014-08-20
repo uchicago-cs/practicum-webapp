@@ -11,11 +11,11 @@ module SubmissionsHelper
   end
 
   def formatted_status_approved?(submission)
-    submission.status_approved?.to_s.capitalize
+    submission.status_approved? ? "Yes" : "No"
   end
 
   def formatted_status_published?(submission)
-    submission.status_published?.to_s.capitalize
+    submission.status_published? ? "Yes" : "No"
   end
 
 end
