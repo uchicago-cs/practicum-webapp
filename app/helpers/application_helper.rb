@@ -10,6 +10,14 @@ module ApplicationHelper
     end
   end
 
+  # Determine table row class for admins.
+  def row_class(status)
+    # Creating this hash on each call... Consider revising.
+    status_classes = { "accepted" => "success", "rejected" => "danger",
+                       "pending" => "" }
+    status_classes[status]
+  end
+
   # Refactor these four into one method.
   def project_proposal_deadline
     Quarter.current_quarter.project_proposal_deadline.

@@ -1,4 +1,4 @@
-<tr>
+<tr class="<%= advisor_project_row_class(project) %>">
   <td><%= link_to project.name, project %></td>
   <td><%= project.formatted_quarter %></td>
   <td><%= project.created_at.to_date %></td>

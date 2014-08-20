@@ -1,4 +1,4 @@
-<tr>
+<tr class="<%= row_class(submission.status) %>">
   <td><%= submission.student_email %></td>
   <td><%= submission.created_at.to_date %></td>
   <td><%= submission.formatted_status_for_advisor %></td>
