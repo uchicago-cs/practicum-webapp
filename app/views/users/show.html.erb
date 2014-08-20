@@ -7,6 +7,8 @@ This is your personal page.
   <%= render 'affiliation_form' %>
 <% end %>
 
+<br />
+
 <% if current_user.admin? %>
   <h3>Change user roles</h3>
   <%= render 'roles_form' %>

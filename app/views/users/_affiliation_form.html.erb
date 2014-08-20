@@ -2,16 +2,20 @@
 
 <br>
 
-<%= bootstrap_form_for @user do |f| %>
+<%= bootstrap_form_for(@user, layout: :horizontal,
+		       control_col: "col-xs-3") do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%= f.text_field :affiliation, hide_label: true %>
-  <%= f.label :affiliation, class: "inline" %>
-  <br>
-  <%= f.text_field :department, hide_label: true %>
-  <%= f.label :department, "Department, institution, etc.", class: "inline" %>
-  <br>
-  <%= f.submit "Update your information",
-    class: "btn btn-primary" %>
+  <%= f.text_field :affiliation, label: "Affiliation" %>
 
+  <br \>
+
+  <%= f.text_field :department, label: "Department, institution, etc." %>
+
+  <br \>
+
+  <%= f.form_group do %>
+    <%= f.submit "Update your information",
+      class: "btn btn-primary" %>
+  <% end %>
 <% end %>
