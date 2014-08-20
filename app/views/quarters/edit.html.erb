@@ -1,21 +1,21 @@
 <h1>Edit <%= @quarter.formatted_quarter %></h1>
 
-<%= form_for @quarter do |f| %>
+<%= bootstrap_form_for @quarter do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
 
   <%= f.select :season, %w(Spring Summer Autumn Winter),
-               selected: @quarter.season.capitalize %>
+               selected: @quarter.season.capitalize, hide_label: true %>
   <%= f.label :season, class: 'inline' %>
   <br />
 
   <%= f.select :year, (Time.now.year - 5..Time.now.year + 5),
-               selected: @quarter.year %>
+               selected: @quarter.year, hide_label: true %>
   <%= f.label :year, class: 'inline' %>
   <br />
 
   <div class="datetimepicker input-append">
-    <%= f.text_field :start_date,
+    <%= f.text_field :start_date, hide_label: true,
     placeholder: l(@quarter.start_date, format: :twb), as: :string %>
     <span class="add-on">
       <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
@@ -26,7 +26,7 @@
 
 
   <div class="datetimepicker input-append">
-    <%= f.text_field :project_proposal_deadline,
+    <%= f.text_field :project_proposal_deadline, hide_label: true,
     placeholder: l(@quarter.project_proposal_deadline, format: :twb),
       as: :string %>
     <span class="add-on">
@@ -38,7 +38,7 @@
 
 
   <div class="datetimepicker input-append">
-    <%= f.text_field :student_submission_deadline,
+    <%= f.text_field :student_submission_deadline, hide_label: true,
     placeholder: l(@quarter.student_submission_deadline, format: :twb),
       as: :string %>
     <span class="add-on">
@@ -49,7 +49,7 @@
   <br />
 
   <div class="datetimepicker input-append">
-    <%= f.text_field :advisor_decision_deadline,
+    <%= f.text_field :advisor_decision_deadline, hide_label: true,
     placeholder: l(@quarter.advisor_decision_deadline, format: :twb),
       as: :string %>
     <span class="add-on">
@@ -60,7 +60,7 @@
   <br />
 
   <div class="datetimepicker input-append">
-    <%= f.text_field :admin_publish_deadline,
+    <%= f.text_field :admin_publish_deadline, hide_label: true,
     placeholder: l(@quarter.admin_publish_deadline, format: :twb),
       as: :string %>
     <span class="add-on">
@@ -73,7 +73,7 @@
   <br />
 
   <div class="datetimepicker input-append">
-    <%= f.text_field :end_date,
+    <%= f.text_field :end_date, hide_label: true,
     placeholder: l(@quarter.end_date, format: :twb), as: :string %>
     <span class="add-on">
       <i data-date-icon="icon-calendar" data-time-icon="icon-time"></i>
@@ -82,7 +82,7 @@
   <%= f.label :end_date, class: 'inline' %>
   <br />
 
-  <%= f.check_box :current %>
+  <%= f.check_box :current, hide_label: true %>
   <%= f.label :current, "Current quarter?", class: 'inline' %>
   <br />
 

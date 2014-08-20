@@ -6,25 +6,26 @@
   </div>
 <% end %>
 
-<%= form_for(@project,
+<%= bootstrap_form_for(@project,
 	     url: { controller: "projects", action: "update_status" },
 	     html: { class: "form-inline" }) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
 
-  <%= f.radio_button :status, "accepted" %>
+  <%= f.radio_button :status, "accepted", hide_label: true %>
   <%= f.label :status, "Approve", value: "accepted"  %> |
 
-  <%= f.radio_button :status, "pending" %>
+  <%= f.radio_button :status, "pending", hide_label: true %>
   <%= f.label :status, "Request changes (Pending)", value: "pending" %> |
 
-  <%= f.radio_button :status, "rejected" %>
+  <%= f.radio_button :status, "rejected", hide_label: true %>
   <%= f.label :status, "Reject", value: "rejected" %> |
 
   <%= f.label :comments %>
-  <%= f.text_area :comments %>
+  <%= f.text_area :comments, hide_label: true %>
 
-  <%= f.check_box :status_published, checked: @project_status_published %>
+  <%= f.check_box :status_published,
+      checked: @project_status_published, label: "" %>
   <%= f.label :status_published, "Publish status?" %>
 
   <%= f.submit "Update project status", class: "btn btn-primary",

@@ -1,19 +1,21 @@
-<%= form_for @submission,
+<%= bootstrap_form_for @submission,
              url: { controller: "submissions", action: "update_status" },
 	     html: { class: "form-inline" } do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
   <%= f.label :status, "Advisor's decision" %>
-  <%= f.select :status,
+  <%= f.select :status, hide_label: true,
       options_for_select(["Pending", "Accepted", "Rejected"],
 			 @submission.status.capitalize),
       {}, { class: "span2" } %> |
 
 
-  <%= f.check_box :status_approved, checked: @status_approved %>
+  <%= f.check_box :status_approved, checked: @status_approved,
+      hide_label: true %>
   <%= f.label :status_approved, "Approve advisor's decision?" %> |
 
-  <%= f.check_box :status_published, checked: @status_published %>
+  <%= f.check_box :status_published, checked: @status_published,
+      hide_label: true %>
   <%= f.label :status_published, "Publish advisor's decision?" %>
 
   <%= f.submit "Update application status", class: "btn btn-primary",

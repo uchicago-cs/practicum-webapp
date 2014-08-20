@@ -1,10 +1,10 @@
 <h1>New evaluation for <%= true %> <%# @student.email %></h1>
 
-<%= form_for [@submission, @evaluation] do |f| %>
+<%= bootstrap_form_for [@submission, @evaluation] do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
   <%= f.label :comments %>
-  <%= f.text_area :comments %>
+  <%= f.text_area :comments, hide_label: true %>
 
   <%= f.submit "Submit evaluation", class: "btn btn-primary" %>
 <% end %>

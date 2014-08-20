@@ -1,14 +1,14 @@
-<%= form_for @user do |f| %>
+<%= bootstrap_form_for @user do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
 
-  <%= f.check_box :student %>
+  <%= f.check_box :student, hide_label: true %>
   <%= f.label :student, class: "inline" %> |
 
-  <%= f.check_box :advisor %>
+  <%= f.check_box :advisor, hide_label: true %>
   <%= f.label :advisor, class: "inline" %> |
 
-  <%= f.check_box :admin %>
+  <%= f.check_box :admin, hide_label: true %>
   <%= f.label :admin, class: "inline" %>
 
   <%= f.submit "Change this user's roles",

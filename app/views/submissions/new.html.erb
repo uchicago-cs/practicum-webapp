@@ -1,6 +1,6 @@
 <h1>Apply to <%= @project.name %></h1>
 
-<%= form_for [@project, @submission], html: { multipart: true } do |f| %>
+<%= bootstrap_form_for [@project, @submission], html: { multipart: true } do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
   <table class="table table-bordered submission-form" >
@@ -15,7 +15,7 @@
 	  </span>
 	</th>
 	<td>
-	  <%= f.text_area :information %>
+	  <%= f.text_area :information, hide_label: true %>
 	</td>
       </tr>
 
@@ -30,7 +30,7 @@
 	  </span>
 	</th>
 	<td>
-	  <%= f.text_area :qualifications %>
+	  <%= f.text_area :qualifications, hide_label: true %>
 	</td>
       </tr>
 
@@ -43,7 +43,7 @@
 	  </span>
 	</th>
 	<td>
-	  <%= f.text_area :courses %>
+	  <%= f.text_area :courses, hide_label: true %>
 	</td>
       </tr>
 
@@ -52,7 +52,7 @@
 	  <%= f.label :resume, "Resume (optional)", class: "table-col-name" %>
 	</th>
 	<td>
-	  <%= f.file_field :resume %>
+	  <%= f.file_field :resume, hide_label: true %>
 	</td>
       </tr>
 
