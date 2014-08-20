@@ -10,7 +10,7 @@ class SubmissionsController < ApplicationController
   before_action :get_statuses,                only: [:show, :update_status]
   before_action :before_submission_deadline?, only: [:new, :create]
   before_action :before_decision_deadline?,   only: [:accept, :reject]
-  before_action :get_this_user
+  before_action :get_this_user,               except: :index
   # before_actions on both new and create?
 
   def new

@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function(event){
     $('.dropdown-toggle').dropdown()
     $('.datetimepicker').datetimepicker({
 	format: 'YYYY-MM-DD HH:mm:00',

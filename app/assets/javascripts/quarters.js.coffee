@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 `
-$(document).ready(function(){
+$(document).ready(function(event){
     deadlines = $('.deadlines_class').data('deadlines');
     $('#quarter_start_date').val(deadlines["start"]);
     $('#quarter_project_proposal_deadline').val(deadlines["proposal"]);
