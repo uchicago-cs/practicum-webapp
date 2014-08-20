@@ -1,4 +1,10 @@
 <h3>Create a new quarter</h3>
+
+<!-- This lets us feed the deadlines to our JS file. -->
+<%= content_tag :div, class: "deadlines_class",
+  data: { deadlines: @deadlines } do %>
+<% end %>
+
 <!-- Not DRY. -->
 <%= bootstrap_form_for(@quarter, layout: :horizontal,
 		       control_col: "col-sm-2") do |f| %>

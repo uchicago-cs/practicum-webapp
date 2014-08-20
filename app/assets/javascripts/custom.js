@@ -7,4 +7,4 @@ $(document).ready(function(){
 	minuteStepping: 15,
 	language: 'en'
     });
-})
+});

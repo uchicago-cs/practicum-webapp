@@ -15,6 +15,17 @@ class QuartersController < ApplicationController
   end
 
   def new
+    # A bit sloppy.
+    # This hash is sent to the client and used to pre-populate the form
+    # fields with dates in a format that Rails likes.
+    @deadlines = {
+      start:      l(view_context.start_date, format: :twb),
+      proposal:   l(view_context.default_deadline("proposal"), format: :twb),
+      submission: l(view_context.default_deadline("submission"), format: :twb),
+      decision:   l(view_context.default_deadline("decision"), format: :twb),
+      admin:      l(view_context.default_deadline("admin"), format: :twb),
+      end:        l(view_context.end_date, format: :twb) }
+    @deadlines.to_json
   end
 
   def create
