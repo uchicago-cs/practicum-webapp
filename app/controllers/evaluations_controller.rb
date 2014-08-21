@@ -2,44 +2,44 @@ class EvaluationsController < ApplicationController
 
   load_and_authorize_resource
 
-  before_action :get_project_and_submission, only: [:new, :create]
-  before_action :already_evaluated?, only: [:new, :create]
-  before_action :is_admin?, only: :index
+  before_action :get_project_and_submission,    only: [:new, :create]
+  before_action :already_evaluated?,            only: [:new, :create]
+  before_action :is_admin?,                     only: :index
   before_action :submission_status_sufficient?, only: [:new, :create]
+  before_action :get_template,                  only: [:index, :edit_template,
+                                                       :update_template]
 
   def index
-    @template = EvaluationSurvey.first
   end
 
   def edit_template
-    @template = EvaluationSurvey.first
   end
 
   def update_template
     if EvaluationSurvey.any?
 
-      @evaluation_survey = EvaluationSurvey.first
-
-      num = @evaluation_survey.survey.length + 1
-      @evaluation_survey.survey.merge! num => {
+      num = @template.survey.length + 1
+      logger.debug @template.survey
+      @template.survey[num] = {
         "question_type" => params[:question_type],
         "question_prompt" => params[:question_prompt]
-      }.to_json
+      }
 
-      @evaluation_survey.save
+      logger.debug "HERE'S THE TEMPLATE\n\n"
+      logger.debug @template.inspect
+      logger.debug "HERE'S THE SAVE\n\n"
+      logger.debug @template.save
 
     else
 
-      @evaluation_survey = EvaluationSurvey.new
-      survey = {
+      @template.survey = {
         1 => { "question_type" => params[:question_type],
-               "question_prompt" => params[:question_prompt] }
-      }.to_json
-      @evaluation_survey.survey = survey
+          "question_prompt" => params[:question_prompt] }
+      }
 
     end
 
-    if @evaluation_survey.save
+    if @template.save
       flash[:success] = "Template updated."
       redirect_to edit_evaluation_template_path
     else
@@ -94,5 +94,10 @@ class EvaluationsController < ApplicationController
       submission.accepted? and
       submission.status_approved? and
       submission.status_published?
+  end
+
+  def get_template
+    # There should be only one evaluation_survey in the table.
+    @template = EvaluationSurvey.first || EvaluationSurvey.new
   end
 end

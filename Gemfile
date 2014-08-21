@@ -28,6 +28,7 @@ gem 'momentjs-rails', '>= 2.8.1'
 gem 'bootstrap3-datetimepicker-rails', '~> 3.1.1'
 # gem 'formtastic'
 # gem 'simple_form'
+gem 'nested-hstore'
 
 group :development, :test do
   gem 'pg', '~> 0.17.1'

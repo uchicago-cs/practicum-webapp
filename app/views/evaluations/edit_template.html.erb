@@ -1,20 +1,16 @@
 <h1>Evaluation template</h1>
-<% if @template %>
-
+<% if @template.id %>
   <%= @template.inspect %>
-
 <% else %>
-
   There is no evaluation template. To create one, you may begin adding
   questions below.
-
 <% end %>
 
 <br />
 
 <h2>New question</h2>
 <%= bootstrap_form_tag(layout: :horizontal, control_col: "col-xs-2") do |f| %>
-  <%= render 'shared/error_messages', object: @evaluation_survey %>
+  <%= render 'shared/error_messages', object: @template %>
 
   <%= f.select(:question_type,
 	       options_for_select(['Text field', 'Text area',

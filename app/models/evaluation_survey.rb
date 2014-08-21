@@ -1,16 +1,16 @@
 class EvaluationSurvey < ActiveRecord::Base
 
-  validate :no_empty_questions
+  #validate :no_empty_questions
+
+  serialize :survey, ActiveRecord::Coders::NestedHstore
 
   private
 
   def no_empty_questions
     message = "Questions cannot be blank."
-    logger.debug "#{survey.to_hash}"
+    logger.debug survey.inspect
     errors.add(:base, message) if
-      survey.to_hash.values.each do |question|
-      question["question_prompt"].blank?
-    end
+      survey.values.any? { |question| question.values.any?(&:blank?) }
   end
 
 end
