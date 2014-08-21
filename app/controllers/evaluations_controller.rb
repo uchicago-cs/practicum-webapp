@@ -56,7 +56,7 @@ class EvaluationsController < ApplicationController
     @evaluation.assign_attributes(student_id: @submission.student_id,
                                   project_id: @submission.project_id,
                                   advisor_id: @submission.project_advisor_id)
-    @evaluation.survey = "{}"
+    @evaluation.survey = params[:survey]
     if @evaluation.save
       flash[:success] = "Evaluation successfully submitted."
       redirect_to @evaluation, only_path: true

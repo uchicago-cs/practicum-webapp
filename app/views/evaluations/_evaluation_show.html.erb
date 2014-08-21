@@ -15,9 +15,11 @@
       <td><%= @evaluation.advisor_email %></td>
     </tr>
 
+    <% @evaluation.survey.each do |question, answer| %>
     <tr>
-      <th>Evaluation</th>
-      <td><%= @evaluation.comments %></td>
+      <th><%= question %></th>
+      <td><%= answer %></td>
     </tr>
+    <% end %>
   </tbody>
 </table>
