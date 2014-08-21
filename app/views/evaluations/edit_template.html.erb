@@ -1,6 +1,11 @@
 <h1>Evaluation template</h1>
 <% if @template.id %>
-  <%= @template.inspect %>
+  <% @template.survey.each do |number, question| %>
+    <div>
+    <%= number %>. Type: <%= question["question_type"] %> &nbsp;|&nbsp;
+      Question: <%= question["question_prompt"] %>
+    </div>
+  <% end %>
 <% else %>
   There is no evaluation template. To create one, you may begin adding
   questions below.

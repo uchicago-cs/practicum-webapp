@@ -1,7 +1,7 @@
 class Submission < ActiveRecord::Base
 
   default_scope { order('submissions.created_at DESC') }
-  scope :current_submissions, -> { joins(:project).
+  scope :current_submissions, -> { includes(:project).
       where(projects: { quarter_id: Quarter.current_quarter.id }) }
 
   attr_accessor :this_user

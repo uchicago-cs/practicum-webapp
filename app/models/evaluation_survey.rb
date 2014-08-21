@@ -1,8 +1,8 @@
 class EvaluationSurvey < ActiveRecord::Base
 
-  #validate :no_empty_questions
-
-  serialize :survey, ActiveRecord::Coders::NestedHstore
+  validate :no_empty_questions
+  serialize :survey
+  #serialize :survey, ActiveRecord::Coders::NestedHstore
 
   private
 

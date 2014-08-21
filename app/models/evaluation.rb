@@ -8,8 +8,6 @@ class Evaluation < ActiveRecord::Base
   validates :advisor_id, presence: true
   validates :student_id, presence: true
   validates :project_id, presence: true
-  validates :comments, presence: true,
-            length: { minimum: 100, maximum: 1500 }
   validates_uniqueness_of :student_id, scope: :project_id
 
   validate :submission_status_is_sufficient, on: :create

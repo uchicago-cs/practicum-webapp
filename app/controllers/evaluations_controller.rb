@@ -25,11 +25,6 @@ class EvaluationsController < ApplicationController
         "question_prompt" => params[:question_prompt]
       }
 
-      logger.debug "HERE'S THE TEMPLATE\n\n"
-      logger.debug @template.inspect
-      logger.debug "HERE'S THE SAVE\n\n"
-      logger.debug @template.save
-
     else
 
       @template.survey = {
@@ -73,7 +68,7 @@ class EvaluationsController < ApplicationController
 
   def evaluation_params
     params.require(:evaluation).permit(:submission_id, :student_id,
-                                       :advisor_id, :project_id, :comments)
+                                       :advisor_id, :project_id)
   end
 
   def get_project_and_submission

@@ -40,10 +40,6 @@ GEM
       activesupport (= 4.0.8)
       arel (~> 4.0.0)
     activerecord-deprecated_finders (1.0.3)
-    activerecord-postgres-hstore (0.7.7)
-      activerecord (>= 3.1)
-      pg-hstore (>= 1.1.5)
-      rake
     activesupport (4.0.8)
       i18n (~> 0.6, >= 0.6.9)
       minitest (~> 4.2)
@@ -186,10 +182,6 @@ GEM
       railties (>= 3.1)
     multi_json (1.10.1)
     multi_test (0.1.1)
-    nested-hstore (0.0.5)
-      activerecord
-      activerecord-postgres-hstore
-      activesupport
     net-ldap (0.5.1)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
@@ -200,7 +192,6 @@ GEM
       cocaine (~> 0.5.3)
       mime-types
     pg (0.17.1)
-    pg-hstore (1.2.0)
     polyglot (0.3.5)
     rack (1.5.2)
     rack-test (0.6.2)
@@ -360,7 +351,6 @@ DEPENDENCIES
   launchy
   libnotify (= 0.8.0)
   momentjs-rails (>= 2.8.1)
-  nested-hstore
   paperclip (~> 4.1)
   pg (~> 0.17.1)
   pry!
