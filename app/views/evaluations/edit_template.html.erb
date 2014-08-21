@@ -14,11 +14,13 @@
 
 <h2>New question</h2>
 <%= bootstrap_form_tag(layout: :horizontal, control_col: "col-xs-2") do |f| %>
+  <%= render 'shared/error_messages', object: @evaluation_survey %>
+
   <%= f.select(:question_type,
 	       options_for_select(['Text field', 'Text area',
 				   'Check box', 'Radio button']),
 	       default: 'Text field') %>
-  <%= f.text_area(:question) %>
+  <%= f.text_area(:question_prompt) %>
 
   <%= f.form_group do %>
     <%= f.submit "Create question", class: "btn btn-primary" %>

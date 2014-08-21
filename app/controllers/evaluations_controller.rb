@@ -18,22 +18,35 @@ class EvaluationsController < ApplicationController
   def update_template
     if EvaluationSurvey.any?
 
+      @evaluation_survey = EvaluationSurvey.first
+
+      num = @evaluation_survey.survey.length + 1
+      @evaluation_survey.survey.merge! num => {
+        "question_type" => params[:question_type],
+        "question_prompt" => params[:question_prompt]
+      }.to_json
+
+      @evaluation_survey.save
+
     else
+
       @evaluation_survey = EvaluationSurvey.new
       survey = {
         1 => { "question_type" => params[:question_type],
                "question_prompt" => params[:question_prompt] }
       }.to_json
       @evaluation_survey.survey = survey
+
     end
 
     if @evaluation_survey.save
       flash[:success] = "Template updated."
       redirect_to edit_evaluation_template_path
     else
-      flash_now[:error] = "Template was unable to be updated."
-      render 'edit_evaluation'
+      flash.now[:error] = "Template was unable to be updated."
+      render 'edit_template'
     end
+
   end
 
   def show
