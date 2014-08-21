@@ -20,15 +20,16 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
   activerecord:
     attributes:
       submission:
-        status_approved: "Application decision"
+        status_approved:  "Application decision"
+        status_published: "Decision publication status"
+      project:
     errors:
       models:
-        attributes:
-          submission:
+        submission:
+          attributes:
             status_approved:
               status_not_pending_before_approved: "cannot be pending before it is approved"
               status_approved_before_published: "cannot be published before it is approved"

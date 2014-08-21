@@ -2,12 +2,38 @@ class EvaluationsController < ApplicationController
 
   load_and_authorize_resource
 
-  before_action :get_project_and_submission, only: [:new, :create, :index]
+  before_action :get_project_and_submission, only: [:new, :create]
   before_action :already_evaluated?, only: [:new, :create]
   before_action :is_admin?, only: :index
   before_action :submission_status_sufficient?, only: [:new, :create]
 
   def index
+    @template = EvaluationSurvey.first
+  end
+
+  def edit_template
+    @template = EvaluationSurvey.first
+  end
+
+  def update_template
+    if EvaluationSurvey.any?
+
+    else
+      @evaluation_survey = EvaluationSurvey.new
+      survey = {
+        1 => { "question_type" => params[:question_type],
+               "question_prompt" => params[:question_prompt] }
+      }.to_json
+      @evaluation_survey.survey = survey
+    end
+
+    if @evaluation_survey.save
+      flash[:success] = "Template updated."
+      redirect_to edit_evaluation_template_path
+    else
+      flash_now[:error] = "Template was unable to be updated."
+      render 'edit_evaluation'
+    end
   end
 
   def show

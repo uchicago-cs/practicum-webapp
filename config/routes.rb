@@ -8,10 +8,15 @@ Practicum::Application.routes.draw do
         via: "patch", as: "approve_all_statuses"
   match "/projects/pending/publish_all", to: "projects#publish_all_pending",
         via: "patch", as: "publish_all_pending_projects"
+  match "/evaluations", to: "evaluations#index", via: "get", as: "evaluations"
+  match "/evaluations/edit", to: "evaluations#edit_template",
+        via: "get", as: "edit_evaluation_template"
+  match "/evaluations/edit", to: "evaluations#update_template",
+        via: "post"
 
   resources :projects, shallow: true do
     resources :submissions, path: 'applications', shallow: true do
-      resources :evaluations, only: [:new, :create, :show, :index]
+      resources :evaluations, only: [:new, :create, :show]
 
       member do
         patch "accept"
