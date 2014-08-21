@@ -5,6 +5,8 @@ class Evaluation < ActiveRecord::Base
   belongs_to :submission, -> { where status: "accepted" },
              foreign_key: "submission_id"
 
+  serialize :survey
+
   validates :advisor_id, presence: true
   validates :student_id, presence: true
   validates :project_id, presence: true

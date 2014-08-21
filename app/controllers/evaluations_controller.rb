@@ -52,10 +52,11 @@ class EvaluationsController < ApplicationController
   end
 
   def create
-    @evaluation = @submission.build_evaluation(evaluation_params)
+    @evaluation = @submission.build_evaluation#(evaluation_params)
     @evaluation.assign_attributes(student_id: @submission.student_id,
                                   project_id: @submission.project_id,
                                   advisor_id: @submission.project_advisor_id)
+    @evaluation.survey = "{}"
     if @evaluation.save
       flash[:success] = "Evaluation successfully submitted."
       redirect_to @evaluation, only_path: true
@@ -66,10 +67,10 @@ class EvaluationsController < ApplicationController
 
   private
 
-  def evaluation_params
-    params.require(:evaluation).permit(:submission_id, :student_id,
-                                       :advisor_id, :project_id)
-  end
+  # def evaluation_params
+  #   params.require(:evaluation).permit(:submission_id, :student_id,
+  #                                      :advisor_id, :project_id)
+  # end
 
   def get_project_and_submission
     @submission = Submission.find(params[:submission_id])

@@ -1,10 +1,13 @@
 <h1>New evaluation for <%= true %> <%# @student.email %></h1>
 
-<%= bootstrap_form_for [@submission, @evaluation] do |f| %>
-  <%= render 'shared/error_messages', object: f.object %>
+<%= bootstrap_form_tag(url: { action: 'create' }) do |f| %>
+  <%= render 'shared/error_messages', object: @evaluation %>
 
-  <%= f.label :comments %>
-  <%= f.text_area :comments, hide_label: true %>
+  <% EvaluationSurvey.first.survey.each do |number, question| %>
+    <%= f.send(EvaluationSurvey.question_symbols(question["question_type"]),
+	       "survey[#{question['question_prompt']}]",
+	       label: question["question_prompt"]) %>
+  <% end %>
 
   <%= f.submit "Submit evaluation", class: "btn btn-primary" %>
 <% end %>
