@@ -17,16 +17,13 @@ class EvaluationsController < ApplicationController
   end
 
   def update_template
-
     params[:delete].each do |question_num, should_be_removed|
       if should_be_removed
         @template.survey.reject! { |key| key == question_num }
-        logger.debug (question_num + should_be_removed.to_s + index.to_s + "\n")*5
-        logger.debug (@template.survey.inspect + "\n") * 5
       end
     end
 
-    logger.debug (@template.survey.inspect + "\n")*5
+    @template.reorganize_questions_after_deletion
 
     if @template.save
       flash[:success] = "Template updated."

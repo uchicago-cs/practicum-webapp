@@ -12,6 +12,18 @@ class EvaluationSurvey < ActiveRecord::Base
     question_symbols[prompt]
   end
 
+  def reorganize_questions_after_deletion
+    ordered_nums = survey.keys.sort_by(&:to_i)
+    ordered_nums.each_with_index do |num, index|
+      if num != (index + 1)
+        # If num == (index + 1), we would remove the pre-existing pair with
+        # #reject!.
+        survey[index+1] = survey[num]
+        survey.reject! { |key| key == num }
+      end
+    end
+  end
+
   private
 
   def no_empty_questions
