@@ -1,5 +1,5 @@
 <h1>Evaluation template</h1>
-<% if @template.id %>
+<% if @template.id and @template.survey.length > 0 %>
   <%= bootstrap_form_tag(url: { action: 'update_template' }) do |f| %>
     <%= render 'shared/error_messages', object: @template %>
 
@@ -9,7 +9,6 @@
       <%= number %>. Type: <%= question["question_type"] %> &nbsp;|&nbsp;
 	Question: <%= question["question_prompt"] %>
 	<% if question["question_type"] == "Radio button" %>
-	  <%# Just use the latter? %>
 	  &nbsp;|&nbsp;
 	  Options:
 	  <% question["question_options"].each do |index, opt| %>

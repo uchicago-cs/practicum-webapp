@@ -18,8 +18,8 @@ class EvaluationsController < ApplicationController
 
   def update_template
     params[:delete].each do |question_num, should_be_removed|
-      if should_be_removed
-        @template.survey.reject! { |key| key == question_num }
+      if (should_be_removed == "1" ? true : false)
+        @template.survey.reject! { |key| key == question_num.to_i }
       end
     end
 
@@ -94,7 +94,7 @@ class EvaluationsController < ApplicationController
                                   project_id: @submission.project_id,
                                   advisor_id: @submission.project_advisor_id)
     @evaluation.survey = params[:survey]
-    logger.debug ("params[:survey]: " + params[:survey].inspect + "\n\n") * 5
+
     if @evaluation.save
       flash[:success] = "Evaluation successfully submitted."
       redirect_to @evaluation, only_path: true
