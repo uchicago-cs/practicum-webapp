@@ -19,17 +19,28 @@ class EvaluationsController < ApplicationController
     if EvaluationSurvey.any?
 
       num = @template.survey.length + 1
-      logger.debug @template.survey
-      @template.survey[num] = {
-        "question_type" => params[:question_type],
-        "question_prompt" => params[:question_prompt]
-      }
+      # Just append to @template.survey[num](["question_options"]?) or merge
+      # if this is true?
+      if params[:radio_button_options].present?
+        # Will this be chosen for all selections and not just "Radio button"?
+        logger.debug params[:radio_button_options].inspect * 50
+        @template.survey[num] = {
+          "question_type"    => params[:question_type],
+          "question_prompt"  => params[:question_prompt],
+          "question_options" => params[:radio_button_options]
+        }
+      else
+        @template.survey[num] = {
+          "question_type"   => params[:question_type],
+          "question_prompt" => params[:question_prompt]
+        }
+      end
 
     else
 
       @template.survey = {
-        1 => { "question_type" => params[:question_type],
-          "question_prompt" => params[:question_prompt] }
+        1 => { "question_type"   => params[:question_type],
+               "question_prompt" => params[:question_prompt] }
       }
 
     end

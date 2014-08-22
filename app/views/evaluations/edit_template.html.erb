@@ -14,16 +14,30 @@
 <br />
 
 <h2>New question</h2>
+
+<div id="new-eval-question">
 <%= bootstrap_form_tag(layout: :horizontal, control_col: "col-xs-2") do |f| %>
   <%= render 'shared/error_messages', object: @template %>
 
   <%= f.select(:question_type,
 	       options_for_select(['Text field', 'Text area',
-				   'Check box', 'Radio button']),
-	       default: 'Text field') %>
+				   'Check box', 'Radio button'],
+				  'Text field')) %>
   <%= f.text_area(:question_prompt) %>
+
+  <div id="radio-button-group">
+    <div id="radio-option-group">
+      <%= f.text_field('radio_button_options[1]',
+		       label: "Radio button option 1")%>
+    </div>
+    <%= f.form_group do %>
+      <%= link_to "Add another option", '#', class: "btn btn-default",
+	id: "add-option-button" %>
+    <% end %>
+  </div>
 
   <%= f.form_group do %>
     <%= f.submit "Create question", class: "btn btn-primary" %>
   <% end %>
 <% end %>
+</div>
