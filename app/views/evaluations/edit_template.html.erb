@@ -1,18 +1,35 @@
 <h1>Evaluation template</h1>
 <% if @template.id %>
-  <% @template.survey.each do |number, question| %>
-    <div>
-    <%= number %>. Type: <%= question["question_type"] %> &nbsp;|&nbsp;
-      Question: <%= question["question_prompt"] %>
-      <% if question["question_type"] == "Radio button" %>
-	<%# Just use the latter? %>
-	&nbsp;|&nbsp;
-	Options:
-	<% question["question_options"].each do |index, opt| %>
-	  <%= index %>. <%= opt %> &nbsp;&nbsp;
-        <% end %>
-      <% end %>
+  <%= bootstrap_form_tag(url: { action: 'update_template' }) do |f| %>
+    <%= render 'shared/error_messages', object: @template %>
+
+    <div class="row">
+    <% @template.survey.each do |number, question| %>
+      <div class="col-md-8">
+      <%= number %>. Type: <%= question["question_type"] %> &nbsp;|&nbsp;
+	Question: <%= question["question_prompt"] %>
+	<% if question["question_type"] == "Radio button" %>
+	  <%# Just use the latter? %>
+	  &nbsp;|&nbsp;
+	  Options:
+	  <% question["question_options"].each do |index, opt| %>
+	    <%= index %>. <%= opt %> &nbsp;&nbsp;
+	  <% end %>
+	<% end %>
+      </div>
+      <div class="col-md-4">
+	<%= f.check_box "delete[#{number}]",
+	label: "Remove question?", inline: true %>
+      </div>
+      <br />
+      <br />
+    <% end %>
     </div>
+
+    <%= f.form_group do %>
+      <%= f.submit "Change evaluation", class: "btn btn-primary" %>
+    <% end %>
+
   <% end %>
 <% else %>
   There is no evaluation template. To create one, you may add questions below.
@@ -23,7 +40,8 @@
 <h2>New question</h2>
 
 <div id="new-eval-question">
-<%= bootstrap_form_tag(layout: :horizontal, control_col: "col-xs-2") do |f| %>
+<%= bootstrap_form_tag(layout: :horizontal, control_col: "col-xs-2",
+		       url: { action: 'add_to_template'}) do |f| %>
   <%= render 'shared/error_messages', object: @template %>
 
   <%= f.select(:question_type,

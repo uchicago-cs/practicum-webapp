@@ -11,7 +11,9 @@ Practicum::Application.routes.draw do
   match "/evaluations", to: "evaluations#index", via: "get", as: "evaluations"
   match "/evaluations/edit", to: "evaluations#edit_template",
         via: "get", as: "edit_evaluation_template"
-  match "/evaluations/edit", to: "evaluations#update_template",
+  match "/evaluations/edit/add", to: "evaluations#add_to_template",
+        via: "post"
+  match "/evaluations/edit/update", to: "evaluations#update_template",
         via: "post"
 
   resources :projects, shallow: true do

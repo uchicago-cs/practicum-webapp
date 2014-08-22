@@ -7,8 +7,8 @@ class EvaluationsController < ApplicationController
   before_action :is_admin?,                     only: :index
   before_action :submission_status_sufficient?, only: [:new, :create]
   before_action :get_template,                  only: [:index, :edit_template,
-                                                       :update_template,
-                                                       :new]
+                                                       :add_to_template,
+                                                       :new, :update_template]
 
   def index
   end
@@ -17,6 +17,27 @@ class EvaluationsController < ApplicationController
   end
 
   def update_template
+
+    params[:delete].each do |question_num, should_be_removed|
+      if should_be_removed
+        @template.survey.reject! { |key| key == question_num }
+        logger.debug (question_num + should_be_removed.to_s + index.to_s + "\n")*5
+        logger.debug (@template.survey.inspect + "\n") * 5
+      end
+    end
+
+    logger.debug (@template.survey.inspect + "\n")*5
+
+    if @template.save
+      flash[:success] = "Template updated."
+      redirect_to edit_evaluation_template_path
+    else
+      flash.now[:error] = "Template could not be updated."
+      render 'edit_evaluation'
+    end
+  end
+
+  def add_to_template
     if EvaluationSurvey.any?
 
       num = @template.survey.length + 1
@@ -54,10 +75,10 @@ class EvaluationsController < ApplicationController
     end
 
     if @template.save
-      flash[:success] = "Template updated."
+      flash[:success] = "Question added to template."
       redirect_to edit_evaluation_template_path
     else
-      flash.now[:error] = "Template was unable to be updated."
+      flash.now[:error] = "Question was unable to be added."
       render 'edit_template'
     end
 
