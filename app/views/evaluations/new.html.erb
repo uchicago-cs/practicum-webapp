@@ -1,24 +1,43 @@
 <h1>New evaluation for <%= true %> <%# @student.email %></h1>
 
-
-<%= bootstrap_form_tag(url: { action: 'create' }) do |f| %>
-  <%= render 'shared/error_messages', object: @evaluation %>
-  <table class="table table-bordered">
-    <tbody>
-      <% EvaluationSurvey.first.survey.each do |number, question| %>
-	<tr>
-	  <th>
-	    <%= f.label question["question_prompt"], class: "table-col-name" %>
-	  </th>
-	  <td>
-	    <%= f.send(EvaluationSurvey.
-		       question_symbols(question["question_type"]),
-		       "survey[#{question['question_prompt']}]",
-		       hide_label: true) %>
-	  </td>
-	</tr>
-      <% end %>
-    </tbody>
-  </table>
-  <%= f.submit "Submit evaluation", class: "btn btn-primary" %>
+<% if @template.survey.present? %>
+  <%= bootstrap_form_tag(url: { action: 'create' }) do |f| %>
+    <%= render 'shared/error_messages', object: @evaluation %>
+    <table class="table table-bordered">
+      <tbody>
+	<% @template.survey.each do |number, question| %>
+	  <tr>
+	    <th>
+	      <%= f.label question["question_prompt"],
+	      class: "table-col-name" %>
+	    </th>
+	    <td>
+	      <% if question["question_type"] == "Check box" %>
+		<%= f.check_box "survey[#{question['question_prompt']}]",
+		label: "" %>
+	      <% elsif question["question_type"] == "Radio button" %>
+		<%= f.form_group question["question_prompt"] do %>
+		  <% question["question_options"].each do |num, opt| %>
+		    <%= f.radio_button question["question_options"], num,
+		    label: opt %>
+		  <% end %>
+		<% end %>
+	      <% else %>
+		<%= f.send(EvaluationSurvey.
+			   question_symbols(question["question_type"]),
+			   "survey[#{question['question_prompt']}]",
+			   hide_label: true) %>
+	      <% end %>
+	      <%# We might just want to use a regular form to get around %>
+	      <%# these weird labels. %>
+	    </td>
+	  </tr>
+	<% end %>
+      </tbody>
+    </table>
+    <%= f.submit "Submit evaluation", class: "btn btn-primary" %>
+  <% end %>
+<% else %>
+  There is no evaluation template. One must be created before you can make an
+  evaluation.
 <% end %>

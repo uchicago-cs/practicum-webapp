@@ -7,7 +7,8 @@ class EvaluationsController < ApplicationController
   before_action :is_admin?,                     only: :index
   before_action :submission_status_sufficient?, only: [:new, :create]
   before_action :get_template,                  only: [:index, :edit_template,
-                                                       :update_template]
+                                                       :update_template,
+                                                       :new]
 
   def index
   end
@@ -23,7 +24,6 @@ class EvaluationsController < ApplicationController
       # if this is true?
       if params[:radio_button_options].present?
         # Will this be chosen for all selections and not just "Radio button"?
-        logger.debug params[:radio_button_options].inspect * 50
         @template.survey[num] = {
           "question_type"    => params[:question_type],
           "question_prompt"  => params[:question_prompt],
@@ -37,11 +37,19 @@ class EvaluationsController < ApplicationController
       end
 
     else
-
-      @template.survey = {
-        1 => { "question_type"   => params[:question_type],
-               "question_prompt" => params[:question_prompt] }
-      }
+      # Also remove the if-else statement here.
+      if params[:radio_button_options].present?
+        @template.survey = {
+          1 => { "question_type"    => params[:question_type],
+                 "question_prompt"  => params[:question_prompt],
+                 "question_options" => params[:radio_button_options] }
+        }
+      else
+        @template.survey = {
+          1 => { "question_type"   => params[:question_type],
+                 "question_prompt" => params[:question_prompt] }
+        }
+      end
 
     end
 
@@ -60,6 +68,7 @@ class EvaluationsController < ApplicationController
 
   def new
     # @student = User.find(params[:student_id])
+    logger.debug @template.inspect
   end
 
   def create

@@ -4,6 +4,13 @@
     <div>
     <%= number %>. Type: <%= question["question_type"] %> &nbsp;|&nbsp;
       Question: <%= question["question_prompt"] %>
+      <% if question["question_options"] %>
+	&nbsp;|&nbsp;
+	Options:
+	<% question["question_options"].each do |index, opt| %>
+	  <%= index %>. <%= opt %> &nbsp;&nbsp;
+        <% end %>
+      <% end %>
     </div>
   <% end %>
 <% else %>
