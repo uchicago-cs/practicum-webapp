@@ -22,7 +22,7 @@ class EvaluationsController < ApplicationController
       num = @template.survey.length + 1
       # Just append to @template.survey[num](["question_options"]?) or merge
       # if this is true?
-      if params[:radio_button_options].present?
+      if params[:question_type] == "Radio button"
         # Will this be chosen for all selections and not just "Radio button"?
         @template.survey[num] = {
           "question_type"    => params[:question_type],
@@ -68,15 +68,15 @@ class EvaluationsController < ApplicationController
 
   def new
     # @student = User.find(params[:student_id])
-    logger.debug @template.inspect
   end
 
   def create
-    @evaluation = @submission.build_evaluation#(evaluation_params)
+    @evaluation = @submission.build_evaluation
     @evaluation.assign_attributes(student_id: @submission.student_id,
                                   project_id: @submission.project_id,
                                   advisor_id: @submission.project_advisor_id)
     @evaluation.survey = params[:survey]
+    logger.debug ("params[:survey]: " + params[:survey].inspect + "\n\n") * 5
     if @evaluation.save
       flash[:success] = "Evaluation successfully submitted."
       redirect_to @evaluation, only_path: true
@@ -86,11 +86,6 @@ class EvaluationsController < ApplicationController
   end
 
   private
-
-  # def evaluation_params
-  #   params.require(:evaluation).permit(:submission_id, :student_id,
-  #                                      :advisor_id, :project_id)
-  # end
 
   def get_project_and_submission
     @submission = Submission.find(params[:submission_id])

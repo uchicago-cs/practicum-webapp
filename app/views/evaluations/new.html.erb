@@ -17,8 +17,13 @@
 		label: "" %>
 	      <% elsif question["question_type"] == "Radio button" %>
 		<%= f.form_group question["question_prompt"] do %>
+		  <%# We use a hidden field so a (blank) response gets %>
+		  <%# passed to the controller if no option is selected. %>
+		  <%= f.
+		  hidden_field "survey[#{question['question_prompt']}]" %>
 		  <% question["question_options"].each do |num, opt| %>
-		    <%= f.radio_button question["question_options"], num,
+		    <%= f.
+		    radio_button "survey[#{question['question_prompt']}]", opt,
 		    label: opt %>
 		  <% end %>
 		<% end %>

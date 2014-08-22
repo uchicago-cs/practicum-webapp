@@ -4,7 +4,8 @@
     <div>
     <%= number %>. Type: <%= question["question_type"] %> &nbsp;|&nbsp;
       Question: <%= question["question_prompt"] %>
-      <% if question["question_options"] %>
+      <% if question["question_type"] == "Radio button" %>
+	<%# Just use the latter? %>
 	&nbsp;|&nbsp;
 	Options:
 	<% question["question_options"].each do |index, opt| %>
@@ -14,8 +15,7 @@
     </div>
   <% end %>
 <% else %>
-  There is no evaluation template. To create one, you may begin adding
-  questions below.
+  There is no evaluation template. To create one, you may add questions below.
 <% end %>
 
 <br />
