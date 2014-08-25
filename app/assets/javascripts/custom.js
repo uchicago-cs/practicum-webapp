@@ -35,10 +35,20 @@ $(document).ready(function(event){
     /****************************************************************/
 
     // var ordering_group = $('.ordering-select');
+    // var position_changes = {};
+    // ordering_group.each(function(event) {
+    // 	var dropdown          = $(this).find("select");
+    // 	var question_num      = $(dropdown).attr("id").match(/\[(.*)\]/)[1]
+    // 	var selected_position = $("option:selected", dropdown).text();
+    // 	position_changes[question_num] = selected_position;
+    // });
+    // console.log(position_changes);
     // ordering_group.change(function(event) {
     // 	var dropdown     = $(this).find("select");
     // 	var new_position = $("option:selected", dropdown).text();
     // 	var old_position = $(dropdown).attr("id").match(/\[(.*)\]/)[1];
-    // 	$("select#\\_ordering\\[" + new_position + "\\]").val(old_position);
+    // 	// old_position corresponds to question_num above.
+    // 	$("select#\\_ordering\\[" + new_position + "\\]").val(position_changes[old_position]);
+    // 	position_changes[old_position] = new_position;
     // });
 });
