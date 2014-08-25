@@ -9,6 +9,7 @@ class EvaluationsController < ApplicationController
   before_action :get_template,                  only: [:index, :edit_template,
                                                        :add_to_template,
                                                        :new, :update_template]
+  before_action :prevent_dup_positions,         only: :update_template
 
   def index
   end
@@ -135,5 +136,11 @@ class EvaluationsController < ApplicationController
   def get_template
     # There should be only one evaluation_survey in the table.
     @template = EvaluationSurvey.first || EvaluationSurvey.new
+  end
+
+  def prevent_dup_positions
+    message = "No two questions can have the same position."
+    redirect_to edit_evaluation_template_path, flash: { error: message } if
+      params[:ordering].values.length != params[:ordering].values.uniq.length
   end
 end
