@@ -8,6 +8,8 @@ $(document).ready(function(event){
 	language: 'en'
     });
 
+    /****************************************************************/
+
     function checkRadio() {
 	if ($('#_question_type').val() == 'Radio button') {
 	    $('#radio-button-group').show();
@@ -29,4 +31,14 @@ $(document).ready(function(event){
 	i++;
 	return false;
     });
+
+    /****************************************************************/
+
+    // var ordering_group = $('.ordering-select');
+    // ordering_group.change(function(event) {
+    // 	var dropdown     = $(this).find("select");
+    // 	var new_position = $("option:selected", dropdown).text();
+    // 	var old_position = $(dropdown).attr("id").match(/\[(.*)\]/)[1];
+    // 	$("select#\\_ordering\\[" + new_position + "\\]").val(old_position);
+    // });
 });

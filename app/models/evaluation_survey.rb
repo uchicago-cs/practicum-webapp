@@ -13,13 +13,22 @@ class EvaluationSurvey < ActiveRecord::Base
   end
 
   def reorganize_questions_after_deletion
-    ordered_nums = survey.keys.sort_by(&:to_i)
+    ordered_nums = survey.keys.sort
     ordered_nums.each_with_index do |num, index|
       if num != (index + 1)
         # If num == (index + 1), we would remove the pre-existing pair with
         # #reject!.
         survey[index+1] = survey[num]
         survey.reject! { |key| key == num }
+      end
+    end
+  end
+
+  def change_order(ordering_params)
+    survey_copy = survey.clone
+    ordering_params.each do |old_position, new_position|
+      if old_position != new_position
+        survey[new_position.to_i] = survey_copy[old_position.to_i]
       end
     end
   end

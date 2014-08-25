@@ -17,13 +17,20 @@ class EvaluationsController < ApplicationController
   end
 
   def update_template
+    delete = false
     params[:delete].each do |question_num, should_be_removed|
       if (should_be_removed == "1" ? true : false)
         @template.survey.reject! { |key| key == question_num.to_i }
+        delete = true
       end
+      # Put the above into its own method in evaluation_survey.rb.
     end
 
     @template.reorganize_questions_after_deletion
+
+    unless delete
+      @template.change_order(params[:ordering])
+    end
 
     if @template.save
       flash[:success] = "Template updated."

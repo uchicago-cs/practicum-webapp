@@ -1,9 +1,9 @@
+<%= render 'shared/error_messages', object: @template %>
 <h1>Evaluation template</h1>
 <% if @template.id and @template.survey.length > 0 %>
   <%= bootstrap_form_tag(url: { action: 'update_template' }) do |f| %>
-    <%= render 'shared/error_messages', object: @template %>
 
-    <div class="row">
+    <div class="row" id="edit-eval">
     <% @template.survey.each do |number, question| %>
       <div class="col-md-8">
       <%= number %>. Type: <%= question["question_type"] %> &nbsp;|&nbsp;
@@ -16,7 +16,14 @@
 	  <% end %>
 	<% end %>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-1">
+	<%= f.label "ordering[#{number}]", "Position" %>
+      </div>
+      <div class="col-md-1 ordering-select">
+	<%= f.select "ordering[#{number}]", @template.survey.keys.sort,
+	selected: number, hide_label: true, inline: true %>
+      </div>
+      <div class="col-md-2">
 	<%= f.check_box "delete[#{number}]",
 	label: "Remove question?", inline: true %>
       </div>
@@ -41,7 +48,6 @@
 <div id="new-eval-question">
 <%= bootstrap_form_tag(layout: :horizontal, control_col: "col-xs-2",
 		       url: { action: 'add_to_template'}) do |f| %>
-  <%= render 'shared/error_messages', object: @template %>
 
   <%= f.select(:question_type,
 	       options_for_select(['Text field', 'Text area',
