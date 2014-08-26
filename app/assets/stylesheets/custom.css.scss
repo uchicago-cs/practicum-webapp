@@ -16,7 +16,8 @@ $colHighlight   : #ffffff;
 }
 
 body {
-    padding-top: 80px;
+    background-color: #FDFDF7;
+    margin-top: 80px;
 }
 
 #logo {
@@ -128,14 +129,14 @@ label {
 /* Navbar */
 
 /* Automatically generated at http://bootstrap3-menu.codedorigin.com/. */
-.navbar-inverse { background-color: #A51C30}
-.navbar-inverse .navbar-nav>.active>a:hover,.navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>li>a:focus { background-color: #8C8179}
-.navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.open>a,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus { background-color: #8C8179}
+.navbar-inverse { background-color: #800000}//A51C30}
+.navbar-inverse .navbar-nav>.active>a:hover,.navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>li>a:focus { background-color: #767676}
+.navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.open>a,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus { background-color: #767676}
 .dropdown-menu { background-color: #FFFFFF}
-.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { background-color: #8C8179}
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { background-color: #767676}
 .navbar-inverse { background-image: none; }
 .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { background-image: none; }
-.navbar-inverse { border-color: #8C8179}
+.navbar-inverse { border-color: #767676}
 .navbar-inverse .navbar-brand { color: #FFFFFF}
 .navbar-inverse .navbar-brand:hover { color: #FFFFFF}
 .navbar-inverse .navbar-nav>li>a { color: #FFFFFF}
@@ -151,14 +152,18 @@ label {
 
 .navbar-text { color: #FFFFFF !important; }
 
-body {
-    background-color: #FDFDF7;
+.navbar-inverse {
+    border-bottom: 6px solid #767676;
 }
 
-.navbar-inverse {
-    border-bottom: 10px solid #8C8179;
+.navbar {
+    margin-bottom: 20px;
 }
 
 .navbar-brand {
     font-size: 28px;
+}
+
+#content {
+    min-height: 400px;
 }
