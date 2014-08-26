@@ -9,9 +9,9 @@ $bgHighlight         : #9b1111;
 $colDefault          : #ecf0f1;
 $colHighlight        : #ffffff;
 $computedHeaderHeight: 50px;
-$footerHeight        : 60px;
+$footerHeight        : 100px;
 $navbar-border-height: 6px;
-$light-header-color  : #971E21;
+$light-maroon        : #971E21;
 
 @mixin box_sizing {
   -moz-box-sizing: border-box;
@@ -28,7 +28,7 @@ html, body {
 }
 
 body {
-    background-color: #E8E8E8;
+    background-color: #EAE9E1;
 }
 
 #wrapper {
@@ -48,11 +48,15 @@ header {
 }
 
 #content-body {
-    background-color: #FFFFFF;
+    background-color: #F7F6ED;
     border-left: 1px solid #EEEEEE;
     border-right: 1px solid #EEEEEE;
     padding-left: 24px;
     padding-right: 24px;
+}
+
+#uchicago-logo {
+    margin-top: 25px;
 }
 
 /* Sticky footer: see
@@ -66,6 +70,13 @@ footer {
     height: $footerHeight;
     background-color: #565656;
     margin-top: -$footerHeight;
+    /* Rename $light-maroon to $light-maroon */
+    border-top: 2px solid $light-maroon;
+}
+
+.footer-text {
+    color: #EEEEEE;
+    margin-top: 25px;
 }
 
 #footer-protector {
@@ -85,30 +96,6 @@ footer {
 	text-decoration: none;
     }
 }
-
-/* footer { */
-/*   margin-top: 45px; */
-/*   padding-top: 5px; */
-/*   border-top: 1px solid $grayMediumLight; */
-/*   color: $gray-light; */
-/*   a { */
-/*     color: $gray; */
-/*     &:hover { */
-/*       color: $gray-darker; */
-/*     } */
-/*   } */
-/*   small { */
-/*     float: left; */
-/*   } */
-/*   ul { */
-/*     float: right; */
-/*     list-style: none; */
-/*     li { */
-/*       float: left; */
-/*       margin-left: 10px; */
-/*     } */
-/*   } */
-/* } */
 
 .debug_dump {
   clear: both;
@@ -182,11 +169,11 @@ label {
 /* Navbar */
 
 /* Automatically generated at http://bootstrap3-menu.codedorigin.com/. */
-.navbar-inverse { background-color: #800000}//A51C30}
-.navbar-inverse .navbar-nav>.active>a:hover,.navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>li>a:focus { background-color: $light-header-color}
-.navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.open>a,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus { background-color: $light-header-color}
+.navbar-inverse { background-color: #800000}
+.navbar-inverse .navbar-nav>.active>a:hover,.navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>li>a:focus { background-color: $light-maroon}
+.navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.open>a,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus { background-color: $light-maroon}
 .dropdown-menu { background-color: #FFFFFF}
-.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { background-color: $light-header-color}
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { background-color: $light-maroon}
 .navbar-inverse { background-image: none; }
 .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { background-image: none; }
 .navbar-inverse .navbar-brand { color: #FFFFFF}
@@ -205,7 +192,7 @@ label {
 .navbar-text { color: #FFFFFF !important; }
 
 .navbar-inverse {
-    border-bottom: $navbar-border-height solid $light-header-color;
+    border-bottom: $navbar-border-height solid $light-maroon;
 }
 
 .navbar {
