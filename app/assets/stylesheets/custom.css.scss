@@ -8,6 +8,7 @@ $bgDefault           : #800000;
 $bgHighlight         : #9b1111;
 $colDefault          : #ecf0f1;
 $colHighlight        : #ffffff;
+$header-height       : 80px;
 $computedHeaderHeight: 50px;
 $footerHeight        : 100px;
 $navbar-border-height: 6px;
@@ -37,7 +38,7 @@ body {
 
 header {
     /* Ideally, we shouldn't have to specify the height. */
-    height: $computedHeaderHeight + $navbar-border-height;
+    height: $header-height;
     padding-bottom: $navbar-border-height;
 }
 
@@ -193,6 +194,11 @@ label {
 
 .navbar-inverse {
     border-bottom: $navbar-border-height solid $light-maroon;
+    height: $header-height;
+}
+
+.navbar-inverse > .container {
+    padding-top: 12px;
 }
 
 .navbar {
@@ -200,5 +206,5 @@ label {
 }
 
 .navbar-brand {
-    font-size: 28px;
+    font-size: 32px;
 }
