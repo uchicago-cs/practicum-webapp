@@ -19,16 +19,36 @@ $light-header-color  : #971E21;
   box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    position: relative;
+}
+
 body {
     background-color: #E8E8E8;
 /*    margin-top: $computedHeaderHeight;*/
     position: relative;
 }
 
+#wrapper {
+    min-height: 100%;
+}
+
 header {
-    /* This should be autocomputed. */
+    /* Ideally, we shouldn't have to specify the height. */
     height: $computedHeaderHeight + $navbar-border-height;
     padding-bottom: $navbar-border-height;
+}
+
+#content {
+    min-height: 400px;
+    margin-top: 48px;
+    margin-bottom: 48px;
 }
 
 #content-body {
@@ -37,7 +57,21 @@ header {
     border-right: 1px solid #EEEEEE;
     padding-left: 24px;
     padding-right: 24px;
-    height: 100%;
+}
+
+/* Sticky footer */
+
+footer {
+    bottom: 0;
+    width: 100%;
+    height: $footerHeight;
+    background-color: #565656;
+    margin-top: -$footerHeight;
+}
+
+#footer-protector {
+    display: block;
+    padding-bottom: $footerHeight;
 }
 
 #logo {
@@ -181,27 +215,4 @@ label {
 
 .navbar-brand {
     font-size: 28px;
-}
-
-#content {
-    min-height: 400px;
-    margin-top: 48px;
-}
-
-/* Sticky footer */
-html {
-    position: relative;
-    height: 100%;
-}
-
-body {
-    height: 100%;
-}
-
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: $footerHeight;
-    background-color: #565656;
 }
