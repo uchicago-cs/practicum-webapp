@@ -51,4 +51,16 @@ $(document).ready(function(event){
     // 	$("select#\\_ordering\\[" + new_position + "\\]").val(position_changes[old_position]);
     // 	position_changes[old_position] = new_position;
     // });
+
+    /****************************************************************/
+
+    var resizeContentBody = function(event) {
+	var content_body_height = $(window).height() - ($("header").outerHeight() + $("footer").outerHeight());
+	$("#content-body").css("min-height", content_body_height + "px");
+    };
+    resizeContentBody();
+    $(window).resize(function() {
+	resizeContentBody();
+    });
+
 });

@@ -19,20 +19,16 @@ $light-header-color  : #971E21;
   box-sizing: border-box;
 }
 
+
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-}
-
-html {
     position: relative;
 }
 
 body {
     background-color: #E8E8E8;
-/*    margin-top: $computedHeaderHeight;*/
-    position: relative;
 }
 
 #wrapper {
@@ -59,7 +55,10 @@ header {
     padding-right: 24px;
 }
 
-/* Sticky footer */
+/* Sticky footer: see
+ * http://www.sitepoint.com/forums/showthread.php?171943-CSS-FAQ-Tips-etc
+ * -Please-read-before-posting!&s=60b129431c1d8c7899b190d2b5859531&p=1239966
+ * #post1239966 */
 
 footer {
     bottom: 0;
