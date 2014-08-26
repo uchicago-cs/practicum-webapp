@@ -1,5 +1,10 @@
 module ApplicationHelper
 
+  def full_site_title
+    "Practicum Program | Masters Program in Computer Science "\
+    "| The University of Chicago"
+  end
+
   def flash_class(flash_type)
     case flash_type
     when :notice  then "info"

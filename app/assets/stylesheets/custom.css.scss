@@ -3,11 +3,12 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-$grayMediumLight: #eaeaea;
-$bgDefault      : #800000;
-$bgHighlight    : #9b1111;
-$colDefault     : #ecf0f1;
-$colHighlight   : #ffffff;
+$grayMediumLight     : #eaeaea;
+$bgDefault           : #800000;
+$bgHighlight         : #9b1111;
+$colDefault          : #ecf0f1;
+$colHighlight        : #ffffff;
+$computedHeaderHeight: 50px;
 
 @mixin box_sizing {
   -moz-box-sizing: border-box;
@@ -16,8 +17,14 @@ $colHighlight   : #ffffff;
 }
 
 body {
+    background-color: #D6D6CE;
+    margin-top: $computedHeaderHeight;
+}
+
+#content-body {
     background-color: #FDFDF7;
-    margin-top: 80px;
+    border-left: 1px solid #EEEEEE;
+    border-right: 1px solid #EEEEEE;
 }
 
 #logo {
