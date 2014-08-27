@@ -60,21 +60,23 @@
 				   'Check box', 'Radio button'],
 				  'Text field')) %>
   <%= f.text_area(:question_prompt) %>
-  <%# This form_group adds an offset to the first radio button text field. %>
-  <%= f.form_group do %>
-    <%= f.check_box(:question_mandatory, label: "Mandatory?", checked: true) %>
-  <% end %>
 
   <div id="radio-button-group">
     <div id="radio-option-group">
-      <%= f.text_field('radio_button_options[1]',
-		       label: "Radio button option 1") %>
+      <%= f.text_field 'radio_button_options[1]',
+		       label: "Radio button option 1" %>
     </div>
     <%= f.form_group do %>
       <%= link_to "Add another option", '#', class: "btn btn-default",
 	id: "add-option-button" %>
     <% end %>
   </div>
+
+  <%# We put the check box down here so it doesn't apply an offset to the %>
+  <%# next item's field. %>
+  <%= f.form_group do %>
+    <%= f.check_box :question_mandatory, label: "Mandatory?", checked: true %>
+  <% end %>
 
   <%= f.form_group do %>
     <%= f.submit "Create question", class: "btn btn-primary" %>
