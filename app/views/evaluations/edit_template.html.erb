@@ -1,10 +1,10 @@
 <%= render 'shared/error_messages', object: @template %>
 <h1>Evaluation template</h1>
-<% if @template.id and @template.survey.length > 0 %>
+<% if db_template.id and db_template.survey.length > 0 %>
   <%= bootstrap_form_tag(url: { action: 'update_template' }) do |f| %>
 
     <div class="row" id="edit-eval">
-    <% @template.survey.each do |number, question| %>
+    <% db_template.survey.each do |number, question| %>
       <div class="col-md-6">
       <%= number %>. Type: <%= question["question_type"] %> &nbsp;|&nbsp;
 	Question: <%= question["question_prompt"] %>
@@ -19,14 +19,14 @@
       <div class="col-md-2">
 	<%= f.check_box "mandatory[#{number}]",
 	checked:
-	(@template.survey[number]["question_mandatory"] == "1") ? true : false,
+	(db_template.survey[number]["question_mandatory"] == "1") ? true : false,
 	label: "Mandatory?", inline: true %>
       </div>
       <div class="col-md-1">
 	<%= f.label "ordering[#{number}]", "Position" %>
       </div>
       <div class="col-md-1 ordering-select">
-	<%= f.select "ordering[#{number}]", @template.survey.keys.sort,
+	<%= f.select "ordering[#{number}]", db_template.survey.keys.sort,
 	selected: number, hide_label: true, inline: true %>
       </div>
       <div class="col-md-2">
@@ -60,7 +60,7 @@
 				   'Check box', 'Radio button'],
 				  'Text field')) %>
   <%= f.text_area(:question_prompt) %>
-
+  <%# This form_group adds an offset to the first radio button text field. %>
   <%= f.form_group do %>
     <%= f.check_box(:question_mandatory, label: "Mandatory?", checked: true) %>
   <% end %>
@@ -68,7 +68,7 @@
   <div id="radio-button-group">
     <div id="radio-option-group">
       <%= f.text_field('radio_button_options[1]',
-		       label: "Radio button option 1")%>
+		       label: "Radio button option 1") %>
     </div>
     <%= f.form_group do %>
       <%= link_to "Add another option", '#', class: "btn btn-default",

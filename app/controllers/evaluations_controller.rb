@@ -84,7 +84,7 @@ class EvaluationsController < ApplicationController
       flash[:success] = "Question added to template."
       redirect_to edit_evaluation_template_path
     else
-      flash.now[:error] = "Question was unable to be added."
+      flash[:error] = "Question was unable to be added."
       render 'edit_template'
     end
 
