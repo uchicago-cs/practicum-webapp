@@ -33,6 +33,14 @@ class EvaluationSurvey < ActiveRecord::Base
     end
   end
 
+  def change_mandatory(mandatory_params)
+    # If possible, store `required` as a bool... (Is this possible, since
+    # survey is a text object?)
+    mandatory_params.each do |number, required|
+      survey[number.to_i]["question_mandatory"] = required
+    end
+  end
+
   private
 
   def no_empty_questions

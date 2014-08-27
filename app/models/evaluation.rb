@@ -51,9 +51,25 @@ class Evaluation < ActiveRecord::Base
   end
 
   def mandatory_questions_answered
+    # This would be easier if we stored all the survey information in the
+    # evaluation object.
+    unanswered = false
+    s = EvaluationSurvey.first.survey
+
+    survey.each do |q, r|
+      logger.debug survey.inspect
+      logger.debug r + " DJOFSJ"
+      m = s.find { |k, h| h["question_prompt"] == q }[1]["question_mandatory"]
+      logger.debug m.inspect
+      # Store t/f values, not "1"/"0", in the EvaluationSurvey's survey col.
+      if r.blank? and (m == "1" ? true : false)
+        unanswered = true
+        break
+      end
+    end
+
     message = "You must answer all mandatory questions."
-    errors.add(:base, message) if
-      foo
+    errors.add(:base, message) if unanswered
   end
 
 end

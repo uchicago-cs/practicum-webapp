@@ -6,10 +6,8 @@ class EvaluationsController < ApplicationController
   before_action :already_evaluated?,            only: [:new, :create]
   before_action :is_admin?,                     only: :index
   before_action :submission_status_sufficient?, only: [:new, :create]
-  before_action :get_template,                  only: [:index, :edit_template,
-                                                       :add_to_template,
-                                                       :new, :update_template]
   before_action :prevent_dup_positions,         only: :update_template
+  before_action :get_template
 
   def index
   end
@@ -29,7 +27,8 @@ class EvaluationsController < ApplicationController
     end
 
     @template.reorganize_questions_after_deletion
-    @template.change_order(params[:ordering]) unless delete
+    @template.change_order(params[:ordering])      unless delete
+    @template.change_mandatory(params[:mandatory]) unless delete
 
     if @template.save
       flash[:success] = "Template updated."
@@ -109,6 +108,7 @@ class EvaluationsController < ApplicationController
       flash[:success] = "Evaluation successfully submitted."
       redirect_to @evaluation, only_path: true
     else
+      flash.now[:error] = "Evaluation was not submitted."
       render 'new'
     end
   end
