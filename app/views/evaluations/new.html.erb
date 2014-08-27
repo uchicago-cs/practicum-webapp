@@ -23,7 +23,8 @@
 	    <td>
 	      <% if question["question_type"] == "Check box" %>
 		<%= f.check_box "survey[#{question['question_prompt']}]",
-		label: "" %>
+		label: "", inline: true,
+		checked: params[:survey] ? (params[:survey]["#{question['question_prompt']}"] == "Yes" ? true : false) : nil %>
 	      <% elsif question["question_type"] == "Radio button" %>
 		<%= f.form_group question["question_prompt"] do %>
 		  <%# We use a hidden field so a (blank) response gets %>
@@ -33,14 +34,15 @@
 		  <% question["question_options"].each do |num, opt| %>
 		    <%= f.
 		    radio_button "survey[#{question['question_prompt']}]", opt,
-		    label: opt %>
+		    label: opt, checked: params[:survey] ? (params[:survey]["#{question['question_prompt']}"] == opt) : nil %>
 		  <% end %>
 		<% end %>
 	      <% else %>
 		<%= f.send(EvaluationSurvey.
 			   question_symbols(question["question_type"]),
 			   "survey[#{question['question_prompt']}]",
-			   hide_label: true) %>
+			   hide_label: true,
+			   value: params[:survey] ? params[:survey]["#{question['question_prompt']}"] : nil ) %>
 	      <% end %>
 	      <%# We might just want to use a regular form to get around %>
 	      <%# these weird labels. %>

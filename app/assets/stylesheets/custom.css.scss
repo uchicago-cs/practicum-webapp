@@ -11,7 +11,7 @@ $colHighlight        : #ffffff;
 $header-height       : 80px;
 $computedHeaderHeight: 50px;
 $footerHeight        : 100px;
-$navbar-border-height: 6px;
+$navbar-border-height: 10px;
 $light-maroon        : #971E21;
 
 @mixin box_sizing {
@@ -171,7 +171,7 @@ label {
 
 /* Automatically generated at http://bootstrap3-menu.codedorigin.com/. */
 .navbar-inverse { background-color: #800000}
-.navbar-inverse .navbar-nav>.active>a:hover,.navbar-inverse .navbar-nav>li>a:hover { background-color: $light-maroon} //, .navbar-inverse .navbar-nav>li>a:focus
+.navbar-inverse .navbar-nav>.active>a:hover,.navbar-inverse .navbar-nav>li>a:hover { background-color: $light-maroon}
 .navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.open>a,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus { background-color: $light-maroon}
 .dropdown-menu { background-color: #FFFFFF}
 .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { background-color: $light-maroon}
