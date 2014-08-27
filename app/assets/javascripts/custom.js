@@ -24,7 +24,7 @@ $(document).ready(function(event){
 
     /****************************************************************/
 
-    function checkRadio() {
+    function checkRadio(event) {
 	if ($('#_question_type').val() == 'Radio button') {
 	    $('#radio-button-group').show();
 	    //$('.form-group').has('#radio_button_group').show();
@@ -41,8 +41,15 @@ $(document).ready(function(event){
     $('#add-option-button').click(function(event) {
 	event.preventDefault();
 	// Can we make this prettier?
-	$('<div class="form-group"><label class="control-label col-sm-2" for="radio_button_options[' + i + ']">Radio button option ' + i + '</label><div class="col-xs-2"><input class="form-control" id="radio_button_options[' + i + ']" name="radio_button_options[' + i + ']" type="text"></div></div>').appendTo(rbDiv);
+	$('<div class="form-group"><label class="control-label col-sm-2" for="radio_button_options[' + i + ']">Radio button option ' + i + '</label><div class="col-xs-2"><input class="form-control" id="radio_button_options[' + i + ']" name="radio_button_options[' + i + ']" type="text"></div><a href="#" class="col-sm-1 remove-radio-input">Remove</a></div>').appendTo(rbDiv);
 	i++;
+	return false;
+    });
+
+    $('#new-eval-question').on('click', 'a.remove-radio-input', function(event) {
+	event.preventDefault();
+	$(this).closest('div').remove();
+	i--;
 	return false;
     });
 
