@@ -1,6 +1,7 @@
 class EvaluationSurvey < ActiveRecord::Base
 
   validate :no_empty_questions
+  validate :no_repeated_questions
   serialize :survey
 
   # This should be in a helper or decorator.
@@ -38,6 +39,13 @@ class EvaluationSurvey < ActiveRecord::Base
     message = "Questions cannot be blank."
     errors.add(:base, message) if
       survey.values.any? { |question| question.values.any?(&:blank?) }
+  end
+
+  def no_repeated_questions
+    message = "Each question must be unique."
+    prompts = survey.values.collect { |q| q["question_prompt"] }
+    errors.add(:base, message) if
+      prompts.length != prompts.uniq.length
   end
 
 end

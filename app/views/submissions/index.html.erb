@@ -1,6 +1,10 @@
 <h1>Applications to <%= @project.name %></h1>
 
 <% if can? :read_submissions_of, @project %>
+  <div class="alert alert-info">
+    <strong>Decision deadline</strong>: <%= advisor_decision_deadline %>
+  </div>
+
   <table class="table table-bordered">
     <tr>
       <th>Applicant</th>
@@ -15,7 +19,3 @@
     </tbody>
   </table>
 <% end %>
-
-<div>
-  <strong>Decision deadline</strong>: <%= advisor_decision_deadline %>
-</div>

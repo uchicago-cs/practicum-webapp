@@ -38,7 +38,7 @@ class EvaluationsController < ApplicationController
       redirect_to edit_evaluation_template_path
     else
       flash.now[:error] = "Template could not be updated."
-      render 'edit_evaluation'
+      render 'edit_template'
     end
   end
 

@@ -190,7 +190,9 @@ label {
 .navbar-inverse .navbar-nav>.dropdown>a .caret { border-bottom-color: #FFFFFF}
 .navbar-inverse .navbar-nav>.dropdown>a:hover .caret { border-bottom-color: #FFFFFF}
 
-.navbar-text { color: #FFFFFF !important; }
+.navbar-text {
+    color: #FFFFFF !important;
+}
 
 .navbar-inverse {
     border-bottom: $navbar-border-height solid $light-maroon;
