@@ -36,6 +36,16 @@ class Evaluation < ActiveRecord::Base
     Project.find(project_id)
   end
 
+  def set_survey(survey_params)
+    # For some reason, we need the `self`s here.
+    self.survey = survey_params
+    s = EvaluationSurvey.first.survey
+    self.survey.each do |q, r|
+      t = s.find { |k, h| h["question_prompt"] == q }[1]["question_type"]
+      survey[q] = ((survey[q] == "1") ? "Yes" : "No") if t == "Check box"
+    end
+  end
+
   private
 
   def send_evaluation_submitted
@@ -57,10 +67,7 @@ class Evaluation < ActiveRecord::Base
     s = EvaluationSurvey.first.survey
 
     survey.each do |q, r|
-      logger.debug survey.inspect
-      logger.debug r + " DJOFSJ"
       m = s.find { |k, h| h["question_prompt"] == q }[1]["question_mandatory"]
-      logger.debug m.inspect
       # Store t/f values, not "1"/"0", in the EvaluationSurvey's survey col.
       if r.blank? and (m == "1" ? true : false)
         unanswered = true
