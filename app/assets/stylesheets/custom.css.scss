@@ -210,3 +210,20 @@ label {
 .navbar-brand {
     font-size: 32px;
 }
+
+small p {
+    line-height: 75%;
+}
+
+footer a {
+    text-decoration: underline;
+    color: #EEEEEE;
+}
+
+footer a:visited, footer a:active {
+    color: #EEEEEE;
+}
+
+footer a:hover {
+    color: #999999;
+}

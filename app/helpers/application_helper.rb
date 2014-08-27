@@ -5,6 +5,10 @@ module ApplicationHelper
     "| The University of Chicago"
   end
 
+  def github_page
+    "https://github.com/uchicago-cs/practicum-webapp"
+  end
+
   def flash_class(flash_type)
     case flash_type
     when :notice  then "info"

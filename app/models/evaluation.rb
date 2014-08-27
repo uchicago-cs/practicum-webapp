@@ -13,6 +13,7 @@ class Evaluation < ActiveRecord::Base
   validates_uniqueness_of :student_id, scope: :project_id
 
   validate :submission_status_is_sufficient, on: :create
+  validate :mandatory_questions_answered
 
   delegate :email, to: :student, prefix: :student, allow_nil: true
   delegate :email, to: :advisor, prefix: :advisor, allow_nil: true
@@ -47,6 +48,12 @@ class Evaluation < ActiveRecord::Base
     message = "status must be approved, published, and accepted."
     errors.add(:submission, message) unless self.submission_accepted? and
       self.submission_status_approved? and self.submission_status_published?
+  end
+
+  def mandatory_questions_answered
+    message = "You must answer all mandatory questions."
+    errors.add(:base, message) if
+      foo
   end
 
 end

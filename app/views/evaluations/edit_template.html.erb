@@ -5,7 +5,7 @@
 
     <div class="row" id="edit-eval">
     <% @template.survey.each do |number, question| %>
-      <div class="col-md-8">
+      <div class="col-md-6">
       <%= number %>. Type: <%= question["question_type"] %> &nbsp;|&nbsp;
 	Question: <%= question["question_prompt"] %>
 	<% if question["question_type"] == "Radio button" %>
@@ -15,6 +15,12 @@
 	    <%= index %>. <%= opt %> &nbsp;&nbsp;
 	  <% end %>
 	<% end %>
+      </div>
+      <div class="col-md-2">
+	<%= f.check_box "mandatory[#{number}]",
+	checked:
+	(@template.survey[number]["question_mandatory"] == "1") ? true : false,
+	label: "Mandatory?", inline: true %>
       </div>
       <div class="col-md-1">
 	<%= f.label "ordering[#{number}]", "Position" %>
@@ -54,6 +60,10 @@
 				   'Check box', 'Radio button'],
 				  'Text field')) %>
   <%= f.text_area(:question_prompt) %>
+
+  <%= f.form_group do %>
+    <%= f.check_box(:question_mandatory, label: "Mandatory?", checked: true) %>
+  <% end %>
 
   <div id="radio-button-group">
     <div id="radio-option-group">

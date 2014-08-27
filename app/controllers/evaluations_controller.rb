@@ -24,14 +24,12 @@ class EvaluationsController < ApplicationController
         @template.survey.reject! { |key| key == question_num.to_i }
         delete = true
       end
-      # Put the above into its own method in evaluation_survey.rb.
+      # Put the above into its own method in evaluation_survey.rb, and
+      # have it return `delete`
     end
 
     @template.reorganize_questions_after_deletion
-
-    unless delete
-      @template.change_order(params[:ordering])
-    end
+    @template.change_order(params[:ordering]) unless delete
 
     if @template.save
       flash[:success] = "Template updated."
@@ -51,14 +49,16 @@ class EvaluationsController < ApplicationController
       if params[:question_type] == "Radio button"
         # Will this be chosen for all selections and not just "Radio button"?
         @template.survey[num] = {
-          "question_type"    => params[:question_type],
-          "question_prompt"  => params[:question_prompt],
-          "question_options" => params[:radio_button_options]
+          "question_type"      => params[:question_type],
+          "question_prompt"    => params[:question_prompt],
+          "question_mandatory" => params[:question_mandatory],
+          "question_options"   => params[:radio_button_options]
         }
       else
         @template.survey[num] = {
-          "question_type"   => params[:question_type],
-          "question_prompt" => params[:question_prompt]
+          "question_type"      => params[:question_type],
+          "question_prompt"    => params[:question_prompt],
+          "question_mandatory" => params[:question_mandatory]
         }
       end
 
@@ -66,14 +66,16 @@ class EvaluationsController < ApplicationController
       # Also remove the if-else statement here.
       if params[:radio_button_options].present?
         @template.survey = {
-          1 => { "question_type"    => params[:question_type],
-                 "question_prompt"  => params[:question_prompt],
-                 "question_options" => params[:radio_button_options] }
+          1 => { "question_type"      => params[:question_type],
+                 "question_prompt"    => params[:question_prompt],
+                 "question_mandatory" => params[:question_mandatory],
+                 "question_options"   => params[:radio_button_options] }
         }
       else
         @template.survey = {
-          1 => { "question_type"   => params[:question_type],
-                 "question_prompt" => params[:question_prompt] }
+          1 => { "question_type"      => params[:question_type],
+                 "question_prompt"    => params[:question_prompt],
+                 "question_mandatory" => params[:question_mandatory] }
         }
       end
 
