@@ -34,6 +34,7 @@ $(document).ready(function(event){
 
     checkRadio();
     $('#_question_type').on('change', checkRadio);
+    $('#edit-q-modal').on('click', checkRadio);
 
     var rbDiv = $('#radio-option-group');
     var i = $('#radio-button-group input').size();
@@ -60,6 +61,17 @@ $(document).ready(function(event){
 	    thisFormGroup.find('label').text("Radio button option " + replacement);
 	}
 	return false;
+    });
+
+    /****************************************************************/
+
+    $('.btn-edit-q').click(function(e) {
+	var question_type   = $(this).closest('tr').find('td:eq(0)').text();
+	var question_prompt = $(this).closest('tr').find('td:eq(1)').text();
+	var question_opts   = $(this).closest('tr').find('td:eq(2)').text();
+
+	$('.modal-body').find('select').val(question_type);
+	$('.modal-body').find('textarea').val(question_prompt);
     });
 
     /****************************************************************/
