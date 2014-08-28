@@ -3,40 +3,62 @@
 <% if db_template.id and db_template.survey.length > 0 %>
   <%= bootstrap_form_tag(url: { action: 'update_template' }) do |f| %>
 
-    <div class="row" id="edit-eval">
+      <table class="table table-bordered edit-eval">
+	<colgroup>
+	  <col style="width: 10%;">
+	  <col style="width: 35%;">
+	  <col style="width: 35%;">
+	  <col style="width: 3%;">
+	  <col style="width: 7%;">
+	  <col style="width: 3%;">
+	  <col style="width: 7%;">
+	</colgroup>
+	<thead>
+	  <tr>
+	    <th>Type</th>
+	    <th>Question</th>
+	    <th>Options</th>
+	    <th>Mandatory?</th>
+	    <th>Position</th>
+	    <th>Remove?</th>
+	    <th>Edit</th>
+	  </tr>
+	</thead>
+	<tbody>
+
     <% db_template.survey.each do |number, question| %>
-      <div class="col-md-6">
-      <%= number %>. Type: <%= question["question_type"] %> &nbsp;|&nbsp;
-	Question: <%= question["question_prompt"] %>
-	<% if question["question_type"] == "Radio button" %>
-	  &nbsp;|&nbsp;
-	  Options:
-	  <% question["question_options"].each do |index, opt| %>
-	    <%= index %>. <%= opt %> &nbsp;&nbsp;
-	  <% end %>
-	<% end %>
-      </div>
-      <div class="col-md-2">
-	<%= f.check_box "mandatory[#{number}]",
-	checked:
-	(db_template.survey[number]["question_mandatory"] == "1") ? true : false,
-	label: "Mandatory?", inline: true %>
-      </div>
-      <div class="col-md-1">
-	<%= f.label "ordering[#{number}]", "Position" %>
-      </div>
-      <div class="col-md-1 ordering-select">
-	<%= f.select "ordering[#{number}]", db_template.survey.keys.sort,
-	selected: number, hide_label: true, inline: true %>
-      </div>
-      <div class="col-md-2">
-	<%= f.check_box "delete[#{number}]",
-	label: "Remove question?", inline: true %>
-      </div>
-      <br />
-      <br />
+      <tr>
+	<td><%= question["question_type"] %></td>
+	<td><%= question["question_prompt"] %></td>
+	<td>
+	  <% if question["question_type"] == "Radio button" %>
+	    <% question["question_options"].each do |index, opt| %>
+	      <p><%= index %>. <%= opt %></p>
+            <% end %>
+          <% end %>
+	</td>
+	<td>
+	  <%= f.check_box "mandatory[#{number}]",
+	  checked:
+	  (db_template.survey[number]["question_mandatory"] == "1") ? true : false,
+	  label: "", inline: true %>
+	</td>
+	<td>
+	  <div class="col-md-15">
+	    <%= f.select "ordering[#{number}]", db_template.survey.keys.sort,
+	    selected: number, hide_label: true, inline: true %>
+	  </div>
+	</td>
+	<td>
+	  <%= f.check_box "delete[#{number}]",
+	  label: "", inline: true %>
+	</td>
+	<td></td>
     <% end %>
     </div>
+      </tr>
+	</tbody>
+      </table>
 
     <%= f.form_group do %>
       <%= f.submit "Update template", class: "btn btn-primary" %>
