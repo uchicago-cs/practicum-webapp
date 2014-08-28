@@ -14,8 +14,11 @@
 	  <h4 class="modal-title" id="edit-q-modal-label">Edit question</h4>
 	</div>
 	<%= bootstrap_form_tag(layout: :horizontal,
-			       control_col: "col-md-6") do |f| %>
+			       control_col: "col-md-6",
+			       url: { action: 'update_template_question' },
+			       method: :patch) do |f| %>
 	  <div class="modal-body">
+	    <%= f.hidden_field :question_num %>
 	    <%= f.select(:question_type,
 			 options_for_select(['Text field', 'Text area',
 					     'Check box', 'Radio button'],
@@ -36,9 +39,7 @@
 
 	  <div class="modal-footer">
 	    <%= f.form_group do %>
-	      <button type="button" class="btn btn-primary">
-		Update question
-	      </button>
+	      <%= f.submit "Update question", class: "btn btn-primary" %>
 	    <% end %>
 	  </div>
 	<% end %>

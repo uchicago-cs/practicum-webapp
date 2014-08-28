@@ -5,11 +5,11 @@ class EvaluationSurvey < ActiveRecord::Base
   serialize :survey
 
   # This should be in a helper or decorator.
-  def EvaluationSurvey.question_symbols(prompt)
+  def EvaluationSurvey.question_symbols(q_type)
     question_symbols =
       { "Text field" => :text_field, "Text area" => :text_area,
         "Check box" => :check_box, "Radio button" => :radio_button }
-    question_symbols[prompt]
+    question_symbols[q_type]
   end
 
   def reorganize_questions_after_deletion
@@ -38,6 +38,19 @@ class EvaluationSurvey < ActiveRecord::Base
     # survey is a text object?)
     mandatory_params.each do |number, required|
       survey[number.to_i]["question_mandatory"] = required
+    end
+  end
+
+  def edit_question(question_params)
+    num = question_params[:question_num].to_i
+    type = question_params[:question_type]
+    prompt = question_params[:question_prompt]
+
+    survey[num]["question_type"] = type
+    survey[num]["question_prompt"] = prompt
+
+    if type == "Radio button"
+      # Grab and set the options here; just completely overwrite them.
     end
   end
 

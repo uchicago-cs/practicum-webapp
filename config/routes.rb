@@ -15,6 +15,8 @@ Practicum::Application.routes.draw do
         via: "post"
   match "/evaluations/edit/update", to: "evaluations#update_template",
         via: "post"
+  match "/evaluations/edit/update_question",
+        to: "evaluations#update_template_question", via: "patch"
 
   resources :projects, shallow: true do
     resources :submissions, path: 'applications', shallow: true do

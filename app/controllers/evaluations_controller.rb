@@ -39,6 +39,19 @@ class EvaluationsController < ApplicationController
     end
   end
 
+  def update_template_question
+    # We probably don't want to pass the entire params hash.
+    @template.edit_question(params)
+
+    if @template.save
+      flash[:success] = "Question updated."
+      redirect_to edit_evaluation_template_path
+    else
+      flash.now[:error] = "Question could not be updated."
+      render 'edit_template'
+    end
+  end
+
   def add_to_template
     if EvaluationSurvey.any?
 

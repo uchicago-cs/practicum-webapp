@@ -68,7 +68,9 @@ $(document).ready(function(event){
 	var question_type   = $(this).closest('tr').find('td:eq(0)').text();
 	var question_prompt = $(this).closest('tr').find('td:eq(1)').text();
 	var question_opts   = $(this).closest('tr').find('td:eq(2)').text();
+	var question_num    = $(this).closest('tr').index() + 1;
 
+	$('.modal-body').find('#_question_num').val(question_num);
 	$('.modal-body').find('select').val(question_type);
 	$('.modal-body').find('textarea').val(question_prompt);
 	if (question_opts == "Radio button") {
