@@ -25,20 +25,19 @@ $(document).ready(function(event){
     /****************************************************************/
 
     function checkRadio(event) {
-	if ($('#_question_type').val() == 'Radio button') {
-	    $('#radio-button-group').show();
+	if ($('#new-eval-question #_question_type').val() == 'Radio button') {
+	    $('#new-eval-question #radio-button-group').show();
 	} else {
-	    $('#radio-button-group').hide();
+	    $('#new-eval-question #radio-button-group').hide();
 	};
     }
 
     checkRadio();
-    $('#_question_type').on('change', checkRadio);
-    $('#edit-q-modal').on('click', checkRadio);
+    $('#new-eval-question #_question_type').on('change', checkRadio);
 
-    var rbDiv = $('#radio-option-group');
-    var i = $('#radio-button-group input').size();
-    $('#add-option-button').click(function(event) {
+    var rbDiv = $('#new-eval-question #radio-option-group');
+    var i = $('#new-eval-question #radio-button-group input').size();
+    $('#new-eval-question #add-option-button').click(function(event) {
 	event.preventDefault();
 	i++;
 	$('<div class="form-group"><label class="control-label col-sm-2" for="radio_button_options[' + i + ']">Radio button option ' + i + '</label><div class="col-xs-2"><input class="form-control" id="radio_button_options[' + i + ']" name="radio_button_options[' + i + ']" type="text"></div><a href="#" class="col-sm-1 remove-radio-input" id="remove-radio-input[' + i +']">Remove</a></div>').appendTo(rbDiv);
@@ -50,9 +49,9 @@ $(document).ready(function(event){
 	var firstIndex = parseInt($(this).attr('id').match(/\[(.*)\]/)[1], 10) + 1;
 	$(this).closest('div').remove();
 	i--;
-	var lastIndex = parseInt($('#radio-button-group input').last().attr('id').match(/\[(.*)\]/)[1], 10);
+	var lastIndex = parseInt($('#new-eval-question #radio-button-group input').last().attr('id').match(/\[(.*)\]/)[1], 10);
 	for (var j = firstIndex; j <= lastIndex; j++) {
-	    var thisFormGroup = $('div:contains("Radio button option ' + j + '")').closest('.form-group');
+	    var thisFormGroup = $('#new-eval-question div:contains("Radio button option ' + j + '")').closest('.form-group');
 	    var replacement = (j-1);
 	    thisFormGroup.find('label').prop('for', 'radio_button_options[' + replacement + ']');
 	    thisFormGroup.find('input').prop('id', 'radio_button_options[' + replacement + ']');
@@ -72,6 +71,50 @@ $(document).ready(function(event){
 
 	$('.modal-body').find('select').val(question_type);
 	$('.modal-body').find('textarea').val(question_prompt);
+	if (question_opts == "Radio button") {
+	    // Populate options with questions from table
+	}
+    });
+
+
+    function checkRadioModal(event) {
+	if ($('#edit-q-modal #_question_type').val() == 'Radio button') {
+	    $('#edit-q-modal #radio-button-group').show();
+	} else {
+	    $('#edit-q-modal #radio-button-group').hide();
+	};
+    }
+
+    $('#edit-q-modal #_question_type').on('change', checkRadioModal);
+    $('#edit-q-modal').on('show.bs.modal', function(e) {
+	checkRadioModal();
+    });
+
+    var rbmDiv = $('#edit-q-modal #radio-option-group');
+    var im = $('#edit-q-modal #radio-button-group input').size();
+    $('#edit-q-modal #add-option-button').click(function(event) {
+	event.preventDefault();
+	im++;
+	$('<div class="form-group"><label class="control-label col-sm-2" for="radio_button_options[' + im + ']">Radio button option ' + im + '</label><div class="col-xs-2"><input class="form-control" id="radio_button_options[' + im + ']" name="radio_button_options[' + im + ']" type="text"></div><a href="#" class="col-sm-1 remove-radio-input" id="remove-radio-input[' + im +']">Remove</a></div>').appendTo(rbmDiv);
+	return false;
+    });
+
+    $('#edit-q-modal').on('click', 'a.remove-radio-input', function(e) {
+	e.preventDefault();
+	var firstIndex = parseInt($(this).attr('id').match(/\[(.*)\]/)[1], 10) + 1;
+	$(this).closest('div').remove();
+	im--;
+	var lastIndex = parseInt($('#edit-q-modal #radio-button-group input').last().attr('id').match(/\[(.*)\]/)[1], 10);
+	for (var j = firstIndex; j <= lastIndex; j++) {
+	    var thisFormGroup = $('#edit-q-modal div:contains("Radio button option ' + j + '")').closest('.form-group');
+	    var replacement = (j-1);
+	    thisFormGroup.find('label').prop('for', 'radio_button_options[' + replacement + ']');
+	    thisFormGroup.find('input').prop('id', 'radio_button_options[' + replacement + ']');
+	    thisFormGroup.find('input').prop('name', 'radio_button_options[' + replacement + ']');
+	    thisFormGroup.find('a').prop('id', 'remove-radio-input[' + replacement + ']');
+	    thisFormGroup.find('label').text("Radio button option " + replacement);
+	}
+	return false;
     });
 
     /****************************************************************/
