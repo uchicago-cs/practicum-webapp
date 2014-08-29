@@ -149,6 +149,8 @@ $(document).ready(function(event){
     // Client-side validation
 
     // Use Parsley to validate edit evaluation template forms.
+    window.ParsleyValidator.addMessage('en', 'required', 'This field is required.');
+
     $('#new-eval-question form').parsley({ excluded: ':hidden' });
     $('#edit-q-modal form').parsley({ excluded: ':hidden' });
 
