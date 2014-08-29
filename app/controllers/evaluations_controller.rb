@@ -27,8 +27,8 @@ class EvaluationsController < ApplicationController
     end
 
     @template.reorganize_questions_after_deletion
-    @template.change_order(params[:ordering])      unless delete
     @template.change_mandatory(params[:mandatory]) unless delete
+    @template.change_order(params[:ordering])      unless delete
 
     if @template.save
       flash[:success] = "Template updated."
