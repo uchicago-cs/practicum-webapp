@@ -184,6 +184,8 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
       mime-types
+    parsley-rails (2.0.4.0)
+      railties (>= 3.0.0)
     pg (0.17.1)
     polyglot (0.3.5)
     pry (0.10.1)
@@ -349,6 +351,7 @@ DEPENDENCIES
   libnotify (= 0.8.0)
   momentjs-rails (>= 2.8.1)
   paperclip (~> 4.1)
+  parsley-rails (= 2.0.4.0)
   pg (~> 0.17.1)
   rails (= 4.0.8)
   rails_12factor (= 0.0.2)

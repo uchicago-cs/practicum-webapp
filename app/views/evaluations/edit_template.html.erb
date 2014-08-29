@@ -24,12 +24,14 @@
 			 options_for_select(['Text field', 'Text area',
 					     'Check box', 'Radio button'],
 					    'Text field')) %>
-	    <%= f.text_area(:question_prompt) %>
+	    <%= f.text_area(:question_prompt,
+			    'data-parsley-required' => 'true') %>
 
 	    <div id="radio-button-group">
 	      <div id="radio-option-group">
 		<%= f.text_field 'radio_button_options[1]',
-		label: "Radio button option 1" %>
+		label: "Radio button option 1",
+		'data-parsley-required' => 'true' %>
 	      </div>
 	      <%= f.form_group do %>
 		<%= link_to "Add another option", '#',
@@ -133,12 +135,13 @@
 		 options_for_select(['Text field', 'Text area',
 				     'Check box', 'Radio button'],
 				    'Text field')) %>
-    <%= f.text_area(:question_prompt) %>
+    <%= f.text_area(:question_prompt, 'data-parsley-required' => 'true') %>
 
     <div id="radio-button-group">
       <div id="radio-option-group">
 	<%= f.text_field 'radio_button_options[1]',
-			 label: "Radio button option 1" %>
+			 label: "Radio button option 1",
+			 'data-parsley-required' => 'true' %>
       </div>
       <%= f.form_group do %>
 	<%= link_to "Add another option", '#', class: "btn btn-default",

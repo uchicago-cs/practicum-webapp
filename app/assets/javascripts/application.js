@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require parsley
 //= require moment
 //= require bootstrap
 //= require bootstrap-datetimepicker

@@ -40,7 +40,7 @@ $(document).ready(function(event){
     $('#new-eval-question #add-option-button').click(function(event) {
 	event.preventDefault();
 	i++;
-	$('<div class="form-group"><label class="control-label col-sm-2" for="radio_button_options[' + i + ']">Radio button option ' + i + '</label><div class="col-md-3"><input class="form-control" id="radio_button_options[' + i + ']" name="radio_button_options[' + i + ']" type="text"></div><a href="#" class="col-sm-1 remove-radio-input" id="remove-radio-input[' + i +']">Remove</a></div>').appendTo(rbDiv);
+	$('<div class="form-group"><label class="control-label col-sm-2" for="radio_button_options[' + i + ']">Radio button option ' + i + '</label><div class="col-md-3"><input class="form-control" id="radio_button_options[' + i + ']" name="radio_button_options[' + i + ']" type="text" data-parsley-required="true"></div><a href="#" class="col-sm-1 remove-radio-input" id="remove-radio-input[' + i +']">Remove</a></div>').appendTo(rbDiv);
 	return false;
     });
 
@@ -82,7 +82,7 @@ $(document).ready(function(event){
     $('#edit-q-modal #add-option-button').click(function(event) {
 	event.preventDefault();
 	im++;
-	$('<div class="form-group"><label class="control-label col-sm-4" for="radio_button_options[' + im + ']">Radio button option ' + im + '</label><div class="col-md-6"><input class="form-control" id="radio_button_options[' + im + ']" name="radio_button_options[' + im + ']" type="text"></div><a href="#" class="col-sm-1 remove-radio-input" id="remove-radio-input[' + im +']">Remove</a></div>').appendTo(rbmDiv);
+	$('<div class="form-group"><label class="control-label col-sm-4" for="radio_button_options[' + im + ']">Radio button option ' + im + '</label><div class="col-md-6"><input class="form-control" id="radio_button_options[' + im + ']" name="radio_button_options[' + im + ']" type="text" data-parsley-required="true"></div><a href="#" class="col-sm-1 remove-radio-input" id="remove-radio-input[' + im +']">Remove</a></div>').appendTo(rbmDiv);
 	return false;
     });
 
@@ -124,7 +124,7 @@ $(document).ready(function(event){
 		// We already added the first option just above.
 		if (index > 0) {
 		    im++;
-	$('<div class="form-group"><label class="control-label col-sm-4" for="radio_button_options[' + im + ']">Radio button option ' + im + '</label><div class="col-md-6"><input class="form-control" id="radio_button_options[' + im + ']" name="radio_button_options[' + im + ']" type="text"></div><a href="#" class="col-sm-1 remove-radio-input" id="remove-radio-input[' + im +']">Remove</a></div>').appendTo(rbmDiv);
+	$('<div class="form-group"><label class="control-label col-sm-4" for="radio_button_options[' + im + ']">Radio button option ' + im + '</label><div class="col-md-6"><input class="form-control" id="radio_button_options[' + im + ']" name="radio_button_options[' + im + ']" type="text" data-parsley-required="true"></div><a href="#" class="col-sm-1 remove-radio-input" id="remove-radio-input[' + im +']">Remove</a></div>').appendTo(rbmDiv);
 		    $('.modal-body').find('input').last().val(question_opts[index]);
 		}
 	    });
@@ -143,6 +143,14 @@ $(document).ready(function(event){
 	    im--;
 	});
     });
+
+    /****************************************************************/
+
+    // Client-side validation
+
+    // Use Parsley to validate edit evaluation template forms.
+    $('#new-eval-question form').parsley({ excluded: ':hidden' });
+    $('#edit-q-modal form').parsley({ excluded: ':hidden' });
 
     /****************************************************************/
 
