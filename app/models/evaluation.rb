@@ -37,10 +37,10 @@ class Evaluation < ActiveRecord::Base
   end
 
   def set_survey(survey_params)
-    # For some reason, we need the `self`s here.
     self.survey = survey_params
     s = EvaluationTemplate.first.survey
     self.survey.each do |q, r|
+      # Note: #find returns only the first match.
       t = s.find { |k, h| h["question_prompt"] == q }[1]["question_type"]
       survey[q] = ((survey[q] == "1") ? "Yes" : "No") if t == "Check box"
     end

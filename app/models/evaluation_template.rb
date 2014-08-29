@@ -1,7 +1,9 @@
 class EvaluationTemplate < ActiveRecord::Base
 
   validate :no_empty_questions
+  validate :no_empty_radio_btn_opts
   validate :no_repeated_questions
+
   serialize :survey
 
   # This should be in a helper or decorator.
@@ -59,6 +61,23 @@ class EvaluationTemplate < ActiveRecord::Base
     message = "Questions cannot be blank."
     errors.add(:base, message) if
       survey.values.any? { |question| question.values.any?(&:blank?) }
+  end
+
+  def no_empty_radio_btn_opts
+    blank_opts = false
+    survey.each do |q, r|
+      survey.find_all {|k, h| h["question_type"]=="Radio button"}.each do |opt|
+        opt[1]["question_options"].each do |num, option|
+          if option.blank?
+            blank_opts = true
+            break
+          end
+        end
+      end
+    end
+
+    message = "Radio button options cannot be blank."
+    errors.add(:base, message) if blank_opts
   end
 
   def no_repeated_questions
