@@ -38,7 +38,7 @@
 		  <% end %>
 		<% end %>
 	      <% else %>
-		<%= f.send(EvaluationSurvey.
+		<%= f.send(EvaluationTemplate.
 			   question_symbols(question["question_type"]),
 			   "survey[#{question['question_prompt']}]",
 			   hide_label: true,

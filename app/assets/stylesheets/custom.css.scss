@@ -155,6 +155,13 @@ table {
   }
 }
 
+#new-eval-question, #edit-q-modal {
+    textarea {
+	min-height: 200px;
+	resize: none;
+    }
+}
+
 .bootstrap-datetimepicker-widget thead tr:first-child th {
     background-color: white;
 }

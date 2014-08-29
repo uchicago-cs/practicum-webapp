@@ -1,11 +1,11 @@
-class EvaluationSurvey < ActiveRecord::Base
+class EvaluationTemplate < ActiveRecord::Base
 
   validate :no_empty_questions
   validate :no_repeated_questions
   serialize :survey
 
   # This should be in a helper or decorator.
-  def EvaluationSurvey.question_symbols(q_type)
+  def EvaluationTemplate.question_symbols(q_type)
     question_symbols =
       { "Text field" => :text_field, "Text area" => :text_area,
         "Check box" => :check_box, "Radio button" => :radio_button }

@@ -65,16 +65,27 @@ $(document).ready(function(event){
     /****************************************************************/
 
     $('.btn-edit-q').click(function(e) {
+	var question_num    = $(this).closest('tr').index() + 1;
 	var question_type   = $(this).closest('tr').find('td:eq(0)').text();
 	var question_prompt = $(this).closest('tr').find('td:eq(1)').text();
-	var question_opts   = $(this).closest('tr').find('td:eq(2)').text();
-	var question_num    = $(this).closest('tr').index() + 1;
+	var question_opts = [];
+	$(this).closest('tr').find('td:eq(2) p').each(function(index, element) {
+	    question_opts.push($(e).text().substring(3));
+	});
 
 	$('.modal-body').find('#_question_num').val(question_num);
 	$('.modal-body').find('select').val(question_type);
 	$('.modal-body').find('textarea').val(question_prompt);
 	if (question_opts == "Radio button") {
-	    // Populate options with questions from table
+	    // Populate options with questions from table.
+
+	    // First of all, make sure that we add the right number of
+	    // radio button options and increment the `im` variable below.
+	    // (This function should appear below the functions and vars
+	    // below.) Then add the option in the each loop.
+	    question_opts.each(function(index, element) {
+		// etc.
+	    });
 	}
     });
 
@@ -97,7 +108,7 @@ $(document).ready(function(event){
     $('#edit-q-modal #add-option-button').click(function(event) {
 	event.preventDefault();
 	im++;
-	$('<div class="form-group"><label class="control-label col-sm-2" for="radio_button_options[' + im + ']">Radio button option ' + im + '</label><div class="col-md-6"><input class="form-control" id="radio_button_options[' + im + ']" name="radio_button_options[' + im + ']" type="text"></div><a href="#" class="col-sm-1 remove-radio-input" id="remove-radio-input[' + im +']">Remove</a></div>').appendTo(rbmDiv);
+	$('<div class="form-group"><label class="control-label col-sm-4" for="radio_button_options[' + im + ']">Radio button option ' + im + '</label><div class="col-md-6"><input class="form-control" id="radio_button_options[' + im + ']" name="radio_button_options[' + im + ']" type="text"></div><a href="#" class="col-sm-1 remove-radio-input" id="remove-radio-input[' + im +']">Remove</a></div>').appendTo(rbmDiv);
 	return false;
     });
 

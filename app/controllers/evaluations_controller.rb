@@ -53,7 +53,7 @@ class EvaluationsController < ApplicationController
   end
 
   def add_to_template
-    if EvaluationSurvey.any?
+    if EvaluationTemplate.any?
 
       num = @template.survey.length + 1
       # Just append to @template.survey[num](["question_options"]?) or merge
@@ -150,7 +150,7 @@ class EvaluationsController < ApplicationController
 
   def get_template
     # There should be only one evaluation_survey in the table.
-    @template = EvaluationSurvey.first || EvaluationSurvey.new
+    @template = EvaluationTemplate.first || EvaluationTemplate.new
   end
 
   def prevent_dup_positions

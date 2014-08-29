@@ -1,7 +1,7 @@
 module EvaluationsHelper
 
   def db_template
-    EvaluationSurvey.first || EvaluationSurvey.new
+    EvaluationTemplate.first || EvaluationTemplate.new
   end
 
 end

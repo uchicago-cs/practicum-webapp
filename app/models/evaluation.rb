@@ -39,7 +39,7 @@ class Evaluation < ActiveRecord::Base
   def set_survey(survey_params)
     # For some reason, we need the `self`s here.
     self.survey = survey_params
-    s = EvaluationSurvey.first.survey
+    s = EvaluationTemplate.first.survey
     self.survey.each do |q, r|
       t = s.find { |k, h| h["question_prompt"] == q }[1]["question_type"]
       survey[q] = ((survey[q] == "1") ? "Yes" : "No") if t == "Check box"
@@ -64,11 +64,11 @@ class Evaluation < ActiveRecord::Base
     # This would be easier if we stored all the survey information in the
     # evaluation object.
     unanswered = false
-    s = EvaluationSurvey.first.survey
+    s = EvaluationTemplate.first.survey
 
     survey.each do |q, r|
       m = s.find { |k, h| h["question_prompt"] == q }[1]["question_mandatory"]
-      # Store t/f values, not "1"/"0", in the EvaluationSurvey's survey col.
+      # Store t/f values, not "1"/"0", in the EvaluationTemplate's survey col.
       if r.blank? and (m == "1" ? true : false)
         unanswered = true
         break
