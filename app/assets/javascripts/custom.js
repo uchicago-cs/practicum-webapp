@@ -64,32 +64,6 @@ $(document).ready(function(event){
 
     /****************************************************************/
 
-    $('.btn-edit-q').click(function(e) {
-	var question_num    = $(this).closest('tr').index() + 1;
-	var question_type   = $(this).closest('tr').find('td:eq(0)').text();
-	var question_prompt = $(this).closest('tr').find('td:eq(1)').text();
-	var question_opts = [];
-	$(this).closest('tr').find('td:eq(2) p').each(function(index, element) {
-	    question_opts.push($(e).text().substring(3));
-	});
-
-	$('.modal-body').find('#_question_num').val(question_num);
-	$('.modal-body').find('select').val(question_type);
-	$('.modal-body').find('textarea').val(question_prompt);
-	if (question_opts == "Radio button") {
-	    // Populate options with questions from table.
-
-	    // First of all, make sure that we add the right number of
-	    // radio button options and increment the `im` variable below.
-	    // (This function should appear below the functions and vars
-	    // below.) Then add the option in the each loop.
-	    question_opts.each(function(index, element) {
-		// etc.
-	    });
-	}
-    });
-
-
     function checkRadioModal(event) {
 	if ($('#edit-q-modal #_question_type').val() == 'Radio button') {
 	    $('#edit-q-modal #radio-button-group').show();
@@ -128,6 +102,46 @@ $(document).ready(function(event){
 	    thisFormGroup.find('label').text("Radio button option " + replacement);
 	}
 	return false;
+    });
+
+    $('.btn-edit-q').click(function(e) {
+	var question_num    = $(this).closest('tr').index() + 1;
+	var question_type   = $(this).closest('tr').find('td:eq(0)').text();
+	var question_prompt = $(this).closest('tr').find('td:eq(1)').text();
+	var question_opts = [];
+	$(this).closest('tr').find('td:eq(2) p').each(function(index, element) {
+	    question_opts.push($(element).text().substring(3));
+	});
+
+	$('.modal-body').find('#_question_num').val(question_num);
+	$('.modal-body').find('select').val(question_type);
+	$('.modal-body').find('textarea').val(question_prompt);
+	// If it already is; not if it gets changed to a radio button q.
+	if (question_type == "Radio button") {
+	    // Populate options with questions from table.
+
+	    // First of all, make sure that we add the right number of
+	    // radio button options and increment the `im` variable below.
+	    // (This function should appear below the functions and vars
+	    // below.) Then add the option in the each loop.
+	    // We should add
+
+	    // Every time the modal closes, we should remove all but the
+	    // first option. Every time it opens, we check if the
+	    // question_opts has entries, and if it does, we add each to
+	    // the form.
+	    console.log(im);
+	    console.log(question_opts);
+	    $('.modal-body').find('input').val(question_opts[0]);
+	    $.each(question_opts, function(index, element) {
+		// We already added the first option just above.
+		if (index > 0) {
+		    im++;
+	$('<div class="form-group"><label class="control-label col-sm-4" for="radio_button_options[' + im + ']">Radio button option ' + im + '</label><div class="col-md-6"><input class="form-control" id="radio_button_options[' + im + ']" name="radio_button_options[' + im + ']" type="text"></div><a href="#" class="col-sm-1 remove-radio-input" id="remove-radio-input[' + im +']">Remove</a></div>').appendTo(rbmDiv);
+		    $('.modal-body').find('input').last().val(question_opts[index]);
+		}
+	    });
+	}
     });
 
     /****************************************************************/
