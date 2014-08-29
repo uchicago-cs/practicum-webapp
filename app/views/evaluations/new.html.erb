@@ -3,7 +3,7 @@
 <% if @template.survey.present? %>
   <%= bootstrap_form_tag(url: { action: 'create' }) do |f| %>
     <%= render 'shared/error_messages', object: @evaluation %>
-    <table class="table table-bordered">
+    <table class="table table-bordered evaluation-form">
       <tbody>
 	<% @template.survey.each do |number, question| %>
 	  <tr>
@@ -26,7 +26,8 @@
 		label: "", inline: true,
 		checked: params[:survey] ? (params[:survey]["#{question['question_prompt']}"] == "Yes" ? true : false) : nil %>
 	      <% elsif question["question_type"] == "Radio button" %>
-		<%= f.form_group question["question_prompt"] do %>
+		<%= f.form_group question["question_prompt"],
+		  class: 'eval-radio-btn' do %>
 		  <%# We use a hidden field so a (blank) response gets %>
 		  <%# passed to the controller if no option is selected. %>
 		  <%= f.
@@ -38,20 +39,20 @@
 		  <% end %>
 		<% end %>
 	      <% else %>
+		<%# Also, make it Parsley-required if it is required. %>
 		<%= f.send(EvaluationTemplate.
 			   question_symbols(question["question_type"]),
 			   "survey[#{question['question_prompt']}]",
 			   hide_label: true,
 			   value: params[:survey] ? params[:survey]["#{question['question_prompt']}"] : nil ) %>
 	      <% end %>
-	      <%# We might just want to use a regular form to get around %>
-	      <%# these weird labels. %>
 	    </td>
 	  </tr>
 	<% end %>
       </tbody>
     </table>
-    <%= f.submit "Submit evaluation", class: "btn btn-primary" %>
+    <%= f.submit "Submit evaluation", class: "btn btn-primary",
+    data: { confirm: "Are you sure?" } %>
   <% end %>
 <% else %>
   There is no evaluation template. One must be created before you can make an

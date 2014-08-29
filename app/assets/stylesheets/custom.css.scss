@@ -71,7 +71,6 @@ footer {
     height: $footerHeight;
     background-color: #565656;
     margin-top: -$footerHeight;
-    /* Rename $light-maroon to $light-maroon */
     border-top: 2px solid $light-maroon;
 }
 
@@ -133,7 +132,7 @@ table {
   font-weight: normal;
 }
 
-.project-form, .submission-form {
+.project-form, .submission-form, .evaluation-form {
   th {
     width: 300px;
   }
@@ -148,7 +147,9 @@ table {
     resize: none;
     margin: 0;
   }
+}
 
+.project-form, .submission-form {
   input {
     min-width: 603px;
     margin: 0;
@@ -199,6 +200,7 @@ label {
 
 .navbar-text {
     color: #FFFFFF !important;
+    margin-top: 16px;
 }
 
 .navbar-inverse {
@@ -214,8 +216,16 @@ label {
     margin-bottom: 0px;
 }
 
+.navbar-collapse {
+    background-color: #800000;
+}
+
 .navbar-brand {
     font-size: 32px;
+}
+
+.nav, .dropdown-menu {
+    font-size: 12px;
 }
 
 small p {
@@ -249,4 +259,8 @@ footer a:hover {
     color: #B94A48;
     font-size: 12px;
     margin-top: 6px;
+}
+
+.eval-radio-btn {
+    margin-left: 22px;
 }
