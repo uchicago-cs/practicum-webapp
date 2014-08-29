@@ -119,19 +119,6 @@ $(document).ready(function(event){
 	// If it already is; not if it gets changed to a radio button q.
 	if (question_type == "Radio button") {
 	    // Populate options with questions from table.
-
-	    // First of all, make sure that we add the right number of
-	    // radio button options and increment the `im` variable below.
-	    // (This function should appear below the functions and vars
-	    // below.) Then add the option in the each loop.
-	    // We should add
-
-	    // Every time the modal closes, we should remove all but the
-	    // first option. Every time it opens, we check if the
-	    // question_opts has entries, and if it does, we add each to
-	    // the form.
-	    console.log(im);
-	    console.log(question_opts);
 	    $('.modal-body').find('input').val(question_opts[0]);
 	    $.each(question_opts, function(index, element) {
 		// We already added the first option just above.
@@ -142,6 +129,19 @@ $(document).ready(function(event){
 		}
 	    });
 	}
+    });
+
+    // Remove all but the first option.
+    $('#edit-q-modal').on('hidden.bs.modal', function(e) {
+	var options = $(this).find('#radio-option-group input');
+	$(options[0]).val("");
+	// Remove the first element from the array, since we want to keep it
+	// on the page.
+	options = options.slice(1);
+	$.each(options, function(index, element) {
+	    $(options[index]).closest('.form-group').remove();
+	    im--;
+	});
     });
 
     /****************************************************************/
