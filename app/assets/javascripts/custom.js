@@ -119,7 +119,7 @@ $(document).ready(function(event){
 	// If it already is; not if it gets changed to a radio button q.
 	if (question_type == "Radio button") {
 	    // Populate options with questions from table.
-	    $('.modal-body').find('input').val(question_opts[0]);
+	    $('.modal-body #radio-option-group input').val(question_opts[0]);
 	    $.each(question_opts, function(index, element) {
 		// We already added the first option just above.
 		if (index > 0) {

@@ -42,15 +42,14 @@ class EvaluationTemplate < ActiveRecord::Base
   end
 
   def edit_question(question_params)
-    num = question_params[:question_num].to_i
-    type = question_params[:question_type]
+    num    = question_params[:question_num].to_i
+    type   = question_params[:question_type]
     prompt = question_params[:question_prompt]
 
-    survey[num]["question_type"] = type
+    survey[num]["question_type"]   = type
     survey[num]["question_prompt"] = prompt
-
     if type == "Radio button"
-      # Grab and set the options here; just completely overwrite them.
+      survey[num]["question_options"] = question_params[:radio_button_options]
     end
   end
 
@@ -65,8 +64,7 @@ class EvaluationTemplate < ActiveRecord::Base
   def no_repeated_questions
     message = "Each question must be unique."
     prompts = survey.values.collect { |q| q["question_prompt"] }
-    errors.add(:base, message) if
-      prompts.length != prompts.uniq.length
+    errors.add(:base, message) if prompts.length != prompts.uniq.length
   end
 
 end
