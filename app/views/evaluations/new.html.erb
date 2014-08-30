@@ -1,4 +1,4 @@
-<h1>New evaluation for <%= true %> <%# @student.email %></h1>
+<h1>New evaluation for <%= @student.email %></h1>
 
 <% if @template.survey.present? %>
   <%= bootstrap_form_tag(url: { action: 'create' }) do |f| %>
