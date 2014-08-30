@@ -18,7 +18,7 @@ $(document).ready(function(event){
 	$("#content-body").css("min-height", content_body_height + "px");
     };
     resizeContentBody();
-    $(window).resize(function() {
+    $(window).resize(function(event) {
 	resizeContentBody();
     });
 

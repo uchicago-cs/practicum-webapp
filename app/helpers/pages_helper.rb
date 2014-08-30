@@ -18,7 +18,7 @@ module PagesHelper
     if submission.status_approved? and submission.status_published?
       status_classes = { "accepted" => "success", "rejected" => "danger",
                        "pending" => "" }
-      status_classes[status]
+      status_classes[submission.status]
     end
   end
 

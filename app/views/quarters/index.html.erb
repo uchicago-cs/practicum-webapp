@@ -1,11 +1,31 @@
 <h1>List of Quarters</h1>
 
-<% @quarters.each do |quarter| %>
-  <div>
-    <%= render 'quarter_short', quarter: quarter %>
-  </div>
-<% end %>
-
 <% if can? :manage, Quarter %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+	<th>Quarter</th>
+	<th>Edit</th>
+	<th>Delete</th>
+	<th>Notes</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @quarters.each do |quarter| %>
+	<%= render 'quarter_short', quarter: quarter %>
+      <% end %>
+    </tbody>
+  </table>
+
   Click <%= link_to "here", new_quarter_path %> to make a new quarter.
+<% else %>
+
+  <% @quarters.each do |quarter| %>
+    <p>
+      <%= link_to quarter.formatted_quarter, quarter %>
+      <%= "(current)" if quarter.current? %>
+    </p>
+  <% end %>
+
 <% end %>
