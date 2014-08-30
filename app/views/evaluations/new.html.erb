@@ -1,7 +1,9 @@
 <h1>New evaluation for <%= @student.email %></h1>
 
 <% if @template.survey.present? %>
+
   <%= bootstrap_form_tag(url: { action: 'create' }) do |f| %>
+
     <%= render 'shared/error_messages', object: @evaluation %>
     <table class="table table-bordered evaluation-form">
       <tbody>
@@ -13,7 +15,9 @@
     </table>
     <%= f.submit "Submit evaluation", class: "btn btn-primary",
     data: { confirm: "Are you sure?" } %>
+
   <% end %>
+
 <% else %>
   There is no evaluation template. One must be created before you can make an
   evaluation.

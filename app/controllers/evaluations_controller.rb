@@ -16,12 +16,7 @@ class EvaluationsController < ApplicationController
   end
 
   def update_template
-    delete = @template.delete_questions(params[:delete])
-    @template.reorganize_questions_after_deletion
-    unless delete
-      @template.change_mandatory(params[:mandatory])
-      @template.change_order(params[:ordering])
-    end
+    @template.update_survey(params)
 
     if @template.save
       flash[:success] = "Template updated."
@@ -45,19 +40,7 @@ class EvaluationsController < ApplicationController
   end
 
   def add_to_template
-    num = @template.survey ? @template.survey.length + 1 : 1
-    @template.survey = {} unless @template.survey
-
-    @template.survey[num] = {
-          "question_type"      => params[:question_type],
-          "question_prompt"    => params[:question_prompt],
-          "question_mandatory" => params[:question_mandatory]
-    }
-
-    if params[:question_type] == "Radio button"
-      @template.survey[num]["question_options"] =
-        params[:radio_button_options]
-    end
+    @template.add_question(params)
 
     if @template.save
       flash[:success] = "Question added to template."
@@ -78,12 +61,8 @@ class EvaluationsController < ApplicationController
   end
 
   def create
-    # Refactor?
     @evaluation = @submission.build_evaluation
-    @evaluation.assign_attributes(student_id: @submission.student_id,
-                                  project_id: @submission.project_id,
-                                  advisor_id: @submission.project_advisor_id)
-    @evaluation.set_survey(params[:survey])
+    @evaluation.set_attributes_on_create(params)
 
     if @evaluation.save
       flash[:success] = "Evaluation successfully submitted."
