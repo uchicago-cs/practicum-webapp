@@ -6,48 +6,8 @@
     <table class="table table-bordered evaluation-form">
       <tbody>
 	<% @template.survey.each do |number, question| %>
-	  <tr>
-	    <th>
-	      <%= f.label question["question_prompt"],
-	      class: "table-col-name", inline: true %>
-
-	      <% if question["question_mandatory"] == "1" %>
-		(required)
-              <% else %>
-		<span class="question-mandatory">
-		  (optional)
-		</span>
-              <% end %>
-
-	    </th>
-	    <td>
-	      <% if question["question_type"] == "Check box" %>
-		<%= f.check_box "survey[#{question['question_prompt']}]",
-		label: "", inline: true,
-		checked: params[:survey] ? (params[:survey]["#{question['question_prompt']}"] == "Yes" ? true : false) : nil %>
-	      <% elsif question["question_type"] == "Radio button" %>
-		<%= f.form_group question["question_prompt"],
-		  class: 'eval-radio-btn' do %>
-		  <%# We use a hidden field so a (blank) response gets %>
-		  <%# passed to the controller if no option is selected. %>
-		  <%= f.
-		  hidden_field "survey[#{question['question_prompt']}]" %>
-		  <% question["question_options"].each do |num, opt| %>
-		    <%= f.
-		    radio_button "survey[#{question['question_prompt']}]", opt,
-		    label: opt, checked: params[:survey] ? (params[:survey]["#{question['question_prompt']}"] == opt) : nil %>
-		  <% end %>
-		<% end %>
-	      <% else %>
-		<%# Also, make it Parsley-required if it is required. %>
-		<%= f.send(EvaluationTemplate.
-			   question_symbols(question["question_type"]),
-			   "survey[#{question['question_prompt']}]",
-			   hide_label: true,
-			   value: params[:survey] ? params[:survey]["#{question['question_prompt']}"] : nil ) %>
-	      <% end %>
-	    </td>
-	  </tr>
+	  <%= render 'new_eval_form',
+	    { number: number, question: question, f: f } %>
 	<% end %>
       </tbody>
     </table>

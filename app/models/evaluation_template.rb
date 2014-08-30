@@ -6,14 +6,6 @@ class EvaluationTemplate < ActiveRecord::Base
 
   serialize :survey
 
-  # This should be in a helper or decorator.
-  def EvaluationTemplate.question_symbols(q_type)
-    question_symbols =
-      { "Text field" => :text_field, "Text area" => :text_area,
-        "Check box" => :check_box, "Radio button" => :radio_button }
-    question_symbols[q_type]
-  end
-
   def delete_questions(delete_params)
     delete = false
     delete_params.each do |question_num, should_be_removed|
@@ -49,8 +41,6 @@ class EvaluationTemplate < ActiveRecord::Base
   end
 
   def change_mandatory(mandatory_params)
-    # If possible, store `required` as a bool... (Is this possible, since
-    # survey is a text object?)
     mandatory_params.each do |number, required|
       survey[number.to_i]["question_mandatory"] = required
     end

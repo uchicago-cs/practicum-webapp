@@ -1,0 +1,10 @@
+<tr>
+  <th>
+    <%= f.label question["question_prompt"],
+    class: "table-col-name", inline: true %>
+    <%= question_necessity(question) %>
+  </th>
+  <td>
+    <%= response_input(question, f) %>
+  </td>
+</tr>
