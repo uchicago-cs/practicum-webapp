@@ -3,13 +3,19 @@
 <% if @users.count > 0 %>
   <table class="table table-bordered">
     <tr>
+      <th>CNetID</th>
       <th>E-mail address</th>
+      <th>First name</th>
+      <th>Last name</th>
       <th>Roles</th>
     </tr>
     <tbody>
       <% @users.each do |user| %>
 	<tr>
+	  <td></td>
 	  <td><%= link_to user.email, user %></td>
+	  <td></td>
+	  <td></td>
 	  <td><%= user.formatted_roles %></td>
 	</tr>
       <% end %>

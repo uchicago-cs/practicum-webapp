@@ -1,16 +1,25 @@
-
 Click <%= link_to "here", edit_evaluation_template_path %> to edit the
 evaluation template.
 
 <h1>View all evaluations</h1>
 
 <% if @evaluations.any? %>
-  <% @evaluations.each do |evaluation| %>
-    <div>
-      <%= render 'evaluation_short', evaluation: evaluation %>
-    </div>
-    <br>
-  <% end %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+	<th>Advisor</th>
+	<th>Student</th>
+	<th>Project</th>
+	<th>Notes</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @evaluations.each do |evaluation| %>
+	<%= render 'evaluation_short', evaluation: evaluation %>
+      <% end %>
+    </tbody>
+  </table>
 <% else %>
   There are no evaluations for this quarter.
 <% end %>

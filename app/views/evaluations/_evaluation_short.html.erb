@@ -1,4 +1,6 @@
-<%= evaluation.advisor_email %> submitted an evaluation for
-<%= evaluation.student_email %> on project
-<%= evaluation.project_name %>.
-Click <%= link_to "here", evaluation %> to read it.
+<tr>
+  <td><%= evaluation.advisor_email %></td>
+  <td><%= evaluation.student_email %></td>
+  <td><%= evaluation.project_name %></td>
+  <td>Click <%= link_to "here", evaluation %> to read this evaluation.</td>
+</tr>
