@@ -2,123 +2,10 @@
 <h1>Evaluation template</h1>
 <% if db_template.id and db_template.survey.length > 0 %>
 
-  <div class="modal fade" id="edit-q-modal" tabindex="-1" role="dialog"
-       aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-	<div class="modal-header">
-	  <button type="button" class="close" data-dismiss="modal">
-	    <span aria-hidden="true">&times;</span>
-	    <span class="sr-only">Close</span>
-	  </button>
-	  <h4 class="modal-title" id="edit-q-modal-label">Edit question</h4>
-	</div>
-	<%= bootstrap_form_tag(layout: :horizontal,
-			       control_col: "col-md-6",
-			       label_col: "col-sm-4",
-			       url: { action: 'update_template_question' },
-			       method: :patch) do |f| %>
-	  <div class="modal-body">
-	    <%= f.hidden_field :question_num %>
-	    <%= f.select(:question_type,
-			 options_for_select(['Text field', 'Text area',
-					     'Check box', 'Radio button'],
-					    'Text field')) %>
-	    <%= f.text_area(:question_prompt,
-			    'data-parsley-required' => 'true') %>
+  <%= render 'modal' %>
 
-	    <div id="radio-button-group">
-	      <div id="radio-option-group">
-		<%= f.text_field 'radio_button_options[1]',
-		label: "Radio button option 1",
-		'data-parsley-required' => 'true' %>
-	      </div>
-	      <%= f.form_group do %>
-		<%= link_to "Add another option", '#',
-		class: "btn btn-default", id: "add-option-button" %>
-	      <% end %>
-	    </div>
-	  </div>
+  <%= render 'template_table' %>
 
-	  <div class="modal-footer">
-	    <%= f.form_group do %>
-	      <%= f.submit "Update question", class: "btn btn-primary" %>
-	    <% end %>
-	  </div>
-	<% end %>
-      </div>
-    </div>
-  </div>
-
-  <%= bootstrap_form_tag(url: { action: 'update_template' }) do |f| %>
-
-      <table class="table table-bordered edit-eval">
-	<colgroup>
-	  <col style="width: 10%;">
-	  <col style="width: 35%;">
-	  <col style="width: 35%;">
-	  <col style="width: 3%;">
-	  <col style="width: 7%;">
-	  <col style="width: 3%;">
-	  <col style="width: 7%;">
-	</colgroup>
-	<thead>
-	  <tr>
-	    <th>Type</th>
-	    <th>Question</th>
-	    <th>Options</th>
-	    <th>Mandatory?</th>
-	    <th>Position</th>
-	    <th>Remove?</th>
-	    <th>Edit</th>
-	  </tr>
-	</thead>
-	<tbody>
-	  <% db_template.survey.each do |number, question| %>
-	    <tr>
-	      <td><%= question["question_type"] %></td>
-	      <td><%= question["question_prompt"] %></td>
-	      <td>
-		<% if question["question_type"] == "Radio button" %>
-		  <% question["question_options"].each do |index, opt| %>
-		    <p><%= index %>. <%= opt %></p>
-                  <% end %>
-                <% end %>
-	      </td>
-	      <td>
-		<%= f.check_box "mandatory[#{number}]",
-		checked:
-		(db_template.survey[number]["question_mandatory"] == "1") ? true : false,
-		label: "", inline: true %>
-	      </td>
-	      <td>
-		<div class="col-md-15">
-		  <%= f.select "ordering[#{number}]",
-		  db_template.survey.keys.sort,
-		  selected: number, hide_label: true, inline: true %>
-		</div>
-	      </td>
-	      <td>
-		<%= f.check_box "delete[#{number}]",
-		label: "", inline: true %>
-	      </td>
-	      <td>
-		<button type="button"
-			class="btn btn-default btn-sm btn-edit-q"
-			data-toggle="modal" data-target="#edit-q-modal">
-		  Edit
-		</button>
-	      </td>
-	    </tr>
-          <% end %>
-	</tbody>
-      </table>
-
-    <%= f.form_group do %>
-      <%= f.submit "Update template", class: "btn btn-primary" %>
-    <% end %>
-
-  <% end %>
 <% else %>
   There is no evaluation template. To create one, you may add questions below.
 <% end %>
@@ -128,36 +15,5 @@
 <h2>New question</h2>
 
 <div id="new-eval-question">
-  <%= bootstrap_form_tag(layout: :horizontal, control_col: "col-md-3",
-			 url: { action: 'add_to_template'}) do |f| %>
-
-    <%= f.select(:question_type,
-		 options_for_select(['Text field', 'Text area',
-				     'Check box', 'Radio button'],
-				    'Text field')) %>
-    <%= f.text_area(:question_prompt, 'data-parsley-required' => 'true') %>
-
-    <div id="radio-button-group">
-      <div id="radio-option-group">
-	<%= f.text_field 'radio_button_options[1]',
-			 label: "Radio button option 1",
-			 'data-parsley-required' => 'true' %>
-      </div>
-      <%= f.form_group do %>
-	<%= link_to "Add another option", '#', class: "btn btn-default",
-	  id: "add-option-button" %>
-      <% end %>
-    </div>
-
-    <%# We put the check box down here so it doesn't apply an offset to the %>
-    <%# next item's field. %>
-    <%= f.form_group do %>
-      <%= f.check_box :question_mandatory, label: "Mandatory?",
-      checked: true %>
-    <% end %>
-
-    <%= f.form_group do %>
-      <%= f.submit "Create question", class: "btn btn-primary" %>
-    <% end %>
-  <% end %>
+  <%= render 'new_question_form' %>
 </div>

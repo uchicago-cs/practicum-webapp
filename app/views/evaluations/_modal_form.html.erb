@@ -1,0 +1,17 @@
+<%= bootstrap_form_tag(layout: :horizontal,
+		       control_col: "col-md-6",
+		       label_col: "col-sm-4",
+		       url: { action: 'update_template_question' },
+		       method: :patch) do |f| %>
+  <div class="modal-body">
+    <%= f.hidden_field :question_num %>
+
+    <%= render 'question_form_inner', f: f %>
+  </div>
+
+  <div class="modal-footer">
+    <%= f.form_group do %>
+      <%= f.submit "Update question", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+<% end %>

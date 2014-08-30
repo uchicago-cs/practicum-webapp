@@ -1,0 +1,60 @@
+<%= bootstrap_form_tag(url: { action: 'update_template' }) do |f| %>
+
+  <table class="table table-bordered edit-eval">
+    <colgroup>
+      <col style="width: 10%;">
+      <col style="width: 35%;">
+      <col style="width: 35%;">
+      <col style="width: 3%;">
+      <col style="width: 7%;">
+      <col style="width: 3%;">
+      <col style="width: 7%;">
+    </colgroup>
+    <thead>
+      <tr>
+	<th>Type</th>
+	<th>Question</th>
+	<th>Options</th>
+	<th>Mandatory?</th>
+	<th>Position</th>
+	<th>Remove?</th>
+	<th>Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% db_template.survey.each do |number, question| %>
+	<tr>
+	  <td><%= question["question_type"] %></td>
+	  <td><%= question["question_prompt"] %></td>
+	  <td><%= question_options(question) %></td>
+	  <td>
+	    <%= f.check_box "mandatory[#{number}]",
+	    checked: box_checked(number), label: "", inline: true %>
+	  </td>
+	  <td>
+	    <div class="col-md-15">
+	      <%= f.select "ordering[#{number}]", sorted_option_indices,
+	      selected: number, hide_label: true, inline: true %>
+	    </div>
+	  </td>
+	  <td>
+	    <%= f.check_box "delete[#{number}]",
+	    label: "", inline: true %>
+	  </td>
+	  <td>
+	    <button type="button"
+		    class="btn btn-default btn-sm btn-edit-q"
+		    data-toggle="modal" data-target="#edit-q-modal">
+	      Edit
+	    </button>
+	  </td>
+	</tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= f.form_group do %>
+    <%= f.submit "Update template", class: "btn btn-primary" %>
+  <% end %>
+
+<% end %>

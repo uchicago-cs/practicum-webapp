@@ -60,4 +60,20 @@ module EvaluationsHelper
 
   end
 
+  def question_options(question)
+    if question["question_type"] == "Radio button"
+      question["question_options"].collect do |num, opt|
+        content_tag(:p, "#{num}. #{opt}")
+      end.join.html_safe
+    end
+  end
+
+  def box_checked(number)
+    (db_template.survey[number]["question_mandatory"] == "1") ? true : false
+  end
+
+  def sorted_option_indices
+    db_template.survey.keys.sort
+  end
+
 end

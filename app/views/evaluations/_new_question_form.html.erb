@@ -1,0 +1,17 @@
+<%= bootstrap_form_tag(layout: :horizontal, control_col: "col-md-3",
+		       url: { action: 'add_to_template'}) do |f| %>
+
+  <%= render 'question_form_inner', f: f %>
+
+  <%# We put the check box down here so it doesn't apply an offset to the %>
+  <%# next item's field. %>
+  <%= f.form_group do %>
+    <%= f.check_box :question_mandatory, label: "Mandatory?",
+    checked: true %>
+  <% end %>
+
+  <%= f.form_group do %>
+    <%= f.submit "Create question", class: "btn btn-primary" %>
+  <% end %>
+
+<% end %>
