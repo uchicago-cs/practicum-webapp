@@ -10,11 +10,12 @@ $(document).ready(function(event){
 
     /****************************************************************/
 
-    /* Resize content-body div to fill the vertical space between the header
-     * and footer
-     */
+    // Resize content-body div to fill the vertical space between the header
+    // and footer.
+
     var resizeContentBody = function(event) {
-	var content_body_height = $(window).height() - ($("header").outerHeight() + $("footer").outerHeight());
+	var content_body_height = $(window).height() -
+	    ($("header").outerHeight() + $("footer").outerHeight());
 	$("#content-body").css("min-height", content_body_height + "px");
     };
     resizeContentBody();
@@ -46,18 +47,28 @@ $(document).ready(function(event){
 
     $('#new-eval-question').on('click', 'a.remove-radio-input', function(e) {
 	e.preventDefault();
-	var firstIndex = parseInt($(this).attr('id').match(/\[(.*)\]/)[1], 10) + 1;
+	var firstIndex = parseInt($(this).attr('id').
+				  match(/\[(.*)\]/)[1], 10) + 1;
 	$(this).closest('div').remove();
 	i--;
-	var lastIndex = parseInt($('#new-eval-question #radio-button-group input').last().attr('id').match(/\[(.*)\]/)[1], 10);
+	var lastIndex = parseInt(
+	    $('#new-eval-question #radio-button-group input').last().
+		attr('id').match(/\[(.*)\]/)[1], 10);
 	for (var j = firstIndex; j <= lastIndex; j++) {
-	    var thisFormGroup = $('#new-eval-question div:contains("Radio button option ' + j + '")').closest('.form-group');
+	    var thisFormGroup =
+		$('#new-eval-question div:contains("Radio button option '
+		  + j + '")').closest('.form-group');
 	    var replacement = (j-1);
-	    thisFormGroup.find('label').prop('for', 'radio_button_options[' + replacement + ']');
-	    thisFormGroup.find('input').prop('id', 'radio_button_options[' + replacement + ']');
-	    thisFormGroup.find('input').prop('name', 'radio_button_options[' + replacement + ']');
-	    thisFormGroup.find('a').prop('id', 'remove-radio-input[' + replacement + ']');
-	    thisFormGroup.find('label').text("Radio button option " + replacement);
+	    thisFormGroup.find('label').
+		prop('for', 'radio_button_options[' + replacement + ']');
+	    thisFormGroup.find('input').
+		prop('id', 'radio_button_options[' + replacement + ']');
+	    thisFormGroup.find('input').
+		prop('name', 'radio_button_options[' + replacement + ']');
+	    thisFormGroup.find('a').
+		prop('id', 'remove-radio-input[' + replacement + ']');
+	    thisFormGroup.find('label').
+		text("Radio button option " + replacement);
 	}
 	return false;
     });
@@ -88,18 +99,28 @@ $(document).ready(function(event){
 
     $('#edit-q-modal').on('click', 'a.remove-radio-input', function(e) {
 	e.preventDefault();
-	var firstIndex = parseInt($(this).attr('id').match(/\[(.*)\]/)[1], 10) + 1;
+	var firstIndex = parseInt($(this).attr('id').
+				  match(/\[(.*)\]/)[1], 10) + 1;
 	$(this).closest('div').remove();
 	im--;
-	var lastIndex = parseInt($('#edit-q-modal #radio-button-group input').last().attr('id').match(/\[(.*)\]/)[1], 10);
+	var lastIndex = parseInt(
+	    $('#edit-q-modal #radio-button-group input').last().
+		attr('id').match(/\[(.*)\]/)[1], 10);
 	for (var j = firstIndex; j <= lastIndex; j++) {
-	    var thisFormGroup = $('#edit-q-modal div:contains("Radio button option ' + j + '")').closest('.form-group');
+	    var thisFormGroup =
+		$('#edit-q-modal div:contains("Radio button option ' +
+		  j + '")').closest('.form-group');
 	    var replacement = (j-1);
-	    thisFormGroup.find('label').prop('for', 'radio_button_options[' + replacement + ']');
-	    thisFormGroup.find('input').prop('id', 'radio_button_options[' + replacement + ']');
-	    thisFormGroup.find('input').prop('name', 'radio_button_options[' + replacement + ']');
-	    thisFormGroup.find('a').prop('id', 'remove-radio-input[' + replacement + ']');
-	    thisFormGroup.find('label').text("Radio button option " + replacement);
+	    thisFormGroup.find('label').
+		prop('for', 'radio_button_options[' + replacement + ']');
+	    thisFormGroup.find('input').
+		prop('id', 'radio_button_options[' + replacement + ']');
+	    thisFormGroup.find('input').
+		prop('name', 'radio_button_options[' + replacement + ']');
+	    thisFormGroup.find('a').
+		prop('id', 'remove-radio-input[' + replacement + ']');
+	    thisFormGroup.find('label').
+		text("Radio button option " + replacement);
 	}
 	return false;
     });
@@ -109,7 +130,8 @@ $(document).ready(function(event){
 	var question_type   = $(this).closest('tr').find('td:eq(0)').text();
 	var question_prompt = $(this).closest('tr').find('td:eq(1)').text();
 	var question_opts = [];
-	$(this).closest('tr').find('td:eq(2) p').each(function(index, element) {
+	$(this).closest('tr').find('td:eq(2) p').
+	    each(function(index, element) {
 	    question_opts.push($(element).text().substring(3));
 	});
 
@@ -125,7 +147,8 @@ $(document).ready(function(event){
 		if (index > 0) {
 		    im++;
 	$('<div class="form-group"><label class="control-label col-sm-4" for="radio_button_options[' + im + ']">Radio button option ' + im + '</label><div class="col-md-6"><input class="form-control" id="radio_button_options[' + im + ']" name="radio_button_options[' + im + ']" type="text" data-parsley-required="true"></div><a href="#" class="col-sm-1 remove-radio-input" id="remove-radio-input[' + im +']">Remove</a></div>').appendTo(rbmDiv);
-		    $('.modal-body').find('input').last().val(question_opts[index]);
+		    $('.modal-body').find('input').last().
+			val(question_opts[index]);
 		}
 	    });
 	}
@@ -149,7 +172,8 @@ $(document).ready(function(event){
     // Client-side validation
 
     // Use Parsley to validate edit evaluation template forms.
-    window.ParsleyValidator.addMessage('en', 'required', 'This field is required.');
+    window.ParsleyValidator.addMessage('en', 'required',
+				       'This field is required.');
 
     $('#new-eval-question form').parsley({ excluded: ':hidden' });
     $('#edit-q-modal form').parsley({ excluded: ':hidden' });
@@ -170,7 +194,8 @@ $(document).ready(function(event){
     // 	var new_position = $("option:selected", dropdown).text();
     // 	var old_position = $(dropdown).attr("id").match(/\[(.*)\]/)[1];
     // 	// old_position corresponds to question_num above.
-    // 	$("select#\\_ordering\\[" + new_position + "\\]").val(position_changes[old_position]);
+    // 	$("select#\\_ordering\\[" + new_position + "\\]").
+    //      val(position_changes[old_position]);
     // 	position_changes[old_position] = new_position;
     // });
 

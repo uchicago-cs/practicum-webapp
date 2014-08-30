@@ -3,23 +3,22 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
-$grayMediumLight     : #eaeaea;
-$bgDefault           : #800000;
-$bgHighlight         : #9b1111;
-$colDefault          : #ecf0f1;
-$colHighlight        : #ffffff;
-$header-height       : 80px;
-$computedHeaderHeight: 50px;
-$footerHeight        : 100px;
-$navbar-border-height: 10px;
-$light-maroon        : #971E21;
+$gray-medium-light     : #EAEAEA;
+$bg-default            : #800000;
+$bg-highlight          : #9B1111;
+$col-default           : #ECF0F1;
+$col-highlight         : #FFFFFF;
+$header-height         : 80px;
+$computed-header-height: 50px;
+$footer-height         : 100px;
+$navbar-border-height  : 10px;
+$light-maroon          : #971E21;
 
 @mixin box_sizing {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
-
 
 html, body {
     height: 100%;
@@ -37,7 +36,6 @@ body {
 }
 
 header {
-    /* Ideally, we shouldn't have to specify the height. */
     height: $header-height;
     padding-bottom: $navbar-border-height;
 }
@@ -68,9 +66,9 @@ header {
 footer {
     bottom: 0;
     width: 100%;
-    height: $footerHeight;
+    height: $footer-height;
     background-color: #565656;
-    margin-top: -$footerHeight;
+    margin-top: -$footer-height;
     border-top: 2px solid $light-maroon;
 }
 
@@ -81,7 +79,7 @@ footer {
 
 #footer-protector {
     display: block;
-    padding-bottom: $footerHeight;
+    padding-bottom: $footer-height;
 }
 
 #logo {
@@ -98,62 +96,62 @@ footer {
 }
 
 .debug_dump {
-  clear: both;
-  float: left;
-  width: 100%;
-  margin-top: 45px;
-  @include box_sizing;
+    clear: both;
+    float: left;
+    width: 100%;
+    margin-top: 45px;
+    @include box_sizing;
 }
 
 .inline {
-  display: inline;
+    display: inline;
 }
 
 table {
-  width: 100%;
+    width: 100%;
 
-  th {
-    background-color: #ddd;
-    padding: 3px;
-  }
+    th {
+	background-color: #ddd;
+	padding: 3px;
+    }
 
-  tbody {
-    background-color: #eee;
-  }
+    tbody {
+	background-color: #eee;
+    }
 
 }
 
 .table-col-name {
-  font-weight: bold;
-  display: block;
+    font-weight: bold;
+    display: block;
 }
 
 .table-col-desc {
-  font-weight: normal;
+    font-weight: normal;
 }
 
 .project-form, .submission-form, .evaluation-form {
-  th {
-    width: 300px;
-  }
+    th {
+	width: 300px;
+    }
 
-  td {
-    width: 600px;
-  }
+    td {
+	width: 600px;
+    }
 
-  textarea {
-    min-width: 603px;
-    min-height: 250px;
-    resize: none;
-    margin: 0;
-  }
+    textarea {
+	min-width: 603px;
+	min-height: 250px;
+	resize: none;
+	margin: 0;
+    }
 }
 
 .project-form, .submission-form {
-  input {
-    min-width: 603px;
-    margin: 0;
-  }
+    input {
+	min-width: 603px;
+	margin: 0;
+    }
 }
 
 #new-eval-question, #edit-q-modal {
@@ -175,29 +173,6 @@ label {
     font-weight: 700 !important;
 }
 
-/* Navbar */
-
-/* Automatically generated at http://bootstrap3-menu.codedorigin.com/. */
-.navbar-inverse { background-color: #800000}
-.navbar-inverse .navbar-nav>.active>a:hover,.navbar-inverse .navbar-nav>li>a:hover { background-color: $light-maroon}
-.navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.open>a,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus { background-color: $light-maroon}
-.dropdown-menu { background-color: #FFFFFF}
-.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { background-color: $light-maroon}
-.navbar-inverse { background-image: none; }
-.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { background-image: none; }
-.navbar-inverse .navbar-brand { color: #FFFFFF}
-.navbar-inverse .navbar-brand:hover { color: #FFFFFF}
-.navbar-inverse .navbar-nav>li>a { color: #FFFFFF}
-.navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>li>a:focus { color: #FFFFFF}
-.navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus { color: #FFFFFF}
-.navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus { color: #FFFFFF}
-.dropdown-menu>li>a { color: #333333}
-.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { color: #FFFFFF}
-.navbar-inverse .navbar-nav>.dropdown>a .caret { border-top-color: #FFFFFF}
-.navbar-inverse .navbar-nav>.dropdown>a:hover .caret { border-top-color: #FFFFFF}
-.navbar-inverse .navbar-nav>.dropdown>a .caret { border-bottom-color: #FFFFFF}
-.navbar-inverse .navbar-nav>.dropdown>a:hover .caret { border-bottom-color: #FFFFFF}
-
 .navbar-text {
     color: #FFFFFF !important;
     margin-top: 16px;
@@ -217,7 +192,7 @@ label {
 }
 
 .navbar-collapse {
-    background-color: #800000;
+    background-color: $bg-default;
 }
 
 .navbar-brand {
@@ -264,3 +239,23 @@ footer a:hover {
 .eval-radio-btn {
     margin-left: 22px;
 }
+
+.navbar-inverse { background-color: $bg-default }
+.navbar-inverse .navbar-nav>.active>a:hover,.navbar-inverse .navbar-nav>li>a:hover { background-color: $light-maroon }
+.navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.open>a,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus { background-color: $light-maroon }
+.dropdown-menu { background-color: #FFFFFF }
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { background-color: $light-maroon }
+.navbar-inverse { background-image: none;  }
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { background-image: none;  }
+.navbar-inverse .navbar-brand { color: #FFFFFF }
+.navbar-inverse .navbar-brand:hover { color: #FFFFFF }
+.navbar-inverse .navbar-nav>li>a { color: #FFFFFF }
+.navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>li>a:focus { color: #FFFFFF }
+.navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus { color: #FFFFFF }
+.navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus { color: #FFFFFF }
+.dropdown-menu>li>a { color: #333333 }
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus { color: #FFFFFF }
+.navbar-inverse .navbar-nav>.dropdown>a .caret { border-top-color: #FFFFFF }
+.navbar-inverse .navbar-nav>.dropdown>a:hover .caret { border-top-color: #FFFFFF }
+.navbar-inverse .navbar-nav>.dropdown>a .caret { border-bottom-color: #FFFFFF }
+.navbar-inverse .navbar-nav>.dropdown>a:hover .caret { border-bottom-color: #FFFFFF }

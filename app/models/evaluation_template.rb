@@ -14,6 +14,19 @@ class EvaluationTemplate < ActiveRecord::Base
     question_symbols[q_type]
   end
 
+  def delete_questions(delete_params)
+    delete = false
+    delete_params.each do |question_num, should_be_removed|
+      if (should_be_removed == "1" ? true : false)
+        survey.reject! { |key| key == question_num.to_i }
+        delete = true
+        # We're not `break`ing here, because we want to delete each question
+        # that was marked as delete.
+      end
+    end
+    delete
+  end
+
   def reorganize_questions_after_deletion
     ordered_nums = survey.keys.sort
     ordered_nums.each_with_index do |num, index|
