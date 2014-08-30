@@ -6,8 +6,10 @@ class User < ActiveRecord::Base
   has_many :projects, foreign_key: "advisor_id", dependent: :destroy
   has_many :submissions, foreign_key: "student_id", dependent: :destroy
 
-  devise :database_authenticatable, :registerable,
-         :rememberable, :trackable, :validatable#, :ldap_authenticatable
+  devise :rememberable, :trackable, :validatable,
+         :ldap_authenticatable, authentication_keys: [:cnet]
+
+  before_validation :get_ldap_info
 
   def roles
     roles = []
@@ -19,6 +21,14 @@ class User < ActiveRecord::Base
     end
 
     roles
+  end
+
+  def display_name
+    if first_name.present? and last_name.present?
+      "#{first_name} #{last_name}"
+    else
+      cnet
+    end
   end
 
   def formatted_roles
@@ -73,7 +83,7 @@ class User < ActiveRecord::Base
   end
 
   def formatted_info
-    info = self.email
+    info = self.display_name
     info << ", #{self.department}"  if self.department.present?
     info << ", #{self.affiliation}" if self.affiliation.present?
     info
@@ -85,6 +95,18 @@ class User < ActiveRecord::Base
 
   def current_projects
     self.projects.where(quarter: Quarter.current_quarter)
+  end
+
+  def get_ldap_info
+    if Devise::LDAP::Adapter.get_ldap_param(self.cnet, 'uid')
+      self.email = Devise::LDAP::Adapter.get_ldap_param(self.cnet, "mail").first
+      self.first_name = \
+        (Devise::LDAP::Adapter.get_ldap_param(self.cnet,
+                                              "givenName") rescue nil).first
+      self.last_name = \
+        (Devise::LDAP::Adapter.get_ldap_param(self.cnet, "sn") rescue nil).first
+      self.student = true
+    end
   end
 
 end

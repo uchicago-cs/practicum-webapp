@@ -116,6 +116,7 @@ ActiveRecord::Schema.define(version: 20140829011730) do
     t.string   "last_name",              default: "",    null: false
     t.string   "affiliation",            default: "",    null: false
     t.string   "department",             default: "",    null: false
+    t.string   "cnet",                   default: "",    null: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

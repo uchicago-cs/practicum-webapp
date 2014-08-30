@@ -46,12 +46,9 @@ Practicum::Application.routes.draw do
 
   devise_for :users, skip: [:sessions, :registrations]
   devise_scope :user do
-    get "/signin" => "devise/sessions#new", as: :new_user_session
-    post "/signin" => "devise/sessions#create", as: :user_session
-    delete "/signout" => "devise/sessions#destroy", as: :destroy_user_session
-
-    get "/signup" => "devise/registrations#new", as: :new_user_registration
-    post "/signup" => "devise/registrations#create", as: :user_registration
+    get "/signin" => "sessions/sessions#new", as: :new_user_session
+    post "/signin" => "sessions/sessions#create", as: :user_session
+    delete "/signout" => "sessions/sessions#destroy", as: :destroy_user_session
 
     # Prevent users from deleting their own accounts.
     resource :registration,

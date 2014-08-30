@@ -29,9 +29,7 @@ gem 'pg', '~> 0.17.1'
 
 group :development, :test do
   gem 'rspec-rails', '3.0.0'
-  gem 'spork-rails', '4.0.0'
   gem 'guard-rspec', '4.2.10'
-  gem 'guard-spork', '1.5.1'
   gem 'childprocess', '0.5.0'
   gem 'webrat', '0.7.3'
   gem 'database_cleaner', github: 'DatabaseCleaner/database_cleaner', tag: 'v1.3.0'

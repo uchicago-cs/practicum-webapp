@@ -29,6 +29,7 @@ class Submission < ActiveRecord::Base
   delegate :name, to: :project, prefix: true, allow_nil: true
   delegate :quarter, to: :project, prefix: false, allow_nil: true
   delegate :email, to: :user, prefix: :student, allow_nil: true
+  delegate :display_name, to: :user, prefix: :student, allow_nil: true
   delegate :advisor_id, :advisor_email,
            to: :project, prefix: true, allow_nil: true
 

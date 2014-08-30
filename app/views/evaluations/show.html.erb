@@ -1,3 +1,6 @@
-<h1>Evaluation for <%= @evaluation.student_email %> on project <%= @evaluation.project_name %></h1>
+<h1>
+  Evaluation for <%= @evaluation.student_display_name %> on project
+  <%= @evaluation.project_name %>
+</h1>
 
 <%= render 'evaluation_show', object: @evaluation %>

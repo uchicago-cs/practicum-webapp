@@ -38,8 +38,8 @@ class Project < ActiveRecord::Base
   validate :advisor_cannot_edit_if_pending, on: :update
 
   delegate :email, :affiliation, :formatted_affiliation, :formatted_info,
-           :formatted_department, :department, to: :user, prefix: :advisor,
-           allow_nil: true
+           :formatted_department, :department, :display_name, to: :user,
+           prefix: :advisor, allow_nil: true
   delegate :formatted_quarter, to: :quarter, prefix: false, allow_nil: true
   # prefix true on this?
   delegate :current, to: :quarter, prefix: true, allow_nil: true

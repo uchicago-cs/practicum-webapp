@@ -29,32 +29,45 @@ def delete_table(table)
   # reset ID sequence.
 end
 
+def make_ldap_users
+
+end
+
 def make_users
 
   # Create admin users
   2.times do |n|
-    # name = "Admin Number #{n+1}"
+    cnet = "admin#{n}"
+    fn = "Admin"
+    ln = n.to_s
     email = "admin-#{n+1}@blah.org"
     password = "foobarfoo"
-    User.create!(email: email, password: password, student: false,
+    User.create!(cnet: cnet, first_name: fn, last_name: ln,
+                 email: email, password: password, student: false,
                  password_confirmation: password, admin: true)
   end
 
   # Create advisor users
   10.times do |n|
-    # name = "Advisor Number #{n+1}"
+    cnet = "advisor#{n}"
+    fn = "Advisor"
+    ln = n.to_s
     email = "advisor-#{n+1}@blah.org"
     password = "foobarfoo"
-    User.create!(email: email, password: password, student: false,
+    User.create!(cnet: cnet, first_name: fn, last_name: ln,
+                 email: email, password: password, student: false,
                  password_confirmation: password, advisor: true)
   end
 
   # Create student users
   200.times do |n|
-    # name = "Student Number #{n+1}"
+    cnet = "student#{n}"
+    fn = "Student"
+    ln = n.to_s
     email = "student-#{n+1}@blah.org"
     password = "foobarfoo"
-    User.create!(email: email, password: password,
+    User.create!(cnet: cnet, first_name: fn, last_name: ln,
+                 email: email, password: password,
                  password_confirmation: password, student: true)
   end
 

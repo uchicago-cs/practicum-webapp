@@ -1,5 +1,6 @@
+
 <tr class="<%= row_class(submission.status) %>">
-  <td><%= submission.student_email %></td>
+  <td><%= submission.student_display_name %></td>
   <td><%= link_to submission.project_name, submission.project %></td>
   <td><%= submission.created_at.to_date %></td>
   <td><%= formatted_status(submission) %></td>
