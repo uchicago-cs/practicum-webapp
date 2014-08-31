@@ -1,51 +1,10 @@
 <h1>Edit <%= @quarter.formatted_quarter %></h1>
 
-<%= bootstrap_form_for(@quarter, layout: :horizontal,
-		       control_col: "col-sm-2") do |f| %>
-  <%= render 'shared/error_messages', object: f.object %>
-
-  <%= f.select :season, %w(Spring Summer Autumn Winter),
-               selected: @quarter.season.capitalize  %>
-  <br />
-
-  <%= f.select :year, (Time.now.year - 5..Time.now.year + 5),
-               selected: @quarter.year %>
-  <br />
-
-    <%= f.text_field :start_date, class: "datetimepicker",
-    placeholder: l(@quarter.start_date, format: :twb), as: :string %>
-  <br />
-
-    <%= f.text_field :project_proposal_deadline,
-    placeholder: l(@quarter.project_proposal_deadline, format: :twb),
-      as: :string, class: "datetimepicker" %>
-  <br />
-
-    <%= f.text_field :student_submission_deadline,
-    placeholder: l(@quarter.student_submission_deadline, format: :twb),
-      as: :string, class: "datetimepicker" %>
-  <br />
-
-    <%= f.text_field :advisor_decision_deadline,
-    placeholder: l(@quarter.advisor_decision_deadline, format: :twb),
-      as: :string, class: "datetimepicker" %>
-  <br />
-
-  <%= f.text_field :admin_publish_deadline,
-  placeholder: l(@quarter.admin_publish_deadline, format: :twb),
-    as: :string, class: "datetimepicker" %>
-  <br />
-
-    <%= f.text_field :end_date, class: "datetimepicker",
-    placeholder: l(@quarter.end_date, format: :twb), as: :string %>
-  <br />
-
-  <%= f.form_group do %>
-    <%= f.check_box :current, label: "Current quarter?" %>
-
-    <br />
-
-    <%= f.submit "Update quarter", class: "btn btn-primary",
-      data: { confirm: "Are you sure?" } %>
-  <% end %>
-<% end %>
+<%= render 'new_edit_form', change: "update",
+  form_season: @quarter.season.capitalize,
+  form_year: @quarter.year, form_start_date: @quarter.start_date,
+  form_project_proposal_deadline: @quarter.project_proposal_deadline,
+  form_student_submission_deadline: @quarter.student_submission_deadline,
+  form_advisor_decision_deadline: @quarter.advisor_decision_deadline,
+  form_admin_publish_deadline: @quarter.admin_publish_deadline,
+  form_end_date: @quarter.end_date %>

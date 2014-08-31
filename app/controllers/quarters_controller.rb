@@ -86,7 +86,6 @@ class QuartersController < ApplicationController
   end
 
   def all_fields_present?
-    # Not DRY.
     unless (@quarter.start_date.present? and
             @quarter.project_proposal_deadline.present? and
             @quarter.student_submission_deadline.present? and

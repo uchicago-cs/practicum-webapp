@@ -1,0 +1,49 @@
+<%= bootstrap_form_for(@quarter, layout: :horizontal,
+		       control_col: "col-sm-2") do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.select :season, %w(Spring Summer Autumn Winter),
+               selected: form_season  %>
+  <br />
+
+  <%= f.select :year, (Time.now.year - 5..Time.now.year + 5),
+               selected: form_year %>
+  <br />
+
+    <%= f.text_field :start_date, class: "datetimepicker",
+    placeholder: l(form_start_date, format: :twb), as: :string %>
+  <br />
+
+    <%= f.text_field :project_proposal_deadline,
+    placeholder: l(form_project_proposal_deadline, format: :twb),
+      as: :string, class: "datetimepicker" %>
+  <br />
+
+    <%= f.text_field :student_submission_deadline,
+    placeholder: l(form_student_submission_deadline, format: :twb),
+      as: :string, class: "datetimepicker" %>
+  <br />
+
+    <%= f.text_field :advisor_decision_deadline,
+    placeholder: l(form_advisor_decision_deadline, format: :twb),
+      as: :string, class: "datetimepicker" %>
+  <br />
+
+  <%= f.text_field :admin_publish_deadline,
+  placeholder: l(form_admin_publish_deadline, format: :twb),
+    as: :string, class: "datetimepicker" %>
+  <br />
+
+    <%= f.text_field :end_date, class: "datetimepicker",
+    placeholder: l(form_end_date, format: :twb), as: :string %>
+  <br />
+
+  <%= f.form_group do %>
+    <%= f.check_box :current, label: "Current quarter?" %>
+
+    <br />
+
+    <%= f.submit "#{form_change.capitalize} quarter", class: "btn btn-primary",
+      data: { confirm: "Are you sure?" } %>
+  <% end %>
+<% end %>

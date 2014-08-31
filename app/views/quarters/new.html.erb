@@ -7,49 +7,10 @@
 
 <%= render 'date_notification' %>
 
-<!-- Not DRY. -->
-<%= bootstrap_form_for(@quarter, layout: :horizontal,
-		       control_col: "col-sm-2") do |f| %>
-  <%= render 'shared/error_messages', object: f.object %>
-
-  <%= f.select :season, %w(Spring Summer Autumn Winter),
-               selected: default_season %>
-  <br />
-
-  <%= f.select :year, (Time.now.year - 5..Time.now.year + 5),
-               selected: Time.now.year %>
-  <br />
-
-    <%= f.text_field :start_date, class: "datetimepicker",
-    placeholder: l(start_date, format: :twb), as: :string %>
-  <br />
-
-    <%= f.text_field :project_proposal_deadline, class: "datetimepicker",
-    placeholder: l(default_deadline("proposal"), format: :twb), as: :string %>
-  <br />
-
-    <%= f.text_field :student_submission_deadline, class: "datetimepicker",
-    placeholder: l(default_deadline("submission"), format: :twb),
-      as: :string %>
-  <br />
-
-    <%= f.text_field :advisor_decision_deadline, class: "datetimepicker",
-    placeholder: l(default_deadline("decision"), format: :twb), as: :string %>
-  <br />
-
-    <%= f.text_field :admin_publish_deadline, class: "datetimepicker",
-    placeholder: l(default_deadline("admin"), format: :twb), as: :string %>
-  <br />
-
-    <%= f.text_field :end_date, class: "datetimepicker",
-    placeholder: l(end_date, format: :twb), as: :string %>
-  <br />
-
-  <%= f.form_group do %>
-    <%= f.check_box :current, label: "Current quarter?" %>
-
-    <br />
-
-    <%= f.submit "Create quarter", class: "btn btn-primary" %>
-  <% end %>
-<% end %>
+<%= render 'new_edit_form', change: "create", form_season: default_season,
+  form_year: Time.now.year, form_start_date: start_date,
+  form_project_proposal_deadline: default_deadline("proposal"),
+  form_student_submission_deadline: default_deadline("submission"),
+  form_advisor_decision_deadline: default_deadline("decision"),
+  form_admin_publish_deadline: default_deadline("admin"),
+  form_end_date: end_date %>
