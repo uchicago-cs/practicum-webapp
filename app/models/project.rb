@@ -4,9 +4,12 @@ class Project < ActiveRecord::Base
   scope :accepted_projects, -> { where(status: "accepted") }
   scope :rejected_projects, -> { where(status: "rejected") }
   scope :pending_projects,  -> { where(status: "pending") }
+  # This name is somewhat confusing. Change it to `current_unpublished`?
   scope :current_pending_projects,
     -> { where(status_published: false,
                quarter: Quarter.current_quarter) }
+  scope :unpublished_nonpending_projects,
+    -> { current_pending_projects.where.not(status: "pending") }
   scope :current_accepted_projects,
     -> { where(status: "accepted").
     joins(:quarter).where(quarters: { current: true }) }
@@ -38,7 +41,7 @@ class Project < ActiveRecord::Base
   validate :advisor_cannot_edit_if_pending, on: :update
 
   delegate :email, :affiliation, :formatted_affiliation, :formatted_info,
-           :formatted_department, :department, :display_name, to: :user,
+           :formatted_department, :department, :display_name, to: :advisor,
            prefix: :advisor, allow_nil: true
   delegate :formatted_quarter, to: :quarter, prefix: false, allow_nil: true
   delegate :current, to: :quarter, prefix: true, allow_nil: true
@@ -109,8 +112,8 @@ class Project < ActiveRecord::Base
   end
 
   def creator_role
-    errors.add(:user, "must be an advisor or admin") if
-      ( user.roles == ["student"] or user.roles == [] )
+    errors.add(:advisor, "must be an advisor or admin") if
+      ( advisor.roles == ["student"] or advisor.roles == [] )
   end
 
   # Do we also need to check that this is a current project?

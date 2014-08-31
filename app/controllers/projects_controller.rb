@@ -62,13 +62,17 @@ class ProjectsController < ApplicationController
   end
 
   def publish_all_pending
-    projects = Project.current_pending_projects.where.not(status: "pending")
 
-    projects.each do |project|
-      project.status_published = true
+    Project.unpublished_nonpending_projects.each do |project|
+      # `@project` isn't defined here, so we're assigning this_user to each
+      # project. For this reason, our `this_user` code could be better.
+      project.this_user = current_user
+      project.assign_attributes(status_published: true)
       if project.invalid?
         flash.now[:error] = "Unable to publish all flagged project statuses."
         render 'pending' and return
+      else
+        project.save
       end
     end
 

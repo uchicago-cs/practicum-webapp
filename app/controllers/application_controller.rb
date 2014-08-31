@@ -45,7 +45,8 @@ class ApplicationController < ActionController::Base
 
   # Why is this in both the controller and the helper?
   def before_deadline?(deadline)
-    message = "The #{deadline} deadline for this quarter has passed."
+    humanized_deadline = deadline.humanize.downcase
+    message = "The #{humanized_deadline} deadline for this quarter has passed."
     redirect_to root_url, flash: { error: message } unless
       DateTime.now <= Quarter.current_quarter.deadline(deadline)
   end

@@ -1,7 +1,8 @@
 <h1><%= Quarter.formatted_current_quarter%> Projects</h1>
 
 <div class="alert alert-info">
-  <strong>Application deadline</strong>: <%= student_submission_deadline %>
+  <strong>Application deadline</strong>:
+  <%= formatted_deadline("student_submission") %>
 </div>
 
 <% if @projects.present? %>

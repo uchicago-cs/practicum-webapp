@@ -2,7 +2,8 @@
 
 <% if can? :read_submissions_of, @project %>
   <div class="alert alert-info">
-    <strong>Decision deadline</strong>: <%= advisor_decision_deadline %>
+    <strong>Decision deadline</strong>:
+    <%= formatted_deadline("advisor_decision") %>
   </div>
 
   <table class="table table-bordered">
