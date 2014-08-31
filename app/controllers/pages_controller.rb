@@ -1,14 +1,15 @@
 class PagesController < ApplicationController
 
-  # skip_before_action :authenticate_user!, except: :submissions
   before_action :authenticate_user!, only: [:submissions,
                                             :request_advisor_access]
   before_action :is_admin?, only: :submissions
   before_action :get_current_submissions, only: [:submissions,
                                                  :publish_all_statuses,
-                                                 :approve_all_statuses]
+                                                 :approve_all_statuses,
+                                                 :change_all_statuses]
   before_action :get_current_decided_submissions, only: [:publish_all_statuses,
-                                                         :approve_all_statuses]
+                                                         :approve_all_statuses,
+                                                         :change_all_statuses]
 
   def home
   end
@@ -25,32 +26,22 @@ class PagesController < ApplicationController
   def submissions
   end
 
-  def publish_all_statuses
-    @current_decided_submissions.each do |sub|
-      sub.status_published = true
-      if sub.valid?
-        sub.save
-      else
-        flash.now[:error] = "Unable to publish all statuses."
-        render 'submissions' and return
-      end
-    end
-    flash[:success] = "Successfully published all statuses."
-    redirect_to submissions_path
-  end
+  def change_all_statuses
+    past_tenses = { "publish" => "published", "approve" => "approved" }
 
-  def approve_all_statuses
-    # Not DRY.
     @current_decided_submissions.each do |sub|
-      sub.status_approved = true
+      sub.status_approved  = true if params['change'] == "approve"
+      sub.status_published = true if params['change'] == "publish"
       if sub.valid?
         sub.save
       else
-        flash.now[:error] = "Unable to approve all statuses."
+        flash.now[:error] = "Unable to #{params['change']} all statuses."
         render 'submissions' and return
       end
     end
-    flash[:success] = "Successfully approved all statuses."
+
+    flash[:success] =
+      "Successfully #{past_tenses[params['change']]} all statuses."
     redirect_to submissions_path
   end
 

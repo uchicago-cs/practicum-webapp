@@ -2,10 +2,10 @@ Practicum::Application.routes.draw do
 
   root 'pages#home'
 
-  match "/applications/publish_all_statuses", to: "pages#publish_all_statuses",
-        via: "patch", as: "publish_all_statuses"
-  match "/applications/approve_all_statuses", to: "pages#approve_all_statuses",
-        via: "patch", as: "approve_all_statuses"
+  match "/applications/approve_all_statuses", to: "pages#change_all_statuses",
+        via: "patch", as: "approve_all_statuses", change: "approve"
+  match "/applications/publish_all_statuses", to: "pages#change_all_statuses",
+        via: "patch", as: "publish_all_statuses", change: "publish"
   match "/projects/pending/publish_all", to: "projects#publish_all_pending",
         via: "patch", as: "publish_all_pending_projects"
   match "/evaluations", to: "evaluations#index", via: "get", as: "evaluations"
