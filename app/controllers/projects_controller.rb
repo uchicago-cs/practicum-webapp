@@ -63,14 +63,17 @@ class ProjectsController < ApplicationController
 
   def publish_all_pending
     projects = Project.current_pending_projects.where.not(status: "pending")
-    # #update_all skips validations!
-    if projects.update_all(status_published: true)
-      flash[:success] = "Published all flagged project statuses."
-      redirect_to pending_projects_path
-    else
-      flash.now[:error] = "Unable to publish all flagged project statuses."
-      render 'pending'
+
+    projects.each do |project|
+      project.status_published = true
+      if project.invalid?
+        flash.now[:error] = "Unable to publish all flagged project statuses."
+        render 'pending' and return
+      end
     end
+
+    flash[:success] = "Published all flagged project statuses."
+    redirect_to pending_projects_path
   end
 
   # `clone` is a keyword, so we use #clone_project instead of #clone.
@@ -82,7 +85,7 @@ class ProjectsController < ApplicationController
     if @new_project.save
       @old_project.update_attributes(cloned: true)
       flash[:success] = "Project successfully cloned."
-      redirect_to @new_project#, only_path: true (?)
+      redirect_to @new_project
     else
       flash.now[:error] = "Project was not successfully cloned."
       render 'show'

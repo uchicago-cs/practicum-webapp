@@ -55,9 +55,7 @@ class EvaluationsController < ApplicationController
   end
 
   def new
-    # It would be nice to use `student` instead of `user`.
-    # (Add `class` on line 9 of submission.rb.)
-    @student = Submission.find(params[:submission_id]).user
+    @student = Submission.find(params[:submission_id]).student
   end
 
   def create
@@ -66,7 +64,7 @@ class EvaluationsController < ApplicationController
 
     if @evaluation.save
       flash[:success] = "Evaluation successfully submitted."
-      redirect_to @evaluation, only_path: true
+      redirect_to @evaluation
     else
       flash.now[:error] = "Evaluation was not submitted."
       render 'new'

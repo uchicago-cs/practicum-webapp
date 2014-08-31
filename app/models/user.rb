@@ -37,7 +37,6 @@ class User < ActiveRecord::Base
 
   def projects_applied_to
     Project.find(self.submissions.pluck(:project_id))
-    # Not ideal...
   end
 
   def applied_to_projects?
@@ -99,12 +98,16 @@ class User < ActiveRecord::Base
 
   def get_ldap_info
     if Devise::LDAP::Adapter.get_ldap_param(self.cnet, 'uid')
-      self.email = Devise::LDAP::Adapter.get_ldap_param(self.cnet, "mail").first
-      self.first_name = \
-        (Devise::LDAP::Adapter.get_ldap_param(self.cnet,
-                                              "givenName") rescue nil).first
-      self.last_name = \
-        (Devise::LDAP::Adapter.get_ldap_param(self.cnet, "sn") rescue nil).first
+      self.email = Devise::LDAP::Adapter.
+        get_ldap_param(self.cnet, "mail").first
+
+      self.first_name = (Devise::LDAP::Adapter.
+                         get_ldap_param(self.cnet,
+                                        "givenName") rescue nil).first
+
+      self.last_name = (Devise::LDAP::Adapter.
+                        get_ldap_param(self.cnet, "sn") rescue nil).first
+
       self.student = true
     end
   end

@@ -6,7 +6,7 @@ class Submission < ActiveRecord::Base
 
   attr_accessor :this_user
 
-  belongs_to :user, foreign_key: "student_id"
+  belongs_to :student, class_name: "User", foreign_key: "student_id"
   belongs_to :project
   has_one :evaluation, foreign_key: "submission_id", dependent: :destroy
 
@@ -49,11 +49,6 @@ class Submission < ActiveRecord::Base
   validates_attachment_file_name :resume, matches: /(pdf|doc|docx)\z/
   validates_attachment_size :resume, less_than: 5.megabytes
   # Could even use 1.megabyte.
-
-  def student
-    User.find(student_id)
-    # Not ideal
-  end
 
   def accepted?
     status == "accepted"
@@ -104,7 +99,7 @@ class Submission < ActiveRecord::Base
     end
   end
 
-  # Make #in_current_quarter? its own check. Also, add error messages.
+  # Make #in_current_quarter? its own check.
   def status_not_pending_before_approved
     message = "Status must not be pending before an admin can approve it."
     errors.add(:base, message) if self.pending? and self.status_approved? and

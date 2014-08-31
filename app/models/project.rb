@@ -20,7 +20,7 @@ class Project < ActiveRecord::Base
   attr_accessor :this_user
 
   belongs_to :quarter
-  belongs_to :user, foreign_key: "advisor_id"
+  belongs_to :advisor, class_name: "User", foreign_key: "advisor_id"
   has_many :submissions
 
   validates :name, presence: true, uniqueness: { scope: :quarter_id,
@@ -41,18 +41,12 @@ class Project < ActiveRecord::Base
            :formatted_department, :department, :display_name, to: :user,
            prefix: :advisor, allow_nil: true
   delegate :formatted_quarter, to: :quarter, prefix: false, allow_nil: true
-  # prefix true on this?
   delegate :current, to: :quarter, prefix: true, allow_nil: true
 
   attr_accessor :comments
 
   after_create :send_project_proposed
   after_update :send_project_status_changed
-
-  def advisor
-    User.find(advisor_id)
-    # Not ideal
-  end
 
   def accepted?
     status == "accepted"
