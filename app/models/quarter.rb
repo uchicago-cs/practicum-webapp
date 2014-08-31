@@ -40,6 +40,11 @@ class Quarter < ActiveRecord::Base
     self.student_submission_deadline.to_date
   end
 
+  def deadline(deadline)
+    # Can we just do "#{deadline}_deadline".to_sym instead?
+    self.send("#{deadline}_deadline".to_sym)
+  end
+
   private
 
   def set_current_false

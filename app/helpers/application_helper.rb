@@ -21,44 +21,18 @@ module ApplicationHelper
 
   # Determine table row class for admins.
   def row_class(status)
-    # Creating this hash on each call... Consider revising.
-    status_classes = { "accepted" => "success", "rejected" => "danger",
-                       "pending" => "" }
-    status_classes[status]
+    {"accepted" => "success", "rejected" => "danger", "pending" => ""}[status]
   end
 
-  # Refactor these four into one method.
-  def project_proposal_deadline
-    Quarter.current_quarter.project_proposal_deadline.
+  # Formatted deadlines (not the DateTime objects themselves, which
+  # @quarter.deadline(deadline) returns).
+  def formatted_deadline(deadline)
+    Quarter.current_quarter.deadline(deadline).
       strftime("%I:%M %p on %D (%A, %B %d, %Y)")
   end
 
-  def student_submission_deadline
-    Quarter.current_quarter.student_submission_deadline.
-      strftime("%I:%M %p on %D (%A, %B %d, %Y)")
-  end
-
-  def advisor_decision_deadline
-    Quarter.current_quarter.advisor_decision_deadline.
-      strftime("%I:%M %p on %D (%A, %B %d, %Y)")
-  end
-
-  def admin_publish_deadline
-    Quarter.current_quarter.admin_publish_deadline.
-      strftime("%I:%M %p on %D (%A, %B %d, %Y)")
-  end
-
-  # Refactor these three into one method.
-  def before_proposal_deadline?
-    DateTime.now <= Quarter.current_quarter.project_proposal_deadline
-  end
-
-  def before_submission_deadline?
-    DateTime.now <= Quarter.current_quarter.student_submission_deadline
-  end
-
-  def before_decision_deadline?
-    DateTime.now <= Quarter.current_quarter.advisor_decision_deadline
+  def before_deadline?(deadline)
+    DateTime.now <= Quarter.current_quarter.deadline(deadline)
   end
 
   def formatted_project_status(project)

@@ -1,4 +1,4 @@
-<% if @submission.pending? and before_decision_deadline? %>
+<% if @submission.pending? and before_deadline?("advisor_decision") %>
   You may
   <%= link_to "accept", accept_submission_path(@submission.id),
                         method: :patch %> or

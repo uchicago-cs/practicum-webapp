@@ -2,16 +2,18 @@ class SubmissionsController < ApplicationController
 
   load_and_authorize_resource
 
+  # before_actions on both new and create?
   before_action :get_project,                 only: [:index, :new, :create]
   before_action :project_accepted?,           only: [:new, :create]
   before_action :is_admin_or_advisor?,        only: :index
   before_action :already_applied_to_project?, only: [:new, :create]
   before_action :project_in_current_quarter?, only: [:new, :create]
   before_action :get_statuses,                only: [:show, :update_status]
-  before_action :before_submission_deadline?, only: [:new, :create]
-  before_action :before_decision_deadline?,   only: [:accept, :reject]
   before_action :get_this_user,               except: :index
-  # before_actions on both new and create?
+  before_action(only: [:new, :create]) { |c|
+    c.before_deadline?("student_submission") }
+  before_action(only: [:accept, :reject]) { |c|
+    c.before_deadline?("advisor_decision") }
 
   def new
     @submission = Submission.new

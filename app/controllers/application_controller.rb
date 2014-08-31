@@ -43,23 +43,11 @@ class ApplicationController < ActionController::Base
       current_user.admin?
   end
 
-  # Not DRY: see application_helper.erb
-  def before_proposal_deadline?
-    message = "The project proposal deadline for this quarter has passed."
+  # Why is this in both the controller and the helper?
+  def before_deadline?(deadline)
+    message = "The #{deadline} deadline for this quarter has passed."
     redirect_to root_url, flash: { error: message } unless
-      DateTime.now <= Quarter.current_quarter.project_proposal_deadline
-  end
-
-  def before_submission_deadline?
-    message = "The application deadline for this quarter has passed."
-    redirect_to root_url, flash: { error: message } unless
-      DateTime.now <= Quarter.current_quarter.student_submission_deadline
-  end
-
-  def before_decision_deadline?
-    message = "The decision deadline for this quarter has passed."
-    redirect_to root_url, flash: { error: message } unless
-      DateTime.now <= Quarter.current_quarter.advisor_decision_deadline
+      DateTime.now <= Quarter.current_quarter.deadline(deadline)
   end
 
 end

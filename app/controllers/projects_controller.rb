@@ -3,7 +3,8 @@ class ProjectsController < ApplicationController
   load_and_authorize_resource
 
   skip_before_action :authenticate_user!,        only: [:index, :show]
-  before_action      :before_proposal_deadline?, only: [:new, :create]
+  before_action(only: [:new, :create]) { |c|
+    c.before_deadline?("project_proposal") }
   before_action      :get_status_published,      only: [:show,
                                                         :update_status]
   before_action      :get_old_project_info,      only: :clone_project
