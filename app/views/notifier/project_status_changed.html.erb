@@ -5,17 +5,19 @@
 <% if @status == "accepted" %>
   <p>
     Your project proposal for <%= @project.name %> has been accepted. You
-    will be notified when students may apply to your project.
+    will be notified when your proposal becomes publicly available and
+    students may apply to it.
   </p>
 <% elsif @status == "pending" %>
   <p>
-    Your project is still pending approval. We have decided you must make the
-    following changes before it may be approved and before students may apply
-    to it.
+    Your project proposal for <%= @project.name %> is still pending approval,
+    and we have decided you must make the following changes before it may be
+    approved and before students may apply to it.
   </p>
 <% elsif @status == "rejected" %>
   <p>
-    We have decided not to accept your project proposal.
+    We have decided not to accept your project proposal for
+    <%= @project.name %>.
   </p>
 <% end %>
 

@@ -1,23 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <body>
-    <div id="mail-header">
-      <span id="mail-title">
-	<%= link_to "University of Chicago CS Masters Practicum",
-	"https://practicum.cs.uchicago.edu", class: "pull-left" %>
-      </span>
-      <span id="mail-logo">
-	<%= link_to "http://uchicago.edu" do %>
-	  <%= image_tag "logo-small.png", class: "pull-right",
-	    id: "uchicago-logo" %>
-	<% end %>
-      </span>
-    </div>
-
-    <div id="mail-content">
-      <%= yield %>
-    </div>
+<html>
+  <body style='font-family: Verdana, sans-serif; background-color: #EAE9E1;'>
+    <table width='100%' style='border: none; border-collapse: collapse;'>
+      <tr style='background-color: #800000; height: 96px;'>
+        <td>
+          <div style='float: left; margin-left: 20px; margin-top: 15px;'>
+            <a style='color: white; font-family: Helvetica, sans-serif;
+	       font-size: 36px; font-weight: normal; text-decoration: none;'
+	       href='https://practicum.cs.uchicago.edu'>
+	      University of Chicago CS Masters Practicum
+	    </a>
+          </div>
+          <div style='float: right; height: 53px; width: 246px;
+	       margin-top: 20px; margin-right: 20px;'>
+            <a style='border: none;' href='http://www.uchicago.edu'>
+              <%= image_tag "logo-small.png" %>
+            </a>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div style='background-color: #F7F6ED; margin: 0px 20px 0px 20px;
+	       padding: 20px;'>
+	    <%= yield %>
+          </div>
+        </td>
+      </tr>
+    </table>
   </body>
-
 </html>

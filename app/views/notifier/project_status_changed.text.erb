@@ -1,15 +1,15 @@
 Hi <%= @advisor.first_name || @advisor.cnet %>,
 
 <% if @status == "accepted" %>
-Your project proposal for <%= @project.name %> has been accepted. You will be notified when students may apply to your project.
+Your project proposal for <%= @project.name %> has been accepted. You will be notified when your proposal becomes publicly available and students may apply to it.
 <% elsif @status == "pending" %>
-Your project is still pending approval. We have decided you must make the following changes before it may be approved and before students may apply to it.
+Your project proposal for <%= @project.name %> is still pending approval, and we have decided you must make the following changes before it may be approved and before students may apply to it.
 <% elsif @status == "rejected" %>
-We have decided not to accept your project proposal.
+We have decided not to accept your project proposal for <%= @project.name %>.
 <% end %>
 
 <% if @comments.present? %>
-Proposal feedback:
+Administrator feedback:
 "<%= @comments %>"
 <% end %>
 

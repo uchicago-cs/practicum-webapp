@@ -87,6 +87,9 @@ Practicum::Application.configure do
     enable_starttls_auto: true
   }
 
+  # Set asset host for ActionMailer
+  config.action_mailer.asset_host = "practicum.cs.uchicago.edu"
+
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 end
