@@ -25,6 +25,6 @@
 <% end %>
 
 <p>
-  Click <%= link_to "here", @project %> to view
+  Click <%= link_to "here", project_url(@project) %> to view
   <%= "and edit" unless @status == "rejected" %> your project information.
 </p>

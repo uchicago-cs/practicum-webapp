@@ -15,4 +15,7 @@
   </p>
 <% end %>
 
-<p>Click <%= link_to "here", @submission %> to view your application.</p>
+<p>
+  Click <%= link_to "here", submission_url(@submission) %> to view your
+  application.
+</p>

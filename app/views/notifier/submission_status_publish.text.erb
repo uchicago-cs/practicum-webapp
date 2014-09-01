@@ -6,4 +6,4 @@ Hi <%= @student.first_name || @student.cnet %>,
   You may contact the project advisor, <%= @project.advisor.display_name || @project.advisor.cnet %>, at <%= @project.advisor.email %>.
 <% end %>
 
-Click <%= link_to "here", @submission %> to view your application.
+Visit <%= submission_url(@submission) %> to view your application.

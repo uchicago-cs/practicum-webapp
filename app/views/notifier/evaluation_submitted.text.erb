@@ -6,4 +6,4 @@ Advisor: <%= @advisor.display_name || @advisor.cnet %>
 Project: <%= @project.name %>
 Student: <%= @student.display_name || @student.cnet %>
 
-Click <%= link_to "here", @evaluation %> to view this evaluation.
+Visit <%= evaluation_url(@evaluation) %> to view this evaluation.

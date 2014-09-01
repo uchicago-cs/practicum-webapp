@@ -8,4 +8,7 @@
 <p>Project: <%= @project.name %></p>
 <p>Student: <%= @student.display_name || @student.cnet %></p>
 
-<p>Click <%= link_to "here", @evaluation %> to view this evaluation.</p>
+<p>
+  Click <%= link_to "here", evaluation_url(@evaluation) %> to view this
+  evaluation.
+</p>

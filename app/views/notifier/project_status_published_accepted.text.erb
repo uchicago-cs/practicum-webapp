@@ -2,4 +2,4 @@ Hi <%= @advisor.first_name || @advisor.cnet %>,
 
 Your project proposal for <%= @project.title %> has been made publicly available, and students may now apply to it. You will be notified when students apply.
 
-Click <%= link_to "here", @project %> to view your project information.
+Visit <%= project_url(@project) %> to view your project information.

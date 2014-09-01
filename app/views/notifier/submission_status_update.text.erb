@@ -6,4 +6,4 @@ Advisor: <%= @advisor.display_name || @advisor.cnet %>
 Student: <%= @student.display_name || @student.cnet %>
 Decision: <%= @submission.status %>
 
-Click <%= link_to "here", @submission %> to view <%= @student.display_name || @student.cnet %>'s application.
+Visit <%= submission_url(@submission) %> to view <%= @student.display_name || @student.cnet %>'s application.

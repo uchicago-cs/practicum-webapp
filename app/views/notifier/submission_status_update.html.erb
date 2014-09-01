@@ -9,6 +9,6 @@
 <p>Decision: <%= @submission.status %></p>
 
 <p>
-  Click <%= link_to "here", @submission %> to view
+  Click <%= link_to "here", submission_url(@submission) %> to view
   <%= @student.display_name || @student.cnet %>'s application.
 </p>

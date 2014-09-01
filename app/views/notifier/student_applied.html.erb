@@ -6,8 +6,11 @@
 
 <p>Student name: <%= @student.display_name || @student.cnet %></p>
 <p>
-  Application: Click <%= link_to "here", @submission %> to view
+  Application: Click <%= link_to "here", submission_url(@submission) %> to view
   <%= @student.first_name %>'s application.
 </p>
 
-<p>Click <%= link_to "here", @project %> to view your project information.</p>
+<p>
+  Click <%= link_to "here", project_url(@project) %> to view your project
+  information.
+</p>
