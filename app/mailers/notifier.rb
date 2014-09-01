@@ -4,14 +4,13 @@ class Notifier < ActionMailer::Base
 
   # Move admin deliveries here?
 
-  def project_proposed(project, admin)
+  def project_proposed(project)
     @advisor = project.advisor
     @project = project
-    @admin = admin
-    @to = @admin.email
+    @bcc = User.admins.inject([]) { |bcc, admin| bcc << admin.email }
     @subject = "UChicago CS Masters Practicum: New project proposal"
 
-    mail(to: @to, subject: @subject) do |format|
+    mail(bcc: @bcc, subject: @subject) do |format|
       format.text { render 'project_proposed' }
       format.html { render 'project_proposed' }
     end
@@ -46,10 +45,10 @@ class Notifier < ActionMailer::Base
   end
 
   # Should admins be notified about this?
-  def student_applied(advisor, student, project=nil, submission=nil)
-    @advisor = advisor
-    @student = student
-    @project = project
+  def student_applied(submission)
+    @advisor = submission.project.advisor
+    @student = submission.student
+    @project = submission.project
     @submission = submission
     @to = @advisor.email
     @subject = "UChicago CS Masters Practicum: New application"
@@ -60,19 +59,19 @@ class Notifier < ActionMailer::Base
     end
   end
 
-  # Status changed
-  def submission_status_update(admin, advisor, submission)
+  def submission_status_updated(submission)
     @student = submission.student
-    @admin = admin
-    @advisor = advsior
+    @advisor = submission.project.advisor
     @project = submission.project
     @submission = submission
-    @to = @admin.email
+    # The advisor presumably updated the status, so we inform the admins.
+    # Also, advisors don't need to be informed about this.
+    @bcc = User.admins.inject([]) { |bcc, admin| bcc << admin.email }
     @subject = "UChicago CS Masters Practicum: Application status update"
 
-    mail(to: @to, subject: @subject) do |format|
-      format.text { render 'submission_status_update' }
-      format.html { render 'submission_status_update' }
+    mail(bcc: @bcc, subject: @subject) do |format|
+      format.text { render 'submission_status_updated' }
+      format.html { render 'submission_status_updated' }
     end
   end
 
@@ -81,50 +80,25 @@ class Notifier < ActionMailer::Base
     @student = submission.student
     @project = submission.project
     @submission = submission
+    @status = submission.status
     @to = @student.email
+    @cc = (@status == "accepted") ? @advisor.email : []
     @subject = "UChicago CS Masters Practicum: Application status update"
 
-    mail(to: @to, subject: @subject) do |format|
+    mail(to: @to, cc: @cc, subject: @subject) do |format|
       format.text { render 'submission_status_publish' }
       format.html { render 'submission_status_publish' }
     end
   end
 
-  # ---------------------------------------------------------------- #
-  # ---------------------------------------------------------------- #
-
-  # Status published: also send to advisor
-  def accept_student(submission)
-    @student = submission.student
-    @project = submission.project
-    @to = @student.email
-    @subject = "UChicago CS Masters Practicum: Application status update"
-
-    mail(to: @to, subject: @subject)
-  end
-
-  # Status published
-  def reject_student(submission)
-    @student = submission.student
-    @project = submission.project
-    @to = @student.email
-    @subject = "UChicago CS Masters Practicum: Application status update"
-
-    mail(to: @to, subject: @subject)
-  end
-
-  # ---------------------------------------------------------------- #
-  # ---------------------------------------------------------------- #
-
-  def evaluation_submitted(evaluation, admin)
+  def evaluation_submitted(evaluation)
     @advisor = evaluation.advisor
-    @admin = admin
-    @student = nil
+    @student = evaluation.student
     @evaluation = evaluation
-    @to = @admin.email
+    @bcc = User.admins.inject([]) { |bcc, admin| bcc << admin.email }
     @subject = "UChicago CS Masters Practicum: New evaluation"
 
-    mail(to: @to, subject: @subject) do |format|
+    mail(bcc: @bcc, subject: @subject) do |format|
       format.text { render 'evaluation_submitted' }
       format.html { render 'evaluation_submitted' }
     end

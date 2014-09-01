@@ -48,8 +48,8 @@ class Project < ActiveRecord::Base
 
   attr_accessor :comments
 
-  after_create :send_project_proposed
-  after_update :send_project_status_changed
+  after_create  :send_project_proposed
+  before_update :send_project_status_changed
 
   def accepted?
     status == "accepted"
@@ -102,13 +102,17 @@ class Project < ActiveRecord::Base
   private
 
   def send_project_proposed
-    User.admins.each do |admin|
-      Notifier.project_proposed(self, admin).deliver
-    end
+    Notifier.project_proposed(self).deliver
   end
 
   def send_project_status_changed
-    Notifier.project_status_changed(self).deliver
+    if status_changed?
+      Notifier.project_status_changed(self).deliver
+    end
+
+    if status_published_changed? and status == "accepted"
+      Notifier.project_status_published_accepted(self).deliver
+    end
   end
 
   def creator_role

@@ -34,7 +34,7 @@ class Submission < ActiveRecord::Base
            to: :project, prefix: true, allow_nil: true
 
   after_create      :send_student_applied
-  after_update      :send_respective_update
+  before_update     :send_status_updated
   before_validation :downcase_status
 
   has_attached_file :resume,
@@ -83,19 +83,16 @@ class Submission < ActiveRecord::Base
   private
 
   def send_student_applied
-    Notifier.student_applied(self.project.advisor,
-                             self.student).deliver
-    User.admins.each do |admin|
-      Notifier.student_applied(admin, self.student).deliver
-    end
+    Notifier.student_applied(self).deliver
   end
 
-  def send_respective_update
-    if self.accepted?
-      # Confusing name -- change to accept_submission?
-      Notifier.accept_student(self).deliver
-    elsif self.rejected?
-      Notifier.reject_student(self).deliver
+  def send_status_updated
+    if status_changed?
+      Notifier.submission_status_updated(self).deliver
+    end
+
+    if status_published_changed?
+      Notifier.submission_status_publish(self).deliver
     end
   end
 
