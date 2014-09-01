@@ -1,0 +1,11 @@
+<h1>New evaluation</h1>
+
+<p>Hi <%= @admin.first_name || @admin.cnet %>,</p>
+
+<p>An advisor has submitted an evaluation for a student.</p>
+
+<p>Advisor: <%= @advisor.display_name || @advisor.cnet %></p>
+<p>Project: <%= @project.name %></p>
+<p>Student: <%= @student.display_name || @student.cnet %></p>
+
+<p>Click <%= link_to "here", @evaluation %> to view this evaluation.</p>

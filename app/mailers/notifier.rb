@@ -11,7 +11,10 @@ class Notifier < ActionMailer::Base
     @to = @admin.email
     @subject = "UChicago CS Masters Practicum: New project proposal"
 
-    mail(to: @to, subject: @subject)
+    mail(to: @to, subject: @subject) do |format|
+      format.text { render 'project_proposed' }
+      format.html { render 'project_proposed' }
+    end
   end
 
   def project_status_changed(project)
@@ -22,7 +25,10 @@ class Notifier < ActionMailer::Base
     @to = @advisor.email
     @subject = "UChicago CS Masters Practicum: Project status update"
 
-    mail(to: @to, subject: @subject)
+    mail(to: @to, subject: @subject) do |format|
+      format.text { render 'project_status_changed' }
+      format.html { render 'project_status_changed' }
+    end
   end
 
   # Only for accepted projects
@@ -32,6 +38,11 @@ class Notifier < ActionMailer::Base
     @status = project.status
     @to = @advisor.email
     @subject = "UChicago CS Masters Practicum: Project status update"
+
+    mail(to: @to, subject: @subject) do |format|
+      format.text { render 'project_status_published_accepted' }
+      format.html { render 'project_status_published_accepted' }
+    end
   end
 
   # Should admins be notified about this?
@@ -43,7 +54,10 @@ class Notifier < ActionMailer::Base
     @to = @advisor.email
     @subject = "UChicago CS Masters Practicum: New application"
 
-    mail(to: @to, subject: @subject)
+    mail(to: @to, subject: @subject) do |format|
+      format.text { render 'student_applied' }
+      format.html { render 'student_applied' }
+    end
   end
 
   # Status changed
@@ -56,7 +70,10 @@ class Notifier < ActionMailer::Base
     @to = @admin.email
     @subject = "UChicago CS Masters Practicum: Application status update"
 
-    mail(to: @to, subject: @subject)
+    mail(to: @to, subject: @subject) do |format|
+      format.text { render 'submission_status_update' }
+      format.html { render 'submission_status_update' }
+    end
   end
 
   # Inform students about decision. If accepted, send to advisor as well.
@@ -67,7 +84,10 @@ class Notifier < ActionMailer::Base
     @to = @student.email
     @subject = "UChicago CS Masters Practicum: Application status update"
 
-    mail(to: @to, subject: @subject)
+    mail(to: @to, subject: @subject) do |format|
+      format.text { render 'submission_status_publish' }
+      format.html { render 'submission_status_publish' }
+    end
   end
 
   # ---------------------------------------------------------------- #
@@ -104,7 +124,10 @@ class Notifier < ActionMailer::Base
     @to = @admin.email
     @subject = "UChicago CS Masters Practicum: New evaluation"
 
-    mail(to: @to, subject: @subject)
+    mail(to: @to, subject: @subject) do |format|
+      format.text { render 'evaluation_submitted' }
+      format.html { render 'evaluation_submitted' }
+    end
   end
 
   def request_for_advisor_access(user, admin)
@@ -113,7 +136,10 @@ class Notifier < ActionMailer::Base
     @to = @admin.email
     @subject = "UChicago CS Masters Practicum: Advisor status request"
 
-    mail(to: @to, subject: @subject)
+    mail(to: @to, subject: @subject) do |format|
+      format.text { render 'request_for_advisor_access' }
+      format.html { render 'request_for_advisor_access' }
+    end
   end
 
 end

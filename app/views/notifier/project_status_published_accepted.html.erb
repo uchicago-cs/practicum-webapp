@@ -1,0 +1,11 @@
+<h1>Project status update</h1>
+
+<p>Hi <%= @advisor.first_name || @advisor.cnet %>,</p>
+
+<p>
+  Your project proposal for <%= @project.title %> has been made publicly
+  available, and students may now apply to it. You will be notified when
+  students apply.
+</p>
+
+<p>Click <%= link_to "here", @project %> to view your project information.</p>

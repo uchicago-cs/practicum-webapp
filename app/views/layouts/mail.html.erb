@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <body>
+    <div id="mail-header">
+      <span id="mail-title">
+	<%= link_to "University of Chicago CS Masters Practicum",
+	"https://practicum.cs.uchicago.edu", class: "pull-left" %>
+      </span>
+      <span id="mail-logo">
+	<%= link_to "http://uchicago.edu" do %>
+	  <%= image_tag "logo-small.png", class: "pull-right",
+	    id: "uchicago-logo" %>
+	<% end %>
+      </span>
+    </div>
+
+    <div id="mail-content">
+      <%= yield %>
+    </div>
+  </body>
+
+</html>

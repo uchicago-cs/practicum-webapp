@@ -1,0 +1,14 @@
+<h1>Application status update</h1>
+
+<p>Hi <%= @admin.first_name || @admin.cnet %>,</p>
+
+<p>An advisor has made a decision about an application.</p>
+
+<p>Advisor: <%= @advisor.display_name || @advisor.cnet %></p>
+<p>Student: <%= @student.display_name || @student.cnet %></p>
+<p>Decision: <%= @submission.status %></p>
+
+<p>
+  Click <%= link_to "here", @submission %> to view
+  <%= @student.display_name || @student.cnet %>'s application.
+</p>

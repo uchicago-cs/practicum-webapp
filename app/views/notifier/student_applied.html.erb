@@ -1,0 +1,13 @@
+<h1>New application</h1>
+
+<p>Hi <%= @advisor.first_name || @advisor.cnet %>,</p>
+
+<p>A student has applied to your project titled <%= @project.name %>.</p>
+
+<p>Student name: <%= @student.display_name || @student.cnet %></p>
+<p>
+  Application: Click <%= link_to "here", @submission %> to view
+  <%= @student.first_name %>'s application.
+</p>
+
+<p>Click <%= link_to "here", @project %> to view your project information.</p>

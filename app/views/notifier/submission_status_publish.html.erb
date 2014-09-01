@@ -1,0 +1,18 @@
+<h1>Application status update</h1>
+
+<p>Hi <%= @student.first_name || @student.cnet %>,</p>
+
+<p>
+  <%= "Congratulations!" if @submission.status == "accepted" %> Your
+  application to <%= @project.name %> has been <%= @submission.status %>.
+</p>
+
+<% if @submission.status == "accepted" %>
+  <p>
+    You may contact the project advisor,
+    <%= @project.advisor.display_name || @project.advisor.cnet %>, at
+    <%= @project.advisor.email %>.
+  </p>
+<% end %>
+
+<p>Click <%= link_to "here", @submission %> to view your application.</p>
