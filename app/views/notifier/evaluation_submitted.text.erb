@@ -1,1 +1,9 @@
-An advisor has submitted a student evaluation ...
+Hi <%= @admin.first_name || @admin.cnet %>,
+
+An advisor has submitted an evaluation for a student.
+
+Advisor: <%= @advisor.display_name || @advisor.cnet %>
+Project: <%= @project.name %>
+Student: <%= @student.display_name || @student.cnet %>
+
+Click <%= link_to "here", @evaluation %> to view this evaluation.

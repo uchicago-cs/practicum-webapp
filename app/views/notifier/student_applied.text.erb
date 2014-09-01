@@ -1,1 +1,8 @@
-A student has applied to your project ...
+Hi <%= @advisor.first_name || @advisor.cnet %>,
+
+A student has applied to your project titled <%= @project.name %>.
+
+Student name: <%= @student.display_name || @student.cnet %>
+Application: Click <%= link_to "here", @submission %> to view <%= @student.first_name %>'s application.
+
+Click <%= link_to "here", @project %> to view your project information.
