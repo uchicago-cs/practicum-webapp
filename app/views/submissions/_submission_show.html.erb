@@ -3,7 +3,7 @@
   <tbody>
     <tr>
       <th>Applicant</th>
-      <td><%= @submission.student_display_name %></td>
+      <td><%= display_name(@submission.student) %></td>
     </tr>
 
     <tr>
@@ -13,7 +13,7 @@
 
     <tr>
       <th>Advisor</th>
-      <td><%= @submission.project.advisor_display_name %></td>
+      <td><%= display_name(@submission.project.advisor) %></td>
     </tr>
 
     <tr>

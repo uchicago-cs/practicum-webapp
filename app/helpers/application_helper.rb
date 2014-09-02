@@ -24,7 +24,16 @@ module ApplicationHelper
     {"accepted" => "success", "rejected" => "danger", "pending" => ""}[status]
   end
 
-  # Formatted deadlines (not the DateTime objects themselves, which
+  def formatted_current_quarter
+    quarter = Quarter.current_quarter
+    if quarter
+      [quarter.season.capitalize, quarter.year].join(" ")
+    else
+      "this quarter"
+    end
+  end
+
+  # Formatted deadlines (not the DateTime objects, which
   # @quarter.deadline(deadline) returns).
   def formatted_deadline(deadline)
     Quarter.current_quarter.deadline(deadline).

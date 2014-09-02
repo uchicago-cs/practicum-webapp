@@ -2,8 +2,8 @@ Hi <%= @admin.first_name || @admin.cnet %>,
 
 An advisor has made a decision about an application.
 
-Advisor: <%= @advisor.display_name || @advisor.cnet %>
-Student: <%= @student.display_name || @student.cnet %>
+Advisor: <%= display_name(@advisor) || @advisor.cnet %>
+Student: <%= display_name(@student) || @student.cnet %>
 Decision: <%= @submission.status %>
 
-Visit <%= submission_url(@submission) %> to view <%= @student.display_name || @student.cnet %>'s application.
+Visit <%= submission_url(@submission) %> to view <%= display_name(@student) || @student.cnet %>'s application.

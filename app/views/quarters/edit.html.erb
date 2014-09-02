@@ -1,4 +1,4 @@
-<h1>Edit <%= @quarter.formatted_quarter %></h1>
+<h1>Edit <%= formatted_quarter(@quarter) %></h1>
 
 <%= render 'new_edit_form', change: "update",
   form_season: @quarter.season.capitalize,

@@ -13,8 +13,8 @@
 	<tr>
 	  <td><%= user.cnet %></td>
 	  <td><%= user.email %></td>
-	  <td><%= link_to user.display_name, user %></td>
-	  <td><%= user.formatted_roles %></td>
+	  <td><%= link_to display_name(user), user %></td>
+	  <td><%= formatted_roles(user) %></td>
 	</tr>
       <% end %>
     </tbody>

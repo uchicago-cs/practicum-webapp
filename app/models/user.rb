@@ -23,18 +23,6 @@ class User < ActiveRecord::Base
     roles
   end
 
-  def display_name
-    if first_name.present? and last_name.present?
-      "#{first_name} #{last_name}"
-    else
-      cnet
-    end
-  end
-
-  def formatted_roles
-    roles.join(", ")
-  end
-
   def projects_applied_to
     Project.find(self.submissions.pluck(:project_id))
   end
@@ -71,21 +59,6 @@ class User < ActiveRecord::Base
     Evaluation.where(advisor_id: self.id,
                      student_id: submission.student_id,
                      project_id: submission.project_id).exists?
-  end
-
-  def formatted_affiliation
-    self.affiliation.present? ? " | #{affiliation} " : ""
-  end
-
-  def formatted_department
-    self.department.present? ? " | #{department} " : ""
-  end
-
-  def formatted_info
-    info = self.display_name
-    info << ", #{self.department}"  if self.department.present?
-    info << ", #{self.affiliation}" if self.affiliation.present?
-    info
   end
 
   def missing_proposal_info?

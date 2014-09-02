@@ -3,7 +3,7 @@ Hi <%= @student.first_name || @student.cnet %>,
 <%= "Congratulations!" if @submission.status == "accepted" %> Your application to <%= @project.name %> has been <%= @submission.status %>.
 
 <% if @submission.status == "accepted" %>
-  You may contact the project advisor, <%= @project.advisor.display_name || @project.advisor.cnet %>, at <%= @project.advisor.email %>.
+  You may contact the project advisor, <%= display_name(@project.advisor) || @project.advisor.cnet %>, at <%= @project.advisor.email %>.
 <% end %>
 
 Visit <%= submission_url(@submission) %> to view your application.

@@ -1,6 +1,6 @@
 <tr class="<%= advisor_project_row_class(project) %>">
   <td><%= link_to project.name, project %></td>
-  <td><%= project.formatted_quarter %></td>
+  <td><%= formatted_quarter(project.quarter) %></td>
   <td><%= project.created_at.to_date %></td>
   <td><%= formatted_project_status(project) %></td>
   <td><%= formatted_submission_count(project) %></td>

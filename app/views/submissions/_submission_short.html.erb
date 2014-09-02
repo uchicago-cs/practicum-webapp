@@ -1,7 +1,7 @@
 <tr class="<%= row_class(submission.status) %>">
-  <td><%= submission.student_display_name %></td>
+  <td><%= display_name(submission.student) %></td>
   <td><%= submission.created_at.to_date %></td>
-  <td><%= submission.formatted_status_for_advisor %></td>
+  <td><%= formatted_status_for_advisor(submission) %></td>
   <td>
     Click <%= link_to "here", submission_path(submission.id) %>
     to view this application.

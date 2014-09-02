@@ -1,4 +1,4 @@
-<%= @project.format_cloned %>
+<%= format_cloned(@project) %>
 No student completed this project, so you may
 <%= link_to "clone", @project, method: 'clone_project',
     data: { confirm: "Are you sure?" } %>

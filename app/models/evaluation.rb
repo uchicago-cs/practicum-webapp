@@ -17,8 +17,6 @@ class Evaluation < ActiveRecord::Base
 
   delegate :email, to: :student, prefix: :student, allow_nil: true
   delegate :email, to: :advisor, prefix: :advisor, allow_nil: true
-  delegate :display_name, to: :student, prefix: :student, allow_nil: true
-  delegate :display_name, to: :advisor, prefix: :advisor, allow_nil: true
   delegate :name, to: :project, prefix: :project, allow_nil: true
   delegate :accepted?, to: :submission, prefix: true, allow_nil: true
   delegate :status_approved?, to: :submission, prefix: true, allow_nil: true

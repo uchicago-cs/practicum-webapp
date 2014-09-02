@@ -1,4 +1,4 @@
-<h1><%= @user.display_name %>'s Projects</h1>
+<h1><%= display_name(@user) %>'s Projects</h1>
 
 <% if @user.advisor? or @user.admin? %>
 

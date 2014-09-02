@@ -40,10 +40,8 @@ class Project < ActiveRecord::Base
   validate :status_not_pending_when_published
   validate :advisor_cannot_edit_if_pending, on: :update
 
-  delegate :email, :affiliation, :formatted_affiliation, :formatted_info,
-           :formatted_department, :department, :display_name, to: :advisor,
+  delegate :email, :affiliation, :department, to: :advisor,
            prefix: :advisor, allow_nil: true
-  delegate :formatted_quarter, to: :quarter, prefix: false, allow_nil: true
   delegate :current, to: :quarter, prefix: true, allow_nil: true
 
   attr_accessor :comments
@@ -77,26 +75,12 @@ class Project < ActiveRecord::Base
       !self.cloned?
   end
 
-  def formatted_related_work
-    self.related_work.present? ? self.related_work : "N/A"
-  end
-
-  def formatted_status_for_admins
-    cap_stat = self.status.capitalize
-    self.pending? ? cap_stat : "#{cap_stat} (flagged, not published)"
-  end
-
   def has_submissions?
     self.submissions.count > 0
   end
 
   def submittable_to?
     self.accepted? and self.status_published?
-  end
-
-  def format_cloned
-    self.cloned? ? "This project has been cloned." :
-      "This project has not been cloned."
   end
 
   private

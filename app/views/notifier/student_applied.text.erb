@@ -2,7 +2,7 @@ Hi <%= @advisor.first_name || @advisor.cnet %>,
 
 A student has applied to your project titled <%= @project.name %>.
 
-Student name: <%= @student.display_name || @student.cnet %>
+Student name: <%= display_name(@student) || @student.cnet %>
 Application: Click <%= submission_url(@submission) %> to view <%= @student.first_name %>'s application.
 
 Visit <%= project_url(@project) %> to view your project information.

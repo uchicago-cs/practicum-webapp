@@ -1,6 +1,6 @@
 <tr>
-  <td><%= evaluation.advisor_display_name %></td>
-  <td><%= evaluation.student_display_name %></td>
+  <td><%= display_name(evaluation.advisor) %></td>
+  <td><%= display_name(evaluation.student) %></td>
   <td><%= evaluation.project_name %></td>
   <td>Click <%= link_to "here", evaluation %> to read this evaluation.</td>
 </tr>

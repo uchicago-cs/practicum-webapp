@@ -4,9 +4,9 @@
 
 <p>An advisor has submitted an evaluation for a student.</p>
 
-<p>Advisor: <%= @advisor.display_name || @advisor.cnet %></p>
+<p>Advisor: <%= display_name(@advisor) || @advisor.cnet %></p>
 <p>Project: <%= @project.name %></p>
-<p>Student: <%= @student.display_name || @student.cnet %></p>
+<p>Student: <%= display_name(@student) || @student.cnet %></p>
 
 <p>
   Click <%= link_to "here", evaluation_url(@evaluation) %> to view this

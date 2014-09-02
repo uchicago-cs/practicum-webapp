@@ -1,5 +1,5 @@
 <tr>
-  <td><%= link_to quarter.formatted_quarter, quarter %></td>
+  <td><%= link_to formatted_quarter(quarter), quarter %></td>
   <td><%= link_to "Edit", edit_quarter_path(quarter.id) %></td>
   <td><%= link_to "Delete", quarter, method: :delete,
   data: { confirm: "Are you sure?" } %></td>

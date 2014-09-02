@@ -2,7 +2,7 @@ Hi <%= @admin.first_name || @admin.cnet %>,
 
 A new project has been proposed and needs your attention before students can apply to it.
 
-Advisor: <%= @advisor.display_name || @advisor.cnet %>
+Advisor: <%= display_name(@advisor) || @advisor.cnet %>
 Project title: <%= @project.name %>
 
 Visit <%= project_url(@project) %> to view this project's information and edit its status.

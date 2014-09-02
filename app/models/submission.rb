@@ -29,7 +29,6 @@ class Submission < ActiveRecord::Base
   delegate :name, to: :project, prefix: true, allow_nil: true
   delegate :quarter, to: :project, prefix: false, allow_nil: true
   delegate :email, to: :student, prefix: :student, allow_nil: true
-  delegate :display_name, to: :student, prefix: :student, allow_nil: true
   delegate :advisor_id, :advisor_email,
            to: :project, prefix: true, allow_nil: true
 
@@ -60,16 +59,6 @@ class Submission < ActiveRecord::Base
 
   def pending?
     status == "pending"
-  end
-
-  def formatted_status_for_advisor
-    # Put in helper, presenter, or decorator.
-    message = "#{status.capitalize} (pending administrator approval)"
-    (!status_approved and !pending?) ? message : status.capitalize
-  end
-
-  def formatted_status_for_student
-    status_published ? status.capitalize : "Pending"
   end
 
   def in_current_quarter?

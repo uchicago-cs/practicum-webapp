@@ -4,7 +4,7 @@
 
 <p>A student has applied to your project titled <%= @project.name %>.</p>
 
-<p>Student name: <%= @student.display_name || @student.cnet %></p>
+<p>Student name: <%= display_name(@student) || @student.cnet %></p>
 <p>
   Application: Click <%= link_to "here", submission_url(@submission) %> to view
   <%= @student.first_name %>'s application.

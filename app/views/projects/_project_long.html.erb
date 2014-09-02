@@ -7,7 +7,7 @@
 
     <tr>
       <th>Quarter</th>
-      <td><%= @project.formatted_quarter %></td>
+      <td><%= formatted_quarter(@project.quarter) %></td>
     </tr>
 
     <% if can? :read_status_of, @project %>
@@ -48,7 +48,7 @@
 
     <tr>
       <th>Advisor</th>
-      <td><%= @project.advisor_formatted_info %></td>
+      <td><%= formatted_info(@project.advisor) %></td>
     </tr>
 
     <tr>
@@ -68,14 +68,8 @@
 
     <tr>
       <th>Related work</th>
-      <td><%= @project.formatted_related_work %></td>
+      <td><%= formatted_related_work(@project) %></td>
     </tr>
 
-    <!--
-    <tr>
-      <th>Application deadline</th>
-      <td><%= @project.quarter.formatted_submission_deadline %></td>
-    </tr>
-    -->
   </tbody>
 </table>

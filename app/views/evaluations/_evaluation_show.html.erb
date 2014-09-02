@@ -2,7 +2,7 @@
   <tbody>
     <tr>
       <th>Student</th>
-      <td><%= @evaluation.student_display_name %></td>
+      <td><%= display_name(@evaluation.student) %></td>
     </tr>
 
     <tr>
@@ -12,7 +12,7 @@
 
     <tr>
       <th>Advisor</th>
-      <td><%= @evaluation.advisor_display_name %></td>
+      <td><%= display_name(@evaluation.advisor) %></td>
     </tr>
 
     <% @evaluation.survey.each do |question, answer| %>

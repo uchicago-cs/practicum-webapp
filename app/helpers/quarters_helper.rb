@@ -1,5 +1,9 @@
 module QuartersHelper
 
+  def formatted_quarter(quarter)
+    [quarter.season.capitalize, year].join(" ")
+  end
+
   def default_season
     # Choose the next quarter instead of this one?
     seasons = ["winter", "spring", "summer", "autumn"]
