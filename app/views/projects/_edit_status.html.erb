@@ -8,27 +8,32 @@
 
 <%= bootstrap_form_for(@project,
 	     url: { controller: "projects", action: "update_status" },
-	     html: { class: "form-inline" }) do |f| %>
+	     layout: :horizontal, label_col: "col-xs-1",
+	     control_col: "col-lg-4") do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
+  <%= f.form_group do %>
+    <%= f.radio_button :status, "accepted", label: "Approve" %>
+  <% end %>
 
-  <%= f.radio_button :status, "accepted", hide_label: true %>
-  <%= f.label :status, "Approve", value: "accepted"  %> |
+  <%= f.form_group do %>
+    <%= f.radio_button :status, "pending", label: "Request changes (Pending)" %>
+  <% end %>
 
-  <%= f.radio_button :status, "pending", hide_label: true %>
-  <%= f.label :status, "Request changes (Pending)", value: "pending" %> |
+  <%= f.form_group do %>
+    <%= f.radio_button :status, "rejected", label: "Reject" %>
+  <% end %>
 
-  <%= f.radio_button :status, "rejected", hide_label: true %>
-  <%= f.label :status, "Reject", value: "rejected" %> |
+  <%= f.text_area :comments %>
 
-  <%= f.label :comments %>
-  <%= f.text_area :comments, hide_label: true %>
+  <%= f.form_group do %>
+    <%= f.check_box :status_published,
+	checked: @project_status_published, label: "Publish status?" %>
+  <% end %>
 
-  <%= f.check_box :status_published,
-      checked: @project_status_published, label: "" %>
-  <%= f.label :status_published, "Publish status?" %>
-
-  <%= f.submit "Update project status", class: "btn btn-primary",
-      data: { confirm: "Are you sure?" } %>
+  <%= f.form_group do %>
+    <%= f.submit "Update project status", class: "btn btn-primary",
+	data: { confirm: "Are you sure?" } %>
+  <% end %>
 
 <% end %>

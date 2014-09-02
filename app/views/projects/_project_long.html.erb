@@ -13,7 +13,7 @@
     <% if can? :read_status_of, @project %>
     <tr>
       <th>Status</th>
-      <td>
+      <td id="edit-project-status">
 	<% if can? :manage, @project %>
 	  <%= render 'edit_status', object: @project %>
         <% else %>

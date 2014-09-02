@@ -1,20 +1,26 @@
 <%= bootstrap_form_for @submission,
              url: { controller: "submissions", action: "update_status" },
-	     html: { class: "form-inline" } do |f| %>
+	     layout: :horizontal, label_col: "col-sm-1",
+	     control_col: "col-lg-2" do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%# Ideally, add a label here. Use i18n? %>
   <%= f.select :status,
       options_for_select(["Pending", "Accepted", "Rejected"],
 			 @submission.status.capitalize),
-      {}, { class: "span2" } %> |
+      {}, { class: "span2" } %>
 
-  <%= f.check_box :status_approved, checked: @status_approved,
-  label: "Status approved?" %> |
+  <%= f.form_group do %>
+    <%= f.check_box :status_approved, checked: @status_approved,
+    label: "Status approved?" %>
+  <% end %>
 
-  <%= f.check_box :status_published, checked: @status_published,
-  label: "Status published?" %>
+  <%= f.form_group do %>
+    <%= f.check_box :status_published, checked: @status_published,
+    label: "Status published?" %>
+  <% end %>
 
-  <%= f.submit "Update application status", class: "btn btn-primary",
+  <%= f.form_group do %>
+    <%= f.submit "Update application status", class: "btn btn-primary",
       data: { confirm: "Are you sure?" } %>
+  <% end %>
 <% end %>
