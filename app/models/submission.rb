@@ -72,7 +72,7 @@ class Submission < ActiveRecord::Base
   private
 
   def send_student_applied
-    Notifier.student_applied(self).deliver
+    Notifier.student_applied(self)
   end
 
   def send_status_updated

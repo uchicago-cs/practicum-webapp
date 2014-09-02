@@ -1,7 +1,7 @@
 module QuartersHelper
 
   def formatted_quarter(quarter)
-    [quarter.season.capitalize, year].join(" ")
+    [quarter.season.capitalize, quarter.year].join(" ")
   end
 
   def default_season

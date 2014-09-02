@@ -86,7 +86,7 @@ class Project < ActiveRecord::Base
   private
 
   def send_project_proposed
-    Notifier.project_proposed(self).deliver
+    User.admins.each { |ad| Notifier.project_proposed(self, ad).deliver }
   end
 
   def send_project_status_changed

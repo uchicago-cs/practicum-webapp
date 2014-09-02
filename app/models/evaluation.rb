@@ -80,7 +80,7 @@ class Evaluation < ActiveRecord::Base
   private
 
   def send_evaluation_submitted
-    Notifier.evaluation_submitted(self).deliver
+    User.admins.each { |ad| Notifier.evaluation_submitted(self, ad).deliver }
   end
 
   def submission_status_is_sufficient

@@ -1,16 +1,18 @@
 class Notifier < ActionMailer::Base
+
+  add_template_helper UsersHelper
+
   default from: "practicum-notification@cs.uchicago.edu"
   layout 'mail'
 
-  # Move admin deliveries here?
-
-  def project_proposed(project)
+  def project_proposed(project, admin)
     @advisor = project.advisor
     @project = project
-    @bcc = User.admins.inject([]) { |bcc, admin| bcc << admin.email }
+    @admin = admin
+    @to = @admin.email
     @subject = "UChicago CS Masters Practicum: New project proposal"
 
-    mail(bcc: @bcc, subject: @subject) do |format|
+    mail(to: @to, subject: @subject) do |format|
       format.text { render 'project_proposed' }
       format.html { render 'project_proposed' }
     end
@@ -59,17 +61,18 @@ class Notifier < ActionMailer::Base
     end
   end
 
-  def submission_status_updated(submission)
+  def submission_status_updated(submission, admin)
     @student = submission.student
     @advisor = submission.project.advisor
+    @admin = admin
     @project = submission.project
     @submission = submission
     # The advisor presumably updated the status, so we inform the admins.
     # Also, advisors don't need to be informed about this.
-    @bcc = User.admins.inject([]) { |bcc, admin| bcc << admin.email }
+    @to = @admin.email
     @subject = "UChicago CS Masters Practicum: Application status update"
 
-    mail(bcc: @bcc, subject: @subject) do |format|
+    mail(to: @to, subject: @subject) do |format|
       format.text { render 'submission_status_updated' }
       format.html { render 'submission_status_updated' }
     end
@@ -91,14 +94,15 @@ class Notifier < ActionMailer::Base
     end
   end
 
-  def evaluation_submitted(evaluation)
+  def evaluation_submitted(evaluation, admin)
     @advisor = evaluation.advisor
     @student = evaluation.student
+    @admin = admin
     @evaluation = evaluation
-    @bcc = User.admins.inject([]) { |bcc, admin| bcc << admin.email }
+    @to = @admin.email
     @subject = "UChicago CS Masters Practicum: New evaluation"
 
-    mail(bcc: @bcc, subject: @subject) do |format|
+    mail(to: @to, subject: @subject) do |format|
       format.text { render 'evaluation_submitted' }
       format.html { render 'evaluation_submitted' }
     end
