@@ -11,10 +11,10 @@ module ApplicationHelper
 
   def flash_class(flash_type)
     case flash_type
-    when :notice  then "info"
-    when :success then "success"
-    when :error   then "danger"
-    when :alert   then "warning"
+    when "notice"  then "info"
+    when "success" then "success"
+    when "error"   then "danger"
+    when "alert"   then "warning"
     else               flash_type
     end
   end

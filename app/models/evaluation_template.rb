@@ -58,6 +58,31 @@ class EvaluationTemplate < ActiveRecord::Base
     end
   end
 
+  def update_survey(survey_params)
+    delete = self.delete_questions(survey_params[:delete])
+    self.reorganize_questions_after_deletion
+    unless delete
+      self.change_mandatory(survey_params[:mandatory])
+      self.change_order(survey_params[:ordering])
+    end
+  end
+
+  def add_question(survey_params)
+    num = self.survey ? self.survey.length + 1 : 1
+    self.survey = {} unless self.survey
+
+    self.survey[num] = {
+      "question_type"      => survey_params[:question_type],
+      "question_prompt"    => survey_params[:question_prompt],
+      "question_mandatory" => survey_params[:question_mandatory]
+    }
+
+    if survey_params[:question_type] == "Radio button"
+      self.survey[num]["question_options"] =
+        survey_params[:radio_button_options]
+    end
+  end
+
   private
 
   def no_empty_questions
