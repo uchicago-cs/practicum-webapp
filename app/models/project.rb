@@ -100,7 +100,7 @@ class Project < ActiveRecord::Base
   end
 
   def creator_role
-    errors.add(:advisor, "must be an advisor or admin") if
+    errors.add(:base, "The project creator must be an advisor or admin.") if
       ( advisor.roles == ["student"] or advisor.roles == [] )
   end
 

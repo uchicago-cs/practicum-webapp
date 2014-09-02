@@ -1,5 +1,9 @@
 module PagesHelper
 
+  def alert_type_by_deadline
+    before_deadline?("admin_publish") ? "info" : "warning"
+  end
+
   def status_classes
     { "accepted" => "success", "rejected" => "danger", "pending" => "" }
   end

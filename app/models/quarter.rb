@@ -40,7 +40,8 @@ class Quarter < ActiveRecord::Base
   end
 
   def prevent_if_current
-    self.errors[:base] << "Cannot delete the current quarter." if self.current?
+    message = "You cannot delete the current quarter."
+    errors.add(:base, message) if self.current?
   end
 
   def downcase_season

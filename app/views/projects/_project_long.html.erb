@@ -22,14 +22,14 @@
       </td>
     </tr>
 
-    <% if can? :clone, @project %>
-      <tr>
-	<th>Cloned</th>
-	<td>
-	  <%= render 'project_clone', object: @project %>
-	</td>
-      </tr>
-    <% end %>
+      <% if can? :clone, @project %>
+	<tr>
+	  <th>Cloned</th>
+	  <td>
+	    <%= render 'project_clone', object: @project %>
+	  </td>
+	</tr>
+      <% end %>
 
       <% if @project.submittable_to? %>
 	<tr>
@@ -40,7 +40,7 @@
 	      (click <%= link_to "here",
 	      project_submissions_path(@project.id) %>
 	      to view students' applications to this project)
-            <% end %>
+	    <% end %>
 	  </td>
 	</tr>
       <% end %>

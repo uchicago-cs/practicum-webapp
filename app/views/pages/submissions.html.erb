@@ -1,6 +1,6 @@
 <h1><%= formatted_current_quarter %> applications</h1>
 
-<div class="alert alert-info">
+<div class="alert alert-<%= alert_type_by_deadline %>">
   <strong>Suggested decision publishing deadline</strong>:
   <%= formatted_deadline("admin_publish") %>
 </div>
@@ -8,7 +8,7 @@
 <% if @current_submissions.count > 0 %>
   <table class="table table-bordered">
     <tr>
-      <th>Student e-mail</th>
+      <th>Student</th>
       <th>Project title</th>
       <th>Date applied</th>
       <th>Advisor's decision</th>

@@ -1,7 +1,13 @@
 <h1>Create a new project proposal</h1>
 
-<strong>Project proposal deadline</strong>:
-<%= formatted_deadline("project_proposal") %>
+<%# We don't need to check if the deadline has passed, because we %>
+<%# prevent advisors from coming to this page if the deadline has passed. %>
+<%# (Compare with the message in index.html.erb.) %>
+
+<div class="alert alert-info">
+  <strong>Project proposal deadline</strong>:
+  <%= formatted_deadline("project_proposal") %>
+</div>
 
 <% if current_user.missing_proposal_info? %>
   <div class="alert alert-warning" role="alert">

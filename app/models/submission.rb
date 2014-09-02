@@ -124,7 +124,8 @@ class Submission < ActiveRecord::Base
   end
 
   def creator_role
-    errors.add(:user, "must be a student") unless "student".in? student.roles
+    errors.add(:base, "User must be a student.") unless
+      "student".in? student.roles
   end
 
   def downcase_status

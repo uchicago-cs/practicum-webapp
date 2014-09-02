@@ -13,6 +13,4 @@
 <% if (can? :apply_to, @project) and before_deadline?("student_submission") %>
   Click <%= link_to "here", new_project_submission_path(@project.id) %>
   to apply.
-<%# else %>
-  <!-- You may not apply to this project. -->
 <% end %>

@@ -1,10 +1,17 @@
 <h1>Applications to <%= @project.name %></h1>
 
 <% if can? :read_submissions_of, @project %>
-  <div class="alert alert-info">
-    <strong>Decision deadline</strong>:
-    <%= formatted_deadline("advisor_decision") %>
-  </div>
+  <% if before_deadline?("project_proposal") %>
+    <div class="alert alert-info">
+      <strong>Decision deadline</strong>:
+      <%= formatted_deadline("advisor_decision") %>
+    </div>
+  <% else %>
+    <div class="alert alert-warning">
+      <strong>The application decision deadline has passed.</strong>
+      It was <%= formatted_deadline("advisor_decision") %>.
+    </div>
+  <% end %>
 
   <table class="table table-bordered">
     <tr>
