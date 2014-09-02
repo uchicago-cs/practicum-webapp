@@ -17,7 +17,6 @@ RSpec.describe User, :type => :model do
     it { should respond_to(:projects) }
     it { should respond_to(:submissions) }
     it { should respond_to(:roles) }
-    it { should respond_to(:formatted_roles) }
     it { should respond_to(:projects_applied_to) }
     it { should respond_to(:applied_to_projects?) }
     it { should respond_to(:applied_to_project?) }
@@ -26,8 +25,6 @@ RSpec.describe User, :type => :model do
     it { should respond_to(:pending_projects) }
     it { should respond_to(:projects_made_by_id) }
     it { should respond_to(:evaluated_submission?) }
-    it { should respond_to(:formatted_affiliation) }
-    it { should respond_to(:formatted_department) }
     it { should respond_to(:missing_proposal_info?) }
 
     it { should be_valid }
@@ -106,8 +103,8 @@ RSpec.describe User, :type => :model do
       end
 
       it "should format them" do
-        expect(@advisor.formatted_affiliation).to include("Professor")
-        expect(@advisor.formatted_department).to include("Computer Science")
+        expect(formatted_affiliation(@advisor)).to include("Professor")
+        expect(formatted_department(@advisor)).to include("Computer Science")
       end
     end
 
@@ -119,7 +116,7 @@ RSpec.describe User, :type => :model do
 
       it "should be missing information" do
         expect(@advisor.missing_proposal_info?).to be_truthy
-        expect(@advisor.formatted_affiliation).to eq ""
+        expect(formatted_affiliation(@advisor)).to eq ""
       end
     end
   end

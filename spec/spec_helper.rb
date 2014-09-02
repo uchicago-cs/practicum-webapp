@@ -1,5 +1,4 @@
 require 'rubygems'
-require 'spork'
 require 'capybara/rspec'
 require 'database_cleaner'
 require 'factory_girl_rails'

@@ -81,6 +81,7 @@ class Notifier < ActionMailer::Base
   # Inform students about decision. If accepted, send to advisor as well.
   def submission_status_publish(submission)
     @student = submission.student
+    @advisor = submission.project.advisor
     @project = submission.project
     @submission = submission
     @status = submission.status
@@ -97,6 +98,7 @@ class Notifier < ActionMailer::Base
   def evaluation_submitted(evaluation, admin)
     @advisor = evaluation.advisor
     @student = evaluation.student
+    @project = evaluation.submission.project
     @admin = admin
     @evaluation = evaluation
     @to = @admin.email

@@ -77,7 +77,7 @@ class Submission < ActiveRecord::Base
 
   def send_status_updated
     if status_changed?
-      Notifier.submission_status_updated(self).deliver
+      User.admins.each {|a| Notifier.submission_status_updated(self, a).deliver}
     end
 
     if status_published_changed?
@@ -124,8 +124,7 @@ class Submission < ActiveRecord::Base
   end
 
   def creator_role
-    errors.add(:user, "must be a student") if
-      !("student".in? user.roles)
+    errors.add(:user, "must be a student") unless "student".in? student.roles
   end
 
   def downcase_status
