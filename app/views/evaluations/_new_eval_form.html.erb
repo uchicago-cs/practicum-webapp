@@ -1,6 +1,6 @@
 <tr>
   <th>
-    <%= f.label question["question_prompt"],
+    <%= f.content_tag :span, question["question_prompt"],
     class: "table-col-name", inline: true %>
     <%= question_necessity(question) %>
   </th>

@@ -8,6 +8,7 @@ class EvaluationsController < ApplicationController
   before_action :submission_status_sufficient?, only: [:new, :create]
   before_action :prevent_dup_positions,         only: :update_template
   before_action :get_template
+  before_action :get_student,                   only: [:new, :create]
 
   def index
   end
@@ -55,7 +56,6 @@ class EvaluationsController < ApplicationController
   end
 
   def new
-    @student = Submission.find(params[:submission_id]).student
   end
 
   def create
@@ -101,5 +101,9 @@ class EvaluationsController < ApplicationController
     message = "No two questions can have the same position."
     redirect_to edit_evaluation_template_path, flash: { error: message } if
       params[:ordering].values.length != params[:ordering].values.uniq.length
+  end
+
+  def get_student
+    @student = Submission.find(params[:submission_id]).student
   end
 end

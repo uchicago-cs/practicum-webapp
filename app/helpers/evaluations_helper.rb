@@ -1,5 +1,9 @@
 module EvaluationsHelper
 
+  def formatted_answer(answer)
+    answer.present? ? answer : "(Unanswered)"
+  end
+
   def db_template
     EvaluationTemplate.first || EvaluationTemplate.new
   end
