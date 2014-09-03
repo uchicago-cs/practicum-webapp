@@ -2,8 +2,9 @@ class UsersController < ApplicationController
 
   load_and_authorize_resource
 
-  before_action :is_admin?, only: :index
-  before_action :prevent_self_demotion, only: :update
+  before_action :is_admin?,                only: :index
+  before_action :prevent_self_demotion,    only: :update
+  before_action(only: :update) { |c| c.get_this_user_for_object(@user) }
 
   def show
   end

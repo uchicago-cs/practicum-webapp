@@ -8,8 +8,8 @@ class ProjectsController < ApplicationController
   before_action      :get_status_published,      only: [:show,
                                                         :update_status]
   before_action      :get_old_project_info,      only: :clone_project
-  before_action      :get_this_user,             only: [:update_status,
-                                                        :update]
+  before_action(only: [:update_status, :update]) { |c|
+    c.get_this_user_for_object(@project) }
 
   def new
   end
@@ -118,9 +118,5 @@ class ProjectsController < ApplicationController
   def get_old_project_info
     @old_project = Project.find(params[:id])
     @old_project.this_user = current_user
-  end
-
-  def get_this_user
-    @project.this_user = current_user
   end
 end

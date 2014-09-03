@@ -1,2 +1,9 @@
-You may request advisor status
-<%= link_to "here", request_advisor_access_path, method: :post %>.
+<h2>Request advisor privileges</h2>
+
+<% if current_user.advisor? %>
+  <p>You are already an advisor.</p>
+<% else %>
+  <p>You may request advisor privileges by clicking on the button below.</p>
+  <%= link_to "Submit request", request_advisor_access_path, method: :post,
+  class: "btn btn-primary" %>
+<% end %>

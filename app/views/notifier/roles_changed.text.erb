@@ -1,0 +1,7 @@
+Hi <%= @user.first_name || @user.cnet %>,
+
+An administrator has updated your website privileges.
+
+You now have privileges for the following role<%= "s" if @user.roles.size > 1 %>: <%= @user.roles.to_sentence %>.
+
+Visit <%= user_url(@user) %> to view your account page.

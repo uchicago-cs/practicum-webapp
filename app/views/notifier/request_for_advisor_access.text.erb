@@ -1,1 +1,8 @@
-A user has requested advisor privileges . . .
+Hi <%= @admin.first_name || @admin.cnet %>,
+
+A user has requested advisor privileges.
+
+User: <%= display_name(@user) %>
+CNetID: <%= @user.cnet %>
+
+Visit <%= user_url(@user) %> to change this user's status.

@@ -5,12 +5,17 @@ class Notifier < ActionMailer::Base
   default from: "practicum-notification@cs.uchicago.edu"
   layout 'mail'
 
+  def subject_constant
+    "UChicago CS Masters Practicum: "
+  end
+
   def project_proposed(project, admin)
     @advisor = project.advisor
     @project = project
     @admin = admin
     @to = @admin.email
-    @subject = "UChicago CS Masters Practicum: New project proposal"
+    @title = "New project proposal"
+    @subject = subject_constant + @title
 
     mail(to: @to, subject: @subject) do |format|
       format.text { render 'project_proposed' }
@@ -24,7 +29,8 @@ class Notifier < ActionMailer::Base
     @comments = project.comments
     @status = project.status
     @to = @advisor.email
-    @subject = "UChicago CS Masters Practicum: Project status update"
+    @title = "Project status update"
+    @subject = subject_constant + @title
 
     mail(to: @to, subject: @subject) do |format|
       format.text { render 'project_status_changed' }
@@ -38,7 +44,8 @@ class Notifier < ActionMailer::Base
     @project = project
     @status = project.status
     @to = @advisor.email
-    @subject = "UChicago CS Masters Practicum: Project status update"
+    @title = "Project status update"
+    @subject = subject_constant + @title
 
     mail(to: @to, subject: @subject) do |format|
       format.text { render 'project_status_published_accepted' }
@@ -53,7 +60,8 @@ class Notifier < ActionMailer::Base
     @project = submission.project
     @submission = submission
     @to = @advisor.email
-    @subject = "UChicago CS Masters Practicum: New application"
+    @title = "New application"
+    @subject = subject_constant + @title
 
     mail(to: @to, subject: @subject) do |format|
       format.text { render 'student_applied' }
@@ -70,7 +78,8 @@ class Notifier < ActionMailer::Base
     # The advisor presumably updated the status, so we inform the admins.
     # Also, advisors don't need to be informed about this.
     @to = @admin.email
-    @subject = "UChicago CS Masters Practicum: Application status update"
+    @title = "Application status update"
+    @subject = subject_constant + @title
 
     mail(to: @to, subject: @subject) do |format|
       format.text { render 'submission_status_updated' }
@@ -87,7 +96,8 @@ class Notifier < ActionMailer::Base
     @status = submission.status
     @to = @student.email
     @cc = (@status == "accepted") ? @advisor.email : []
-    @subject = "UChicago CS Masters Practicum: Application status update"
+    @title = "Application status update"
+    @subject = subject_constant + @title
 
     mail(to: @to, cc: @cc, subject: @subject) do |format|
       format.text { render 'submission_status_publish' }
@@ -102,7 +112,8 @@ class Notifier < ActionMailer::Base
     @admin = admin
     @evaluation = evaluation
     @to = @admin.email
-    @subject = "UChicago CS Masters Practicum: New evaluation"
+    @title = "New evaluation"
+    @subject = subject_constant + @title
 
     mail(to: @to, subject: @subject) do |format|
       format.text { render 'evaluation_submitted' }
@@ -114,11 +125,24 @@ class Notifier < ActionMailer::Base
     @user = user
     @admin = admin
     @to = @admin.email
-    @subject = "UChicago CS Masters Practicum: Advisor status request"
+    @title = "Advisor status request"
+    @subject = subject_constant + @title
 
     mail(to: @to, subject: @subject) do |format|
       format.text { render 'request_for_advisor_access' }
       format.html { render 'request_for_advisor_access' }
+    end
+  end
+
+  def roles_changed(user)
+    @user = user
+    @to = @user.email
+    @title = "Account status update"
+    @subject = subject_constant + @title
+
+    mail(to: @to, subject: @subject) do |format|
+      format.text { render 'roles_changed' }
+      format.html { render 'roles_changed' }
     end
   end
 

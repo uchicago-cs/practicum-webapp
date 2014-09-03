@@ -51,4 +51,8 @@ class ApplicationController < ActionController::Base
       DateTime.now <= Quarter.current_quarter.deadline(deadline)
   end
 
+  def get_this_user_for_object(obj)
+    obj.this_user = current_user
+  end
+
 end

@@ -10,6 +10,10 @@ class User < ActiveRecord::Base
          :ldap_authenticatable, authentication_keys: [:cnet]
 
   before_validation :get_ldap_info
+  before_update :send_roles_changed
+
+  # Current user, passed in from controller
+  attr_accessor :this_user
 
   def roles
     roles = []
@@ -82,6 +86,13 @@ class User < ActiveRecord::Base
                         get_ldap_param(self.cnet, "sn") rescue nil).first
 
       self.student = true
+    end
+  end
+
+  def send_roles_changed
+    if this_user != self and
+        (student_changed? or advisor_changed? or admin_changed?)
+      Notifier.roles_changed(self).deliver
     end
   end
 

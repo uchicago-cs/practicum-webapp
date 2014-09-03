@@ -10,6 +10,8 @@ class PagesController < ApplicationController
   before_action :get_current_decided_submissions, only: [:publish_all_statuses,
                                                          :approve_all_statuses,
                                                          :change_all_statuses]
+  before_action :send_advisor_request_mail,
+    only: :send_request_for_advisor_access
 
   def home
   end
@@ -49,12 +51,9 @@ class PagesController < ApplicationController
   end
 
   def send_request_for_advisor_access
-    User.admins.each do |admin|
-      Notifier.request_for_advisor_access(current_user, admin).deliver
-    end
-
-    redirect_to root_url, flash:
-      { success: "You have requested advisor privileges." }
+    flash[:success] = "You have requested advisor privileges. You will be " \
+                      "notified if your privileges are elevated."
+    redirect_to root_url
   end
 
   private
@@ -66,6 +65,12 @@ class PagesController < ApplicationController
   def get_current_decided_submissions
     @current_decided_submissions = @current_submissions.
       where.not(status: "pending")
+  end
+
+  def send_advisor_request_mail
+    User.admins.each do |admin|
+      Notifier.request_for_advisor_access(current_user, admin).deliver
+    end
   end
 
 end
