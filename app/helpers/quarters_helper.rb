@@ -1,5 +1,11 @@
 module QuartersHelper
 
+  def current_change_warning
+    "Changing the current quarter will prevent students from applying to "+
+    "previous quarters, although you may change which quarter is the current "+
+    "one at any time."
+  end
+
   def formatted_quarter(quarter)
     [quarter.season.capitalize, quarter.year].join(" ")
   end

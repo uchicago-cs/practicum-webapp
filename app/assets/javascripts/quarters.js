@@ -7,6 +7,11 @@ $(document).ready(function(event){
 	language: 'en'
     });
 
+    $('#quarter-form-tooltip').tooltip({
+	container: 'body',
+	trigger: 'hover'
+    });
+
     deadlines = $('.deadlines_class').data('deadlines');
     $('#quarter_start_date').val(deadlines["start"]);
     $('#quarter_project_proposal_deadline').val(deadlines["proposal"]);

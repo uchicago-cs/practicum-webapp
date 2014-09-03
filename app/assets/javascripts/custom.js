@@ -1,5 +1,5 @@
 $(document).ready(function(event){
-    $('.dropdown-toggle').dropdown()
+    $('.dropdown-toggle').dropdown();
 
     // Resize content-body div to fill the vertical space between the header
     // and footer.
