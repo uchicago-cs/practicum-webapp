@@ -1,5 +1,5 @@
-$(document).ready(function(event){
-
+$(function(event){
+//(document).ready
     function checkRadio(event) {
 	if ($('#new-eval-question #_question_type').val() == 'Radio button') {
 	    $('#new-eval-question #radio-button-group').show();

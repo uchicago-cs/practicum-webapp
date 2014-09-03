@@ -1,5 +1,13 @@
 module ApplicationHelper
 
+  def project_proposal_navbar_link
+    if before_deadline?("project_proposal")
+      content_tag(:li, link_to("Propose a project", new_project_path))
+    else
+      content_tag(:li, link_to("Propose a project", '#'), class: "disabled")
+    end
+  end
+
   def full_site_title
     "Practicum Program | Masters Program in Computer Science "\
     "| The University of Chicago"
