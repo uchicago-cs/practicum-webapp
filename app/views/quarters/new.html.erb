@@ -1,11 +1,12 @@
-<h3>Create a new quarter</h3>
 
-<!-- This lets us feed the deadlines to our JS file. -->
+<%# This lets us feed the deadlines to our JS file. %>
 <%= content_tag :div, class: "deadlines_class",
   data: { deadlines: @deadlines } do %>
 <% end %>
 
 <%= render 'date_notification' %>
+
+<h2>Create a new quarter</h2>
 
 <%= render 'new_edit_form', change: "create", form_season: default_season,
   form_year: Time.now.year, form_start_date: start_date,

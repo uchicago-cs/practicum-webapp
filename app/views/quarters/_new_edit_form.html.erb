@@ -1,5 +1,6 @@
 <%= bootstrap_form_for(@quarter, layout: :horizontal,
-		       control_col: "col-sm-2") do |f| %>
+		       control_col: "col-sm-2",
+		       label_col: "col-sm-3") do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
   <%= f.select :season, %w(Spring Summer Autumn Winter),

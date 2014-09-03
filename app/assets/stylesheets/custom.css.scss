@@ -13,6 +13,7 @@ $computed-header-height: 50px;
 $footer-height         : 100px;
 $navbar-border-height  : 10px;
 $light-maroon          : #971E21;
+$dark-maroon           : #800000;
 
 @mixin box_sizing {
     -moz-box-sizing: border-box;
@@ -56,6 +57,10 @@ header {
 
 #uchicago-logo {
     margin-top: 25px;
+}
+
+h2 {
+    color: $dark-maroon;
 }
 
 /* Sticky footer: see
@@ -196,7 +201,7 @@ label {
 }
 
 .navbar-brand {
-    font-size: 32px;
+    font-size: 36px;
 }
 
 .nav, .dropdown-menu {

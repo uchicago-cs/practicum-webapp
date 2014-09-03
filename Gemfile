@@ -23,7 +23,7 @@ gem 'jbuilder', '1.0.2'
 gem 'devise_ldap_authenticatable', '0.8.1'
 gem 'rb-readline', '0.5.1'
 gem 'momentjs-rails', '>= 2.8.1'
-gem 'bootstrap3-datetimepicker-rails', '~> 3.1.1'
+gem 'bootstrap3-datetimepicker-rails', '~> 3.1.2'
 gem 'parsley-rails', '2.0.4.0'
 gem 'pg', '~> 0.17.1'
 

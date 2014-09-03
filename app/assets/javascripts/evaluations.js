@@ -6,7 +6,7 @@ $(document).ready(function(event){
 	} else {
 	    $('#new-eval-question #radio-button-group').hide();
 	};
-    }
+    };
 
     checkRadio();
     $('#new-eval-question #_question_type').on('change', checkRadio);
@@ -44,7 +44,7 @@ $(document).ready(function(event){
 		prop('id', 'remove-radio-input[' + replacement + ']');
 	    thisFormGroup.find('label').
 		text("Radio button option " + replacement);
-	}
+	};
 	return false;
     });
 
@@ -56,7 +56,7 @@ $(document).ready(function(event){
 	} else {
 	    $('#edit-q-modal #radio-button-group').hide();
 	};
-    }
+    };
 
     $('#edit-q-modal #_question_type').on('change', checkRadioModal);
     $('#edit-q-modal').on('show.bs.modal', function(e) {
@@ -96,7 +96,7 @@ $(document).ready(function(event){
 		prop('id', 'remove-radio-input[' + replacement + ']');
 	    thisFormGroup.find('label').
 		text("Radio button option " + replacement);
-	}
+	};
 	return false;
     });
 
@@ -124,7 +124,7 @@ $(document).ready(function(event){
 	$('<div class="form-group"><label class="control-label col-sm-4" for="radio_button_options[' + im + ']">Radio button option ' + im + '</label><div class="col-md-6"><input class="form-control" id="radio_button_options[' + im + ']" name="radio_button_options[' + im + ']" type="text" data-parsley-required="true"></div><a href="#" class="col-sm-1 remove-radio-input" id="remove-radio-input[' + im +']">Remove</a></div>').appendTo(rbmDiv);
 		    $('.modal-body').find('input').last().
 			val(question_opts[index]);
-		}
+		};
 	    });
 	}
     });

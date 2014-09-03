@@ -326,7 +326,7 @@ DEPENDENCIES
   bcrypt-ruby (= 3.1.2)
   bootstrap-sass (~> 3.2.0)
   bootstrap-will_paginate (= 0.0.9)
-  bootstrap3-datetimepicker-rails (~> 3.1.1)
+  bootstrap3-datetimepicker-rails (~> 3.1.2)
   bootstrap_form!
   brakeman (= 2.6.1)
   cancancan (~> 1.8)
