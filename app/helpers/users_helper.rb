@@ -1,5 +1,10 @@
 module UsersHelper
 
+  def user_role_warning
+    "If you update this user's roles (and you are not this user), an e-mail "\
+    "will be sent to him / her."
+  end
+
   def display_name(user)
     if user.first_name.present? and user.last_name.present?
       "#{user.first_name} #{user.last_name}"

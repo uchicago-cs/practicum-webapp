@@ -9,6 +9,9 @@
     <%= f.check_box :admin, label: "Admin", inline: true %>
   <% end %>
 
-  <%= f.submit "Change this user's roles",
-  class: "btn btn-primary", data: { confirm: "Are you sure?" } %>
+  <span id="roles-form-tooltip" data-toggle="tooltip" data-placement="right"
+	title="<%= user_role_warning %>">
+    <%= f.submit "Change this user's roles",
+    class: "btn btn-primary", data: { confirm: "Are you sure?" } %>
+  </span>
 <% end %>
