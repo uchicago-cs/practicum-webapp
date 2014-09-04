@@ -26,7 +26,8 @@ gem 'momentjs-rails', '>= 2.8.1'
 gem 'bootstrap3-datetimepicker-rails', '~> 3.1.2'
 gem 'parsley-rails', '2.0.4.0'
 gem 'pg', '~> 0.17.1'
-gem 'autoprefixer-rails'
+gem 'autoprefixer-rails', '~> 3.0.1'
+gem 'jquery-turbolinks', '2.1.0'
 
 group :development, :test do
   gem 'rspec-rails', '3.0.0'
