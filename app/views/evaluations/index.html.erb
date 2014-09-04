@@ -1,7 +1,4 @@
-Click <%= link_to "here", edit_evaluation_template_path %> to edit the
-evaluation template.
-
-<h2>View all evaluations</h2>
+<h2>Evaluations</h2>
 
 <% if @evaluations.any? %>
   <table class="table table-bordered">
@@ -28,4 +25,8 @@ evaluation template.
 
 <p>
   Click <%= link_to "here", "#" %> to view evaluations from previous quarters.
+</p>
+<p>
+  Click <%= link_to "here", edit_evaluation_template_path %> to edit the
+  evaluation template.
 </p>
