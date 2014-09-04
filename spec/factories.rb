@@ -4,8 +4,11 @@ FactoryGirl.define do
   # belongs_to: Write `thing_this_belong_to` in the belonging model.
 
   factory :user do
-    sequence(:email) { |n| "user_#{n}@university.edu" }
-    password "foobarfoo"
+    sequence(:email)      { |n| "user_#{n}@university.edu" }
+    sequence(:first_name) { |n| "User" }
+    sequence(:last_name)  { |n| "#{n}" }
+    sequence(:cnet)       { |n| "user#{n}" }
+    password              "foobarfoo"
     password_confirmation "foobarfoo"
 
     trait :student do

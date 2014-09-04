@@ -20,6 +20,8 @@ module Practicum
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
+
     # Route exceptions we catch to the Rails router app.
     # config.exceptions_app = self.routes
     config.generators do |g|

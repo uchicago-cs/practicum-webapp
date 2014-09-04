@@ -42,6 +42,12 @@ class ProjectsController < ApplicationController
   end
 
   def index
+    if Quarter.count == 0
+      flash[:error] = "There are no quarters. A quarter must exist before you"\
+        "can view projects."
+      redirect_to root_url and return
+    end
+
     @projects = Project.current_accepted_published_projects
   end
 
