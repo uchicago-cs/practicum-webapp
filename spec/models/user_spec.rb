@@ -6,9 +6,7 @@ RSpec.describe User, :type => :model do
   describe "guest user" do
 
     before(:each) do
-      @user = User.create(email: "test@university.edu",
-                          password: "foobarfoo",
-                          student: false)
+      @user = FactoryGirl.create(:user)
     end
 
     subject { @user }
@@ -32,7 +30,7 @@ RSpec.describe User, :type => :model do
     it "should have an empty roles hash" do
       #expect(@user.student).to be_truthy
       #expect(@user.roles).to include "student"
-      expect(@user.formatted_roles).to eq ""
+      expect(formatted_roles(@user)).to eq ""
     end
 
     describe "projects" do
@@ -65,7 +63,7 @@ RSpec.describe User, :type => :model do
       end
       it "should fail" do
         expect{FactoryGirl.create(:submission, project: @project,
-                                  user: @user)}.to raise_error
+                                  advisor: @user)}.to raise_error
 
         #Rails.logger.debug "#{FactoryGirl.create(:submission, project: @project, user: @user)}\n\n"*50
       end

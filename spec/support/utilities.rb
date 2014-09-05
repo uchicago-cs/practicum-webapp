@@ -1,6 +1,7 @@
-# def sign_in(user)
-#   visit new_user_session_path
-#   fill_in "CNetID", with: user.cnet
-#   fill_in "Password", with: user.password
-#   click_button "Sign in"
-# end
+require 'spec_helper'
+include Warden::Test::Helpers
+
+# Make the user signed in without signing them in (i.e., bypass LDAP auth).
+def ldap_sign_in(user)
+  login_as(user, scope: :user)
+end

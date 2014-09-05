@@ -2,6 +2,11 @@ require 'rails_helper'
 require 'spec_helper'
 
 feature "Creating a new submission" do
+
+  Warden.test_mode!
+
+  after(:each) { Warden.test_reset! }
+
   subject { page }
 
   before(:each) do
@@ -11,7 +16,7 @@ feature "Creating a new submission" do
                                   :in_current_quarter)
     @student = FactoryGirl.create(:student)
 
-    sign_in(@student)
+    ldap_sign_in(@student)
   end
 
   describe "new submission" do

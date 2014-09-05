@@ -1,7 +1,10 @@
 require 'rubygems'
 require 'capybara/rspec'
+require 'capybara/poltergeist'
 require 'database_cleaner'
 require 'factory_girl_rails'
+
+Capybara.javascript_driver = :poltergeist
 
 # Loading more in this block will cause your tests to run faster. However,
 # if you change any configuration or code from libraries loaded here, you'll

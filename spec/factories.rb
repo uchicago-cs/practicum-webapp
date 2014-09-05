@@ -46,13 +46,13 @@ FactoryGirl.define do
     season { %w(spring summer autumn winter)[((Time.now.month - 1) / 3)-1] }
     start_date { Chronic.parse(season_dates[season.downcase],
                  now: Time.local(year, 1, 1, 12, 0, 0)).to_datetime }
-    project_proposal_deadline { start_date + \
+    project_proposal_deadline { start_date +
       deadline_weeks["proposal"].weeks + 4.days + 5.hours }
-    student_submission_deadline { start_date + \
+    student_submission_deadline { start_date +
       deadline_weeks["submission"].weeks + 4.days + 5.hours }
-    advisor_decision_deadline { start_date + \
+    advisor_decision_deadline { start_date +
       deadline_weeks["decision"].weeks + 4.days + 5.hours }
-    admin_publish_deadline { start_date + \
+    admin_publish_deadline { start_date +
       deadline_weeks["admin"].weeks + 4.days + 5.hours }
     end_date { start_date + 9.weeks + 5.days }
     current { true }
@@ -81,16 +81,27 @@ FactoryGirl.define do
       advisor_decision_deadline { DateTime.yesterday }
     end
 
+    trait :later_end_date do
+      end_date { DateTime.now + 11.weeks }
+    end
+
+    trait :earlier_start_date do
+      start_date { DateTime.now - 11.weeks }
+    end
+
     trait :no_deadlines_passed do
       can_create_submission
       can_create_project
       advisor_can_decide
+      later_end_date
     end
 
     trait :all_deadlines_passed do
+      earlier_start_date
       cannot_create_submission
       cannot_create_project
       advisor_cannot_decide
+      later_end_date
     end
 
     # trait :current_quarter do
@@ -103,13 +114,12 @@ FactoryGirl.define do
     sequence(:advisor_id) { |n| n }
     sequence(:quarter_id) { |n| n }
     status "pending"
-    deadline { DateTime.current }
     description { "a"*500 }
     expected_deliverables { "a"*500 }
     prerequisites { "a"*500 }
     related_work { "a"*500 }
     # `user`s should _not_ be allowed to create projects!
-    association :user, factory: [:user, :advisor]
+    association :advisor, factory: [:user, :advisor]
 
     trait :accepted do
       status { "accepted" }
@@ -138,7 +148,7 @@ FactoryGirl.define do
     courses { "a"*500 }
     project
     # `user`s should _not_ be allowed to create submissions!
-    association :user, factory: [:user, :student]
+    association :student, factory: [:user, :student]
   end
 
   factory :evaluation do
