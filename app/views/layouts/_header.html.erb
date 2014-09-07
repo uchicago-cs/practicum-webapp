@@ -20,7 +20,7 @@
 	<% end %>
 
 	<% if can? :read, Submission %>
-	  <li class="dropdown">
+	  <li class="dropdown" id="dropdown-personal">
 	    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 	      Personal
 	      <span class="caret"></span>
@@ -58,7 +58,7 @@
 	<% end %>
 
 	<% if can? :manage, :all %>
-	  <li class="dropdown">
+	  <li class="dropdown" id="dropdown-administrative">
 	    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 	      Administrative
 	      <span class="caret"></span>

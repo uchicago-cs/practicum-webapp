@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table class="table table-bordered submission-form-show">
 
   <tbody>
     <tr>
@@ -13,7 +13,9 @@
 
     <tr>
       <th>Advisor</th>
-      <td><%= display_name(@submission.project.advisor) %></td>
+      <td class="no-word-break">
+	<%= display_name(@submission.project.advisor) %>
+      </td>
     </tr>
 
     <tr>

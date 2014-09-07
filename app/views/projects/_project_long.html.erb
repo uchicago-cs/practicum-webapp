@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table class="table table-bordered project-form-show">
   <tbody>
     <tr>
       <th>Title</th>
@@ -13,7 +13,7 @@
     <% if can? :read_status_of, @project %>
     <tr>
       <th>Status</th>
-      <td id="edit-project-status">
+      <td id="edit-project-status" class="no-word-break">
 	<% if can? :manage, @project %>
 	  <%= render 'edit_status', object: @project %>
         <% else %>

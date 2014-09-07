@@ -157,6 +157,16 @@ table {
     }
 }
 
+.project-form-show, .submission-form-show {
+    td {
+	word-break: break-all;
+    }
+}
+
+.no-word-break {
+    word-break: normal !important;
+}
+
 #new-eval-question, #edit-q-modal, #edit-project-status {
     textarea {
 	min-height: 200px;
