@@ -65,8 +65,9 @@ describe "Viewing a project", type: :feature do
 
     context "an admin viewing the project" do
 
+      before { @project = FactoryGirl.create(:project, advisor: @advisor) }
+
       it "should show 'pending'" do
-        @project = FactoryGirl.create(:project, advisor: @advisor)
         ldap_sign_in(@admin)
         visit root_path
         within("#dropdown-administrative") { click_link("Pending projects") }
@@ -76,19 +77,31 @@ describe "Viewing a project", type: :feature do
       end
 
       describe "an admin changing its status to 'accepted'", js: true do
-        before do
-          @project = FactoryGirl.create(:project, advisor: @advisor)
+
+        before { @project = FactoryGirl.create(:project, advisor: @advisor) }
+
+        it "project should exist" do
+          expect(Project.first).to exist_in_database
+        end
+
+        it "should have a success message" do
           ldap_sign_in(@admin)
           visit root_path
           visit pending_projects_path
           click_link(@project.name)
           choose "Approve"
           click_button "Update project status"
-          page.evaluate_script('window.confirm = function() { return true; }')
+          expect(page).to have_css(".alert.alert-success")
         end
 
         it "should have changed its status to 'accepted'" do
-          puts @project.inspect * 50
+          expect(Project.first).to exist_in_database
+          ldap_sign_in(@admin)
+          visit root_path
+          visit pending_projects_path
+          click_link(@project.name)
+          choose "Approve"
+          click_button "Update project status"
           expect(@project.status).to eq "accepted"
         end
 
