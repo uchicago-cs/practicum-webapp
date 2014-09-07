@@ -17,6 +17,9 @@ class UsersController < ApplicationController
 
   def update
     if @user.update_attributes(user_params)
+      if params[:advisor] == "1" and @user.advisor_status_pending
+        @user.update_attributes(advisor_status_pending: false)
+      end
       flash[:success] = "Settings successfully updated."
       redirect_to @user
     else

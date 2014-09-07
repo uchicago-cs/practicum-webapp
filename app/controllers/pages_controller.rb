@@ -10,19 +10,8 @@ class PagesController < ApplicationController
   before_action :get_current_decided_submissions, only: [:publish_all_statuses,
                                                          :approve_all_statuses,
                                                          :change_all_statuses]
-  before_action :send_advisor_request_mail,
-    only: :send_request_for_advisor_access
 
   def home
-  end
-
-  def about
-  end
-
-  def contact
-  end
-
-  def help
   end
 
   def submissions
@@ -48,12 +37,29 @@ class PagesController < ApplicationController
   end
 
   def request_advisor_access
+    if current_user.advisor_status_pending
+      flash.now[:error] = "You have already requested advisor privileges."
+      render 'home'
+    elsif current_user.advisor
+      flash.now[:error] = "You are already an advisor."
+      render 'home'
+    end
   end
 
   def send_request_for_advisor_access
-    flash[:success] = "You have requested advisor privileges. You will be " \
-                      "notified if your privileges are elevated."
-    redirect_to root_url
+    if current_user.advisor_status_pending
+      flash.now[:error] = "You have already requested advisor privileges."
+      render 'home'
+    elsif current_user.advisor
+      flash.now[:error] = "You are already an advisor."
+      render 'home'
+    else
+      current_user.update_attributes(advisor_status_pending: true)
+      send_advisor_request_mail
+      flash[:success] = "You have requested advisor privileges. You will be " \
+      "notified if your privileges are elevated."
+      redirect_to root_url
+    end
   end
 
   private

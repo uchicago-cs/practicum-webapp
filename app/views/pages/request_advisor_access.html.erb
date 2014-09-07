@@ -1,6 +1,12 @@
 <h2>Request Advisor Privileges</h2>
 
-<% if current_user.advisor? %>
+<% if current_user.advisor_status_pending? %>
+  <%# This should never be seen, since a user who has already requested %>
+  <%# advisor privileges will be redirected to the homepage when trying to %>
+  <%# visit this page. %>
+  <p>You have already requested advisor privileges.</p>
+<% elsif current_user.advisor? %>
+  <%# Similarly, this should never be seen. %>
   <p>You are already an advisor.</p>
 <% else %>
   <p>You may request advisor privileges by clicking on the button below.</p>
