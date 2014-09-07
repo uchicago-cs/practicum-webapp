@@ -365,6 +365,7 @@ DEPENDENCIES
   parsley-rails (= 2.0.4.0)
   pg (~> 0.17.1)
   poltergeist
+  pry (= 0.10.1)
   rails (= 4.1.5)
   rails_12factor (= 0.0.2)
   rails_best_practices (= 1.15.4)

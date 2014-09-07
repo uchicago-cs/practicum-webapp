@@ -42,6 +42,7 @@ group :development, :test do
   gem 'debugger', '1.6.8'
   gem 'rails_best_practices', '1.15.4'
   gem 'rspec-its', '1.0.1'
+  gem 'pry', '0.10.1'
 end
 
 group :test do

@@ -63,7 +63,7 @@ describe "Viewing a project", type: :feature do
       end
     end
 
-    context "an admin viewing the project" do
+    describe "an admin viewing the project" do
 
       before { @project = FactoryGirl.create(:project, advisor: @advisor) }
 
@@ -75,42 +75,37 @@ describe "Viewing a project", type: :feature do
           expect(page).to have_content("Pending")
         end
       end
+    end
 
-      describe "an admin changing its status to 'accepted'", js: true do
+    describe "an admin changing its status to 'accepted'" do
 
-        before { @project = FactoryGirl.create(:project, advisor: @advisor) }
+      before(:each) do
+        @project = FactoryGirl.create(:project, advisor: @advisor)
+        ldap_sign_in(@admin)
+        visit pending_projects_path
+        click_link(@project.name)
+        choose "Approve"
+        click_button "Update project status"
+      end
 
-        it "project should exist" do
-          expect(Project.first).to exist_in_database
-        end
+      it "project should exist" do
+        expect(Project.first).to exist_in_database
+      end
 
-        it "should have a success message" do
-          ldap_sign_in(@admin)
-          visit root_path
-          visit pending_projects_path
-          click_link(@project.name)
-          choose "Approve"
-          click_button "Update project status"
-          expect(page).to have_css(".alert.alert-success")
-        end
+      it "should have a success message" do
+        expect(page).to have_css(".alert.alert-success")
+      end
 
-        it "should have changed its status to 'accepted'" do
-          expect(Project.first).to exist_in_database
-          ldap_sign_in(@admin)
-          visit root_path
-          visit pending_projects_path
-          click_link(@project.name)
-          choose "Approve"
-          click_button "Update project status"
-          expect(@project.status).to eq "accepted"
-        end
+      it "should have changed its status to 'accepted'" do
+        expect(@project.reload.status).to  eq "accepted"
+      end
 
-        # it "should show 'accepted / pending' message on its page" do
-        #   expect(page).to have_selector('div.alert.alert-notice')
-        #   within("table") do
-        #     expect(page).to have_content("Accepted (flagged")
-        #   end
-        # end
+      # it "should show 'accepted / pending' message on its page" do
+      #   expect(page).to have_selector('div.alert.alert-notice')
+      #   within("table") do
+      #     expect(page).to have_content("Accepted (flagged")
+      #   end
+      # end
 
       #     it "should show 'accepted / pending' on pendng projects page" do
       #       before do
@@ -120,8 +115,8 @@ describe "Viewing a project", type: :feature do
       #         expect(page).to have_content("Accepted (flagged")
       #       end
       #     end
-        end
-       end
+      # end
+    end
 
     # end
 
