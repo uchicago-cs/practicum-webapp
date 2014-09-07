@@ -36,9 +36,11 @@ class PagesController < ApplicationController
     redirect_to submissions_path
   end
 
+  # Not DRY.
   def request_advisor_access
     if current_user.advisor_status_pending
-      flash.now[:error] = "You have already requested advisor privileges."
+      flash.now[:error] = "You have already requested advisor privileges. " \
+      "Your request is pending administrator approval."
       render 'home'
     elsif current_user.advisor
       flash.now[:error] = "You are already an advisor."
@@ -48,7 +50,8 @@ class PagesController < ApplicationController
 
   def send_request_for_advisor_access
     if current_user.advisor_status_pending
-      flash.now[:error] = "You have already requested advisor privileges."
+      flash.now[:error] = "You have already requested advisor privileges. " \
+      "Your request is pending administrator approval."
       render 'home'
     elsif current_user.advisor
       flash.now[:error] = "You are already an advisor."
