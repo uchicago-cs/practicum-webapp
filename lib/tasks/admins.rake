@@ -4,7 +4,7 @@ namespace :db do
   domain = "uchicago.edu"
 
   task make_admins: :environment do
-    @borja = User.new(cnet: "borja", email: "borja@" + domain,
+    @borja = User.new(cnet: "borja", email: "borja@cs." + domain,
                       first_name: "Borja", last_name: "Sotomayor",
                       student: false, admin: true)
     @slance = User.new(cnet: "slance", email: "slance@" + domain,
