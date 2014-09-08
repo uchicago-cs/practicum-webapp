@@ -28,9 +28,14 @@ FactoryGirl.define do
       admin   true
     end
 
+    trait :guest do
+      student false
+    end
+
     factory :student, traits: [:student]
     factory :advisor, traits: [:advisor]
     factory :admin,   traits: [:admin]
+    factory :guest,   traits: [:guest]
   end
 
   factory :quarter do
@@ -163,7 +168,7 @@ FactoryGirl.define do
     sequence(:project_id) { |n| n }
     sequence(:student_id) { |n| n }
     submission
-    survey { {"How are you?" => "Great!", "What's your name?" => "John Doe"} }
+    survey { { "How are you?" => "Great!", "What's your name?" => "John Doe" } }
   end
 
 end

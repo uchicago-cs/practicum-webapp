@@ -6,7 +6,7 @@ RSpec.describe User, :type => :model do
   describe "guest user" do
 
     before(:each) do
-      @user = FactoryGirl.create(:user)
+      @user = FactoryGirl.create(:guest)
     end
 
     subject { @user }

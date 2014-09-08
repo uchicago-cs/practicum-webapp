@@ -8,6 +8,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
+    # We use truncation to reset the id sequences.
     DatabaseCleaner.strategy = :truncation
   end
 

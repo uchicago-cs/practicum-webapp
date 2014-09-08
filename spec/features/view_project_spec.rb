@@ -80,16 +80,14 @@ describe "Viewing a project", type: :feature do
     describe "an admin changing its status to 'accepted'" do
 
       before(:each) do
-        @project = FactoryGirl.create(:project, advisor: @advisor)
+        # These _need_ to be :in_current_quarter.
+        @project = FactoryGirl.create(:project, :in_current_quarter,
+                                      advisor: @advisor)
         ldap_sign_in(@admin)
         visit pending_projects_path
-        click_link(@project.name)
+        page.find_link(@project.name).click
         choose "Approve"
         click_button "Update project status"
-      end
-
-      it "project should exist" do
-        expect(Project.first).to exist_in_database
       end
 
       it "should have a success message" do

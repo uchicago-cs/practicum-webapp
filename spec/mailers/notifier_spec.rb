@@ -106,6 +106,7 @@ RSpec.describe Notifier, type: :mailer do
     end
 
     it "should send an e-mail" do
+      # Why does this depend on having the id sequences reset?
       expect{ FactoryGirl.create(:evaluation, submission: @submission,
                                  advisor_id: @advisor.id) }.
         to change{ ActionMailer::Base.deliveries.count }.by(@num)
