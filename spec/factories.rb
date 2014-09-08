@@ -151,11 +151,19 @@ FactoryGirl.define do
     association :student, factory: [:user, :student]
   end
 
+  factory :evaluation_template do
+    survey { {1 => { "question_prompt" => "How are you?",
+                     "question_type"   => "Text area" },
+              2 => { "question_prompt" => "What's your name?",
+                     "question_type"   => "Text field" } } }
+  end
+
   factory :evaluation do
     sequence(:advisor_id) { |n| n }
     sequence(:project_id) { |n| n }
     sequence(:student_id) { |n| n }
-    comments { "a"*500 }
     submission
+    survey { {"How are you?" => "Great!", "What's your name?" => "John Doe"} }
   end
+
 end
