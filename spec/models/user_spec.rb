@@ -27,10 +27,8 @@ RSpec.describe User, :type => :model do
 
     it { should be_valid }
 
-    it "should have an empty roles hash" do
-      #expect(@user.student).to be_truthy
-      #expect(@user.roles).to include "student"
-      expect(formatted_roles(@user)).to eq ""
+    it "should have no assigned roles" do
+      expect(@user.roles).to eq []
     end
 
     describe "projects" do
@@ -94,28 +92,16 @@ RSpec.describe User, :type => :model do
       end
     end
 
-    context "with affiliation and department" do
-      before do
-        @advisor.update_attributes(affiliation: "Professor",
-                                   department: "Computer Science")
-      end
-
-      it "should format them" do
-        expect(formatted_affiliation(@advisor)).to include("Professor")
-        expect(formatted_department(@advisor)).to include("Computer Science")
-      end
-    end
-
-    context "without affiliation or department" do
+    context "with a blank affiliation and a present department" do
       before do
         @advisor.update_attributes(affiliation: "",
                                    department: "Computer Science")
       end
 
-      it "should be missing information" do
+      it "should be missing proposal information" do
         expect(@advisor.missing_proposal_info?).to be_truthy
-        expect(formatted_affiliation(@advisor)).to eq ""
       end
+
     end
   end
 

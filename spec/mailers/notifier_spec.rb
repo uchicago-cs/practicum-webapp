@@ -1,6 +1,7 @@
-require "rails_helper"
+require 'rails_helper'
+require 'spec_helper'
 
-RSpec.describe Notifier, :type => :mailer do
+RSpec.describe Notifier, type: :mailer do
 
   before(:each) do
     @quarter = FactoryGirl.create(:quarter, :no_deadlines_passed)
@@ -20,34 +21,34 @@ RSpec.describe Notifier, :type => :mailer do
       @admins = []
       (@num = rand(1..10)).times { @admins << FactoryGirl.create(:admin) }
 
-      @project = FactoryGirl.create(:project)
+      @advisor = FactoryGirl.create(:advisor)
+      @project = FactoryGirl.create(:project, advisor: @advisor)
     end
 
     it "should send an e-mail" do
-      expect{ FactoryGirl.create(:submission, project: @project) }.to \
-        change{ ActionMailer::Base.deliveries.count }.by(1 + @num)
+      # When a student applies, we send an e-mail only to the advisor.
+      expect{ FactoryGirl.create(:submission, project: @project) }.
+        to change{ ActionMailer::Base.deliveries.count }.by(1)
     end
 
     it "should send an e-mail with the appropriate subject" do
       FactoryGirl.create(:submission, project: @project)
-      # The most recent e-mail's subject should include "applied."
       expect(ActionMailer::Base.deliveries.last.subject).to \
-        include "applied"
+        include "New application"
     end
 
     it "should send an e-mail to the advisor and admins" do
-      ActionMailer::Base.deliveries.clear
-      expect(ActionMailer::Base.deliveries.count).to eq(0)
+      expect(ActionMailer::Base.deliveries.count).to eq(@num)
 
       # According to submission.rb, we first send an e-mail to the advisor
       # who created the project.
       FactoryGirl.create(:submission, project: @project)
-      expect(ActionMailer::Base.deliveries.first.to).to \
+      expect(ActionMailer::Base.deliveries.last.to).to \
         include @project.advisor_email
 
       # We then send an e-mail to each admin.
       (1..@num).each do |n|
-        expect(ActionMailer::Base.deliveries[n].to).to \
+        expect(ActionMailer::Base.deliveries[n]).to \
           include @admins[n-1].email
       end
     end

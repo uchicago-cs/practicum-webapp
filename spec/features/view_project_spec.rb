@@ -97,30 +97,30 @@ describe "Viewing a project", type: :feature do
       end
 
       it "should have changed its status to 'accepted'" do
-        expect(@project.reload.status).to  eq "accepted"
+        # The #reload is necessary: we need to grab the updated value.
+        expect(@project.reload.status).to eq "accepted"
       end
 
-      # it "should show 'accepted / pending' message on its page" do
-      #   expect(page).to have_selector('div.alert.alert-notice')
-      #   within("table") do
-      #     expect(page).to have_content("Accepted (flagged")
-      #   end
-      # end
+      it "should have 'Approve' selected on its page" do
+        within("table") do
+          expect(page).to have_checked_field("Approve")
+        end
+      end
 
-      #     it "should show 'accepted / pending' on pendng projects page" do
-      #       before do
-      #         click_link "Pending projects"
-      #       end
-      #       within("table") do
-      #         expect(page).to have_content("Accepted (flagged")
-      #       end
-      #     end
-      # end
+      it "should show 'accepted / pending' on pendng projects page" do
+        click_link "Pending projects"
+        within("table") do
+          expect(page).to have_content("Accepted (flagged, not published)")
+        end
+      end
+
+      it "should not have a published status" do
+        expect(@project.reload.status_published).to eq false
+      end
+
     end
 
-    # end
-
-    # it "should not have a publishable status" do ...
+    # it "should not have a published status" do ...
   end
 
 end
