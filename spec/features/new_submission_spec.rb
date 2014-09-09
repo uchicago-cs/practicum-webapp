@@ -1,8 +1,6 @@
 require 'rails_helper'
 require 'spec_helper'
 
-
-
 describe "Creating a submission", type: :feature do
 
   Warden.test_mode!
@@ -95,9 +93,6 @@ describe "Creating a submission", type: :feature do
           within("#interests") do
             expect(page).to have_content("a" * 500)
           end
-          within("#interests") do
-            expect(page).to have_content("a" * 500)
-          end
           within("#qualifications") do
             expect(page).to have_content("a" * 500)
           end
@@ -106,12 +101,34 @@ describe "Creating a submission", type: :feature do
           end
         end
 
+        it "should not see the update text after clicking the app link" do
+          within("table") do
+            click_link("here")
+          end
+
+          within("#status") do
+            expect(page).not_to have_content("Status approved?")
+            expect(page).not_to have_content("Status published?")
+            expect(page).not_to have_button("Update application status")
+          end
+        end
       end
     end
 
   end
 
   context "after the submission deadline" do
+
+    before(:each) do
+      @quarter = FactoryGirl.create(:quarter, :cannot_create_submission,
+                                    :earlier_start_date, :later_end_date)
+      @admin   = FactoryGirl.create(:admin)
+      @advisor = FactoryGirl.create(:advisor)
+      @student = FactoryGirl.create(:student)
+      @project = FactoryGirl.create(:project, :accepted_and_published,
+                                    :in_current_quarter, advisor: @advisor)
+      ldap_sign_in(@student)
+    end
 
     describe "the student viewing the project" do
 
