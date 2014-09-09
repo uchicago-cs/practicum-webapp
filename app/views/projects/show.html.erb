@@ -11,6 +11,7 @@
 <%= render 'project_long', object: @project%>
 
 <% if (can? :apply_to, @project) and before_deadline?("student_submission") %>
-  Click <%= link_to "here", new_project_submission_path(@project.id) %>
+  Click <%= link_to "here", new_project_submission_path(@project.id),
+            id: "new-submission-link" %>
   to apply.
 <% end %>

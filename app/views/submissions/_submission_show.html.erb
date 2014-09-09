@@ -18,7 +18,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr id="status">
       <th>Status</th>
       <td>
 	<% if can? :update_status_of, @submission %>
@@ -29,17 +29,17 @@
       </td>
     </tr>
 
-    <tr>
+    <tr id="interests">
       <th>Interests</th>
       <td><%= @submission.information %></td>
     </tr>
 
-    <tr>
+    <tr id="qualifications">
       <th>Qualifications</th>
       <td><%= @submission.qualifications %></td>
     </tr>
 
-    <tr>
+    <tr id="courses">
       <th>Courses</th>
       <td><%= @submission.courses %></td>
     </tr>
