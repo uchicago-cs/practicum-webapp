@@ -115,28 +115,27 @@ describe "Creating a submission", type: :feature do
       end
     end
 
-  end
-
-  context "after the submission deadline" do
-
-    before(:each) do
-      @quarter = FactoryGirl.create(:quarter, :cannot_create_submission,
-                                    :earlier_start_date, :later_end_date)
-      @admin   = FactoryGirl.create(:admin)
-      @advisor = FactoryGirl.create(:advisor)
-      @student = FactoryGirl.create(:student)
-      @project = FactoryGirl.create(:project, :accepted_and_published,
-                                    :in_current_quarter, advisor: @advisor)
-      ldap_sign_in(@student)
-    end
-
-    describe "the student viewing the project" do
+    context "after the submission deadline" do
 
       before(:each) do
-        visit projects_path
+        @quarter = FactoryGirl.create(:quarter, :cannot_create_submission,
+                                      :earlier_start_date, :later_end_date)
+        @admin   = FactoryGirl.create(:admin)
+        @advisor = FactoryGirl.create(:advisor)
+        @student = FactoryGirl.create(:student)
+        @project = FactoryGirl.create(:project, :accepted_and_published,
+                                      :in_current_quarter, advisor: @advisor)
+        ldap_sign_in(@student)
       end
 
-    end
-  end
+      describe "the student viewing the project" do
 
+        before(:each) do
+          visit projects_path
+        end
+
+      end
+    end
+
+  end
 end
