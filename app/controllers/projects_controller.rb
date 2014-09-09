@@ -67,6 +67,9 @@ class ProjectsController < ApplicationController
     end
   end
 
+  # Publish all proposals that are flagged as approved or rejected.
+  # (They are "pending" in the sense that students cannot see them.
+  # Note that their advisors can see them.)
   def publish_all_pending
 
     Project.unpublished_nonpending_projects.each do |project|

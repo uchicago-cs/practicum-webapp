@@ -17,7 +17,8 @@
   <div>
     Click <%= link_to "here", publish_all_pending_projects_path,
               method: :patch, data: { confirm: "Are you sure?" } %>
-    to approve all flagged (non-pending) project proposals.
+    to publish all project proposals that are flagged as either approved or
+    rejected.
   </div>
 
 <% else %>

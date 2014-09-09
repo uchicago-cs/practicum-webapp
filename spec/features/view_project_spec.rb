@@ -33,8 +33,9 @@ describe "Viewing a project", type: :feature do
     end
 
     describe "after the advisor has made a project" do
-      before do
-        @project = FactoryGirl.create(:project, advisor: @advisor)
+      before(:each) do
+        @project = FactoryGirl.create(:project, :in_current_quarter,
+                                      advisor: @advisor)
         ldap_sign_in(@advisor)
         visit root_url
       end

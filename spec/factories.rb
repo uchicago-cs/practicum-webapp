@@ -125,6 +125,7 @@ FactoryGirl.define do
     related_work { "a"*500 }
     # `user`s should _not_ be allowed to create projects!
     association :advisor, factory: [:user, :advisor]
+    # quarter { Quarter.current_quarter }
 
     trait :accepted do
       status { "accepted" }
