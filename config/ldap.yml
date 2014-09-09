@@ -21,22 +21,22 @@ authorizations: &AUTHORIZATIONS
 ## Environment
 
 development:
-  host: ldap.uchicago.edu
+  host: ldap.cs.uchicago.edu
   port: 636
   attribute: uid
-  base: ou=people,dc=uchicago,dc=edu
+  base: dc=uchicago,dc=edu
   ssl: true
 
 test:
-  host: ldap.uchicago.edu
+  host: ldap.cs.uchicago.edu
   port: 636
   attribute: uid
-  base: ou=people,dc=uchicago,dc=edu
+  base: dc=uchicago,dc=edu
   ssl: true
 
 production:
-  host: ldap.uchicago.edu
+  host: ldap.cs.uchicago.edu
   port: 636
   attribute: uid
-  base: ou=people,dc=uchicago,dc=edu
+  base: dc=uchicago,dc=edu
   ssl: true
