@@ -13,7 +13,8 @@ def init_admins
   domain = "uchicago.edu"
 
   if User.where(cnet: "borja").exists?
-    User.where(cnet: "borja").update_attributes(student: false, admin: true)
+    User.where(cnet: "borja").take.update_attributes(student: false,
+                                                     admin: true)
   else
     @borja = User.new(cnet: "borja", email: "borja@cs." + domain,
                       first_name: "Borja", last_name: "Sotomayor",
@@ -22,7 +23,8 @@ def init_admins
   end
 
   if User.where(cnet: "slance").exists?
-    User.where(cnet: "slance").update_attributes(student: false, admin: true)
+    User.where(cnet: "slance").take.update_attributes(student: false,
+                                                      admin: true)
   else
     @slance = User.new(cnet: "slance", email: "slance@" + domain,
                        first_name: "Stefan", last_name: "Lance",
