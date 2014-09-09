@@ -39,6 +39,10 @@ def init_quarter
     puts "A current quarter already exists."
   else
     Quarter.create(current: true, start_date: DateTime.now - 1.days,
+                   project_proposal_deadline: DateTime.now,
+                   student_submission_deadline: DateTime.now,
+                   advisor_decision_deadline: DateTime.now,
+                   admin_publish_deadline: DateTime.now,
                    end_date: DateTime.now + 3.months)
   end
 end

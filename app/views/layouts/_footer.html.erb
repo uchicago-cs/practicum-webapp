@@ -2,13 +2,11 @@
   <div class="container">
     <small class="footer-text pull-left col-md-5">
       <p>University of Chicago</p>
-      <p>Questions? Contact <%= support_address %>.</p>
+      <p>Questions? Contact <%= mail_to support_address %>.</p>
       <p>The source code for this website is available
       <%= link_to "here", github_page, target: "_blank" %>. </p>
     </small>
 
     <%= image_tag "logo-small.png", class: "pull-right", id: "uchicago-logo" %>
-
-    <%#= debug(params) if Rails.env.development? %>
   </div>
 </footer>
