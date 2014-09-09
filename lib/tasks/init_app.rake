@@ -38,9 +38,7 @@ def init_quarter
   if Quarter.current_quarter.exists?
     puts "A current quarter already exists."
   else
-    @current_quarter = Quarter.new(current: true,
-                                   start_date: DateTime.now - 1.days,
-                                   end_date: DateTime.now + 3.months)
-    @quarter.save
+    Quarter.create(current: true, start_date: DateTime.now - 1.days,
+                   end_date: DateTime.now + 3.months)
   end
 end

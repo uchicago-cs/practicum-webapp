@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def support_address
+    "practicum-support@mailman.cs.uchicago.edu"
+  end
+
   def project_proposal_navbar_link
     if before_deadline?("project_proposal")
       content_tag(:li, link_to("Propose a project", new_project_path))
