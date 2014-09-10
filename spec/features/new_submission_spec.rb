@@ -151,6 +151,27 @@ describe "Creating a submission", type: :feature do
       it "should not see the 'apply to this project' text" do
         expect(page).not_to have_content("Click here to apply.")
       end
+
+      it "should be redirected away when visiting the new sub. url" do
+        visit new_project_submission_path(@project)
+        expect(page).to have_selector("div.alert.alert-danger")
+        expect(page).to have_content("The student submission deadline for " +
+                                     "this quarter has passed.")
+        expect(current_path).to eq(root_path)
+      end
+    end
+
+    describe "directly creating the submission" do
+      it "should be invalid" do
+        @submission = FactoryGirl.build(:submission, student: @student,
+                                        project: @project,
+                                        information: "a" * 500,
+                                        qualifications: "a" * 500,
+                                        courses: "a" * 500)
+        expect(@submission).not_to be_valid
+        expect(@submission.errors.values.flatten).
+          to include("The application deadline has passed.")
+      end
     end
   end
 

@@ -66,7 +66,10 @@ describe "Viewing a project", type: :feature do
 
     describe "an admin viewing the project" do
 
-      before { @project = FactoryGirl.create(:project, advisor: @advisor) }
+      before do
+        @project = FactoryGirl.create(:project, :in_current_quarter,
+                                      advisor: @advisor)
+      end
 
       it "should show 'pending'" do
         ldap_sign_in(@admin)
