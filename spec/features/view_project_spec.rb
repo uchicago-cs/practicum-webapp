@@ -132,59 +132,76 @@ describe "Viewing a project", type: :feature do
       @quarter       = FactoryGirl.create(:quarter, :no_deadlines_passed)
       @advisor       = FactoryGirl.create(:advisor)
       @admin         = FactoryGirl.create(:admin)
-      @student       = FactoryGirl.create(:student)
-      @other_advisor = FactoryGirl.create(:advisor)
     end
 
-    context "when the project is pending" do
+    shared_examples_for "a user viewing the project" do |user|
+      before do
+        @user = FactoryGirl.create(user.to_sym)
+        ldap_sign_in(@user)
+      end
+
+      it "shouldn't show the project on the project index page" do
+        visit projects_path
+        expect(page).not_to have_content(@project.name)
+      end
+
+      it "shouldn't be able to access the project's page" do
+        visit project_path(@project)
+        expect(page).to have_selector("div.alert.alert-danger")
+        expect(page).to have_content("Access denied")
+        expect(current_path).to eq(root_path)
+      end
+
+      # We might want to put these two (below) in new_submission_spec.rb.
+      it "shouldn't be able to apply to the project on the site" do
+        visit new_project_submission_path(@project)
+        expect(page).to have_selector("div.alert.alert-danger")
+        expect(page).to have_content("Access denied")
+        expect(current_path).to eq(root_path)
+      end
+
+      it "shouldn't be able to apply to the project off the site" do
+        @submission = FactoryGirl.build(:submission, student: @user,
+                                        project: @project,
+                                        information: "a" * 500,
+                                        qualifications: "a" * 500,
+                                        courses: "a" * 500)
+        expect(@submission).not_to be_valid
+        expect(@submission.errors.values.flatten).
+          to include("Project must be approved and published before it " +
+                     "can be applied to.")
+      end
+    end
+
+    shared_examples_for "a project with some status and status_published" \
+    do |status, status_published|
       before do
         @project = FactoryGirl.create(:project, :in_current_quarter,
-                                      advisor: @advisor, status: "pending",
-                                      status_published: false)
+                                      advisor: @advisor, status: status,
+                                      status_published: status_published)
       end
 
-      context "as a guest user" do
-        before do
-          @guest = FactoryGirl.create(:guest)
-          ldap_sign_in(@guest)
-        end
-
-        it "shouldn't show the project on the project index page" do
-          visit projects_path
-          expect(page).not_to have_content(@project.name)
-        end
-
-        it "shouldn't be able to access the project's page" do
-          visit project_path(@project)
-          expect(page).to have_selector("div.alert.alert-danger")
-          expect(page).to have_content("Access denied")
-          expect(current_path).to eq(root_path)
-        end
-
-        # We might want to put these in new_submission_spec.rb.
-
-        it "shouldn't be able to apply to the project on the site" do
-          visit new_project_submission_path(@project)
-          expect(page).to have_selector("div.alert.alert-danger")
-          expect(page).to have_content("Access denied")
-          expect(current_path).to eq(root_path)
-        end
-
-        # need to add a validation for this
-        it "shouldn't be able to apply to the project off the site" do
-          @submission = FactoryGirl.build(:submission, student: @guest,
-                                          project: @project,
-                                          information: "a" * 500,
-                                          qualifications: "a" * 500,
-                                          courses: "a" * 500)
-          expect(@submission).not_to be_valid
-          expect(@submission.errors.values.flatten).
-            to include("Project must be approved and published before it " +
-                       "can be applied to.")
+      ["guest", "student", "advisor"].each do |user|
+        describe "#{user}" do
+          it_behaves_like "a user viewing the project", user.to_sym
         end
       end
-
     end
+
+    describe "a pending, unpublished project" do
+      it_behaves_like "a project with some status and status_published",
+        "pending", false
+    end
+
+    ["accepted", "rejected"].each do |status|
+      [true, false].each do |published|
+        describe "#{status}, #{published ?'published':'unpublished'} project" do
+          it_behaves_like "a project with some status and status_published",
+            status, published
+        end
+      end
+    end
+
   end
 
 end
