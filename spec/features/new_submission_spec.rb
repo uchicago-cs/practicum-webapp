@@ -23,8 +23,13 @@ describe "Creating a submission", type: :feature do
 
     describe "the student viewing the project" do
 
-      before(:each) do
-        visit projects_path
+      before(:each) { visit projects_path }
+
+      it "should see the deadline on the projects page" do
+        expect(page).to have_selector("div.alert.alert-info")
+        within(".alert.alert-info") do
+          expect(page).to have_content("Application deadline:")
+        end
       end
 
       it "should see the project on the projects page" do
@@ -115,27 +120,59 @@ describe "Creating a submission", type: :feature do
       end
     end
 
-    context "after the submission deadline" do
+  end
 
-      before(:each) do
-        @quarter = FactoryGirl.create(:quarter, :cannot_create_submission,
-                                      :earlier_start_date, :later_end_date)
-        @admin   = FactoryGirl.create(:admin)
-        @advisor = FactoryGirl.create(:advisor)
-        @student = FactoryGirl.create(:student)
-        @project = FactoryGirl.create(:project, :accepted_and_published,
-                                      :in_current_quarter, advisor: @advisor)
-        ldap_sign_in(@student)
+  context "after the submission deadline" do
+
+    before(:each) do
+      @quarter = FactoryGirl.create(:quarter, :can_create_project,
+                                    :cannot_create_submission,
+                                    :earlier_start_date, :later_end_date)
+      @admin   = FactoryGirl.create(:admin)
+      @advisor = FactoryGirl.create(:advisor)
+      @student = FactoryGirl.create(:student)
+      @project = FactoryGirl.create(:project, :accepted_and_published,
+                                    :in_current_quarter, advisor: @advisor)
+      ldap_sign_in(@student)
+    end
+
+    describe "the student viewing the project" do
+
+      before(:each) { visit projects_path }
+
+      it "should see a notification that the deadline has passed" do
+        expect(page).to have_selector("div.alert.alert-warning")
+        within(".alert.alert-warning") do
+          expect(page).to have_content("The application deadline for this " +
+                                       "quarter has passed.")
+        end
       end
 
-      describe "the student viewing the project" do
+      it "should not see the 'apply to this project' text" do
+        expect(page).not_to have_content("Click here to apply.")
+      end
 
-        before(:each) do
-          visit projects_path
-        end
-
+      it "should be redirected away when visiting the new sub. url" do
+        visit new_project_submission_path(@project)
+        expect(page).to have_selector("div.alert.alert-danger")
+        expect(page).to have_content("The student submission deadline for " +
+                                     "this quarter has passed.")
+        expect(current_path).to eq(root_path)
       end
     end
 
+    describe "directly creating the submission" do
+      it "should be invalid" do
+        @submission = FactoryGirl.build(:submission, student: @student,
+                                        project: @project,
+                                        information: "a" * 500,
+                                        qualifications: "a" * 500,
+                                        courses: "a" * 500)
+        expect(@submission).not_to be_valid
+        expect(@submission.errors.values.flatten).
+          to include("The application deadline has passed.")
+      end
+    end
   end
+
 end
