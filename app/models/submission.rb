@@ -25,6 +25,7 @@ class Submission < ActiveRecord::Base
   validate :created_before_submission_deadline, on: :create
   validate :decision_made_before_decision_deadline
   validate :creator_role, on: :create
+  validate :created_when_project_visible, on: :create
 
   delegate :name, to: :project, prefix: true, allow_nil: true
   delegate :quarter, to: :project, prefix: false, allow_nil: true
@@ -126,6 +127,12 @@ class Submission < ActiveRecord::Base
   def creator_role
     errors.add(:base, "User must be a student.") unless
       "student".in? student.roles
+  end
+
+  def created_when_project_visible
+    msg = "Project must be approved and published before it can be applied to."
+    errors.add(:base, msg) unless
+      (project.status == "accepted" and project.status_published?)
   end
 
   def downcase_status
