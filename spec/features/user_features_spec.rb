@@ -11,7 +11,7 @@ describe "Users viewing pages", type: :feature do
   # Again, we want to reduce redundancy. Make this DRY!
   context "viewing user profiles" do
     before(:each) do
-
+      @user_1 = FactoryGirl.create(:user)
     end
   end
 

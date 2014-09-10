@@ -18,13 +18,13 @@ FactoryGirl.define do
 
     trait :advisor do
       sequence(:email) { |n| "advisor_#{n}@university.edu" }
-      student true
+      student false
       advisor true
     end
 
     trait :admin do
       sequence(:email) { |n| "admin_#{n}@university.edu" }
-      student true
+      student false
       admin   true
     end
 
