@@ -7,7 +7,7 @@ class Ability
     can :read, Quarter
 
     if user.new_record?
-      can :read, Project, status: "accepted"
+      can :read, Project, status: "accepted", status_published: true
     else
 
       if user.admin?
@@ -38,7 +38,8 @@ class Ability
         end
 
         can :read, Project do |project|
-          project.status == "accepted" or project.advisor_id == user.id
+          (project.status == "accepted" and project.status_published) or
+            project.advisor_id == user.id
         end
 
         can :update, Project do |project|
@@ -65,7 +66,7 @@ class Ability
       end
 
       if user.student?
-        can :read, Project, status: "accepted"
+        can :read, Project, status: "accepted", status_published: true
         can :my_submissions, User, id: user.id
         can :read, User, id: user.id
         can :create, Submission
@@ -73,7 +74,7 @@ class Ability
         can :download_resume, Submission, student_id: user.id
         can :apply_to, Project do |project|
           project.accepted? and !user.applied_to_project?(project) and
-            project.in_current_quarter?
+            project.in_current_quarter? and project.status_published?
         end
       end
 

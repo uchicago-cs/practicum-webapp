@@ -3,11 +3,10 @@ class ProjectsController < ApplicationController
   load_and_authorize_resource
 
   skip_before_action :authenticate_user!,        only: [:index, :show]
+  before_action      :get_status_published,      only: [:show, :update_status]
+  before_action      :get_old_project_info,      only: :clone_project
   before_action(only: [:new, :create]) { |c|
     c.before_deadline?("project_proposal") }
-  before_action      :get_status_published,      only: [:show,
-                                                        :update_status]
-  before_action      :get_old_project_info,      only: :clone_project
   before_action(only: [:update_status, :update]) { |c|
     c.get_this_user_for_object(@project) }
 
@@ -42,9 +41,11 @@ class ProjectsController < ApplicationController
   end
 
   def index
+    # Something similar should be put in the application controller for every
+    # page.
     if Quarter.count == 0
-      flash[:error] = "There are no quarters. A quarter must exist before you"\
-        "can view projects."
+      flash[:error] = "There are no quarters. A quarter must exist before " +
+        "you can view projects."
       redirect_to root_url and return
     end
 

@@ -147,6 +147,9 @@ describe "Viewing a project", type: :feature do
 
       it "shouldn't be able to access the project's page" do
         visit project_path(@project)
+        unless have_selector("div.alert.alert-danger").matches?(page)
+          save_and_open_page
+        end
         expect(page).to have_selector("div.alert.alert-danger")
         expect(page).to have_content("Access denied")
         expect(current_path).to eq(root_path)
@@ -155,6 +158,9 @@ describe "Viewing a project", type: :feature do
       # We might want to put these two (below) in new_submission_spec.rb.
       it "shouldn't be able to apply to the project on the site" do
         visit new_project_submission_path(@project)
+        unless have_selector("div.alert.alert-danger").matches?(page)
+          save_and_open_page
+        end
         expect(page).to have_selector("div.alert.alert-danger")
         expect(page).to have_content("Access denied")
         expect(current_path).to eq(root_path)
@@ -195,9 +201,13 @@ describe "Viewing a project", type: :feature do
 
     ["accepted", "rejected"].each do |status|
       [true, false].each do |published|
-        describe "#{status}, #{published ?'published':'unpublished'} project" do
-          it_behaves_like "a project with some status and status_published",
+        unless (status == "accepted" and published)
+          status_text = "a" + (status == "accepted" ? "n" : "") + " " + status
+          published_text = published ? 'published' : 'unpublished'
+          describe "#{status_text}, #{published_text} project" do
+            it_behaves_like "a project with some status and status_published",
             status, published
+          end
         end
       end
     end

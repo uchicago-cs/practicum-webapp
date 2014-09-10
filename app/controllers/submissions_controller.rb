@@ -9,6 +9,7 @@ class SubmissionsController < ApplicationController
   before_action :already_applied_to_project?, only: [:new, :create]
   before_action :project_in_current_quarter?, only: [:new, :create]
   before_action :get_statuses,                only: [:show, :update_status]
+  before_action :project_accepted_and_pub?,   only: [:new, :create]
   before_action(except: :index) { |c|
     c.get_this_user_for_object(@submission) }
   before_action(only: [:new, :create]) { |c|
@@ -127,4 +128,11 @@ class SubmissionsController < ApplicationController
     @status_approved = @submission.status_approved
     @status_published = @submission.status_published
   end
+
+  def project_accepted_and_pub?
+    message = "Access denied."
+    redirect_to root_url, flash: { error: message } unless
+      (@project.status == "accepted" and @project.status_published?)
+  end
+
 end

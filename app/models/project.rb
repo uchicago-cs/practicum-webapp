@@ -14,7 +14,7 @@ class Project < ActiveRecord::Base
     -> { where(status: "accepted").
     joins(:quarter).where(quarters: { current: true }) }
   scope :current_accepted_published_projects,
-    -> { where(status: "accepted", status_published: true).
+    -> { where({status: "accepted", status_published: true}).
     joins(:quarter).where(quarters: { current: true }) }
   scope :quarter_accepted_projects,
     ->(quarter) { where(status: "accepted").
