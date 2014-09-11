@@ -121,7 +121,7 @@ class Submission < ActiveRecord::Base
     message = "Status cannot be updated past the advisor's decision deadline."
     errors.add(:base, message) if !self.pending? and self.status_changed? and
       DateTime.now > Quarter.current_quarter.advisor_decision_deadline and
-      !self.this_user.admin?
+      !self.this_user.try(:admin?)
   end
 
   def creator_role
