@@ -194,10 +194,20 @@ describe "Users viewing pages", type: :feature do
     end
   end
 
+  # Again: do these for all types of non-admin accounts?
   context "as a non-admin user" do
     before(:each) do
       @user = FactoryGirl.create(:user)
       ldap_sign_in(@user)
+    end
+
+    context "viewing the pending projects page" do
+      it "should redirect the user to the homepage" do
+        visit pending_projects_path
+        expect(current_path).to eq root_path
+        expect(page).to have_selector("div.alert.alert-danger")
+        expect(page).to have_content("Access denied")
+      end
     end
 
     context "visiting the quarters page" do
@@ -212,9 +222,25 @@ describe "Users viewing pages", type: :feature do
 
       it "should not be able to see the edit and new links" do
         expect(page).
-          not_to have_css("a[href~='#{edit_quarter_path(@quarter)}'")
+          not_to have_css("a[href~='#{edit_quarter_path(@quarter)}']")
         expect(page).
-          not_to have_css("a[href~='#{new_quarter_path}'")
+          not_to have_css("a[href~='#{new_quarter_path}']")
+      end
+    end
+
+    context "visiting admin quarter links" do
+      it "should not be able to visit the 'new quarter' page" do
+        visit new_quarter_path
+        expect(current_path).to eq(root_path)
+        expect(page).to have_selector("div.alert.alert-danger")
+        expect(page).to have_content("Access denied")
+      end
+
+      it "should not be able to visit the 'edit quarter' page" do
+        visit edit_quarter_path(@quarter)
+        expect(current_path).to eq(root_path)
+        expect(page).to have_selector("div.alert.alert-danger")
+        expect(page).to have_content("Access denied")
       end
     end
   end
