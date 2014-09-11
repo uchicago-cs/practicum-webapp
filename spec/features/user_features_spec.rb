@@ -127,4 +127,70 @@ describe "Users viewing pages", type: :feature do
     end
   end
 
+  # Set up the specs so they are grouped by:
+  # admin: view pages
+  # non-admin: view pages; get redirected with a flash message
+  # Keep it DRY.
+
+  context "as an admin" do
+    before(:each) do
+      @admin = FactoryGirl.create(:admin)
+      ldap_sign_in(@admin)
+    end
+
+    context "viewing the pending projects page" do
+      it "should show the appropriate information" do
+        visit pending_projects_path
+        expect(current_path).to eq pending_projects_path
+        expect(page).to have_content("#{@quarter.season.capitalize} " +
+                                     "#{@quarter.year} Pending Projects")
+      end
+    end
+
+    context "viewing the quarters" do
+      before(:each) { visit quarters_path }
+
+      it "should bring the admin to the quarters page" do
+        expect(current_path).to eq(quarters_path)
+      end
+
+      context "viewing the quarter index page" do
+        it "should see a table rather than a list" do
+          expect(page).to have_selector("table.table.table-bordered")
+        end
+
+        it "should see the quarters in the table" do
+          Quarter.all.each do |quarter|
+            expect(page).to have_content(quarter.season.capitalize)
+            expect(page).to have_content(quarter.year)
+            expect(page).to have_link("Edit", href: edit_quarter_path(quarter))
+          end
+        end
+
+        it "should see the 'new quarter' link" do
+          expect(page).to have_link("here", href: new_quarter_path)
+        end
+      end
+
+      context "viewing the new quarter page" do
+        before(:each) { within("#content") { click_link("here") } }
+
+        it "should bring the admin to the 'new quarter' page" do
+          expect(current_path).to eq(new_quarter_path)
+          expect(page).to have_content("Create a Quarter")
+        end
+      end
+
+      context "viewing the edit quarter page" do
+        # `@quarter` is the only quarter we created.
+        before(:each) { click_link("Edit") }
+
+        it "should bring the admint to the 'edit quarter' page" do
+          expect(current_path).to eq(edit_quarter_path(@quarter))
+          expect(page).to have_content("Edit #{@quarter.season.capitalize} " +
+                                       "#{@quarter.year}")
+        end
+      end
+    end
+  end
 end
