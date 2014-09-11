@@ -3,13 +3,13 @@
 This is your personal page.
 
 <% if can? :update_affiliation_of, current_user %>
-  <h3>Change your affiliation and department</h3>
+  <h3>Affiliation and Department</h3>
   <%= render 'affiliation_form' %>
 <% end %>
 
 <br />
 
 <% if current_user.admin? %>
-  <h3>Change user roles</h3>
+  <h3>Roles</h3>
   <%= render 'roles_form' %>
 <% end %>
