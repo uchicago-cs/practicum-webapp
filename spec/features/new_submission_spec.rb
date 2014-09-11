@@ -160,19 +160,6 @@ describe "Creating a submission", type: :feature do
         expect(current_path).to eq(root_path)
       end
     end
-
-    describe "directly creating the submission" do
-      it "should be invalid" do
-        @submission = FactoryGirl.build(:submission, student: @student,
-                                        project: @project,
-                                        information: "a" * 500,
-                                        qualifications: "a" * 500,
-                                        courses: "a" * 500)
-        expect(@submission).not_to be_valid
-        expect(@submission.errors.values.flatten).
-          to include("The application deadline has passed.")
-      end
-    end
   end
 
 end
