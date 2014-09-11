@@ -185,11 +185,36 @@ describe "Users viewing pages", type: :feature do
         # `@quarter` is the only quarter we created.
         before(:each) { click_link("Edit") }
 
-        it "should bring the admint to the 'edit quarter' page" do
+        it "should bring the admin to the 'edit quarter' page" do
           expect(current_path).to eq(edit_quarter_path(@quarter))
           expect(page).to have_content("Edit #{@quarter.season.capitalize} " +
                                        "#{@quarter.year}")
         end
+      end
+    end
+  end
+
+  context "as a non-admin user" do
+    before(:each) do
+      @user = FactoryGirl.create(:user)
+      ldap_sign_in(@user)
+    end
+
+    context "visiting the quarters page" do
+      before(:each) { visit quarters_path }
+
+      it "should show the quarters page with a list rather than a table" do
+        expect(current_path).to eq(quarters_path)
+        expect(page).to have_content(@quarter.season.capitalize)
+        expect(page).to have_content(@quarter.year)
+        expect(page).not_to have_selector("table")
+      end
+
+      it "should not be able to see the edit and new links" do
+        expect(page).
+          not_to have_css("a[href~='#{edit_quarter_path(@quarter)}'")
+        expect(page).
+          not_to have_css("a[href~='#{new_quarter_path}'")
       end
     end
   end
