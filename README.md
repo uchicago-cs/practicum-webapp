@@ -10,4 +10,4 @@ Dependencies
 Initialization
 --------------
 
-After starting the app, initialize with admins and a quarter by running `bundle exec rake db:init_app`. A quarter *must* exist for the app to work.
+After starting the app, initialize the database with admins and a quarter by running `bundle exec rake db:init_app`. A quarter *must* exist for the app to work.
