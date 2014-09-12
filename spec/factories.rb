@@ -158,12 +158,12 @@ FactoryGirl.define do
   end
 
   factory :evaluation_template do
-    survey { {1 => { "question_prompt"    => "How are you?",
-                     "question_type"      => "Text area",
-                     "question_mandatory" => "1" },
-              2 => { "question_prompt"    => "What's your name?",
-                     "question_type"      => "Text field",
-                     "question_mandatory" => "1" } } }
+    survey { { 1 => { "question_prompt"    => "How are you?",
+                      "question_type"      => "Text area",
+                      "question_mandatory" => "1" },
+               2 => { "question_prompt"    => "What's your name?",
+                      "question_type"      => "Text field",
+                      "question_mandatory" => "1" } } }
   end
 
   factory :evaluation do

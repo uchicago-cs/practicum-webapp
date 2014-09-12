@@ -17,9 +17,9 @@ describe "Creating a project", type: :feature do
       visit new_project_url
     end
 
-    describe "new project" do
+    describe "visiting the 'new project' page" do
 
-      it "should have the h2 text" do
+      it "should show the h2 text" do
         expect(page).to have_content("Propose a Project")
       end
 
@@ -38,10 +38,14 @@ describe "Creating a project", type: :feature do
         end
       end
 
-      describe "with invalid input" do
-        it "should not create when project with its name exists" do
+      describe "when a project with its name exists" do
+
+        before(:each) do
           FactoryGirl.create(:project, :in_current_quarter,
                              name: "Generic Project Name")
+        end
+
+        it "should not be created" do
           fill_in "Title", with: "Generic Project Name"
           fill_in "Description", with: "a"*500
           fill_in "Expected deliverables", with: "a"*500
@@ -50,8 +54,10 @@ describe "Creating a project", type: :feature do
             to change{ Project.count }.by(0)
           expect(page).to have_selector('div.alert.alert-danger')
         end
+      end
 
-        it "should not create when one of its fields is too short" do
+      describe "with invalid input" do
+        it "should not be created" do
           fill_in "Title", with: "Generic Project Name"
           fill_in "Description", with: "a"*99
           fill_in "Expected deliverables", with: "a"*100
@@ -83,11 +89,6 @@ describe "Creating a project", type: :feature do
         expect(page).to have_content("About the Practicum Program")
       end
     end
-
-    # describe "creating a project with valid input" do
-    #   it "should not create" do
-    #   end
-    # end
   end
 
 end

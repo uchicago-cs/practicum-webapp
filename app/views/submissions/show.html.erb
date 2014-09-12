@@ -10,10 +10,17 @@
     <%= render 'submission_accept_reject', object: @submission %>
   <% end %>
 
+  <%# We check !@submission.evaluation here and in ability.rb so that %>
+  <%# admins don't see this link. %>
   <% if (can? :create_evaluation_for, @submission) and
-    @submission_status_sufficient %>
+    @submission_status_sufficient and !@submission.evaluation %>
     <%= render 'submission_create_evaluation', object: @submission %>
   <%# else %>
     <!-- You cannot create an evaluation for this student. -->
+  <% elsif @submission.evaluation and (can? :read, @submission.evaluation) %>
+    <p>
+      Click <%= link_to "here", evaluation_path(@submission.evaluation) %>
+      to view this student's evaluation.
+    </p>
   <% end %>
 </div>
