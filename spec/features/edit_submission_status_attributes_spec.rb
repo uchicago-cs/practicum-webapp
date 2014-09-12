@@ -225,15 +225,113 @@ describe "Editing a submission's 'status' attributes", type: :feature do
 
   context "publishing the submission's status" do
 
-    before(:each) { ldap_sign_in(@admin) }
+    before(:each) do
+      @submission.update_attributes(status: "accepted")
+      @submission.update_attributes(status_approved: true)
+      ldap_sign_in(@admin)
+    end
 
+    it "should be initialized with an approved 'accepted' status" do
+      expect(@submission.reload.status).to eq("accepted")
+      expect(@submission.reload.status_approved).to eq(true)
+    end
+
+    context "visiting the submission page" do
+      before(:each) { visit submission_path(@submission) }
+
+      context "updating the submission's status" do
+        before(:each) do
+          check "submission_status_published"
+          click_button "Update application status"
+        end
+
+        it "should change the submission's 'status_published' state" do
+          expect(@submission.reload.status_published).to eq(true)
+        end
+
+        context "viewed by the advisor" do
+
+          before(:each) do
+            logout
+            ldap_sign_in(@advisor)
+          end
+
+          it "should show the updated status on the submission's page" do
+            visit submission_path(@submission)
+            within('tr', text: "Status") do
+              expect(page).to have_content("Accepted")
+              expect(page).not_to have_content("Accepted (pending " +
+                                               "administrator approval)")
+            end
+          end
+
+          it "should show the updated status on the 'project's subs' page" do
+            visit project_submissions_path(@project)
+            within("table") do
+              expect(page).to have_content("Accepted")
+              expect(page).not_to have_content("Accepted (pending " +
+                                               "administrator approval)")
+            end
+          end
+        end
+
+        context "viewed by the student" do
+          before(:each) do
+            logout
+            ldap_sign_in(@student)
+          end
+
+          it "should be visible on the submission's page" do
+            visit submission_path(@submission)
+            within('tr', text: "Status") do
+              expect(page).to have_content("Accepted")
+              expect(page).not_to have_content("Pending")
+              end
+          end
+
+          it "should be visible on the student's submission index page" do
+            visit users_submissions_path(@student)
+            within("table") do
+              expect(page).to have_content("Accepted")
+              expect(page).not_to have_content("Pending")
+            end
+          end
+        end
+
+        context "viewed by an admin" do
+          # We're already signed in as an admin; no need to log out and sign
+          # in again.
+
+          it "should show the status dropdown and checkboxes on its page" do
+            visit submission_path(@submission)
+            within('tr', text: "Status") do
+              expect(page).to have_select("Status", selected: "Accepted")
+              expect(page.find("#submission_status_approved")).
+                to be_checked
+              expect(page.find("#submission_status_published")).
+                to be_checked
+            end
+          end
+
+          it "should show its status on the 'applications' page" do
+            visit submissions_path
+            within("table") do
+              expect(page).not_to have_content("Accepted (pending " +
+                                               "administrator approval)")
+              expect(page).to have_content("Accepted")
+            end
+          end
+        end
+
+      end
+    end
   end
 
   # We might want to put this in another spec file.
-  context "viewing the submission's status" do
+  # context "viewing the submission's status" do
 
-    before(:each) { ldap_sign_in(@student) }
+  #   before(:each) { ldap_sign_in(@student) }
 
-  end
+  # end
 
 end
