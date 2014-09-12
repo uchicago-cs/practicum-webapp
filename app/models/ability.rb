@@ -63,6 +63,10 @@ class Ability
           (submission.project_advisor_id == user.id) and
             submission.accepted? and !submission.evaluation
         end
+
+        can :read, Evaluation do |evaluation|
+          evaluation.advisor_id == user.id
+        end
       end
 
       if user.student?
