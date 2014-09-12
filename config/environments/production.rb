@@ -82,7 +82,7 @@ Practicum::Application.configure do
   config.action_mailer.smtp_settings = {
     address:              'smtp.cs.uchicago.edu',
     port:                 587,
-    domain:               'cs.uchicago.edu',
+    domain:               'practicum.cs.uchicago.edu',
     authentication:       nil,
     enable_starttls_auto: true
   }
