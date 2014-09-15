@@ -9,16 +9,18 @@ describe "Editing a submission's 'status' attributes", type: :feature do
   after(:each) { Warden.test_reset! }
 
   before(:each) do
-    @quarter    = FactoryGirl.create(:quarter, :no_deadlines_passed)
-    @admin      = FactoryGirl.create(:admin)
-    @advisor    = FactoryGirl.create(:advisor)
-    @student    = FactoryGirl.create(:student)
-    @project    = FactoryGirl.create(:project, :accepted_and_published,
-                                     :in_current_quarter, advisor: @advisor)
-    @submission = FactoryGirl.create(:submission, student: @student,
-                                     project: @project, status: "pending",
-                                     status_approved: false,
-                                     status_published: false)
+    @quarter       = FactoryGirl.create(:quarter, :no_deadlines_passed)
+    @admin         = FactoryGirl.create(:admin)
+    @advisor       = FactoryGirl.create(:advisor)
+    @other_advisor = FactoryGirl.create(:advisor)
+    @student       = FactoryGirl.create(:student)
+    @other_student = FactoryGirl.create(:student)
+    @project       = FactoryGirl.create(:project, :accepted_and_published,
+                                        :in_current_quarter, advisor: @advisor)
+    @submission    = FactoryGirl.create(:submission, student: @student,
+                                        project: @project, status: "pending",
+                                        status_approved: false,
+                                        status_published: false)
   end
 
   # Accept _or_ reject? (Use shared examples?)
