@@ -74,6 +74,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
 
         it "should change the project's status" do
           expect(@project.reload.status).to eq("accepted")
+          expect(@project.reload.status_published).to eq(false)
         end
 
         context "viewed by the admin" do
@@ -193,15 +194,10 @@ describe "Editing a submission's 'status' attributes", type: :feature do
               expect(page).to have_selector("div.alert.alert-danger")
               expect(page).to have_content("Access denied")
             end
-
           end
         end
-
       end
-
     end
-
-
   end
 
   context "publishing the decision (accepted)" do
@@ -213,11 +209,13 @@ describe "Editing a submission's 'status' attributes", type: :feature do
       context "updating the project's status" do
         before(:each) do
           choose "Approve"
+          check "Publish status"
           click_button "Update project status"
         end
 
         it "should change the project's status" do
           expect(@project.reload.status).to eq("accepted")
+          expect(@project.reload.status_published).to eq(true)
         end
 
         context "viewed by the admin" do
@@ -227,9 +225,9 @@ describe "Editing a submission's 'status' attributes", type: :feature do
 
             it "should show the updated status" do
               within("table") do
-                expect(page).to have_content("Accepted (flagged, not " +
-                                             "published")
+                expect(page).to have_content("Accepted")
                 expect(page).not_to have_content("Pending")
+                expect(page).not_to have_content("flagged")
               end
             end
 
@@ -238,8 +236,8 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           context "visiting the projects index page" do
             before(:each) { visit projects_path }
 
-            it "should not show the project" do
-              expect(page).not_to have_content(@project.name)
+            it "should show the project" do
+              expect(page).to have_content(@project.name)
             end
 
           end
@@ -250,34 +248,100 @@ describe "Editing a submission's 'status' attributes", type: :feature do
             it "should show the updated status" do
               within('tr', text: "Status") do
                 expect(page.find("#project_status_accepted")).to be_checked
-                expect(page.find("#project_status_published")).
-                  not_to be_checked
+                expect(page.find("#project_status_published")).to be_checked
+              end
+            end
+          end
+        end
+
+        context "viewed by the advisor" do
+
+          before(:each) do
+            logout
+            ldap_sign_in(@advisor)
+          end
+
+          context "visiting the advisor's my_projects page" do
+            before(:each) { visit users_projects_path(@advisor) }
+
+            it "should show the updated status" do
+              within("table") do
+                expect(page).to have_content("Accepted")
+                expect(page).not_to have_content("Pending")
+                expect(page).not_to have_content("flagged")
               end
             end
 
           end
 
-          # Visiting the advisor's my_projects page
-          # Visiting the projects index page
-          # Visiting the project's page
-        end
+          context "visiting the projects index page" do
+            before(:each) { visit projects_path }
 
-        context "viewed by the advisor" do
-          # Visiting the my_projects page
-          # Visiting the projects index page
-          # Visiting the project's page
+            it "should show the project" do
+              expect(page).to have_content(@project.name)
+            end
+
+          end
+
+          context "visiting the project's page" do
+            before(:each) { visit project_path(@project) }
+
+            it "should show the updated status" do
+              within('tr', text: "Status") do
+                expect(page).to have_content("Accepted")
+                expect(page).not_to have_content("Pending")
+                expect(page).not_to have_content("flagged")
+              end
+            end
+          end
         end
 
         context "viewed by the student" do
-          # Visiting the advisor's my_projects page
-          # Visiting the projects index page
-          # Visiting the project's page
+
+          before(:each) do
+            logout
+            ldap_sign_in(@student)
+          end
+
+          context "visiting the advisor's my_projects page" do
+            before(:each) { visit users_projects_path(@advisor) }
+
+            it "should be redirected to the homepage" do
+              expect(current_path).to eq(root_path)
+              expect(page).to have_selector("div.alert.alert-danger")
+              expect(page).to have_content("Access denied")
+            end
+
+          end
+
+          context "visiting the projects index page" do
+            before(:each) { visit projects_path }
+
+            it "should show the project" do
+              expect(page).to have_content(@project.name)
+            end
+
+          end
+
+          context "visiting the project's page" do
+            before(:each) { visit project_path(@project) }
+
+            it "should show the project information" do
+              expect(page).to have_content(@project.name)
+              expect(page).to have_content(@advisor.first_name + " " +
+                                           @advisor.last_name)
+            end
+
+            it "should not show the project status" do
+              within("table") do
+                expect(page).not_to have_content("Status")
+                expect(page).not_to have_content("Approved")
+              end
+            end
+          end
         end
-
       end
-
     end
-
   end
 
   context "publishing the decision (rejected)" do
@@ -289,11 +353,13 @@ describe "Editing a submission's 'status' attributes", type: :feature do
       context "updating the project's status" do
         before(:each) do
           choose "Reject"
+          check "Publish status"
           click_button "Update project status"
         end
 
         it "should change the project's status" do
           expect(@project.reload.status).to eq("rejected")
+          expect(@project.reload.status_published).to eq(true)
         end
 
         context "viewed by the admin" do
