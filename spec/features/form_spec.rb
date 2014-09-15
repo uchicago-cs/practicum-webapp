@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
+# Project proposal form?
 describe "Filling out a form", type: :feature do
   Warden.test_mode!
 

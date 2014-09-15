@@ -9,21 +9,36 @@ describe "Editing a submission's 'status' attributes", type: :feature do
   after(:each) { Warden.test_reset! }
 
   before(:each) do
-    @quarter    = FactoryGirl.create(:quarter, :no_deadlines_passed)
-    @admin      = FactoryGirl.create(:admin)
-    @advisor    = FactoryGirl.create(:advisor)
-    @student    = FactoryGirl.create(:student)
-    @project    = FactoryGirl.create(:project, :accepted_and_published,
-                                     :in_current_quarter, advisor: @advisor)
-    @submission = FactoryGirl.create(:submission, student: @student,
-                                     project: @project, status: "pending",
-                                     status_approved: false,
-                                     status_published: false)
+    @quarter       = FactoryGirl.create(:quarter, :no_deadlines_passed)
+    @admin         = FactoryGirl.create(:admin)
+    @advisor       = FactoryGirl.create(:advisor)
+    @other_advisor = FactoryGirl.create(:advisor)
+    @student       = FactoryGirl.create(:student)
+    @other_student = FactoryGirl.create(:student)
+    @project       = FactoryGirl.create(:project, :accepted_and_published,
+                                        :in_current_quarter, advisor: @advisor)
+    @submission    = FactoryGirl.create(:submission, student: @student,
+                                        project: @project, status: "pending",
+                                        status_approved: false,
+                                        status_published: false)
   end
 
   # Accept _or_ reject? (Use shared examples?)
 
-  # These three contexts are similar and should be DRY'ed up.
+  # This should be in the new_submission spec file.
+  # context "before the advisor or admin has done anything" do
+  #   context "as the admin" do
+
+  #   end
+
+  #   context "as the advisor" do
+
+  #   end
+
+  #   context "as the student" do
+
+  #   end
+  # end
 
   context "accepting or rejecting the submission" do
     before(:each) { ldap_sign_in(@advisor) }
@@ -115,6 +130,50 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
         end
 
+        context "viewed by another advisor" do
+          before(:each) do
+            logout
+            ldap_sign_in(@other_advisor)
+          end
+
+          it "should redirect when trying to view the sub" do
+            visit submission_path(@submission)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("Access denied")
+          end
+
+          it "should redirect when visiting the user's subs pg" do
+            visit users_submissions_path(@student)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("Access denied")
+          end
+
+        end
+
+        context "viewed by another student" do
+          before(:each) do
+            logout
+            ldap_sign_in(@other_student)
+          end
+
+          it "should redirect when trying to view the sub" do
+            visit submission_path(@submission)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("Access denied")
+          end
+
+          it "should redirect when visiting the user's subs pg" do
+            visit users_submissions_path(@student)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("Access denied")
+          end
+
+        end
+
       end
     end
   end
@@ -181,7 +240,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
             within('tr', text: "Status") do
               expect(page).not_to have_content("Accepted")
               expect(page).to have_content("Pending")
-              end
+            end
           end
 
           it "should not be visible on the student's submission index page" do
@@ -216,6 +275,50 @@ describe "Editing a submission's 'status' attributes", type: :feature do
               expect(page).to have_content("Accepted")
             end
           end
+        end
+
+        context "viewed by another advisor" do
+          before(:each) do
+            logout
+            ldap_sign_in(@other_advisor)
+          end
+
+          it "should redirect when trying to view the sub" do
+            visit submission_path(@submission)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("Access denied")
+          end
+
+          it "should redirect when visiting the user's subs pg" do
+            visit users_submissions_path(@student)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("Access denied")
+          end
+
+        end
+
+        context "viewed by another student" do
+          before(:each) do
+            logout
+            ldap_sign_in(@other_student)
+          end
+
+          it "should redirect when trying to view the sub" do
+            visit submission_path(@submission)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("Access denied")
+          end
+
+          it "should redirect when visiting the user's subs pg" do
+            visit users_submissions_path(@student)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("Access denied")
+          end
+
         end
 
       end
@@ -286,7 +389,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
             within('tr', text: "Status") do
               expect(page).to have_content("Accepted")
               expect(page).not_to have_content("Pending")
-              end
+            end
           end
 
           it "should be visible on the student's submission index page" do
@@ -321,6 +424,50 @@ describe "Editing a submission's 'status' attributes", type: :feature do
               expect(page).to have_content("Accepted")
             end
           end
+        end
+
+        context "viewed by another advisor" do
+          before(:each) do
+            logout
+            ldap_sign_in(@other_advisor)
+          end
+
+          it "should redirect when trying to view the sub" do
+            visit submission_path(@submission)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("Access denied")
+          end
+
+          it "should redirect when visiting the user's subs pg" do
+            visit users_submissions_path(@student)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("Access denied")
+          end
+
+        end
+
+        context "viewed by another student" do
+          before(:each) do
+            logout
+            ldap_sign_in(@other_student)
+          end
+
+          it "should redirect when trying to view the sub" do
+            visit submission_path(@submission)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("Access denied")
+          end
+
+          it "should redirect when visiting the user's subs pg" do
+            visit users_submissions_path(@student)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("Access denied")
+          end
+
         end
 
       end

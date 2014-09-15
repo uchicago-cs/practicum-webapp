@@ -9,15 +9,17 @@ describe "Editing a project's 'status' attributes", type: :feature do
   after(:each) { Warden.test_reset! }
 
   before(:each) do
-    @quarter    = FactoryGirl.create(:quarter, :no_deadlines_passed)
-    @admin      = FactoryGirl.create(:admin)
-    @advisor    = FactoryGirl.create(:advisor)
-    @student    = FactoryGirl.create(:student)
-    @project    = FactoryGirl.create(:project, :in_current_quarter,
-                                     advisor: @advisor, status: "pending",
-                                     status_published: false)
+    @quarter       = FactoryGirl.create(:quarter, :no_deadlines_passed)
+    @admin         = FactoryGirl.create(:admin)
+    @advisor       = FactoryGirl.create(:advisor)
+    @other_advisor = FactoryGirl.create(:advisor)
+    @student       = FactoryGirl.create(:student)
+    @project       = FactoryGirl.create(:project, :in_current_quarter,
+                                        advisor: @advisor, status: "pending",
+                                        status_published: false)
   end
 
+  # This should be in the new_project spec file.
   context "before the admin does anything to the project" do
     context "as the admin" do
       before(:each) { ldap_sign_in(@admin) }
@@ -55,6 +57,21 @@ describe "Editing a project's 'status' attributes", type: :feature do
     end
 
     # Advisors shouldn't be able to visit the pending projects page.
+
+    context "as another advisor" do
+      before(:each) { ldap_sign_in(@other_advisor) }
+
+      context "visiting the project page" do
+
+        it "should redirect the advisor to the homepage" do
+          visit project_path(@project)
+          expect(current_path).to eq(root_path)
+          expect(page).to have_selector("div.alert.alert-danger")
+          expect(page).to have_content("Access denied")
+        end
+      end
+    end
+
     # Students shouldn't be able to visit either of the pages.
 
   end
@@ -190,6 +207,44 @@ describe "Editing a project's 'status' attributes", type: :feature do
             before(:each) { visit project_path(@project) }
 
             it "should redirect the student to the homepage" do
+              expect(current_path).to eq(root_path)
+              expect(page).to have_selector("div.alert.alert-danger")
+              expect(page).to have_content("Access denied")
+            end
+          end
+        end
+
+        context "viewed by another advisor" do
+
+          before(:each) do
+            logout
+            ldap_sign_in(@other_advisor)
+          end
+
+          context "visiting the advisor's my_projects page" do
+            before(:each) { visit users_projects_path(@advisor) }
+
+            it "should be redirected to the homepage" do
+              expect(current_path).to eq(root_path)
+              expect(page).to have_selector("div.alert.alert-danger")
+              expect(page).to have_content("Access denied")
+            end
+
+          end
+
+          context "visiting the projects index page" do
+            before(:each) { visit projects_path }
+
+            it "should not show the project" do
+              expect(page).not_to have_content(@project.name)
+            end
+
+          end
+
+          context "visiting the project's page" do
+            before(:each) { visit project_path(@project) }
+
+            it "should redirect the other advisor to the homepage" do
               expect(current_path).to eq(root_path)
               expect(page).to have_selector("div.alert.alert-danger")
               expect(page).to have_content("Access denied")
@@ -339,6 +394,51 @@ describe "Editing a project's 'status' attributes", type: :feature do
               end
             end
           end
+
+          context "viewed by another advisor" do
+
+            before(:each) do
+              logout
+              ldap_sign_in(@other_advisor)
+            end
+
+            context "visiting the advisor's my_projects page" do
+              before(:each) { visit users_projects_path(@advisor) }
+
+              it "should be redirected to the homepage" do
+                expect(current_path).to eq(root_path)
+                expect(page).to have_selector("div.alert.alert-danger")
+                expect(page).to have_content("Access denied")
+              end
+
+            end
+
+            context "visiting the projects index page" do
+              before(:each) { visit projects_path }
+
+              it "should show the project" do
+                expect(page).to have_content(@project.name)
+              end
+
+            end
+
+            context "visiting the project's page" do
+              before(:each) { visit project_path(@project) }
+
+              it "should show the project information" do
+                expect(page).to have_content(@project.name)
+                expect(page).to have_content(@advisor.first_name + " " +
+                                             @advisor.last_name)
+              end
+
+              it "should not show the project status" do
+                within("table") do
+                  expect(page).not_to have_content("Status")
+                  expect(page).not_to have_content("Approved")
+                end
+              end
+            end
+          end
         end
       end
     end
@@ -472,6 +572,44 @@ describe "Editing a project's 'status' attributes", type: :feature do
             before(:each) { visit project_path(@project) }
 
             it "should redirect the student to the homepage" do
+              expect(current_path).to eq(root_path)
+              expect(page).to have_selector("div.alert.alert-danger")
+              expect(page).to have_content("Access denied")
+            end
+          end
+        end
+
+        context "viewed by another advisor" do
+
+          before(:each) do
+            logout
+            ldap_sign_in(@other_advisor)
+          end
+
+          context "visiting the advisor's my_projects page" do
+            before(:each) { visit users_projects_path(@advisor) }
+
+            it "should be redirected to the homepage" do
+              expect(current_path).to eq(root_path)
+              expect(page).to have_selector("div.alert.alert-danger")
+              expect(page).to have_content("Access denied")
+            end
+
+          end
+
+          context "visiting the projects index page" do
+            before(:each) { visit projects_path }
+
+            it "should not show the project" do
+              expect(page).not_to have_content(@project.name)
+            end
+
+          end
+
+          context "visiting the project's page" do
+            before(:each) { visit project_path(@project) }
+
+            it "should be redirected to the homepage" do
               expect(current_path).to eq(root_path)
               expect(page).to have_selector("div.alert.alert-danger")
               expect(page).to have_content("Access denied")
