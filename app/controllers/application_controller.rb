@@ -85,11 +85,11 @@ class ApplicationController < ActionController::Base
   end
 
   def show_advisor_status_pending_message
-    if current_user.advisor_status_pending?
+    if current_user and current_user.advisor_status_pending?
       message = "Your request to become an advisor is pending approval by " +
         "an administrator. You will be able to submit project proposals " +
         "once your request is approved."
-      flash[:notice] = message
+      flash.now[:notice] = message
     end
   end
 
