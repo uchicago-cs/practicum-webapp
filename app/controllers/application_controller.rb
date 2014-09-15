@@ -26,6 +26,7 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :show_advisor_status_pending_message
 
   helper_method :is_admin?
 
@@ -81,6 +82,15 @@ class ApplicationController < ActionController::Base
 
   def get_this_user_for_object(obj)
     obj.this_user = current_user
+  end
+
+  def show_advisor_status_pending_message
+    if current_user.advisor_status_pending?
+      message = "Your request to become an advisor is pending approval by " +
+        "an administrator. You will be able to submit project proposals " +
+        "once your request is approved."
+      flash[:notice] = message
+    end
   end
 
 end
