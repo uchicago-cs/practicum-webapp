@@ -21,17 +21,26 @@ describe "Editing a project's information", type: :feature do
   # Things to test:
   # - When it can and cannot be done (not related to quarters, but to its
   # status)
-  # - What it will look like to the advisor and to the admin (not to students
-  # or other advisors, since the advisor can only edit the proposal before
-  # others can see the project)
-  # - Confirm that validations work upon editing (changing name, leaving
-  # fields blank, making fields too short)
   # - Ensure that other advisors cannot edit the project
 
   # We do this just as the advisor rather than as both the advisor and the
   # admin.
 
   context "when the proposal is pending and unpublished" do
+
+    context "visiting the project's page" do
+
+      it "should have the 'edit proposal' link" do
+        ldap_sign_in(@advisor)
+        visit project_path(@project)
+        within("#content") do
+          expect(page).to have_link("here")
+          expect(page).to have_content("Click here to edit this " +
+                                       "project's information.")
+        end
+      end
+    end
+
     context "editing the proposal" do
       context "with valid information" do
         before(:each) do
@@ -103,8 +112,6 @@ describe "Editing a project's information", type: :feature do
           visit project_path(@project)
           within("#content") { click_link "here" }
           fill_in "Name", with: ""
-          # fill_in "Description", with: "test " * 50
-          # fill_in "Related work", with: ""
           click_button "Edit my proposal"
         end
 
@@ -129,7 +136,6 @@ describe "Editing a project's information", type: :feature do
           visit project_path(@project)
           within("#content") { click_link "here" }
           fill_in "Description", with: "test"
-          # fill_in "Related work", with: ""
           click_button "Edit my proposal"
         end
 
@@ -143,6 +149,84 @@ describe "Editing a project's information", type: :feature do
           expect(page).to have_content("error")
           expect(page).to have_content("Description is too short")
           expect(page).to have_selector("div.alert.alert-danger")
+        end
+      end
+    end
+  end
+
+  context "when the proposal is unpublished and not pending" do
+
+    before(:each) do
+      @project.this_user = @admin
+      @project.update_attributes(status: "accepted")
+      @project.reload
+    end
+
+    context "as the advisor" do
+      before(:each) { ldap_sign_in(@advisor) }
+
+      context "visiting the project page" do
+        before(:each) { visit project_path(@project) }
+
+        it "should not have the 'edit proposal' link" do
+          within("#content") do
+            expect(page).not_to have_link("here")
+            expect(page).not_to have_content("Click here to edit this " +
+                                             "project's information.")
+          end
+        end
+      end
+
+      context "visiting the advisor's 'my_projects'  page" do
+        before(:each) { visit project_path(@project) }
+
+        it "should not have the 'edit proposal' link" do
+          save_and_open_page
+          within("#content") do
+            expect(page).not_to have_link("here")
+            expect(page).not_to have_content("edit")
+          end
+        end
+      end
+    end
+
+    # Admins should still be able to see the link and edit the project,
+    # but we don't need to test whether this is so.
+  end
+
+  context "when the proposal is published and not pending" do
+
+    before(:each) do
+      @project.this_user = @admin
+      @project.update_attributes(status: "accepted")
+      @project.update_attributes(status_published: true)
+      @project.reload
+    end
+
+    context "as the advisor" do
+      before(:each) { ldap_sign_in(@advisor) }
+
+      context "visiting the project page" do
+        before(:each) { visit project_path(@project) }
+
+        it "should not have the 'edit proposal' link" do
+          within("#content") do
+            expect(page).not_to have_link("here")
+            expect(page).not_to have_content("Click here to edit this " +
+                                             "project's information.")
+          end
+        end
+      end
+
+      context "visiting the advisor's 'my_projects'  page" do
+        before(:each) { visit project_path(@project) }
+
+        it "should not have the 'edit proposal' link" do
+          save_and_open_page
+          within("#content") do
+            expect(page).not_to have_link("here")
+            expect(page).not_to have_content("edit")
+          end
         end
       end
     end
