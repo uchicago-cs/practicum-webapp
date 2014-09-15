@@ -10,9 +10,9 @@ class User < ActiveRecord::Base
          :ldap_authenticatable, authentication_keys: [:cnet]
 
   before_validation :get_ldap_info
-  before_update :send_roles_changed
+  after_update      :send_roles_changed
 
-  # Current user, passed in from controller
+  # Current user, passed in from ApplicationController
   attr_accessor :this_user
 
   def roles

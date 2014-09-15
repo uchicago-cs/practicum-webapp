@@ -46,8 +46,8 @@ class Project < ActiveRecord::Base
 
   attr_accessor :comments
 
-  after_create  :send_project_proposed
-  before_update :send_project_status_changed
+  after_create :send_project_proposed
+  after_update :send_project_status_changed
 
   def accepted?
     status == "accepted"

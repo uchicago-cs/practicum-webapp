@@ -14,8 +14,8 @@ class Quarter < ActiveRecord::Base
 
   validate :deadlines_between_start_and_end_dates
 
-  before_destroy :prevent_if_current
-  after_validation :set_current_false
+  before_destroy    :prevent_if_current
+  after_validation  :set_current_false
   before_validation :downcase_season
 
   def Quarter.deadlines

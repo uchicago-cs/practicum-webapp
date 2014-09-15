@@ -34,7 +34,7 @@ class Submission < ActiveRecord::Base
            to: :project, prefix: true, allow_nil: true
 
   after_create      :send_student_applied
-  before_update     :send_status_updated
+  after_update      :send_status_updated
   before_validation :downcase_status
 
   has_attached_file :resume,
