@@ -59,6 +59,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
 
   end
 
+  # Specifically, accepting the project.
   context "accepting or rejecting the project" do
     before(:each) { ldap_sign_in(@admin) }
 
@@ -122,19 +123,39 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           context "visiting the advisor's my_projects page" do
+            before(:each) { visit users_projects_path(@advisor) }
+
+            it "should show the updated status" do
+              within("table") do
+                expect(page).to have_content("Accepted (flagged, not " +
+                                             "published")
+                expect(page).not_to have_content("Pending")
+              end
+            end
 
           end
 
           context "visiting the projects index page" do
+            before(:each) { visit projects_path }
+
+            it "should not show the project" do
+              expect(page).not_to have_content(@project.name)
+            end
 
           end
 
           context "visiting the project's page" do
+            before(:each) { visit project_path(@project) }
+
+            it "should show the updated status" do
+              within('tr', text: "Status") do
+                expect(page).to have_content("Accepted (flagged, not " +
+                                             "published)")
+                expect(page).not_to have_content("Pending")
+              end
+            end
 
           end
-          # Visiting the my_projects page
-          # Visiting the projects index page
-          # Visiting the project's page
         end
 
         context "viewed by the student" do
@@ -145,19 +166,35 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           context "visiting the advisor's my_projects page" do
+            before(:each) { visit users_projects_path(@advisor) }
+
+            it "should be redirected to the homepage" do
+              expect(current_path).to eq(root_path)
+              expect(page).to have_selector("div.alert.alert-danger")
+              expect(page).to have_content("Access denied")
+            end
 
           end
 
           context "visiting the projects index page" do
+            before(:each) { visit projects_path }
+
+            it "should not show the project" do
+              expect(page).not_to have_content(@project.name)
+            end
 
           end
 
           context "visiting the project's page" do
+            before(:each) { visit project_path(@project) }
+
+            it "should redirect the student to the homepage" do
+              expect(current_path).to eq(root_path)
+              expect(page).to have_selector("div.alert.alert-danger")
+              expect(page).to have_content("Access denied")
+            end
 
           end
-          # Visiting the advisor's my_projects page
-          # Visiting the projects index page
-          # Visiting the project's page
         end
 
       end
@@ -168,8 +205,9 @@ describe "Editing a submission's 'status' attributes", type: :feature do
   end
 
   context "publishing the decision (accepted)" do
+    before(:each) { ldap_sign_in(@admin) }
 
-        context "visiting the project page" do
+    context "visiting the project page" do
       before(:each) { visit project_path(@project) }
 
       context "updating the project's status" do
@@ -183,6 +221,42 @@ describe "Editing a submission's 'status' attributes", type: :feature do
         end
 
         context "viewed by the admin" do
+
+          context "visiting the advisor's my_projects page" do
+            before(:each) { visit users_projects_path(@advisor) }
+
+            it "should show the updated status" do
+              within("table") do
+                expect(page).to have_content("Accepted (flagged, not " +
+                                             "published")
+                expect(page).not_to have_content("Pending")
+              end
+            end
+
+          end
+
+          context "visiting the projects index page" do
+            before(:each) { visit projects_path }
+
+            it "should not show the project" do
+              expect(page).not_to have_content(@project.name)
+            end
+
+          end
+
+          context "visiting the project's page" do
+            before(:each) { visit project_path(@project) }
+
+            it "should show the updated status" do
+              within('tr', text: "Status") do
+                expect(page.find("#project_status_accepted")).to be_checked
+                expect(page.find("#project_status_published")).
+                  not_to be_checked
+              end
+            end
+
+          end
+
           # Visiting the advisor's my_projects page
           # Visiting the projects index page
           # Visiting the project's page
@@ -207,18 +281,19 @@ describe "Editing a submission's 'status' attributes", type: :feature do
   end
 
   context "publishing the decision (rejected)" do
+    before(:each) { ldap_sign_in(@admin) }
 
-        context "visiting the project page" do
+    context "visiting the project page" do
       before(:each) { visit project_path(@project) }
 
       context "updating the project's status" do
         before(:each) do
-          choose "Approve"
+          choose "Reject"
           click_button "Update project status"
         end
 
         it "should change the project's status" do
-          expect(@project.reload.status).to eq("accepted")
+          expect(@project.reload.status).to eq("rejected")
         end
 
         context "viewed by the admin" do
