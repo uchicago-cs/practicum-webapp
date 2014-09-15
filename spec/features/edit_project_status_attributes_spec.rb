@@ -19,6 +19,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
                                         status_published: false)
   end
 
+  # This should be in the new_project spec file.
   context "before the admin does anything to the project" do
     context "as the admin" do
       before(:each) { ldap_sign_in(@admin) }
