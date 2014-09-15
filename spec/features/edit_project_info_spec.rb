@@ -9,19 +9,15 @@ describe "Editing a project's information", type: :feature do
   after(:each) { Warden.test_reset! }
 
   before(:each) do
-    @quarter    = FactoryGirl.create(:quarter, :no_deadlines_passed)
-    @admin      = FactoryGirl.create(:admin)
-    @advisor    = FactoryGirl.create(:advisor)
-    @student    = FactoryGirl.create(:student)
-    @project    = FactoryGirl.create(:project, :in_current_quarter,
-                                     advisor: @advisor, status: "pending",
-                                     status_published: false)
+    @quarter       = FactoryGirl.create(:quarter, :no_deadlines_passed)
+    @admin         = FactoryGirl.create(:admin)
+    @advisor       = FactoryGirl.create(:advisor)
+    @other_advisor = FactoryGirl.create(:advisor)
+    @student       = FactoryGirl.create(:student)
+    @project       = FactoryGirl.create(:project, :in_current_quarter,
+                                        advisor: @advisor, status: "pending",
+                                        status_published: false)
   end
-
-  # Things to test:
-  # - When it can and cannot be done (not related to quarters, but to its
-  # status)
-  # - Ensure that other advisors cannot edit the project
 
   # We do this just as the advisor rather than as both the advisor and the
   # admin.
@@ -30,13 +26,55 @@ describe "Editing a project's information", type: :feature do
 
     context "visiting the project's page" do
 
-      it "should have the 'edit proposal' link" do
-        ldap_sign_in(@advisor)
-        visit project_path(@project)
-        within("#content") do
-          expect(page).to have_link("here")
-          expect(page).to have_content("Click here to edit this " +
-                                       "project's information.")
+      context "as the advisor" do
+        it "should have the 'edit proposal' link" do
+          ldap_sign_in(@advisor)
+          visit project_path(@project)
+          within("#content") do
+            expect(page).to have_link("here")
+            expect(page).to have_content("Click here to edit this " +
+                                         "project's information.")
+          end
+        end
+      end
+
+      context "as another advisor" do
+        before(:each) { ldap_sign_in(@other_advisor) }
+
+        it "should redirect to the homepage" do
+          visit project_path(@project)
+          expect(current_path).to eq(root_path)
+          expect(page).to have_content("Access denied")
+          expect(page).to have_selector("div.alert.alert-danger")
+        end
+
+        context "visiting the project's edit page" do
+          it "should redirect to the homepage" do
+            visit edit_project_path(@project)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_content("Access denied")
+            expect(page).to have_selector("div.alert.alert-danger")
+          end
+        end
+      end
+
+      context "as a student" do
+        before(:each) { ldap_sign_in(@student) }
+
+        it "should redirect to the homepage" do
+          visit project_path(@project)
+          expect(current_path).to eq(root_path)
+          expect(page).to have_content("Access denied")
+          expect(page).to have_selector("div.alert.alert-danger")
+        end
+
+        context "visiting the project's edit page" do
+          it "should redirect to the homepage" do
+            visit edit_project_path(@project)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_content("Access denied")
+            expect(page).to have_selector("div.alert.alert-danger")
+          end
         end
       end
     end
@@ -162,6 +200,50 @@ describe "Editing a project's information", type: :feature do
       @project.reload
     end
 
+    context "as another advisor" do
+      before(:each) { ldap_sign_in(@other_advisor) }
+
+      context "visiting the project's page" do
+        it "should redirect to the homepage" do
+          visit project_path(@project)
+          expect(current_path).to eq(root_path)
+          expect(page).to have_content("Access denied")
+          expect(page).to have_selector("div.alert.alert-danger")
+        end
+      end
+
+      context "visiting the project's edit page" do
+        it "should redirect to the homepage" do
+          visit edit_project_path(@project)
+          expect(current_path).to eq(root_path)
+          expect(page).to have_content("Access denied")
+          expect(page).to have_selector("div.alert.alert-danger")
+        end
+      end
+    end
+
+    context "as a student" do
+      before(:each) { ldap_sign_in(@student) }
+
+      context "visiting the project's page" do
+        it "should redirect to the homepage" do
+          visit project_path(@project)
+          expect(current_path).to eq(root_path)
+          expect(page).to have_content("Access denied")
+          expect(page).to have_selector("div.alert.alert-danger")
+        end
+      end
+
+      context "visiting the project's edit page" do
+        it "should redirect to the homepage" do
+          visit edit_project_path(@project)
+          expect(current_path).to eq(root_path)
+          expect(page).to have_content("Access denied")
+          expect(page).to have_selector("div.alert.alert-danger")
+        end
+      end
+    end
+
     context "as the advisor" do
       before(:each) { ldap_sign_in(@advisor) }
 
@@ -181,7 +263,6 @@ describe "Editing a project's information", type: :feature do
         before(:each) { visit project_path(@project) }
 
         it "should not have the 'edit proposal' link" do
-          save_and_open_page
           within("#content") do
             expect(page).not_to have_link("here")
             expect(page).not_to have_content("edit")
@@ -203,6 +284,56 @@ describe "Editing a project's information", type: :feature do
       @project.reload
     end
 
+    context "as another advisor" do
+      before(:each) { ldap_sign_in(@other_advisor) }
+
+      context "visiting the project's page" do
+        it "should not show the 'edit' text or link" do
+          visit project_path(@project)
+          expect(current_path).to eq(project_path(@project))
+
+          within("#content") do
+            expect(page).not_to have_link("here")
+            expect(page).not_to have_content("edit")
+          end
+        end
+      end
+
+      context "visiting the project's edit page" do
+        it "should redirect to the homepage" do
+          visit edit_project_path(@project)
+          expect(current_path).to eq(root_path)
+          expect(page).to have_content("Access denied")
+          expect(page).to have_selector("div.alert.alert-danger")
+        end
+      end
+    end
+
+    context "as a student" do
+      before(:each) { ldap_sign_in(@student) }
+
+      context "visiting the project's page" do
+      it "should not show the 'edit' text or link" do
+          visit project_path(@project)
+          expect(current_path).to eq(project_path(@project))
+          within("#content") do
+            expect(page).not_to have_link("here",
+                                          href: edit_project_path(@project))
+            expect(page).not_to have_content("edit")
+          end
+        end
+      end
+
+      context "visiting the project's edit page" do
+        it "should redirect to the homepage" do
+          visit edit_project_path(@project)
+          expect(current_path).to eq(root_path)
+          expect(page).to have_content("Access denied")
+          expect(page).to have_selector("div.alert.alert-danger")
+        end
+      end
+    end
+
     context "as the advisor" do
       before(:each) { ldap_sign_in(@advisor) }
 
@@ -222,7 +353,6 @@ describe "Editing a project's information", type: :feature do
         before(:each) { visit project_path(@project) }
 
         it "should not have the 'edit proposal' link" do
-          save_and_open_page
           within("#content") do
             expect(page).not_to have_link("here")
             expect(page).not_to have_content("edit")
@@ -231,5 +361,4 @@ describe "Editing a project's information", type: :feature do
       end
     end
   end
-
 end
