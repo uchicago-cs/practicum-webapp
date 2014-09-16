@@ -10,14 +10,6 @@
   <div><br />
     <%= f.password_field :password, autocomplete: "off" %></div>
 
-  <% if devise_mapping.rememberable? %>
-    <div>
-      <%= f.form_group do %>
-	<%= f.check_box :remember_me %>
-      <% end %>
-    </div>
-  <% end %>
-
   <div>
     <%= f.form_group do %>
       <%= f.submit "Sign in", class: "btn btn-primary" %>
