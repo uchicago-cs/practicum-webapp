@@ -47,9 +47,9 @@
     <tr>
       <th>Resume</th>
       <td>
-	<% if can? :download_resume, @submission %>
-	  <%= link_to "download",
-	  download_resume_path(id: @submission.id) %>
+	<% if (can? :download_resume, @submission) and
+	  @submission.resume.exists? %>
+	  <%= link_to "Download", download_resume_path(@submission.id) %>
 	<% else %>
 	  This student did not upload a resume.
 	<% end %>

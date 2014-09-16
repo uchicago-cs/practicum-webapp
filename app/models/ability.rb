@@ -16,9 +16,6 @@ class Ability
         cannot :clone, Project do |project|
           !project.cloneable?
         end
-        cannot :download_resume, Submission do |submission|
-          !submission.resume.exists?
-        end
       end
 
       if user.advisor?
