@@ -6,22 +6,20 @@ class User < ActiveRecord::Base
   has_many :projects, foreign_key: "advisor_id", dependent: :destroy
   has_many :submissions, foreign_key: "student_id", dependent: :destroy
 
-  devise :rememberable, :trackable, :validatable,
-         :ldap_authenticatable, authentication_keys: [:cnet]
+  devise :trackable, :validatable, :ldap_authenticatable,
+         authentication_keys: [:cnet]
 
   before_validation :get_ldap_info
   after_update      :send_roles_changed
 
-  # Current user, passed in from ApplicationController
+  # Current user, passed in from ApplicationController.
   attr_accessor :this_user
 
   def roles
     roles = []
 
     [:admin, :advisor, :student].each do |role|
-      if self.send(role)
-        roles << role.to_s
-      end
+      roles << role.to_s if self.send(role)
     end
 
     roles
