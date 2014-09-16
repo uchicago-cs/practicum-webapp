@@ -16,7 +16,6 @@ class ApplicationController < ActionController::Base
   # end
 
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
-    #render :text => exception, :status => 500
     redirect_to root_url, alert: "Access denied: #{exception}"
   end
 
@@ -54,15 +53,13 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:account_update) do |user|
       if current_user.admin?
         user.permit(:admin, :advisor, :student, :affiliation, :department)
-      else
-        if current_user.advisor?
-          user.permit(:affiliation, :department)
-        end
+      elsif current_user.advisor?
+        user.permit(:affiliation, :department)
       end
     end
 
     devise_parameter_sanitizer.for(:sign_in) do |user|
-      user.permit(:cnet, :email, :password, :remember_me)
+      user.permit(:cnet, :email, :password)
     end
   end
 
