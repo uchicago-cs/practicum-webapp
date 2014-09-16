@@ -38,7 +38,7 @@ class Submission < ActiveRecord::Base
   before_validation :downcase_status
 
   has_attached_file :resume,
-                    url: "/projects/:project_id/submissions/:id/resume",
+                    url: "/submissions/:id/resume",
                     path: ":rails_root/storage/assets/submissions/:id/:style/:basename.:extension"
   validates_attachment_content_type :resume,
     content_type: /\Aapplication\/(pdf|doc|docx)\z/,

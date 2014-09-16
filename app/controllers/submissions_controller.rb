@@ -69,7 +69,11 @@ class SubmissionsController < ApplicationController
   end
 
   def download_resume
-    if @submission.resume.exists?
+    logger.debug "\n\n\n\n\n\n"
+    logger.debug @submission.resume.exists?
+    logger.debug authorized_to_download_resume?
+    logger.debug "\n\n\n\n\n\n"
+    if @submission.resume.exists? and authorized_to_download_resume?
       send_file(@submission.resume.path,
                 type: @submission.resume.content_type,
                 x_sendfile: true)
@@ -135,4 +139,8 @@ class SubmissionsController < ApplicationController
       (@project.status == "accepted" and @project.status_published?)
   end
 
+  def authorized_to_download_resume?
+    current_user and (current_user.admin? or
+                      current_user.made_project?(@submission.project))
+  end
 end
