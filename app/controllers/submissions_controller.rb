@@ -69,10 +69,6 @@ class SubmissionsController < ApplicationController
   end
 
   def download_resume
-    logger.debug "\n\n\n\n\n\n"
-    logger.debug @submission.resume.exists?
-    logger.debug authorized_to_download_resume?
-    logger.debug "\n\n\n\n\n\n"
     if @submission.resume.exists? and authorized_to_download_resume?
       send_file(@submission.resume.path,
                 type: @submission.resume.content_type,

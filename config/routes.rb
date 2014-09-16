@@ -41,7 +41,7 @@ Practicum::Application.routes.draw do
 
   end
 
-  match "/applications/:id",
+  match "/applications/:id/resume",
   to: "submissions#download_resume", via: "get", as: "download_resume"
 
   devise_for :users, skip: [:sessions, :registrations]
