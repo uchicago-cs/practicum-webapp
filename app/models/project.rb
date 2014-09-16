@@ -28,12 +28,9 @@ class Project < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: { scope: :quarter_id,
                                                  case_sensitive: false }
-  validates :description, presence: true,
-    length: { minimum: 100, maximum: 1500 }
-  validates :expected_deliverables, presence: true,
-    length: { minimum: 100, maximum: 1500 }
-  validates :prerequisites, presence: true,
-    length: { minimum: 100, maximum: 1500 }
+  validates :description, presence: true
+  validates :expected_deliverables, presence: true
+  validates :prerequisites, presence: true
 
   validate :creator_role
   validate :created_before_proposal_deadline, on: :create

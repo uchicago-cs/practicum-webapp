@@ -10,12 +10,9 @@ class Submission < ActiveRecord::Base
   belongs_to :project
   has_one :evaluation, foreign_key: "submission_id", dependent: :destroy
 
-  validates :information, presence: true,
-    length: { minimum: 100, maximum: 1500 }
-  validates :qualifications, presence: true,
-    length: { minimum: 100, maximum: 1500 }
-  validates :courses, presence: true,
-    length: { minimum: 100, maximum: 1500 }
+  validates :information, presence: true
+  validates :qualifications, presence: true
+  validates :courses, presence: true
   validates :student_id, presence: true
   validates_uniqueness_of :student_id, scope: :project_id
 
