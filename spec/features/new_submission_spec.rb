@@ -118,6 +118,58 @@ describe "Creating a submission", type: :feature do
           end
         end
       end
+
+      describe "the student incorrectly filling out the application form" do
+        before(:each) do
+          fill_in "Interests", with: "a" * 5
+          fill_in "Qualifications", with: "a" * 1
+        end
+
+        it "should not create the submission" do
+          expect{ click_button "Submit my application" }.
+            to change{ Submission.count }.by(0)
+        end
+
+        it "should show the user an error message" do
+          click_button "Submit my application"
+          # We go through the #create action and render 'new', so we are on
+          # the project_submissions_path for @project.
+          expect(current_path).to eq(project_submissions_path(@project))
+          expect(page).to have_selector("div.alert.alert-danger")
+          expect(page).to have_content("error")
+        end
+
+      end
+
+      describe "the student applying to the same project twice" do
+        before(:each) do
+          # Submit the first (valid) application.
+          fill_in "Interests", with: "a" * 500
+          fill_in "Qualifications", with: "a" * 500
+          fill_in "Courses", with: "a" * 500
+          click_button "Submit my application"
+        end
+
+        describe "visiting the 'new application' link" do
+          it "should redirect the student" do
+            visit new_project_submission_path(@project)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("already applied")
+          end
+        end
+
+        describe "directly making the application" do
+          it "should not be valid" do
+            @submission = FactoryGirl.build(:submission, student: @student,
+                                            project: @project,
+                                            status: "pending",
+                                            status_approved: false,
+                                            status_published: false)
+            expect(@submission).not_to be_valid
+          end
+        end
+      end
     end
 
   end
