@@ -33,7 +33,8 @@ module ApplicationHelper
 
   # Determine table row class for admins.
   def row_class(status)
-    {"accepted" => "success", "rejected" => "danger", "pending" => ""}[status]
+    { "accepted" => "success", "rejected" => "danger", "pending" => "",
+      "draft"    => "" }[status]
   end
 
   def formatted_current_quarter

@@ -25,18 +25,53 @@ class SubmissionsController < ApplicationController
     @submission = @project.submissions.build(submission_params)
     @submission.assign_attributes(student_id: current_user.id)
 
-    if @submission.save
-      flash[:success] = "Application submitted."
-      redirect_to users_submissions_path(current_user)
-    else
-      render 'new'
+    # Could be DRYer, but be careful to not rely on whether params[:commit]
+    # is one of the strings _or not_; we should check whether it is one of the
+    # strings _or the other_.
+    if params[:commit] == "Submit my application"
+      if @submission.save
+        flash[:success] = "Application submitted."
+        redirect_to users_submissions_path(current_user)
+      else
+        render 'new'
+      end
+    elsif params[:commit] == "Save as draft"
+      @submission.assign_attributes(status: "draft")
+      if @submission.save(validate: false)
+        flash[:success] = "Application saved as a draft. You may edit it " +
+          "by navigating to your \"my applications\" page."
+        redirect_to users_submissions_path(current_user)
+      else
+        render 'new'
+      end
     end
   end
+
 
   def edit
   end
 
+  # Not DRY. (See #create.)
+  # Students can only edit drafts, i.e., submissions where status == "draft".
   def update
+    @submission.assign_attributes(submission_params)
+
+    if params[:commit] == "Submit my application"
+      if @submission.save
+        flash[:success] = "Application submitted."
+        redirect_to users_submissions_path(current_user)
+      else
+        render 'new'
+      end
+    elsif params[:commit] == "Save as draft"
+      if @submission.save(validate: false)
+        flash[:success] = "Application saved as a draft. You may edit it " +
+          "by navigating to your \"my applications\" page."
+        redirect_to users_submissions_path(current_user)
+      else
+        render 'new'
+      end
+    end
   end
 
   def destroy

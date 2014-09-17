@@ -7,7 +7,11 @@ module SubmissionsHelper
   end
 
   def formatted_status_for_student(submission)
-    submission.status_published ? submission.status.capitalize : "Pending"
+    if submission.status != "draft"
+      submission.status_published ? submission.status.capitalize : "Pending"
+    elsif submission.status == "draft"
+      "Draft (unsubmitted)"
+    end
   end
 
   def formatted_status(submission)

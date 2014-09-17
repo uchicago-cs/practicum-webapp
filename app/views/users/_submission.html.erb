@@ -3,7 +3,12 @@
   <td><%= submission.created_at.to_date %></td>
   <td><%= formatted_status_for_student(submission) %></td>
   <td>
-    Click <%= link_to "here", submission_path(submission.id) %>
-    to view your application.
+    <% if submission.status != "draft" %>
+      Click <%= link_to "here", submission_path(submission.id) %>
+      to view your application.
+    <% elsif submission.status == "draft" %>
+      Click <%= link_to "here", edit_submission_path(submission.id) %>
+      to edit your application.
+    <% end %>
   </td>
 </tr>

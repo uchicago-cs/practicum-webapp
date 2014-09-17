@@ -1,6 +1,6 @@
-<h2>Apply to <%= @project.name %></h2>
+<h2>Edit Application for <%= @submission.project_name %></h2>
 
-<%= bootstrap_form_for [@project, @submission], html: { multipart: true } do |f| %>
+<%= bootstrap_form_for @submission, html: { multipart: true } do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
   <table class="table table-bordered submission-form" >
