@@ -244,4 +244,23 @@ describe "Users viewing pages", type: :feature do
       end
     end
   end
+
+  context "as an admin" do
+    before(:each) do
+      @admin = FactoryGirl.create(:admin)
+      ldap_sign_in(@admin)
+    end
+
+    context "trying to remove their admin status" do
+      it "should fail" do
+        visit user_path(@admin)
+        uncheck "Admin"
+        click_button "Change this user's roles"
+        expect(@admin.reload.admin).to eq(true)
+        expect(current_path).to eq(user_path(@admin))
+        expect(page).to have_selector("div.alert.alert-danger")
+        expect(page).to have_content("You cannot demote yourself")
+      end
+    end
+  end
 end
