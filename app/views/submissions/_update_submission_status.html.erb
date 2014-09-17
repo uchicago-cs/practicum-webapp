@@ -4,7 +4,7 @@
   <%= render 'shared/error_messages', object: f.object %>
 
   <%= f.select :status,
-      options_for_select(["Pending", "Accepted", "Rejected"],
+      options_for_select(["Draft", "Pending", "Accepted", "Rejected"],
 			 @submission.status.capitalize),
       control_col: "col-lg-2" %>
 

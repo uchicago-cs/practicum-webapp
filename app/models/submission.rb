@@ -59,6 +59,10 @@ class Submission < ActiveRecord::Base
     status == "pending"
   end
 
+  def draft?
+    status == "draft"
+  end
+
   def in_current_quarter?
     self.quarter == Quarter.current_quarter
   end

@@ -7,7 +7,7 @@ module SubmissionsHelper
               download_resume_path(submission.id)) +
       " (#{number_to_human_size(submission.resume_file_size)})"
     else
-      ""
+      "No resume uploaded"
     end
   end
 

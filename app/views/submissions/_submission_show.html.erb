@@ -49,7 +49,7 @@
       <td>
 	<% if (can? :download_resume, @submission) and
 	  @submission.resume.exists? %>
-	  <%= link_to "Download", download_resume_path(@submission.id) %>
+	  <%= formatted_resume_info(@submission) %>
 	<% else %>
 	  This student did not upload a resume.
 	<% end %>

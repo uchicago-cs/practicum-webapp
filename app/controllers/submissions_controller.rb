@@ -4,6 +4,7 @@ class SubmissionsController < ApplicationController
 
   # before_actions on both new and create?
   before_action :get_project,                 only: [:index, :new, :create]
+  before_action :submitted?,                  only: [:edit, :update]
   before_action :project_accepted?,           only: [:new, :create]
   before_action :is_admin_or_advisor?,        only: :index
   before_action :already_applied_to_project?, only: [:new, :create]
@@ -57,11 +58,12 @@ class SubmissionsController < ApplicationController
     @submission.assign_attributes(submission_params)
 
     if params[:commit] == "Submit my application"
+      @submission.assign_attributes(status: "pending")
       if @submission.save
         flash[:success] = "Application submitted."
         redirect_to users_submissions_path(current_user)
       else
-        render 'new'
+        render 'edit'
       end
     elsif params[:commit] == "Save as draft"
       if @submission.save(validate: false)
@@ -69,7 +71,7 @@ class SubmissionsController < ApplicationController
           "by navigating to your \"my applications\" page."
         redirect_to users_submissions_path(current_user)
       else
-        render 'new'
+        render 'edit'
       end
     end
   end
@@ -133,7 +135,8 @@ class SubmissionsController < ApplicationController
   end
 
   def get_project
-    @project = Project.find(params[:project_id])
+    @project = Project.find(params[:project_id])#params[:project_id] ?
+      #Project.find(params[:project_id]) : @submission.project
   end
 
   def project_accepted?
@@ -160,7 +163,7 @@ class SubmissionsController < ApplicationController
   end
 
   def get_statuses
-    @status_approved = @submission.status_approved
+    @status_approved  = @submission.status_approved
     @status_published = @submission.status_published
   end
 
@@ -173,5 +176,10 @@ class SubmissionsController < ApplicationController
   def authorized_to_download_resume?
     current_user and (current_user.admin? or
                       current_user.made_project?(@submission.project))
+  end
+
+  def submitted?
+    message = "You cannot edit a submitted application."
+    redirect_to root_url, flash: { error: message } unless @submission.draft?
   end
 end

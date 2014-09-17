@@ -1,6 +1,6 @@
 <h2>
-  <%= display_name(@submission.student) %>'s Application to
-  <%= @submission.project_name %>
+  <%= display_name(@submission.student) %>'s Application
+  <%= "(draft)" if @submission.draft? %> to <%= @submission.project_name %>
 </h2>
 
 <div>

@@ -73,14 +73,22 @@ class Ability
         can :create, Submission
         can :read, Submission, student_id: user.id
         can :download_resume, Submission, student_id: user.id
+
         can :apply_to, Project do |project|
           project.accepted? and !user.applied_to_project?(project) and
             project.in_current_quarter? and project.status_published?
         end
+
+        can :edit, Submission do |submission|
+          submission.student_id == user.id
+        end
+
+        can :update, Submission do |submission|
+          submission.student_id == user.id
+        end
+
       end
-
     end
-
   end
 
   def submission_abilities(user, *actions)
