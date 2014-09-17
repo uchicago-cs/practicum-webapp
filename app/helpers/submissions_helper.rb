@@ -12,9 +12,10 @@ module SubmissionsHelper
   end
 
   def formatted_status_for_advisor(submission)
-    message="#{submission.status.capitalize} (pending administrator approval)"
-    (!submission.status_approved and !submission.pending?) ?
-      message : submission.status.capitalize
+    msg="#{submission.status.capitalize} (pending administrator approval)"
+    (!submission.status_approved and
+     (!submission.pending? and !submission.draft?)) ?
+      msg : submission.status.capitalize
   end
 
   def formatted_status_for_student(submission)
