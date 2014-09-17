@@ -1,16 +1,6 @@
 <h2><%= formatted_current_quarter %> Projects</h2>
 
-<% if before_deadline?("student_submission") %>
-  <div class="alert alert-info">
-    <strong>Application deadline</strong>:
-    <%= formatted_deadline("student_submission") %>
-  </div>
-<% else %>
-  <div class="alert alert-warning">
-    <strong>The application deadline for this quarter has passed</strong>.
-    The deadline was <%= formatted_deadline("student_submission") %>.
-  </div>
-<% end %>
+<%= render 'student_submission_deadline' %>
 
 <% if @projects.present? %>
   <table class="table table-bordered">
