@@ -1,5 +1,16 @@
 module SubmissionsHelper
 
+  # Shows resume info if student uploaded a resume.
+  def formatted_resume_info(submission)
+    if submission.resume.exists?
+      link_to(submission.resume_file_name,
+              download_resume_path(submission.id)) +
+      " (#{number_to_human_size(submission.resume_file_size)})"
+    else
+      ""
+    end
+  end
+
   def formatted_status_for_advisor(submission)
     message="#{submission.status.capitalize} (pending administrator approval)"
     (!submission.status_approved and !submission.pending?) ?

@@ -70,16 +70,24 @@ class Submission < ActiveRecord::Base
   private
 
   def send_student_applied
-    Notifier.student_applied(self).deliver
+    # Send only if we publish the draft ("draft" -> "pending"), or if it
+    # is created as "pending" (i.e., the student never saved it was a draft).
+    if self.status_changed?(from: "draft", to: "pending") or
+        (self.new_record? and self.status == "pending")
+      Notifier.student_applied(self).deliver
+    end
   end
 
   def send_status_updated
-    if status_changed?
-      User.admins.each {|a| Notifier.submission_status_updated(self, a).deliver}
-    end
+    # Send only if the status was not originally "draft".
+    if !(self.status_changed?(from: "draft"))
+      if status_changed?
+        User.admins.each {|a| Notifier.submission_status_updated(self, a).deliver}
+      end
 
-    if status_published_changed?
-      Notifier.submission_status_publish(self).deliver
+      if status_published_changed?
+        Notifier.submission_status_publish(self).deliver
+      end
     end
   end
 

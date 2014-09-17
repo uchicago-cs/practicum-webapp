@@ -52,6 +52,7 @@
 	  <%= f.label :resume, "Resume (optional)", class: "table-col-name" %>
 	</th>
 	<td>
+	  <%= formatted_resume_info(@submission) %>
 	  <%= f.file_field :resume, hide_label: true %>
 	</td>
       </tr>
