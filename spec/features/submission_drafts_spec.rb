@@ -144,7 +144,19 @@ describe "Drafting a submission", type: :feature do
           visit submission_path(Submission.first)
         end
 
-        it "should show the information the user entered" do
+        it "should show the info the user entered" do
+          # This should be tested cell by cell.
+          within("table") do
+            expect(page).to have_content("a" * 5)
+            expect(page).to have_content("Draft (unsubmitted)")
+          end
+        end
+
+        it "should show the info the user entered on the 'edit' page" do
+          within("#content") do
+            click_link "here"
+          end
+
           expect(page).to have_content("Edit Application for #{@project.name}")
           within "table" do
             expect(page).to have_field("Information", with: "a" * 5)
@@ -155,7 +167,6 @@ describe "Drafting a submission", type: :feature do
 
         end
 
-        # TODO: Test that this is visible only to the student.
         it "should show an 'edit' link on the submission's page" do
           within("#content") do
             expect(page).to have_content("Click here to continue editing " +
@@ -172,23 +183,25 @@ describe "Drafting a submission", type: :feature do
             within("#content") do
               click_link "here"
             end
+            fill_in "Qualifications", with: "b" * 2
+            fill_in "Courses", with: "c" * 4
             click_button "Submit my application"
           end
 
           it "should change the submission's status" do
-            expect(Submission.first.status).to eq("draft")
-            expect(Submission.first.draft?).to eq(true)
+            expect(Submission.first.status).to   eq("pending")
+            expect(Submission.first.pending?).to eq(true)
+            expect(Submission.first.draft?).to   eq(false)
           end
 
           it "should redirect the user to their submissions page" do
             expect(current_path).to eq(users_submissions_path(@student))
-            save_and_open_page
             expect(page).to have_selector("div.alert.alert-success")
             expect(page).to have_content("submitted")
           end
 
           it "should show the submission as 'pending' on their subs page" do
-            within('tr', text: "Status") do
+            within("table") do
               expect(page).to have_content("Pending")
             end
           end
@@ -197,7 +210,19 @@ describe "Drafting a submission", type: :feature do
             visit edit_submission_path(Submission.first)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
-            expect(page).to have_content("Access denied")
+            expect(page).to have_content("You cannot edit a submitted " +
+                                         "application")
+          end
+
+          it "should not show the 'edit' link on the sub's page" do
+            within("#content") do
+              expect(page).
+                not_to have_content("Click here to continue editing and / " +
+                                    "or submit this application.")
+              expect(page).
+                not_to have_link("here",
+                                 href: edit_submission_path(Submission.first))
+            end
           end
 
           it "should not be editable by the advisor" do
@@ -207,6 +232,20 @@ describe "Drafting a submission", type: :feature do
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
+          end
+
+          it "should not show the 'edit' link to the advisor" do
+            logout
+            ldap_sign_in(@advisor)
+            visit submission_path(Submission.first)
+            within("#content") do
+              expect(page).
+                not_to have_content("Click here to continue editing and / " +
+                                    "or submit this application.")
+              expect(page).
+                not_to have_link("here",
+                                 href: edit_submission_path(Submission.first))
+            end
           end
 
           # Admins may edit submitted submissions.
@@ -219,14 +258,12 @@ describe "Drafting a submission", type: :feature do
             end
 
             it "should appear via the \"@project's submissions\" page" do
-              visit users_projects_path(@user)
+              visit users_projects_path(@advisor)
               within("table") do
                 click_link "here"
               end
               expect(page).to have_content(@student.first_name + " " +
                                            @student.last_name)
-              save_and_open_page
-
             end
           end
         end
