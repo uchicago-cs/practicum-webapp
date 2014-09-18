@@ -58,7 +58,8 @@ module ApplicationHelper
   end
 
   def formatted_project_status(project)
-    if project.pending? or project.rejected? or project.status_published?
+    if project.pending? or project.rejected? or project.status_published? or
+        project.draft?
       project.status.capitalize
     elsif !project.status_published?
       "#{project.status.capitalize} (flagged, not published)"

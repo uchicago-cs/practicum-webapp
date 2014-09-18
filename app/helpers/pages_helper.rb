@@ -5,7 +5,8 @@ module PagesHelper
   end
 
   def status_classes
-    { "accepted" => "success", "rejected" => "danger", "pending" => "" }
+    { "accepted" => "success", "rejected" => "danger", "pending" => "",
+      "draft"    => "" }
   end
 
   # Determine table row class for users.
