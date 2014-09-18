@@ -77,4 +77,9 @@
   <%= f.submit "#{change.capitalize} my proposal", class: "btn btn-primary",
     data: { confirm: "Are you sure?" } %>
 
+  <% if change == "create" or @project.draft? %>
+    <%= f.submit "Save as draft", class: "btn btn-primary",
+      data: { confirm: "Are you sure?" } %>
+  <% end %>
+
 <% end %>

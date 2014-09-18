@@ -4,13 +4,5 @@
   <td><%= project.created_at.to_date %></td>
   <td><%= formatted_project_status(project) %></td>
   <td><%= formatted_submission_count(project) %></td>
-  <td>
-    <% if project.pending? %>
-      You may edit this proposal
-      <%= link_to "here", edit_project_path(project.id) %>.
-    <% elsif project.accepted? and project.status_published? %>
-      You may view students' applications to this project
-      <%= link_to "here", project_submissions_path(project.id) %>.
-    <% end %>
-  </td>
+  <td><%= project_notes(project) %></td>
 </tr>

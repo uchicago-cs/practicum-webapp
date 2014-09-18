@@ -28,7 +28,7 @@ class SubmissionsController < ApplicationController
 
     # Could be DRYer, but be careful to not rely on whether params[:commit]
     # is one of the strings _or not_; we should check whether it is one of the
-    # strings _or the other_.
+    # strings _or the other_. (?)
     if params[:commit] == "Submit my application"
       if @submission.save
         flash[:success] = "Application submitted."

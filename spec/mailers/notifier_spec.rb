@@ -84,13 +84,38 @@ RSpec.describe Notifier, type: :mailer do
   end
 
   context "when a project is proposed" do
-    before { (@num = rand(1..10)).times { FactoryGirl.create(:admin) } }
+    before do
+      (@num = rand(1..10)).times { FactoryGirl.create(:admin) }
+      @advisor = FactoryGirl.create(:advisor)
+    end
 
-    it "should send e-mails to the admins" do
-      # We expect the number of deliveries to equal the number of admins we
-      # made in the `before` block.
-      expect { FactoryGirl.create(:project) }.
-        to change{ ActionMailer::Base.deliveries.count }.by(@num)
+    context "and immediately submitted" do
+      it "should send e-mails to the admins" do
+        # We expect the number of deliveries to equal the number of admins we
+        # made in the `before` block.
+        expect { FactoryGirl.create(:project, :in_current_quarter,
+                                    advisor: @advisor) }.
+          to change{ ActionMailer::Base.deliveries.count }.by(@num)
+      end
+    end
+
+    context "as a draft" do
+      before(:each) do
+        @project = FactoryGirl.create(:project, :in_current_quarter,
+                                      status: "draft",
+                                      advisor: @advisor)
+      end
+
+      it "should not send e-mails to anyone" do
+        expect(ActionMailer::Base.deliveries.count).to eq(0)
+      end
+
+      context "and then submitted" do
+        it "should send e-mails to the admins" do
+          expect { @project.update_attributes(status: "pending") }.
+            to change{ ActionMailer::Base.deliveries.count }.by(@num)
+        end
+      end
     end
   end
 

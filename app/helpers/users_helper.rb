@@ -1,8 +1,22 @@
 module UsersHelper
 
+  # Write a similar method for submission notes?
+  def project_notes(project)
+    if project.pending?
+      "You may edit this proposal " +
+        link_to("here", edit_project_path(project.id)) + "."
+    elsif project.accepted?
+      "You may view students' applications to this project " +
+        link_to("here", project_submissions_path(project.id)) + "."
+    elsif project.draft?
+      "You may edit and / or submit this proposal draft " +
+        link_to("here", edit_project_path(project.id)) + "."
+    end.html_safe
+  end
+
   def user_role_warning
     "If you update this user's roles (and you are not this user), an e-mail "\
-    "will be sent to him / her."
+    "will be sent to them."
   end
 
   def display_name(user)
