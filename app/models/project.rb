@@ -45,7 +45,8 @@ class Project < ActiveRecord::Base
 
   attr_accessor :comments
 
-  after_create :send_project_proposed
+  after_create :send_project_proposed_immediately
+  after_update :send_project_proposed_after_draft
   after_update :send_project_status_changed
 
   def accepted_submissions
@@ -72,10 +73,15 @@ class Project < ActiveRecord::Base
 
   private
 
-  def send_project_proposed
+  def send_project_proposed_immediately
     # See Submission#send_student_applied.
-    if self.status_changed?(from: "draft", to: "pending") or
-        (self.new_record? and self.status == "pending")
+    if self.status == "pending"
+      User.admins.each { |ad| Notifier.project_proposed(self, ad).deliver }
+    end
+  end
+
+  def send_project_proposed_after_draft
+    if self.status_changed?(from: "draft", to: "pending")
       User.admins.each { |ad| Notifier.project_proposed(self, ad).deliver }
     end
   end
