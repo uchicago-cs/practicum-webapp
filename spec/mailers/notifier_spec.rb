@@ -22,13 +22,20 @@ RSpec.describe Notifier, type: :mailer do
       (@num = rand(1..10)).times { @admins << FactoryGirl.create(:admin) }
 
       @advisor = FactoryGirl.create(:advisor)
-      @project = FactoryGirl.create(:project, advisor: @advisor,
-                                    status: "accepted", status_published: true)
+      @student = FactoryGirl.create(:student)
+      @project = FactoryGirl.create(:project,
+                                    :accepted_and_published,
+                                    :in_current_quarter,
+                                    advisor: @advisor)
     end
 
     it "should send an e-mail" do
       # When a student applies, we send an e-mail only to the advisor.
-      expect{ FactoryGirl.create(:submission, project: @project) }.
+      expect{ FactoryGirl.create(:submission, project: @project,
+                                 student: @student,
+                                 status: "pending",
+                                 status_approved: false,
+                                 status_published: false) }.
         to change{ ActionMailer::Base.deliveries.count }.by(1)
     end
 
@@ -48,6 +55,17 @@ RSpec.describe Notifier, type: :mailer do
       # to the admins when `@project` was made.
       expect(ActionMailer::Base.deliveries.last.to).
         to include @project.advisor_email
+    end
+
+    context "as a draft" do
+      it "should not deliver any e-mails" do
+        expect{ FactoryGirl.create(:submission, student: @student,
+                                   project: @project,
+                                   status: "draft",
+                                   status_approved: false,
+                                   status_published: false) }.
+          to change{ ActionMailer::Base.deliveries.count }.by(0)
+      end
     end
   end
 
@@ -116,5 +134,4 @@ RSpec.describe Notifier, type: :mailer do
         to change{ ActionMailer::Base.deliveries.count }.by(@num)
     end
   end
-
 end
