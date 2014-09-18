@@ -66,6 +66,20 @@ RSpec.describe Notifier, type: :mailer do
                                    status_published: false) }.
           to change{ ActionMailer::Base.deliveries.count }.by(0)
       end
+
+      context "and then changed from 'draft' to 'pending'" do
+        before(:each) do
+          @submission = FactoryGirl.create(:submission, student: @student,
+                                           project: @project,
+                                           status: "draft",
+                                           status_approved: false,
+                                           status_published: false)
+        end
+        it "should deliver e-mails" do
+          expect{ @submission.update_attributes(status: "pending") }.
+            to change{ ActionMailer::Base.deliveries.count }.by(1)
+        end
+      end
     end
   end
 

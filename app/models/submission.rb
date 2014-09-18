@@ -30,7 +30,8 @@ class Submission < ActiveRecord::Base
   delegate :advisor_id, :advisor_email,
            to: :project, prefix: true, allow_nil: true
 
-  after_create      :send_student_applied
+  after_create      :send_student_applied_immediately
+  after_update      :send_student_applied_after_draft
   after_update      :send_status_updated
   before_validation :downcase_status
 
@@ -73,15 +74,21 @@ class Submission < ActiveRecord::Base
 
   private
 
-  def send_student_applied
+  def send_student_applied_immediately
+    # Neglect these comments; this is an after_create callback!
+
     # Send only if we publish the draft ("draft" -> "pending"), or if it
     # is created as "pending" (i.e., the student never saved it was a draft).
     # Note: we don't need to check whether the submission is a new record,
     # because this is an after_create callback (and because at this point,
-    # the record will no longer be new, so the second condition will not be
+    # the record will no longer be new, so the condition will not be
     # fulfilled).
-    if self.status_changed?(from: "draft", to: "pending") or
-        self.status == "pending"
+    Notifier.student_applied(self).deliver if self.status == "pending"
+  end
+
+  def send_student_applied_after_draft
+    # Maybe even just `from: "draft"`; leave off `to: "pending"`?
+    if self.status_changed?(from: "draft", to: "pending")
       Notifier.student_applied(self).deliver
     end
   end
