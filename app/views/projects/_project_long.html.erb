@@ -35,7 +35,7 @@
 	<tr>
 	  <th>Applicants</th>
 	  <td>
-	    <%= @project.submissions.count %>
+	    <%= @project.submitted_submissions.count %>
 	    <% if @project.has_submissions? %>
 	      (click <%= link_to "here",
 	      project_submissions_path(@project.id) %>

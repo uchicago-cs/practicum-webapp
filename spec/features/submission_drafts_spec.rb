@@ -102,34 +102,132 @@ describe "Drafting a submission", type: :feature do
           ldap_sign_in(@advisor)
         end
 
-        it "should not be visible via the 'my projects' page" do
+        it "should not be visible via the \"@project's submissions\" page" do
           visit users_projects_path(@advisor)
           within("table") do
             click_link("here")
-            save_and_open_page
           end
+          expect(page).not_to have_content(@student.first_name + " " +
+                                           @student.last_name)
+          expect(page).not_to have_content("Draft")
         end
 
-        it "should redirect when visiting the submission's page"
+        it "should redirect when visiting the submission's page" do
+          visit submission_path(Submission.first)
+          expect(current_path).to eq(root_path)
+          expect(page).to have_selector("div.alert.alert-danger")
+          expect(page).to have_content("Access denied")
+        end
 
-        it "should redirect when visiting the submission's edit page"
+        it "should redirect when visiting the submission's edit page" do
+          visit edit_submission_path(Submission.first)
+          expect(current_path).to eq(root_path)
+          expect(page).to have_selector("div.alert.alert-danger")
+          expect(page).to have_content("Access denied")
+        end
 
+        it "should not include the # of drafts in the project's apps count" do
+          visit project_path(@project)
+          # This should be tested within the td cell that has the number.
+          within("table") do
+            expect(page).to have_content(@project.submitted_submissions.count)
+          end
+        end
       end
 
       context "returning to it later" do
 
-        it "should show the information the user entered"
+        before(:each) do
+          click_button "Save as draft"
+          logout
+          ldap_sign_in(@student)
+          visit submission_path(Submission.first)
+        end
+
+        it "should show the information the user entered" do
+          expect(page).to have_content("Edit Application for #{@project.name}")
+          within "table" do
+            expect(page).to have_field("Information", with: "a" * 5)
+            expect(page).to have_field("Qualifications", with: "")
+            expect(page).to have_field("Courses", with: "")
+            expect(page).to have_content("No resume uploaded")
+          end
+
+        end
+
+        # TODO: Test that this is visible only to the student.
+        it "should show an 'edit' link on the submission's page" do
+          within("#content") do
+            expect(page).to have_content("Click here to continue editing " +
+                                         "and / or submit this application.")
+            expect(page).
+              to have_link("here",
+                           href: edit_submission_path(Submission.first))
+          end
+        end
 
         context "submitting it" do
 
-          # Click the 'submit' button
+          before(:each) do
+            within("#content") do
+              click_link "here"
+            end
+            click_button "Submit my application"
+          end
 
-          it "should not be editable by the admin, advisor, or student"
+          it "should change the submission's status" do
+            expect(Submission.first.status).to eq("draft")
+            expect(Submission.first.draft?).to eq(true)
+          end
+
+          it "should redirect the user to their submissions page" do
+            expect(current_path).to eq(users_submissions_path(@student))
+            save_and_open_page
+            expect(page).to have_selector("div.alert.alert-success")
+            expect(page).to have_content("submitted")
+          end
+
+          it "should show the submission as 'pending' on their subs page" do
+            within('tr', text: "Status") do
+              expect(page).to have_content("Pending")
+            end
+          end
+
+          it "should not be editable by the student" do
+            visit edit_submission_path(Submission.first)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("Access denied")
+          end
+
+          it "should not be editable by the advisor" do
+            logout
+            ldap_sign_in(@advisor)
+            visit edit_submission_path(Submission.first)
+            expect(current_path).to eq(root_path)
+            expect(page).to have_selector("div.alert.alert-danger")
+            expect(page).to have_content("Access denied")
+          end
+
+          # Admins may edit submitted submissions.
 
           context "viewing the site as the advisor" do
 
-            it "should appear via the 'my projects' page"
+            before(:each) do
+              logout
+              ldap_sign_in(@advisor)
+            end
 
+            it "should appear via the \"@project's submissions\" page" do
+              visit users_projects_path(@user)
+              within("table") do
+                click_link "here"
+              end
+              expect(page).to have_content(@student.first_name + " " +
+                                           @student.last_name)
+              save_and_open_page
+
+            end
           end
         end
       end

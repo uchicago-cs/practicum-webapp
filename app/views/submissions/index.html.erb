@@ -21,7 +21,7 @@
       <th>Notes</th>
     </tr>
     <tbody>
-    <% @project.submissions.each do |submission| %>
+    <% @project.submitted_submissions.each do |submission| %>
       <%= render 'submission_short', submission: submission %>
     <% end %>
     </tbody>

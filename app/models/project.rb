@@ -80,6 +80,10 @@ class Project < ActiveRecord::Base
     self.accepted? and self.status_published?
   end
 
+  def submitted_submissions
+    self.submissions.where.not(status: "draft")
+  end
+
   private
 
   def send_project_proposed

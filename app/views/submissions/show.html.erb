@@ -24,3 +24,10 @@
     </p>
   <% end %>
 </div>
+
+<% if @submission.draft? and (can? :edit, @submission) %>
+  <p>
+    Click <%= link_to "here", edit_submission_path(@submission) %> to continue
+    editing and / or submit this application.
+  </p>
+<% end %>

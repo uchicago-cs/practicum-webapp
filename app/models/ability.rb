@@ -58,7 +58,8 @@ class Ability
 
         can :create_evaluation_for, Submission do |submission|
           (submission.project_advisor_id == user.id) and
-            submission.accepted? and !submission.evaluation
+            submission.accepted? and !submission.evaluation and
+            !submission.draft?
         end
 
         can :read, Evaluation do |evaluation|
@@ -94,7 +95,7 @@ class Ability
   def submission_abilities(user, *actions)
     actions.each do |take_action|
       can take_action, Submission do |submission|
-        submission.project_advisor_id == user.id
+        (submission.project_advisor_id == user.id) and !submission.draft?
       end
     end
   end
