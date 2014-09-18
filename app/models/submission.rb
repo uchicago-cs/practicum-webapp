@@ -1,5 +1,7 @@
 class Submission < ActiveRecord::Base
 
+  include StatusMethods
+
   default_scope { order('submissions.created_at DESC') }
   scope :current_submissions, -> { includes(:project).
       where(projects: { quarter_id: Quarter.current_quarter.id }) }
@@ -46,26 +48,6 @@ class Submission < ActiveRecord::Base
   validates_attachment_file_name :resume, matches: /(pdf|doc|docx)\z/
   validates_attachment_size :resume, less_than: 5.megabytes
   # Could even use 1.megabyte.
-
-  def accepted?
-    status == "accepted"
-  end
-
-  def rejected?
-    status == "rejected"
-  end
-
-  def pending?
-    status == "pending"
-  end
-
-  def draft?
-    status == "draft"
-  end
-
-  def in_current_quarter?
-    self.quarter == Quarter.current_quarter
-  end
 
   def status_sufficient?
     self.accepted? and self.status_approved? and self.status_published?

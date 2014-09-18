@@ -17,23 +17,67 @@ class ProjectsController < ApplicationController
     @project = current_user.projects.build(project_params)
     @project.assign_attributes(quarter_id: Quarter.current_quarter.id)
 
-    if @project.save
-      flash[:success] = "Project successfully proposed."
-      redirect_to users_projects_path(current_user)
-    else
-      render 'new'
+    if params[:commit] == "Submit my application"
+      if @project.save
+        flash[:success] = "Project successfully proposed."
+        redirect_to users_projects_path(current_user)
+      else
+        render 'new'
+      end
+    elsif params[:commit] == "Save as draft"
+      @project.assign_attributes(status: "draft")
+      if @project.save(validate: false)
+        flash[:success] = "Proposal saved as a draft. You may edit it " +
+          "by navigating to your \"my projects\" page."
+        redirect_to users_projects_path(current_user)
+      else
+        render 'new'
+      end
     end
   end
 
   def edit
   end
 
+  # Not DRY (see #create and submissions_controller.rb), and a bit too much
+  # logic.
+
+  # ***
+  # TODO: Check whether we should be checking the params instead in the
+  # outermost `if` statement?
+  # ***
   def update
-    if @project.update_attributes(project_params)
-      flash[:success] = "Project proposal successfully updated."
-      redirect_to @project
+    if @project.draft?
+      # Editing the proposal while it's a draft
+      @project.assign_attributes(project_params)
+
+      if params[:commit] == "Create my proposal"
+        @project.assign_attributes(status: "pending")
+        if @project.save
+          flash[:success] = "Proposal submitted."
+          redirect_to users_projects_path(current_user)
+        else
+          render 'edit'
+        end
+      elsif params[:commit] == "Save as draft"
+        if @project.save(validate: false)
+          flash[:success] = "Proposal saved as a draft. You may edit it " +
+            "by navigating to your \"my projects\" page."
+          redirect_to users_projects_path(current_user)
+        else
+          render 'edit'
+        end
+      end
+
     else
-      render 'edit'
+      # Editing the proposal while it's pending
+      if @project.update_attributes(project_params)
+        flash[:success] = "Project proposal successfully updated."
+        redirect_to @project
+      else
+        render 'edit'
+      end
+
     end
   end
 

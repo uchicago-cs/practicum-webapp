@@ -1,5 +1,7 @@
 class Project < ActiveRecord::Base
 
+  include StatusMethods
+
   default_scope { order('projects.created_at DESC') }
   scope :accepted_projects, -> { where(status: "accepted") }
   scope :rejected_projects, -> { where(status: "rejected") }
@@ -46,22 +48,6 @@ class Project < ActiveRecord::Base
   after_create :send_project_proposed
   after_update :send_project_status_changed
 
-  def accepted?
-    status == "accepted"
-  end
-
-  def rejected?
-    status == "rejected"
-  end
-
-  def pending?
-    status == "pending"
-  end
-
-  def in_current_quarter?
-    self.quarter == Quarter.current_quarter
-  end
-
   def accepted_submissions
     self.submissions.where(status: "accepted")
   end
@@ -87,16 +73,23 @@ class Project < ActiveRecord::Base
   private
 
   def send_project_proposed
-    User.admins.each { |ad| Notifier.project_proposed(self, ad).deliver }
+    # See Submission#send_student_applied.
+    if self.status_changed?(from: "draft", to: "pending") or
+        (self.new_record? and self.status == "pending")
+      User.admins.each { |ad| Notifier.project_proposed(self, ad).deliver }
+    end
   end
 
   def send_project_status_changed
-    if status_changed?
-      Notifier.project_status_changed(self).deliver
-    end
+    # See Submission#send_status_updated.
+    if !(self.status_changed?(from: "draft"))
+      if status_changed?
+        Notifier.project_status_changed(self).deliver
+      end
 
-    if status_published_changed? and status == "accepted"
-      Notifier.project_status_published_accepted(self).deliver
+      if status_published_changed? and status == "accepted"
+        Notifier.project_status_published_accepted(self).deliver
+      end
     end
   end
 

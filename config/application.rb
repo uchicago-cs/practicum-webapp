@@ -8,6 +8,10 @@ Bundler.require(*Rails.groups)
 
 module Practicum
   class Application < Rails::Application
+
+    # Include files in /lib/ in the app (e.g., for modules).
+    config.autoload_paths += %W(#{config.root}/lib)
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
