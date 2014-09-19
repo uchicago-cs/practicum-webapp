@@ -45,6 +45,9 @@ describe "Drafting a submission", type: :feature do
         expect(Project.first.prerequisites).to         eq("a" * 5)
       end
 
+      # TODO: Spec: it should show the info on the project page, and filled in
+      # on the edit page.
+
       it "should redirect the advisor to their projects page" do
         expect(current_path).to eq(users_projects_path(@advisor))
       end
@@ -170,31 +173,111 @@ describe "Drafting a submission", type: :feature do
 
       end
 
-      # Returning to it later as the advisor
+      # Returning to it later (just a continuation of the first part of these
+      # specs) as the advisor
       context "returning to it later" do
 
-        it "should show its info on the project's page"
-
-        it "should show its info on the project's 'edit' page"
-
-        context "submitting it" do
-
-          it "should change the project's status"
-
-          it "should redirect the advisor to their projects page"
-
-          it "shold show the project as 'pending' on their projects page"
-
-          it "should appear on the 'pending projects' page"
-
-          it "should still be editable by the advisor while it is 'pending'"
+        it "should show its info on the project's page" do
+          visit project_path(Project.first)
+          # Testing for "" doesn't test for anything (?)
+          within('tr', text: 'Title') do
+            expect(page).to have_content("")
+          end
+          within('tr', text: 'Status') do
+            expect(page).to have_content("Draft")
+          end
+          within('tr', text: 'Description') do
+            expect(page).to have_content("")
+          end
+          within('tr', text: 'Expected deliverables') do
+            expect(page).to have_content("")
+          end
+          within('tr', text: 'Prerequisites') do
+            expect(page).to have_content("a" * 5)
+          end
+          within('tr', text: 'Related work') do
+            expect(page).to have_content("N/A")
+          end
 
         end
 
+        it "should show its info on the project's 'edit' page" do
+          visit edit_project_path(Project.first)
+          expect(page).to have_field("Name", with: "")
+          expect(page).to have_field("Description", with: "")
+          expect(page).to have_field("Expected deliverables", with: "")
+          expect(page).to have_field("Prerequisites", with: "a" * 5)
+          expect(page).to have_field("Related work", with: "")
+        end
+
+        context "submitting it" do
+
+          before(:each) do
+            visit edit_project_path(Project.first)
+            fill_in "Name", with: "a" * 5
+            fill_in "Description", with: "a" * 5
+            fill_in "Expected deliverables", with: "a" * 5
+          end
+
+          it "should change the project's status" do
+            expect{ click_button "Create my proposal" }.
+              to change{ Project.first.status }.from("draft").to("pending")
+          end
+
+          it "should redirect the advisor to their projects page" do
+            click_button "Create my proposal"
+            expect(current_path).to eq(users_projects_path(@advisor))
+          end
+
+          it "should show the project as 'pending' on their projects page" do
+            click_button "Create my proposal"
+            within("table") do
+              expect(page).to have_content("Pending")
+              expect(page).not_to have_content("Draft")
+            end
+          end
+
+          it "should show the project as 'pending' on the project's page" do
+            click_button "Create my proposal"
+            within("table") do
+              # Go to the project's page.
+              click_link(Project.first.name)
+            end
+
+            within('tr', text: "Status") do
+              expect(page).to have_content("Pending")
+              expect(page).not_to have_content("Draft")
+            end
+          end
+
+          it "should appear on the 'pending projects' page" do
+            click_button "Create my proposal"
+            logout
+            ldap_sign_in(@admin)
+            visit pending_projects_path
+            within("table") do
+              expect(page).to have_content(Project.first.name)
+              expect(page).to have_content(@advisor.first_name + " " +
+                                           @advisor.last_name)
+            end
+          end
+
+          it "should still be editable by the advisor while it's 'pending'" do
+            click_button "Create my proposal"
+            within("table") do
+              # Go to the project's "edit" page.
+              click_link "here"
+            end
+            expect(current_path).to eq(edit_project_path(Project.first))
+            save_and_open_page
+            expect(page).to have_content("Edit")
+          end
+
+          it "shouldn't have the 'save as draft' button on the 'edit' page" do
+
+          end
+        end
       end
-
     end
-
   end
-
 end

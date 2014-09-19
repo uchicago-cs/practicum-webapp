@@ -45,7 +45,8 @@ class Ability
         end
 
         can :update, Project do |project|
-          project.status == "pending" and project.advisor_id == user.id
+          project.advisor_id == user.id and
+            (project.status == "draft" or project.status == "pending")
         end
 
         can :read_submissions_of, Project do |project|
