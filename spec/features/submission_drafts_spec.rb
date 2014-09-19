@@ -144,7 +144,7 @@ describe "Drafting a submission", type: :feature do
           visit submission_path(Submission.first)
         end
 
-        it "should show the info the user entered" do
+        it "should show the info the student entered on the sub's page" do
           # This should be tested cell by cell.
           within("table") do
             expect(page).to have_content("a" * 5)
@@ -194,7 +194,7 @@ describe "Drafting a submission", type: :feature do
             expect(Submission.first.draft?).to   eq(false)
           end
 
-          it "should redirect the user to their submissions page" do
+          it "should redirect the student to their submissions page" do
             expect(current_path).to eq(users_submissions_path(@student))
             expect(page).to have_selector("div.alert.alert-success")
             expect(page).to have_content("submitted")
