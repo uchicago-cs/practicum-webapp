@@ -14,9 +14,6 @@ describe "Drafting a submission", type: :feature do
     @advisor       = FactoryGirl.create(:advisor)
     @other_advisor = FactoryGirl.create(:advisor)
     @student       = FactoryGirl.create(:student)
-    # @project       = FactoryGirl.create(:project, :in_current_quarter,
-    #                                     advisor: @advisor, status: "accepted",
-    #                                     status_published: true)
   end
 
   context "visiting the 'new project' page" do
@@ -269,12 +266,19 @@ describe "Drafting a submission", type: :feature do
               click_link "here"
             end
             expect(current_path).to eq(edit_project_path(Project.first))
-            save_and_open_page
-            expect(page).to have_content("Edit")
+            expect(page).to have_content("Edit Proposal for " +
+                                         Project.first.name)
           end
 
-          it "shouldn't have the 'save as draft' button on the 'edit' page" do
-
+          it "shouldn't have the right button on the 'edit' page" do
+            click_button "Create my proposal"
+            within("table") do
+              # Go to the project's "edit" page.
+              click_link "here"
+            end
+            expect(page).not_to have_button("Save as draft")
+            expect(page).to     have_button("Edit my proposal")
+            expect(page).not_to have_button("Submit my proposal")
           end
         end
       end

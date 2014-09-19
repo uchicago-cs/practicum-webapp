@@ -51,7 +51,8 @@ class Ability
 
         can :read_submissions_of, Project do |project|
           project.advisor_id == user.id and project.submissions.count > 0
-          # user.made_project?(project)
+          # Just use `user.made_project?(project)` and similar methods for
+          # abilities?
         end
 
         can :read_status_of, Project do |project|
