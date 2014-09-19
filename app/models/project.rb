@@ -6,12 +6,12 @@ class Project < ActiveRecord::Base
   scope :accepted_projects, -> { where(status: "accepted") }
   scope :rejected_projects, -> { where(status: "rejected") }
   scope :pending_projects,  -> { where(status: "pending") }
-  # This name is somewhat confusing. Change it to `current_unpublished`?
-  scope :current_pending_projects,
+  scope :current_unpublished_projects,
     -> { where(status_published: false,
-               quarter: Quarter.current_quarter) }
+               quarter: Quarter.current_quarter).
+         where("status != ?", "draft") }
   scope :unpublished_nonpending_projects,
-    -> { current_pending_projects.where.not(status: "pending") }
+    -> { current_unpublished_projects.where.not(status: "pending") }
   scope :current_accepted_projects,
     -> { where(status: "accepted").
     joins(:quarter).where(quarters: { current: true }) }

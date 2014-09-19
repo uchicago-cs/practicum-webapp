@@ -29,6 +29,11 @@ class Ability
         submission_abilities(user, :accept, :reject, :read,
                              :accept_submission, :reject_submission)
 
+        can :edit, Project do |project|
+          project.advisor_id == user.id and
+            (project.status == "draft" or project.status == "pending")
+        end
+
         can :download_resume, Submission do |submission|
           submission.project_advisor_id == user.id and
             submission.resume.exists?
@@ -40,12 +45,14 @@ class Ability
         end
 
         can :update, Project do |project|
-          project.status == "pending" and project.advisor_id == user.id
+          project.advisor_id == user.id and
+            (project.status == "draft" or project.status == "pending")
         end
 
         can :read_submissions_of, Project do |project|
           project.advisor_id == user.id and project.submissions.count > 0
-          # user.made_project?(project)
+          # Just use `user.made_project?(project)` and similar methods for
+          # abilities?
         end
 
         can :read_status_of, Project do |project|
