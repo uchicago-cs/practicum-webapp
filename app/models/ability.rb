@@ -29,6 +29,11 @@ class Ability
         submission_abilities(user, :accept, :reject, :read,
                              :accept_submission, :reject_submission)
 
+        can :edit, Project do |project|
+          project.advisor_id == user.id and
+            (project.status == "draft" or project.status == "pending")
+        end
+
         can :download_resume, Submission do |submission|
           submission.project_advisor_id == user.id and
             submission.resume.exists?
