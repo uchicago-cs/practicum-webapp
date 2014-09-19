@@ -100,7 +100,7 @@ class ProjectsController < ApplicationController
   end
 
   def pending
-    @current_pending_projects = Project.current_pending_projects
+    @current_unpublished_projects = Project.current_unpublished_projects
   end
 
   def update_status

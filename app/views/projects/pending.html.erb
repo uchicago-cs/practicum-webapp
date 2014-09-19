@@ -1,6 +1,6 @@
 <h2><%= formatted_current_quarter %> Pending Projects</h2>
 
-<% if @current_pending_projects.count > 0 %>
+<% if @current_unpublished_projects.count > 0 %>
   <table class="table table-bordered">
     <tr>
       <th>Project title</th>
@@ -8,7 +8,7 @@
       <th>Status</th>
     </tr>
     <tbody>
-      <% @current_pending_projects.each do |project| %>
+      <% @current_unpublished_projects.each do |project| %>
 	<%= render 'project_short', project: project %>
       <% end %>
     </tbody>
