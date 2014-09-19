@@ -13,7 +13,7 @@ class SubmissionsController < ApplicationController
   before_action :project_accepted_and_pub?,   only: [:new, :create]
   before_action(except: :index) { |c|
     c.get_this_user_for_object(@submission) }
-  before_action(only: [:new, :create]) { |c|
+  before_action(only: [:new, :create, :update]) { |c|
     c.before_deadline?("student_submission") }
   before_action(only: [:accept, :reject]) { |c|
     c.before_deadline?("advisor_decision") }

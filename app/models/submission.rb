@@ -78,8 +78,11 @@ class Submission < ActiveRecord::Base
   def send_status_updated
     # Send only if the status was not originally "draft".
     if !(self.status_changed?(from: "draft"))
-      if status_changed?
-        User.admins.each {|a| Notifier.submission_status_updated(self, a).deliver}
+      # Ideally, don't use this_user here.
+      if status_changed? and !this_user.try(:admin?)
+        User.admins.each do
+          |admin| Notifier.submission_status_updated(self, admin).deliver
+        end
       end
 
       if status_published_changed?
