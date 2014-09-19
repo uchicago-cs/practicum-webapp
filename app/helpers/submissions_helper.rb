@@ -11,11 +11,19 @@ module SubmissionsHelper
     end
   end
 
+  # Clean this up...
   def formatted_status_for_advisor(submission)
     msg="#{submission.status.capitalize} (pending administrator approval)"
-    (!submission.status_approved and
-     (!submission.pending? and !submission.draft?)) ?
-      msg : submission.status.capitalize
+
+    if submission.status_approved and !submission.status_published
+      "#{submission.status.capitalize} (student not yet notified)"
+    elsif submission.status_approved and submission.status_published
+      "#{submission.status.capitalize} (student notified)"
+    else
+      (!submission.status_approved and
+       (!submission.pending? and !submission.draft?)) ?
+       msg : submission.status.capitalize
+    end
   end
 
   def formatted_status_for_student(submission)
