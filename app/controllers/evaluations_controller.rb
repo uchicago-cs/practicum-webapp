@@ -64,7 +64,9 @@ class EvaluationsController < ApplicationController
 
     if @evaluation.save
       flash[:success] = "Evaluation successfully submitted."
-      redirect_to @evaluation
+      # We use `evaluation_path(@evaluation)` instead of simply `@evaluation`
+      # as per the Brakeman redirect warning.
+      redirect_to evaluation_path(@evaluation)
     else
       flash.now[:error] = "Evaluation was not submitted."
       render 'new'

@@ -143,7 +143,9 @@ class ProjectsController < ApplicationController
     if @new_project.save
       @old_project.update_attributes(cloned: true)
       flash[:success] = "Project successfully cloned."
-      redirect_to @new_project
+      # We use `project_path(@new_project)` instead of simply `@new_project`
+      # as per the Brakeman redirect warning.
+      redirect_to project_path(@new_project)
     else
       flash.now[:error] = "Project was not successfully cloned."
       render 'show'
