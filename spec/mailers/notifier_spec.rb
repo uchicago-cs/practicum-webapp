@@ -14,7 +14,8 @@ RSpec.describe Notifier, type: :mailer do
     ActionMailer::Base.deliveries.clear
   end
 
-  context "when a submission is created" do
+  # When a submission is submitted, its status becomes "pending".
+  context "when a submission is submitted" do
 
     before do
       # Create admins, whom we send the "new proposal" e-mail to.
@@ -46,8 +47,6 @@ RSpec.describe Notifier, type: :mailer do
     end
 
     it "should send an e-mail to the advisor" do
-      expect(ActionMailer::Base.deliveries.count).to eq(@num)
-
       # According to submission.rb, we send an e-mail only to the advisor
       # who created the project.
       FactoryGirl.create(:submission, project: @project)

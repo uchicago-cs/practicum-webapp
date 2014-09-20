@@ -17,17 +17,17 @@ describe "Viewing a project", type: :feature do
     end
 
     describe "after the advisor fills out the form and hits submit" do
-      before do
+      before(:each) do
         ldap_sign_in(@advisor)
-        visit new_project_url
+        visit new_project_path
       end
 
       it "should have created a project" do
-        fill_in "project_name", with: "Generic Project Name"
+        fill_in "Name", with: "Generic Project Name"
         fill_in "Description", with: "a"*500
         fill_in "Expected deliverables", with: "a"*500
         fill_in "Prerequisites", with: "a"*500
-        expect { click_button "Create my proposal" }.
+        expect{ click_button "Create my proposal" }.
           to change{ Project.count }.by(1)
       end
     end
@@ -37,7 +37,7 @@ describe "Viewing a project", type: :feature do
         @project = FactoryGirl.create(:project, :in_current_quarter,
                                       advisor: @advisor)
         ldap_sign_in(@advisor)
-        visit root_url
+        visit root_path
       end
 
       # Note: these specs should test for the presence of "pending"

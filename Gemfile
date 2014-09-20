@@ -43,6 +43,7 @@ group :development, :test do
   gem 'rails_best_practices', '1.15.4'
   gem 'rspec-its', '1.0.1'
   gem 'pry', '0.10.1'
+  gem 'fivemat', '1.3.1'
 end
 
 group :test do

@@ -17,7 +17,7 @@ class ProjectsController < ApplicationController
     @project = current_user.projects.build(project_params)
     @project.assign_attributes(quarter_id: Quarter.current_quarter.id)
 
-    if params[:commit] == "Submit my application"
+    if params[:commit] == "Create my proposal"
       if @project.save
         flash[:success] = "Project successfully proposed."
         redirect_to users_projects_path(current_user)
