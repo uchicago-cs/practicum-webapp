@@ -156,8 +156,9 @@ RSpec.describe Notifier, type: :mailer do
       # Create admins, whom we send the "new proposal" e-mail to.
       (@num = rand(1..10)).times { FactoryGirl.create(:admin) }
       @advisor = FactoryGirl.create(:advisor)
-      @project = FactoryGirl.create(:project, advisor: @advisor,
-                                    status: "accepted", status_published: true)
+      @project = FactoryGirl.create(:project, :in_current_quarter,
+                                    advisor: @advisor, status: "accepted",
+                                    status_published: true)
       @submission = FactoryGirl.create(:submission, project: @project)
       @submission.status = "accepted"
       @submission.status_approved = true
