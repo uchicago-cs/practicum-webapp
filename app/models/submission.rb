@@ -25,6 +25,7 @@ class Submission < ActiveRecord::Base
   validate :decision_made_before_decision_deadline
   validate :creator_role, on: :create
   validate :created_when_project_visible, on: :create
+  validate :project_is_in_current_quarter, on: :create
 
   delegate :name, to: :project, prefix: true, allow_nil: true
   delegate :quarter, to: :project, prefix: false, allow_nil: true
@@ -142,6 +143,12 @@ class Submission < ActiveRecord::Base
 
   def downcase_status
     self.status.downcase!
+  end
+
+  def project_is_in_current_quarter
+    msg = "Applications cannot be submitted to projects from previous " +
+      "quarters."
+    errors.add(:base, msg) unless project.in_current_quarter?
   end
 
 end

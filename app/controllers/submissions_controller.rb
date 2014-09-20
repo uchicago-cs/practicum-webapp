@@ -151,7 +151,8 @@ class SubmissionsController < ApplicationController
   end
 
   def project_in_current_quarter?
-    message = "That project is no longer available."
+    message = "That project was offered in a previous quarter and is no " +
+      "longer available."
     redirect_to root_url, flash: { error: message } unless
       @project.quarter == Quarter.current_quarter
   end

@@ -7,7 +7,8 @@ class Quarter < ActiveRecord::Base
 
   validates :season, presence: true,
                      uniqueness: { scope:   :year,
-                                   message: "That quarter already exists." },
+                     message: "A quarter with that season and " +
+                     "year already exists." },
                      inclusion:  { in:      %w(winter spring summer autumn),
                                    message: "Invalid quarter." }
   validates :year, presence: true, numericality: true, length: { is: 4 }

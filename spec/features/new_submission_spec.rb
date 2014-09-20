@@ -217,14 +217,38 @@ describe "Creating a submission", type: :feature do
   describe "the student applying to a project from a different quarter" do
 
     before(:each) do
-      @q2 = FactoryGirl.create(:quarter, :no_deadlines_passed, current: false)
+      @quarter = FactoryGirl.create(:quarter, :no_deadlines_passed)
+      @advisor = FactoryGirl.create(:advisor)
+      @student = FactoryGirl.create(:student)
+      @q2 = FactoryGirl.create(:quarter, :no_deadlines_passed,
+                               season: "Winter", current: false)
       @project_2 = FactoryGirl.create(:project, :accepted_and_published,
                                       quarter: @q2, advisor: @advisor)
+      ldap_sign_in(@student)
     end
 
     it "should not show the 'apply' button on the project's page" do
       visit project_path(@project_2)
       expect(page).not_to have_content("Click here to apply")
+    end
+
+    it "should redirect the student visiting the project's 'apply' page" do
+      visit new_project_submission_path(@project_2)
+      expect(current_path).to eq(root_path)
+      expect(page).to have_selector("div.alert.alert-danger")
+      expect(page).to have_content("That project was offered in a previous " +
+                                   "quarter and is no longer available.")
+    end
+
+    it "should prevent a direct creation" do
+      @submission = @project_2.submissions.build(student: @student,
+                                                 information: "a",
+                                                 qualifications: "a",
+                                                 courses: "a")
+      expect(@submission).not_to be_valid
+      expect(@submission.errors.full_messages).
+        to include("Applications cannot be submitted to projects from " +
+                   "previous quarters.")
     end
 
   end
