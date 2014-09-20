@@ -457,11 +457,12 @@ describe "Editing a project's 'status' attributes", type: :feature do
           choose "Reject"
           check "Publish status"
           click_button "Update project status"
+          @project.reload
         end
 
         it "should change the project's status" do
-          expect(@project.reload.status).to eq("rejected")
-          expect(@project.reload.status_published).to eq(true)
+          expect(@project.status).to eq("rejected")
+          expect(@project.status_published).to eq(true)
         end
 
         context "viewed by the admin" do

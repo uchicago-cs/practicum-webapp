@@ -59,7 +59,7 @@ describe "Creating a project", type: :feature do
       describe "with invalid input" do
         it "should not be created" do
           fill_in "Title", with: "Generic Project Name"
-          fill_in "Description", with: "a"*99
+          fill_in "Description", with: ""
           fill_in "Expected deliverables", with: "a"*100
           fill_in "Prerequisites", with: "a"*100
           expect{ click_button "Create my proposal" }.

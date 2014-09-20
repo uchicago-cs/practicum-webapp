@@ -11,6 +11,8 @@ module UsersHelper
     elsif project.draft?
       "You may edit and / or submit this proposal draft " +
         link_to("here", edit_project_path(project.id)) + "."
+    else
+      ""
     end.html_safe
   end
 
