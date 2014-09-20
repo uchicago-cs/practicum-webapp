@@ -173,19 +173,19 @@ describe "Editing a project's information", type: :feature do
           ldap_sign_in(@advisor)
           visit project_path(@project)
           within("#content") { click_link "here" }
-          fill_in "Description", with: "test"
+          fill_in "Description", with: ""
           click_button "Edit my proposal"
         end
 
         it "should not update the project" do
-          expect(@project.reload.description).not_to eq("test")
+          expect(@project.reload.description).not_to eq("")
           expect(@project.reload.description).to eq("a"*500)
         end
 
         it "should show the advisor an error message" do
           expect(current_path).to eq(project_path(@project))
           expect(page).to have_content("error")
-          expect(page).to have_content("Description is too short")
+          expect(page).to have_content("Description can't be blank")
           expect(page).to have_selector("div.alert.alert-danger")
         end
       end

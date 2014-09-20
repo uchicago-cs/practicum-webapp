@@ -214,4 +214,19 @@ describe "Creating a submission", type: :feature do
     end
   end
 
+  describe "the student applying to a project from a different quarter" do
+
+    before(:each) do
+      @q2 = FactoryGirl.create(:quarter, :no_deadlines_passed, current: false)
+      @project_2 = FactoryGirl.create(:project, :accepted_and_published,
+                                      quarter: @q2, advisor: @advisor)
+    end
+
+    it "should not show the 'apply' button on the project's page" do
+      visit project_path(@project_2)
+      expect(page).not_to have_content("Click here to apply")
+    end
+
+  end
+
 end
