@@ -1,5 +1,10 @@
 module SubmissionsHelper
 
+  def submit_submission_confirmation
+    "Are you sure you want to submit your application? Once you submit your " +
+      "application, you will be unable to modify it."
+  end
+
   # Shows resume info if student uploaded a resume.
   def formatted_resume_info(submission)
     if submission.resume.exists?
