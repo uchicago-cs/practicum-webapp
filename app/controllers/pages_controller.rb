@@ -50,7 +50,7 @@ class PagesController < ApplicationController
 
   def send_request_for_advisor_access
     if current_user.advisor_status_pending
-      flash[:error] = "You have already requested advisor privileges. " \
+      flash[:error] = "You have already requested advisor privileges. " +
       "Your request is pending administrator approval."
       redirect_to root_url
     elsif current_user.advisor
@@ -59,61 +59,14 @@ class PagesController < ApplicationController
     else
       current_user.update_attributes(advisor_status_pending: true)
       send_advisor_request_mail
-      flash[:success] = "You have requested advisor privileges. You will be " \
+      flash[:success] = "You have requested advisor privileges. You will be " +
       "notified if your privileges are elevated."
       redirect_to root_url
     end
   end
 
   def update_all_submissions
-    # DRY this up...
-
-    if params[:commit] == "Approve decisions of all selected"
-      params[:submissions].each do |submission|
-        if (submission[1][:update_in_index].to_i == 1 ? true : false)
-          Submission.find(submission[0]).
-            update_attributes(status_approved: true)
-        end
-      end
-
-    elsif params[:commit] == "Reject decisions of all selected"
-      params[:submissions].each do |submission|
-        if (submission[1][:update_in_index].to_i == 1 ? true : false)
-          Submission.find(submission[0]).
-            update_attributes(status_approved: false)
-        end
-      end
-
-    elsif params[:commit] == "Accept all selected"
-      params[:submissions].each do |submission|
-        if (submission[1][:update_in_index].to_i == 1 ? true : false)
-          Submission.find(submission[0]).update_attributes(status: "accepted")
-        end
-      end
-
-    elsif params[:commit] == "Reject all selected"
-      params[:submissions].each do |submission|
-        if (submission[1][:update_in_index].to_i == 1 ? true : false)
-          Submission.find(submission[0]).update_attributes(status: "rejected")
-        end
-      end
-
-    elsif params[:commit] == "Publish all selected"
-      params[:submissions].each do |submission|
-        if (submission[1][:update_in_index].to_i == 1 ? true : false)
-          Submission.find(submission[0]).
-            update_attributes(status_published: true)
-        end
-      end
-
-    elsif params[:commit] == "Unpublish all selected"
-      params[:submissions].each do |submission|
-        if (submission[1][:update_in_index].to_i == 1 ? true : false)
-          Submission.find(submission[0]).
-            update_attributes(status_published: false)
-        end
-      end
-    end
+    Submission.update_selected(params)
 
     flash[:success] =  "Updated selected applications."
     redirect_to submissions_path
