@@ -58,14 +58,14 @@ class Submission < ActiveRecord::Base
 
   def Submission.update_selected(params)
     case params[:commit]
-    when "Approve decisions of all selected"
-      Submission.update_selected_values(params, :status_approved, true)
-    when "Reject decisions of all selected"
-      Submission.update_selected_values(params, :status_approved, false)
     when "Accept all selected"
       Submission.update_selected_values(params, :status, "accepted")
     when "Reject all selected"
       Submission.update_selected_values(params, :status, "rejected")
+    when "Approve decisions of all selected"
+      Submission.update_selected_values(params, :status_approved, true)
+    when "Reject decisions of all selected"
+      Submission.update_selected_values(params, :status_approved, false)
     when "Publish all selected"
       Submission.update_selected_values(params, :status_published, true)
     when "Unpublish all selected"
@@ -78,7 +78,7 @@ class Submission < ActiveRecord::Base
   def Submission.update_selected_values(params, _attr, _val)
     params[:submissions].each do |submission|
       if (submission[1][:update_in_index].to_i == 1 ? true : false)
-        Submission.find(submission[0]).update_attributes(_attr: _val)
+        Submission.find(submission[0]).update_attributes("#{_attr}" => _val)
       end
     end
   end

@@ -35,17 +35,21 @@
     <%# e-mails to all those involved? %>
 
     <%= submit_tag "Approve decisions of all selected",
-    class: "btn btn-primary" %>
+    class: "btn btn-primary", data: { confirm: "Are you sure?" } %>
     <%= submit_tag "Reject decisions of all selected",
-    class: "btn btn-primary" %>
+    class: "btn btn-primary", data: { confirm: "Are you sure?" } %>
     <br />
     <br />
-    <%= submit_tag "Accept all selected", class: "btn btn-primary" %>
-    <%= submit_tag "Reject all selected", class: "btn btn-primary" %>
+    <%= submit_tag "Accept all selected", class: "btn btn-primary",
+      data: { confirm: "Are you sure?" } %>
+    <%= submit_tag "Reject all selected", class: "btn btn-primary",
+      data: { confirm: "Are you sure?" } %>
     <br />
     <br />
-    <%= submit_tag "Publish all selected", class: "btn btn-primary" %>
-    <%= submit_tag "Unpublish all selected", class: "btn btn-primary" %>
+    <%= submit_tag "Publish all selected", class: "btn btn-primary",
+      data: { confirm: "Are you sure?" } %>
+    <%= submit_tag "Unpublish all selected", class: "btn btn-primary",
+      data: { confirm: "Are you sure?" } %>
   <% end %>
 
   <br />
