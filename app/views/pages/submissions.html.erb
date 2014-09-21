@@ -34,22 +34,40 @@
     <%# Also include a message explaining that these updates will send out %>
     <%# e-mails to all those involved? %>
 
-    <%= submit_tag "Approve decisions of all selected",
-    class: "btn btn-primary", data: { confirm: "Are you sure?" } %>
-    <%= submit_tag "Reject decisions of all selected",
-    class: "btn btn-primary", data: { confirm: "Are you sure?" } %>
+    <div class="row">
+      <div class="col-md-3">
+	<%= submit_tag "Approve decisions of all selected",
+	class: "btn btn-primary", data: { confirm: "Are you sure?" } %>
+      </div>
+
+      <div class="col-md-3">
+	<%= submit_tag "Reject decisions of all selected",
+	class: "btn btn-primary", data: { confirm: "Are you sure?" } %>
+      </div>
+    </div>
     <br />
+    <div class="row">
+      <div class="col-md-3">
+	<%= submit_tag "Accept all selected", class: "btn btn-primary",
+	  data: { confirm: "Are you sure?" } %>
+      </div>
+
+      <div class="col-md-3">
+	<%= submit_tag "Reject all selected", class: "btn btn-primary",
+	  data: { confirm: "Are you sure?" } %>
+      </div>
+    </div>
     <br />
-    <%= submit_tag "Accept all selected", class: "btn btn-primary",
-      data: { confirm: "Are you sure?" } %>
-    <%= submit_tag "Reject all selected", class: "btn btn-primary",
-      data: { confirm: "Are you sure?" } %>
-    <br />
-    <br />
-    <%= submit_tag "Publish all selected", class: "btn btn-primary",
-      data: { confirm: "Are you sure?" } %>
-    <%= submit_tag "Unpublish all selected", class: "btn btn-primary",
-      data: { confirm: "Are you sure?" } %>
+    <div class="row">
+      <div class="col-md-3">
+	<%= submit_tag "Publish all selected", class: "btn btn-primary",
+	  data: { confirm: "Are you sure?" } %>
+      </div>
+      <div class="col-md-3">
+	<%= submit_tag "Unpublish all selected", class: "btn btn-primary",
+	  data: { confirm: "Are you sure?" } %>
+      </div>
+    </div>
   <% end %>
 
   <br />
