@@ -7,6 +7,7 @@ class Submission < ActiveRecord::Base
       where(projects: { quarter_id: Quarter.current_quarter.id }) }
 
   attr_accessor :this_user
+  attr_accessor :update_in_index
 
   belongs_to :student, class_name: "User", foreign_key: "student_id"
   belongs_to :project

@@ -2,6 +2,9 @@ Practicum::Application.routes.draw do
 
   root 'pages#home'
 
+  match "/applications/update_all_submissions",
+        to: "pages#update_all_submissions", via: "patch",
+        as: "update_all_submissions"
   match "/applications/approve_all_statuses", to: "pages#change_all_statuses",
         via: "patch", as: "approve_all_statuses", change: "approve"
   match "/applications/publish_all_statuses", to: "pages#change_all_statuses",

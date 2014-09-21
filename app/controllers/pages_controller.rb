@@ -65,6 +65,60 @@ class PagesController < ApplicationController
     end
   end
 
+  def update_all_submissions
+    # DRY this up...
+
+    if params[:commit] == "Approve decisions of all selected"
+      params[:submissions].each do |submission|
+        if (submission[1][:update_in_index].to_i == 1 ? true : false)
+          Submission.find(submission[0]).
+            update_attributes(status_approved: true)
+        end
+      end
+
+    elsif params[:commit] == "Reject decisions of all selected"
+      params[:submissions].each do |submission|
+        if (submission[1][:update_in_index].to_i == 1 ? true : false)
+          Submission.find(submission[0]).
+            update_attributes(status_approved: false)
+        end
+      end
+
+    elsif params[:commit] == "Accept all selected"
+      params[:submissions].each do |submission|
+        if (submission[1][:update_in_index].to_i == 1 ? true : false)
+          Submission.find(submission[0]).update_attributes(status: "accepted")
+        end
+      end
+
+    elsif params[:commit] == "Reject all selected"
+      params[:submissions].each do |submission|
+        if (submission[1][:update_in_index].to_i == 1 ? true : false)
+          Submission.find(submission[0]).update_attributes(status: "rejected")
+        end
+      end
+
+    elsif params[:commit] == "Publish all selected"
+      params[:submissions].each do |submission|
+        if (submission[1][:update_in_index].to_i == 1 ? true : false)
+          Submission.find(submission[0]).
+            update_attributes(status_published: true)
+        end
+      end
+
+    elsif params[:commit] == "Unpublish all selected"
+      params[:submissions].each do |submission|
+        if (submission[1][:update_in_index].to_i == 1 ? true : false)
+          Submission.find(submission[0]).
+            update_attributes(status_published: false)
+        end
+      end
+    end
+
+    flash[:success] =  "Updated selected applications."
+    redirect_to submissions_path
+  end
+
   private
 
   def get_current_submissions

@@ -6,23 +6,49 @@
 </div>
 
 <% if @current_submissions.count > 0 %>
-  <table class="table table-bordered">
-    <tr>
-      <th>Student</th>
-      <th>Advisor</th>
-      <th>Project title</th>
-      <th>Date applied</th>
-      <th>Advisor's decision</th>
-      <th>Decision approved?</th>
-      <th>Decision published?</th>
-      <th>Notes</th>
-    </tr>
-    <tbody>
-      <% @current_submissions.each do |submission| %>
-	<%= render 'submission_short', submission: submission %>
-      <% end %>
-    </tbody>
-  </table>
+  <%= form_tag update_all_submissions_path, method: :patch do %>
+    <table class="table table-bordered">
+      <tr>
+	<th>Student</th>
+	<th>Advisor</th>
+	<th>Project title</th>
+	<th>Date applied</th>
+	<th>Advisor's decision</th>
+	<th>Decision approved?</th>
+	<th>Decision published?</th>
+	<th>Notes</th>
+	<th>Select</th>
+      </tr>
+      <tbody>
+	<% @current_submissions.each do |submission| %>
+	  <%= fields_for "submissions[]", submission do |f| %>
+	    <%= render 'submission_short', submission: submission, form: f %>
+	  <% end %>
+	<% end %>
+      </tbody>
+    </table>
+
+    <%# Include a message explaining that only the ones that can be updated %>
+    <%# will be updated? (i.e., only if valid.) %>
+
+    <%# Also include a message explaining that these updates will send out %>
+    <%# e-mails to all those involved? %>
+
+    <%= submit_tag "Approve decisions of all selected",
+    class: "btn btn-primary" %>
+    <%= submit_tag "Reject decisions of all selected",
+    class: "btn btn-primary" %>
+    <br />
+    <br />
+    <%= submit_tag "Accept all selected", class: "btn btn-primary" %>
+    <%= submit_tag "Reject all selected", class: "btn btn-primary" %>
+    <br />
+    <br />
+    <%= submit_tag "Publish all selected", class: "btn btn-primary" %>
+    <%= submit_tag "Unpublish all selected", class: "btn btn-primary" %>
+  <% end %>
+
+  <br />
 
   <div>
     Click <%= link_to "here", approve_all_statuses_path, method: :patch,
