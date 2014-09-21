@@ -1,0 +1,69 @@
+<h2><%= page_title %></h2>
+
+<%= bootstrap_form_for form_object, html: { multipart: true } do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <table class="table table-bordered submission-form" >
+    <tbody>
+
+      <tr>
+	<th>
+	  <%= f.label :information, "Interests", class: "table-col-name" %>
+	  <span class="table-col-desc">
+	    Explain, in 1-2 paragraphs, why you are interested in working on
+	    this project.
+	  </span>
+	</th>
+	<td>
+	  <%= f.text_area :information, hide_label: true %>
+	</td>
+      </tr>
+
+      <tr>
+
+	<th>
+	  <%= f.label :qualifications, "Qualifications",
+	    class: "table-col-name" %>
+	  <span class="table-col-desc">
+	    Explain, in 1-2 paragraphs, why you feel you are qualified to work
+	    on this project.
+	  </span>
+	</th>
+	<td>
+	  <%= f.text_area :qualifications, hide_label: true %>
+	</td>
+      </tr>
+
+      <tr>
+	<th>
+	  <%= f.label :courses, "Courses", class: "table-col-name" %>
+	  <span class="table-col-desc">
+	    List the MPCS courses you have taken so far, and the courses you
+	    are currently enrolled in.
+	  </span>
+	</th>
+	<td>
+	  <%= f.text_area :courses, hide_label: true %>
+	</td>
+      </tr>
+
+      <tr>
+	<th>
+	  <%= f.label :resume, "Resume (optional)", class: "table-col-name" %>
+	</th>
+	<td>
+	  <%= formatted_resume_info(@submission) if include_saved_resume %>
+	  <%= f.file_field :resume, hide_label: true %>
+	</td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <%= f.submit "Submit my application", class: "btn btn-primary",
+    data: { confirm: submit_submission_confirmation } %>
+
+  <%= f.submit "Save as draft", class: "btn btn-primary",
+    data: { confirm: "Are you sure?" } %>
+
+<% end %>
