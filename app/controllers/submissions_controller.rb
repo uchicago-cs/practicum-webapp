@@ -88,9 +88,8 @@ class SubmissionsController < ApplicationController
   end
 
   def accept_or_reject
-    # `comments` is a virtual attribute, so it's not actually persisted to the
-    # database.
     @submission.update_attributes(comments: params[:submission][:comments])
+
     if params[:commit] == "Accept"
       if @submission.update_attributes(status: "accepted")
         flash[:success] = "Application accepted."
@@ -106,7 +105,7 @@ class SubmissionsController < ApplicationController
         render 'show'
       end
     end
-    binding.pry
+
   end
 
   def download_resume

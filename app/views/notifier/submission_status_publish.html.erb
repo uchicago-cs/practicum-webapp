@@ -5,6 +5,17 @@
   application to <%= @project.name %> has been <%= @submission.status %>.
 </p>
 
+<% if @comments.present? %>
+  <p>
+    <%= display_name(@project.advisor) || @project.advisor.cnet %> has provided
+    you with the following feedback:
+  </p>
+
+  <p>
+    "<%= @comments %>"
+  </p>
+<% end %>
+
 <% if @submission.status == "accepted" %>
   <p>
     You may contact the project advisor,
