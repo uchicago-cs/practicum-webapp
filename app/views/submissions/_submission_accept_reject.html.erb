@@ -3,7 +3,8 @@
 			 url: accept_or_reject_submission_path(@submission),
 			 html: { method: :patch }) do |f| %>
 
-    <%= f.text_area :comments, class: "submission-comments-box" %>
+    <%= f.text_area :comments, label: "Comments (optional)",
+        class: "submission-comments-box" %>
 
     <%= f.submit "Accept", class: "btn btn-success",
 			     data: { confirm: "Are you sure?" } %>

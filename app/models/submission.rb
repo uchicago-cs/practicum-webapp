@@ -88,14 +88,6 @@ class Submission < ActiveRecord::Base
   end
 
   def send_student_applied_immediately
-    # Neglect these comments; this is an after_create callback!
-
-    # Send only if we publish the draft ("draft" -> "pending"), or if it
-    # is created as "pending" (i.e., the student never saved it was a draft).
-    # Note: we don't need to check whether the submission is a new record,
-    # because this is an after_create callback (and because at this point,
-    # the record will no longer be new, so the condition will not be
-    # fulfilled).
     Notifier.student_applied(self).deliver if self.status == "pending"
   end
 
