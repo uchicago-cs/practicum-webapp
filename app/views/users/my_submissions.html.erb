@@ -6,6 +6,9 @@
      <table class="table table-bordered">
       <tr>
 	<th>Project name</th>
+	<% if can? :manage, @user %>
+	  <th>Date created</th>
+	<% end %>
 	<th>Status</th>
 	<th>Notes</th>
       </tr>

@@ -10,17 +10,24 @@
       <td><%= formatted_quarter(@project.quarter) %></td>
     </tr>
 
+    <% if can? :manage, @project %>
+      <tr>
+	<th>Date created</th>
+	<td><%= @project.created_at.to_date %></td>
+      </tr>
+    <% end %>
+
     <% if can? :read_status_of, @project %>
-    <tr>
-      <th>Status</th>
-      <td id="edit-project-status" class="no-word-break">
-	<% if can? :manage, @project %>
-	  <%= render 'edit_status', object: @project %>
-        <% else %>
-	  <%= formatted_project_status(@project) %>
-	<% end %>
-      </td>
-    </tr>
+      <tr>
+	<th>Status</th>
+	<td id="edit-project-status" class="no-word-break">
+	  <% if can? :manage, @project %>
+	    <%= render 'edit_status', object: @project %>
+          <% else %>
+	    <%= formatted_project_status(@project) %>
+          <% end %>
+	</td>
+      </tr>
 
       <% if can? :clone, @project %>
 	<tr>

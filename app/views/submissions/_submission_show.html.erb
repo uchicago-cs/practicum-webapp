@@ -18,6 +18,11 @@
       </td>
     </tr>
 
+    <% if can? :manage, @submission %>
+      <th>Date created</th>
+      <td><%= @submission.created_at.to_date %></td>
+    <% end %>
+
     <tr id="status">
       <th>Status</th>
       <td>
