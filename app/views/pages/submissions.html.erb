@@ -73,16 +73,27 @@
   <br />
 
   <div>
-    Click <%= link_to "here", approve_all_statuses_path, method: :patch,
-    data: { confirm: "Are you sure?" } %>
-    to approve every advisor's decision.
+    <p>
+      Click <%= link_to "here", approve_all_statuses_path, method: :patch,
+      data: { confirm: "Are you sure?" } %>
+      to approve every advisor's decision.
+    </p>
   </div>
   <div>
-    Click <%= link_to "here", publish_all_statuses_path, method: :patch,
-    data: { confirm: "Are you sure?" } %>
-    to allow all students to see their application decisions.
+    <p>
+      Click <%= link_to "here", publish_all_statuses_path, method: :patch,
+      data: { confirm: "Are you sure?" } %>
+      to allow all students to see their application decisions.
+    </p>
   </div>
 
 <% else %>
   There are no applications for this quarter.
 <% end %>
+
+<div>
+  <p>
+    Click <%= link_to "here", submission_drafts_path %> to view this quarter's
+    application drafts.
+  </p>
+</div>
