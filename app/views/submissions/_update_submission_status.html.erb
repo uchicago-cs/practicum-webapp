@@ -1,13 +1,13 @@
 <%= bootstrap_form_for @submission,
              url: { controller: "submissions", action: "update_status" },
-	     layout: :horizontal, label_col: "col-sm-1" do |f| %>
+	     layout: :horizontal, label_col: "no-column" do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
   <span class="status-label">
     <%= f.select :status,
 	options_for_select(["Draft", "Pending", "Accepted", "Rejected"],
 			   @submission.status.capitalize),
-	control_col: "col-lg-2" %>
+	control_col: "col-lg-3", hide_label: true %>
   </span>
 
   <%= f.form_group do %>
