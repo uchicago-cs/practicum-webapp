@@ -74,7 +74,7 @@
 	  <% end %>
 
   	  <% if can? :read, Project %>
-	    <li><%= link_to "Projects", projects_path %></li>
+	    <li><%= link_to projects_link_text, projects_path %></li>
 	  <% end %>
 
 	</ul>

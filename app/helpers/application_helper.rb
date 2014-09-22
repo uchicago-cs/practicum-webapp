@@ -1,5 +1,13 @@
 module ApplicationHelper
 
+  def projects_link_text
+    if current_user and current_user.advisor? and !current_user.admin?
+      "All Projects"
+    else
+      "Projects"
+    end
+  end
+
   def support_address
     "practicum-support@mailman.cs.uchicago.edu"
   end
