@@ -105,7 +105,7 @@ class SubmissionsController < ApplicationController
         render 'show'
       end
     end
-
+    binding.pry
   end
 
   def download_resume
