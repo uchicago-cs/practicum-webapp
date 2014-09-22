@@ -28,8 +28,7 @@ Practicum::Application.routes.draw do
       resources :evaluations, only: [:new, :create, :show]
 
       member do
-        patch "accept"
-        patch "reject"
+        patch "accept_or_reject"
         patch "update_status"
       end
 

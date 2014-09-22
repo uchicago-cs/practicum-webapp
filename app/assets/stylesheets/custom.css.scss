@@ -253,6 +253,11 @@ footer a:hover {
     margin-left: 22px;
 }
 
+.submission-comments-box {
+    min-height: 100px;
+    resize: none;
+}
+
 .navbar-inverse { background-color: $bg-default }
 .navbar-inverse .navbar-nav>.active>a:hover,.navbar-inverse .navbar-nav>li>a:hover { background-color: $light-maroon }
 .navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.open>a,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover,.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus { background-color: $light-maroon }

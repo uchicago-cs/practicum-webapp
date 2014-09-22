@@ -93,6 +93,7 @@ class Notifier < ActionMailer::Base
     @advisor = submission.project.advisor
     @project = submission.project
     @submission = submission
+    @comments = submission.comments
     @status = submission.status
     @to = @student.email
     @cc = (@status == "accepted") ? @advisor.email : []

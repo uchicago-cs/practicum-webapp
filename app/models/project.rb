@@ -23,6 +23,7 @@ class Project < ActiveRecord::Base
     joins(:quarter).where(quarters: { id: quarter.id }) }
 
   attr_accessor :this_user
+  attr_accessor :comments
 
   belongs_to :quarter
   belongs_to :advisor, class_name: "User", foreign_key: "advisor_id"
@@ -42,8 +43,6 @@ class Project < ActiveRecord::Base
   delegate :email, :affiliation, :department, to: :advisor,
            prefix: :advisor, allow_nil: true
   delegate :current, to: :quarter, prefix: true, allow_nil: true
-
-  attr_accessor :comments
 
   after_create :send_project_proposed_immediately
   after_update :send_project_proposed_after_draft
