@@ -5,14 +5,14 @@
   <%= formatted_deadline("admin_publish") %>
 </div>
 
-<% if @current_submissions.count > 0 %>
+<% if @current_submitted_submissions.count > 0 %>
   <%= form_tag update_all_submissions_path, method: :patch do %>
     <table class="table table-bordered">
       <tr>
 	<th>Student</th>
 	<th>Advisor</th>
 	<th>Project title</th>
-	<th>Date applied</th>
+	<th>Date created</th>
 	<th>Advisor's decision</th>
 	<th>Decision approved?</th>
 	<th>Decision published?</th>
@@ -20,7 +20,7 @@
 	<th>Select</th>
       </tr>
       <tbody>
-	<% @current_submissions.each do |submission| %>
+	<% @current_submitted_submissions.each do |submission| %>
 	  <%= fields_for "submissions[]", submission do |f| %>
 	    <%= render 'submission_short', submission: submission, form: f %>
 	  <% end %>

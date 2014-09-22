@@ -3,18 +3,22 @@ class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:submissions,
                                             :request_advisor_access]
   before_action :is_admin?, only: :submissions
-  before_action :get_current_submissions, only: [:submissions,
-                                                 :publish_all_statuses,
-                                                 :approve_all_statuses,
-                                                 :change_all_statuses]
-  before_action :get_current_decided_submissions, only: [:publish_all_statuses,
-                                                         :approve_all_statuses,
-                                                         :change_all_statuses]
+  before_action :get_current_submitted_submissions,
+                only: [:submissions, :publish_all_statuses,
+                       :approve_all_statuses, :change_all_statuses]
+  before_action :get_current_unsubmitted_submissions,
+                only: :submission_drafts
+  before_action :get_current_decided_submissions,
+                only: [:publish_all_statuses, :approve_all_statuses,
+                       :change_all_statuses]
 
   def home
   end
 
   def submissions
+  end
+
+  def submission_drafts
   end
 
   def change_all_statuses
@@ -65,6 +69,7 @@ class PagesController < ApplicationController
     end
   end
 
+  # Use a more descriptive name?
   def update_all_submissions
     Submission.update_selected(params)
 
@@ -74,8 +79,13 @@ class PagesController < ApplicationController
 
   private
 
-  def get_current_submissions
-    @current_submissions = Submission.current_submissions
+  def get_current_submitted_submissions
+    @current_submitted_submissions = Submission.current_submitted_submissions
+  end
+
+  def get_current_unsubmitted_submissions
+    @current_unsubmitted_submissions =
+      Submission.current_unsubmitted_submissions
   end
 
   def get_current_decided_submissions

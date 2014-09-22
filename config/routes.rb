@@ -9,6 +9,8 @@ Practicum::Application.routes.draw do
         via: "patch", as: "approve_all_statuses", change: "approve"
   match "/applications/publish_all_statuses", to: "pages#change_all_statuses",
         via: "patch", as: "publish_all_statuses", change: "publish"
+  match "/applications/drafts", to: "pages#submission_drafts", via: "get",
+        as: "submission_drafts"
   match "/projects/pending/publish_all", to: "projects#publish_all_pending",
         via: "patch", as: "publish_all_pending_projects"
   match "/evaluations", to: "evaluations#index", via: "get", as: "evaluations"

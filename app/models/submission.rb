@@ -5,6 +5,10 @@ class Submission < ActiveRecord::Base
   default_scope { order('submissions.created_at DESC') }
   scope :current_submissions, -> { includes(:project).
       where(projects: { quarter_id: Quarter.current_quarter.id }) }
+  scope :current_submitted_submissions, -> { current_submissions.
+    where.not(status: "draft") }
+  scope :current_unsubmitted_submissions, -> { current_submissions.
+    where(status: "draft") }
 
   attr_accessor :this_user
   attr_accessor :update_in_index

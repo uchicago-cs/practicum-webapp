@@ -1,0 +1,23 @@
+<h2><%= formatted_current_quarter %> Application Drafts</h2>
+
+<% if @current_unsubmitted_submissions.count > 0 %>
+  <table class="table table-bordered">
+    <tr>
+      <th>Student</th>
+      <th>Advisor</th>
+      <th>Project title</th>
+      <th>Date created</th>
+      <th>Advisor's decision</th>
+      <th>Decision approved?</th>
+      <th>Decision published?</th>
+      <th>Notes</th>
+    </tr>
+    <tbody>
+      <% @current_unsubmitted_submissions.each do |submission| %>
+        <%= render 'submission_draft_short', submission: submission %>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  There are no application drafts for this quarter.
+<% end %>
