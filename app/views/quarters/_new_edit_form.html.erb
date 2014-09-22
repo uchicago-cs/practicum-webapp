@@ -46,7 +46,7 @@
     </div>
     <br />
 
-    <%= f.submit "#{change.capitalize} quarter", class: "btn btn-primary",
-      data: { confirm: "Are you sure?" } %>
+    <%= f.submit "#{change.capitalize} quarter",
+    class: new_quarter_btn_class(change), data: { confirm: "Are you sure?" } %>
   <% end %>
 <% end %>

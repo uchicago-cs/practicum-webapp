@@ -74,7 +74,7 @@
     </tbody>
   </table>
 
-  <%= f.submit "#{change.capitalize} my proposal", class: "btn btn-primary",
+  <%= f.submit "#{change.capitalize} my proposal", class: "btn btn-success",
     data: { confirm: "Are you sure?" } %>
 
   <% if change == "create" or @project.draft? %>

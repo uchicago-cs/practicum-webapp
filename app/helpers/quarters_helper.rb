@@ -1,5 +1,10 @@
 module QuartersHelper
 
+  def new_quarter_btn_class(change)
+    btn_type = (change == "create" ? "success" : "primary")
+    "btn btn-#{btn_type}"
+  end
+
   def current_change_warning
     "Changing the current quarter will prevent students from applying to "+
     "previous quarters, although you may change which quarter is the current "+
