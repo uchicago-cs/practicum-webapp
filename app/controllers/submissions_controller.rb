@@ -87,22 +87,26 @@ class SubmissionsController < ApplicationController
     @submission_status_sufficient = @submission.status_sufficient?
   end
 
-  def accept
-    if @submission.update_attributes(status: "accepted")
-      flash[:success] = "Application accepted."
-      redirect_to @submission
-    else
-      render 'show'
+  def accept_or_reject
+    # `comments` is a virtual attribute, so it's not actually persisted to the
+    # database.
+    @submission.update_attributes(comments: params[:submission][:comments])
+    if params[:commit] == "Accept"
+      if @submission.update_attributes(status: "accepted")
+        flash[:success] = "Application accepted."
+        redirect_to @submission
+      else
+        render 'show'
+      end
+    elsif params[:commit] == "Reject"
+      if @submission.update_attributes(status: "rejected")
+        flash[:success] = "Application rejected."
+        redirect_to @submission
+      else
+        render 'show'
+      end
     end
-  end
-
-  def reject
-    if @submission.update_attributes(status: "rejected")
-      flash[:success] = "Application rejected."
-      redirect_to @submission
-    else
-      render 'show'
-    end
+    binding.pry
   end
 
   def download_resume
@@ -131,7 +135,8 @@ class SubmissionsController < ApplicationController
   def submission_params
     params.require(:submission).permit(:information, :student_id, :status,
                                        :qualifications, :courses, :resume,
-                                       :status_approved, :status_published)
+                                       :status_approved, :status_published,
+                                       :comments)
   end
 
   def get_project

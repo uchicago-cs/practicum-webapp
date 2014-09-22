@@ -1,8 +1,13 @@
 <% if @submission.pending? and before_deadline?("advisor_decision") %>
-  <%= link_to "Accept", accept_submission_path(@submission.id),
-                        method: :patch, class: "btn btn-success",
-			  data: { confirm: "Are you sure?" } %>
-  <%= link_to "Reject", reject_submission_path(@submission.id),
-                        method: :patch, class: "btn btn-danger",
-			  data: { confirm: "Are you sure?" }  %>
+  <%= bootstrap_form_for(@submission,
+			 url: accept_or_reject_submission_path(@submission),
+			 html: { method: :patch }) do |f| %>
+
+    <%= f.text_area :comments, class: "submission-comments-box" %>
+
+    <%= f.submit "Accept", class: "btn btn-success",
+			     data: { confirm: "Are you sure?" } %>
+    <%= f.submit "Reject", class: "btn btn-danger",
+			     data: { confirm: "Are you sure?" }  %>
+  <% end %>
 <% end %>
