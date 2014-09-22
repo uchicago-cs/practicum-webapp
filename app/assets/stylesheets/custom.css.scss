@@ -186,6 +186,20 @@ label {
     font-weight: 700 !important;
 }
 
+.comment-label {
+    label {
+	word-break: break-all;
+	min-width: 103px;
+    }
+}
+
+.status-label {
+    label {
+	word-break: break-all;
+	min-width: 73px;
+    }
+}
+
 .navbar-text {
     color: #FFFFFF !important;
     margin-top: 16px;

@@ -3,10 +3,12 @@
 	     layout: :horizontal, label_col: "col-sm-1" do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%= f.select :status,
-      options_for_select(["Draft", "Pending", "Accepted", "Rejected"],
-			 @submission.status.capitalize),
-      control_col: "col-lg-2" %>
+  <span class="status-label">
+    <%= f.select :status,
+	options_for_select(["Draft", "Pending", "Accepted", "Rejected"],
+			   @submission.status.capitalize),
+	control_col: "col-lg-2" %>
+  </span>
 
   <%= f.form_group do %>
     <%= f.check_box :status_approved, checked: @status_approved,

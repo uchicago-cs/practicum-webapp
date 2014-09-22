@@ -24,7 +24,9 @@
     <%= f.radio_button :status, "rejected", label: "Reject" %>
   <% end %>
 
-  <%= f.text_area :comments, label: "Comments (optional)" %>
+  <span class="comment-label">
+    <%= f.text_area :comments, label: "Comments (optional)" %>
+  </span>
 
   <%= f.form_group do %>
     <%= f.check_box :status_published,
