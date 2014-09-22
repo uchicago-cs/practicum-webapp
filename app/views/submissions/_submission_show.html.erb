@@ -18,7 +18,7 @@
       </td>
     </tr>
 
-    <% if can? :manage, @submission %>
+    <% if can? :accept_or_reject, @submission %>
       <th>Date created</th>
       <td><%= @submission.created_at.to_date %></td>
     <% end %>
