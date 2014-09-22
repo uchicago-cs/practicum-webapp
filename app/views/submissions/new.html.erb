@@ -1,2 +1,4 @@
-<%= render 'new_edit_form', page_title: "Apply to " + @project.name,
-  form_object: [@project, @submission], include_saved_resume: false %>
+<h2>Apply to <%= @project.name %></h2>
+
+<%= render 'new_edit_form', form_object: [@project, @submission],
+  include_saved_resume: false %>

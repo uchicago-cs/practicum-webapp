@@ -1,3 +1,10 @@
-<%= render 'new_edit_form',
-  page_title: "Edit Application for " + @submission.project_name,
-    form_object: @submission, include_saved_resume: true %>
+<h2>Edit Application for <%= @submission.project_name %></h2>
+
+<div class="alert alert-info">
+  <strong>Note</strong>: This application is saved as a draft and has not been
+  submitted. After clicking the "submit" button below, you will not be able to
+  edit this application again.
+</div>
+
+<%= render 'new_edit_form', form_object: @submission,
+  include_saved_resume: true %>
