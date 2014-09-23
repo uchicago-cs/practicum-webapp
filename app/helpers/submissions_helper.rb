@@ -1,5 +1,9 @@
 module SubmissionsHelper
 
+  def acceptable_by_advisor?(submission)
+    submission.pending? and before_deadline?("advisor_decision")
+  end
+
   # Ideally, find a different way to solve this...
   def db_submission(submission)
     Submission.find(submission.id)

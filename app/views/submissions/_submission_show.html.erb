@@ -55,10 +55,12 @@
       </td>
     </tr>
 
-    <tr>
-      <th>Advisor feedback</th>
-      <td><%= advisor_feedback(@submission) %></td>
-    </tr>
+    <% if @submission.comments.present? or !@submission.pending? %>
+      <tr>
+	<th>Advisor feedback</th>
+	<td><%= advisor_feedback(@submission) %></td>
+      </tr>
+    <% end %>
 
   </tbody>
 </table>

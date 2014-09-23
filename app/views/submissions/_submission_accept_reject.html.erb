@@ -1,7 +1,8 @@
-<% if @submission.pending? and before_deadline?("advisor_decision") %>
+<% if (can? :manage, @submission) or acceptable_by_advisor?(@submission) %>
   <%= bootstrap_form_for(@submission,
 			 url: accept_or_reject_submission_path(@submission),
 			 html: { method: :patch }) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
 
     <%= f.text_area :comments, label: "Comments (optional)",
         class: "submission-comments-box" %>

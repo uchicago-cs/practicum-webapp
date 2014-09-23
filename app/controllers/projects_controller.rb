@@ -106,6 +106,37 @@ class ProjectsController < ApplicationController
   def update_status
     @db_project = Project.find(params[:id])
 
+    # status_strings = {
+    #   "Accept"             => { attr: "status", val: "accepted",
+    #                             txt: "accepted" },
+    #   "Request changes"    => { attr: "status", val: "pending",
+    #                             txt: "set to \"pending\"" },
+    #   "Reject"             => { attr: "status", val: "rejected",
+    #                             txt: "rejected" },
+    #   "Unpublish decision" => { attr: "status_published", val: false,
+    #                             txt: "unpublished" },
+    #   "Publish decision"   => { attr: "status_published", val: true,
+    #                             txt: "published" }
+    # }
+
+    # changed_attrs = { "#{status_strings[params[:commit]][:attr]}" =>
+    #                   status_strings[params[:commit]][:val] }
+
+    # # Comments will be sent whenever they're present (for accept, reject,
+    # # or request_changes).
+    # if params[:project][:comments].present?
+    #   changed_attrs[:comments] = params[:project][:comments]
+    # end
+
+    # if @db_project.update_attributes(changed_attrs)
+    #   flash[:success] = "Project #{status_strings[params[:commit]][:txt]}."
+    #   redirect_to @project
+    # else
+    #   flash.now[:error] = "Project could not be " +
+    #     "#{status_strings[params[:commit]][:txt]}."
+    #   render 'show'
+    # end
+
     case params[:commit]
 
     when "Accept"
