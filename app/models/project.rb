@@ -87,8 +87,8 @@ class Project < ActiveRecord::Base
 
   def send_project_status_changed
     # See Submission#send_status_updated.
-    if !(self.status_changed?(from: "draft"))
-      if status_changed?
+    unless self.status_changed?(from: "draft")
+      if status_changed? or (pending? and comments.present?)
         Notifier.project_status_changed(self).deliver
       end
 

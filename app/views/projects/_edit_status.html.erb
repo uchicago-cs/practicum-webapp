@@ -8,19 +8,30 @@
 
 <%= bootstrap_form_for(@project,
 	     url: { controller: "projects", action: "update_status" },
-	     label_col: "col-xs-1",
-	     control_col: "col-lg-4") do |f| %>
+	     label_col: "col-xs-1", control_col: "col-lg-4") do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-<%= f.text_area :comments, label: "Comments (optional)",
-    class: "submission-comments-box" %>
+<% unless @project.status_published? %>
+  <%= f.text_area :comments, label: "Comments (optional)",
+      class: "submission-comments-box" %>
 
-<%= f.submit "Accept", class: "btn btn-success",
-    data: { confirm: "Are you sure?" } %>
-<%= f.submit "Request changes", class: "btn btn-primary",
-    data: { confirm: "Are you sure?" } %>
-<%= f.submit "Reject", class: "btn btn-danger",
-    data: { confirm: "Are you sure?" }  %>
+  <div class="row">
+    <div class="col-md-12">
+      <% unless @project.accepted? %>
+	<%= f.submit "Accept", class: "btn btn-success",
+	    data: { confirm: "Are you sure?" } %>
+	<% end %>
+
+      <%= f.submit "Request changes", class: "btn btn-primary",
+	  data: { confirm: "Are you sure?" } %>
+
+      <% unless @project.rejected? %>
+	<%= f.submit "Reject", class: "btn btn-danger",
+	    data: { confirm: "Are you sure?" }  %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
 
 <br />
 <div class="row">

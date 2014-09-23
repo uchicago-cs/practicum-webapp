@@ -104,11 +104,58 @@ class ProjectsController < ApplicationController
   end
 
   def update_status
-    if @project.update_attributes(project_params)
-      flash[:success] = "Project status changed."
-      redirect_to project_path
-    else
-      render 'show'
+    @db_project = Project.find(params[:id])
+
+    case params[:commit]
+
+    when "Accept"
+      if @db_project.update_attributes(status: "accepted")
+        flash[:success] = "Project accepted."
+        redirect_to @project
+      else
+        flash.now[:error] = "Project could not be accepted."
+        render 'show'
+      end
+
+    when "Request changes"
+      # Note: the comments aren't persisted to the database.
+      if @db_project.update_attributes(status: "pending",
+                                       comments: params[:project][:comments])
+        flash[:success] = "Changes requested and project status set to " +
+          "\"pending\"."
+        redirect_to @project
+      else
+        flash.now[:error] = "Changes could not be requested and project " +
+          "status could not be set to \"pending\"."
+        render 'show'
+      end
+
+    when "Reject"
+      if @db_project.update_attributes(status_published: "rejected")
+        flash[:success] = "Project rejected."
+        redirect_to @project
+      else
+        flash.now[:error] = "Project could not be rejected."
+        render 'show'
+      end
+
+    when "Unpublish decision"
+      if @db_project.update_attributes(status_published: false)
+        flash[:success] = "Project decision unpublished."
+        redirect_to @project
+      else
+        flash.now[:error] = "Project decision could not be unpublished."
+        render 'show'
+      end
+
+    when "Publish decision"
+      if @db_project.update_attributes(status_published: true)
+        flash[:success] = "Project decision published."
+        redirect_to @project
+      else
+        flash.now[:error] = "Project decision could not be published."
+        render 'show'
+      end
     end
   end
 
