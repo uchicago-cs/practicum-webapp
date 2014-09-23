@@ -4,6 +4,7 @@ class Evaluation < ActiveRecord::Base
 
   belongs_to :submission, -> { where status: "accepted" },
              foreign_key: "submission_id"
+  belongs_to :evaluation_template
 
   serialize :survey
 
@@ -38,6 +39,7 @@ class Evaluation < ActiveRecord::Base
 
   def set_survey(survey_params)
     self.survey = survey_params
+    # Pass in the appropriate survey so we don't grab the first one.
     s = EvaluationTemplate.first.survey
     self.survey.each do |q, r|
       t = s.find { |k, h| h["question_prompt"] == q }[1]["question_type"]
@@ -68,6 +70,7 @@ class Evaluation < ActiveRecord::Base
     # This would be easier if we stored all the survey information in the
     # evaluation object.
     unanswered = false
+    # Again, ensure we're using the appropriate survey
     s = EvaluationTemplate.first.survey
 
     survey.each do |q, r|

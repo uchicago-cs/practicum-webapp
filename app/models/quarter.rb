@@ -4,6 +4,7 @@ class Quarter < ActiveRecord::Base
   scope :current_quarter, -> { where(current: true).take }
 
   has_many :projects
+  has_many :evaluation_templates
 
   validates :season, presence: true,
                      uniqueness: { scope:   :year,

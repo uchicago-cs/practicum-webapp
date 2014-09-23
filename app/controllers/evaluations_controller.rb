@@ -56,7 +56,7 @@ class EvaluationsController < ApplicationController
   end
 
   def get_template
-    @template = EvaluationTemplate.first || EvaluationTemplate.new
+    @template = EvaluationTemplate.new
   end
 
   def get_student

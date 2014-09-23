@@ -6,6 +6,9 @@ class EvaluationTemplate < ActiveRecord::Base
 
   serialize :survey
 
+  belongs_to :quarter
+  has_many :evaluations
+
   def delete_questions(delete_params)
     delete = false
     delete_params.each do |question_num, should_be_removed|

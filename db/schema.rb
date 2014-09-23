@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140923195534) do
+ActiveRecord::Schema.define(version: 20140923212452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(version: 20140923195534) do
     t.boolean  "active",     default: false
   end
 
+  add_index "evaluation_templates", ["quarter_id"], name: "index_evaluation_templates_on_quarter_id", using: :btree
+
   create_table "evaluations", force: true do |t|
     t.integer  "advisor_id"
     t.integer  "student_id"
@@ -33,9 +35,11 @@ ActiveRecord::Schema.define(version: 20140923195534) do
     t.datetime "updated_at"
     t.integer  "submission_id"
     t.text     "survey"
+    t.integer  "evaluation_template_id"
   end
 
   add_index "evaluations", ["advisor_id"], name: "index_evaluations_on_advisor_id", using: :btree
+  add_index "evaluations", ["evaluation_template_id"], name: "index_evaluations_on_evaluation_template_id", using: :btree
   add_index "evaluations", ["student_id", "project_id"], name: "index_evaluations_on_student_id_and_project_id", unique: true, using: :btree
 
   create_table "messages", force: true do |t|
