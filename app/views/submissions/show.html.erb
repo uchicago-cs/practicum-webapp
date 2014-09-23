@@ -17,7 +17,7 @@
   <%# We check !@submission.evaluation here and in ability.rb so that %>
   <%# admins don't see this link. %>
   <% if (can? :create_evaluation_for, @submission) and
-    @submission_status_sufficient and !@submission.evaluation %>
+    @submission.status_sufficient? and !@submission.evaluation %>
     <%= render 'submission_create_evaluation', object: @submission %>
   <%# else %>
     <!-- You cannot create an evaluation for this student. -->

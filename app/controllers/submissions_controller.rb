@@ -84,7 +84,6 @@ class SubmissionsController < ApplicationController
   end
 
   def show
-    @submission_status_sufficient = @submission.status_sufficient?
   end
 
   def accept_or_reject
@@ -105,7 +104,6 @@ class SubmissionsController < ApplicationController
         render 'show'
       end
     end
-    binding.pry
   end
 
   def download_resume
@@ -119,13 +117,47 @@ class SubmissionsController < ApplicationController
     end
   end
 
+  # Not DRY.
   def update_status
-    if @submission.update_attributes(submission_params)
-      flash[:success] = "Application status updated."
-      redirect_to @submission
-    else
-      flash.now[:error] = "Application status could not be updated."
-      render 'show'
+    @db_submission = Submission.find(params[:id])
+
+    case params[:commit]
+
+    when "Unapprove decision"
+      if @db_submission.update_attributes(status_approved: false)
+        flash[:success] = "Application decision unapproved."
+        redirect_to @submission
+      else
+        flash.now[:error] = "Application decision could not be unapproved."
+        render 'show'
+      end
+
+    when "Approve decision"
+      if @db_submission.update_attributes(status_approved: true)
+        flash[:success] = "Application decision approved."
+        redirect_to @submission
+      else
+        flash.now[:error] = "Application decision could not be approved."
+        render 'show'
+      end
+
+    when "Unpublish decision"
+      if @db_submission.update_attributes(status_published: false)
+        flash[:success] = "Application decision unpublished."
+        redirect_to @submission
+      else
+        flash.now[:error] = "Application decision could not be unpublished."
+        render 'show'
+      end
+
+    when "Publish decision"
+      if @db_submission.update_attributes(status_published: true)
+        flash[:success] = "Application decision published."
+        redirect_to @submission
+      else
+        flash.now[:error] = "Application decision could not be published."
+        render 'show'
+      end
     end
   end
 

@@ -18,14 +18,16 @@
   <br />
   <div class="row">
     <div class="col-md-3">
-      <% if @submission.status_published %>
-	<%= f.submit "Unpublish decision", class: "btn btn-warning",
-	    data: { confirm: "Are you sure?" }%>
-      <% else %>
-	<%= f.submit "Publish decision", class: "btn btn-success",
-	    data: { confirm: "Are you sure?" }%>
+      <% if @submission.status_approved %>
+	<% if @submission.status_published %>
+	  <%= f.submit "Unpublish decision", class: "btn btn-warning",
+	      data: { confirm: "Are you sure?" }%>
+	<% else %>
+	  <%= f.submit "Publish decision", class: "btn btn-success",
+	      data: { confirm: "Are you sure?" }%>
+	<% end %>
       <% end %>
     </div>
   </div>
-
+  <br />
 <% end %>

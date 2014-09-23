@@ -1,5 +1,10 @@
 module SubmissionsHelper
 
+  # Ideally, find a different way to solve this...
+  def db_submission(submission)
+    Submission.find(submission.id)
+  end
+
   def advisor_feedback(submission)
     submission.comments.present? ? submission.comments : "N/A"
   end
