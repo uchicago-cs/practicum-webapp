@@ -10,6 +10,10 @@
     <%= render 'submission_accept_reject', object: @submission %>
   <% end %>
 
+  <% if can? :update_status_of, @submission %>
+    <%= render 'submission_change_decision_status', object: @submission %>
+  <% end %>
+
   <%# We check !@submission.evaluation here and in ability.rb so that %>
   <%# admins don't see this link. %>
   <% if (can? :create_evaluation_for, @submission) and

@@ -25,13 +25,7 @@
 
     <tr id="status">
       <th>Status</th>
-      <td>
-	<% if can? :update_status_of, @submission %>
-	  <%= render 'update_submission_status', objects: @submission %>
-	<% else %>
-	  <%= formatted_status(@submission) %>
-	<% end %>
-      </td>
+      <td><%= formatted_status(@submission) %></td>
     </tr>
 
     <tr id="interests">

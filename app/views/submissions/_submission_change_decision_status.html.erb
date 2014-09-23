@@ -1,0 +1,31 @@
+<%= bootstrap_form_for @submission,
+             url: { controller: "submissions", action: "update_status" },
+	     layout: :horizontal, label_col: "no-column" do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <br />
+  <div class="row">
+    <div class="col-md-3">
+      <% if @submission.status_approved %>
+	<%= f.submit "Unapprove decision", class: "btn btn-warning",
+	    data: { confirm: "Are you sure?" }%>
+      <% else %>
+	<%= f.submit "Approve decision", class: "btn btn-success",
+	    data: { confirm: "Are you sure?" }%>
+      <% end %>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-3">
+      <% if @submission.status_published %>
+	<%= f.submit "Unpublish decision", class: "btn btn-warning",
+	    data: { confirm: "Are you sure?" }%>
+      <% else %>
+	<%= f.submit "Publish decision", class: "btn btn-success",
+	    data: { confirm: "Are you sure?" }%>
+      <% end %>
+    </div>
+  </div>
+
+<% end %>
