@@ -39,8 +39,7 @@ class Evaluation < ActiveRecord::Base
 
   def set_survey(survey_params)
     self.survey = survey_params
-    # Pass in the appropriate survey so we don't grab the first one.
-    s = EvaluationTemplate.first.survey
+    s = self.evaluation_template.survey
     self.survey.each do |q, r|
       t = s.find { |k, h| h["question_prompt"] == q }[1]["question_type"]
       survey[q] = ((survey[q] == "1") ? "Yes" : "No") if t == "Check box"
@@ -70,8 +69,8 @@ class Evaluation < ActiveRecord::Base
     # This would be easier if we stored all the survey information in the
     # evaluation object.
     unanswered = false
-    # Again, ensure we're using the appropriate survey
-    s = EvaluationTemplate.first.survey
+
+    s = self.evaluation_template.survey
 
     survey.each do |q, r|
       m = s.find { |k, h| h["question_prompt"] == q }[1]["question_mandatory"]
