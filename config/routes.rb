@@ -1,5 +1,7 @@
 Practicum::Application.routes.draw do
 
+  # Remember: the placement of routes within this file matters!
+
   root 'pages#home'
 
   match "/applications/update_all_submissions",
@@ -14,14 +16,13 @@ Practicum::Application.routes.draw do
   match "/projects/pending/publish_all", to: "projects#publish_all_pending",
         via: "patch", as: "publish_all_pending_projects"
   match "/evaluations", to: "evaluations#index", via: "get", as: "evaluations"
-  match "/evaluations/edit", to: "evaluations#edit_template",
-        via: "get", as: "edit_evaluation_template"
-  match "/evaluations/edit/add", to: "evaluations#add_to_template",
-        via: "post"
-  match "/evaluations/edit/update", to: "evaluations#update_template",
-        via: "post"
-  match "/evaluations/edit/update_question",
-        to: "evaluations#update_template_question", via: "patch"
+
+  resources :evaluation_templates do
+    member do
+      post  "add_question"
+      patch "update_question"
+    end
+  end
 
   resources :projects, shallow: true do
     resources :submissions, path: 'applications', shallow: true do
