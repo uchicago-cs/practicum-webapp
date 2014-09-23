@@ -1,8 +1,21 @@
 module SubmissionsHelper
 
+  # These three methods should be defined on the model...
+
+  def acceptable?(submission)
+    acceptable_by_admin?(@submission) or acceptable_by_advisor?(@submission)
+  end
+
+  def acceptable_by_admin?(submission)
+    !submission.status_approved and !submission.status_published and
+      current_user.admin?
+  end
+
   def acceptable_by_advisor?(submission)
     submission.pending? and before_deadline?("advisor_decision")
   end
+
+  ###
 
   # Ideally, find a different way to solve this...
   def db_submission(submission)

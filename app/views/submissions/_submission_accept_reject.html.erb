@@ -1,4 +1,4 @@
-<% if (can? :manage, @submission) or acceptable_by_advisor?(@submission) %>
+<% if acceptable?(@submission) %>
   <%= bootstrap_form_for(@submission,
 			 url: accept_or_reject_submission_path(@submission),
 			 html: { method: :patch }) do |f| %>
