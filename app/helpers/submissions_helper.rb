@@ -1,5 +1,9 @@
 module SubmissionsHelper
 
+  def advisor_feedback(submission)
+    submission.comments.present? ? submission.comments : "N/A"
+  end
+
   def submit_submission_confirmation
     "Are you sure you want to submit your application? Once you submit your " +
       "application, you will be unable to modify it."
