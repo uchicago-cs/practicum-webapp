@@ -8,34 +8,34 @@
 
 <%= bootstrap_form_for(@project,
 	     url: { controller: "projects", action: "update_status" },
-	     layout: :horizontal, label_col: "col-xs-1",
+	     label_col: "col-xs-1",
 	     control_col: "col-lg-4") do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%= f.form_group do %>
-    <%= f.radio_button :status, "accepted", label: "Approve" %>
-  <% end %>
+<%= f.text_area :comments, label: "Comments (optional)",
+    class: "submission-comments-box" %>
 
-  <%= f.form_group do %>
-    <%= f.radio_button :status, "pending", label: "Request changes (Pending)" %>
-  <% end %>
+<%= f.submit "Accept", class: "btn btn-success",
+    data: { confirm: "Are you sure?" } %>
+<%= f.submit "Request changes", class: "btn btn-primary",
+    data: { confirm: "Are you sure?" } %>
+<%= f.submit "Reject", class: "btn btn-danger",
+    data: { confirm: "Are you sure?" }  %>
 
-  <%= f.form_group do %>
-    <%= f.radio_button :status, "rejected", label: "Reject" %>
-  <% end %>
-
-  <span class="comment-label">
-    <%= f.text_area :comments, label: "Comments (optional)" %>
-  </span>
-
-  <%= f.form_group do %>
-    <%= f.check_box :status_published,
-	checked: @project_status_published, label: "Publish status?" %>
-  <% end %>
-
-  <%= f.form_group do %>
-    <%= f.submit "Update project status", class: "btn btn-primary",
-	data: { confirm: "Are you sure?" } %>
-  <% end %>
+<br />
+<div class="row">
+  <div class="col-md-3">
+    <% if @project.accepted? %>
+      <% if @project.status_published %>
+	<%= f.submit "Unpublish decision", class: "btn btn-warning",
+	  data: { confirm: "Are you sure?" } %>
+      <% else %>
+	<%= f.submit "Publish decision", class: "btn btn-success",
+	  data: { confirm: "Are you sure?" } %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<br />
 
 <% end %>

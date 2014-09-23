@@ -21,11 +21,7 @@
       <tr>
 	<th>Status</th>
 	<td id="edit-project-status" class="no-word-break">
-	  <% if can? :manage, @project %>
-	    <%= render 'edit_status', object: @project %>
-          <% else %>
-	    <%= formatted_project_status(@project) %>
-          <% end %>
+	  <%= formatted_project_status(@project) %>
 	</td>
       </tr>
 
