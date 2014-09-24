@@ -4,7 +4,7 @@ class EvaluationTemplatesController < ApplicationController
 
   before_action :ensure_unique_question_positions, only: :update
   before_action :get_quarter_of_template,          only: [:create, :show]
-  before_action :get_formatted_quarters,           only: [:new, :show]
+  before_action :get_formatted_quarters,           only: [:new, :show, :create]
 
   # Ideally, use strong parameters throughout (just use template_params instead
   # of params).

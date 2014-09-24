@@ -16,7 +16,7 @@
 
   <%= f.select :quarter_id, @quarters %>
 
-  <%= f.form_group do %>
+  <%= f.form_group help: active_warning do %>
     <%= f.check_box :active, label: "Active?" %>
   <% end %>
 
