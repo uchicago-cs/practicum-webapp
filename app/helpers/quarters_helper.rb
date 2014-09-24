@@ -15,6 +15,10 @@ module QuartersHelper
     [quarter.season.capitalize, quarter.year].join(" ")
   end
 
+  def fmt_quarter_show_current(quarter)
+    formatted_quarter(quarter) + (quarter.current? ? " (current)" : "")
+  end
+
   def default_season
     # Choose the next quarter instead of this one?
     seasons = ["winter", "spring", "summer", "autumn"]

@@ -15,6 +15,8 @@ class EvaluationTemplatesController < ApplicationController
   end
 
   def new
+    @quarters = Quarter.all.collect {
+      |q| [view_context.fmt_quarter_show_current(q), q.id] }.reverse
   end
 
   def create

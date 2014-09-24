@@ -1,0 +1,27 @@
+<h2>New Evaluation Template</h2>
+
+<p>
+  You will be able to add questions to the template after entering the
+  information below.
+</p>
+
+<br />
+
+<%= bootstrap_form_for(@evaluation_template,
+		       layout: :horizontal, control_col: "col-sm-3",
+		       label_col: "col-sm-1") do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.text_field :name %>
+
+  <%= f.select :quarter, @quarters %>
+
+  <%= f.form_group do %>
+    <%= f.check_box :active, label: "Active?" %>
+  <% end %>
+
+  <%= f.form_group do %>
+    <%= f.submit "Create template", class: "btn btn-success",
+	data: { confirm: "Are you sure?" } %>
+  <% end %>
+<% end %>
