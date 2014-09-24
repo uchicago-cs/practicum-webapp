@@ -1,8 +1,11 @@
 class EvaluationTemplate < ActiveRecord::Base
 
-  validate :no_empty_questions
-  validate :no_empty_radio_btn_opts
-  validate :no_repeated_questions
+  validates :name, presence: true
+  validates :quarter_id, presence: true
+
+  validate :no_empty_questions,      on: :update
+  validate :no_empty_radio_btn_opts, on: :update
+  validate :no_repeated_questions,   on: :update
 
   serialize :survey
 
