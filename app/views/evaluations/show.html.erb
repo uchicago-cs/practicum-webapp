@@ -1,6 +1,6 @@
 <h2>
-  Evaluation for <%= display_name(@evaluation.student) %> on Project
-  <%= @evaluation.project_name %>
+  <%= formatted_template_title(@evaluation.evaluation_template, false) %>
+    Evaluation for <%= display_name(@evaluation.student) %>
 </h2>
 
 <%= render 'evaluation_show', object: @evaluation %>

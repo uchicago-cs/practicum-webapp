@@ -1,7 +1,9 @@
 module EvaluationTemplatesHelper
 
-  def formatted_template_title(template)
-    "#{formatted_quarter(template.quarter)} #{template.name.titleize} Template"
+  def formatted_template_title(template, with_template = true)
+    template_text = (with_template ? " Template" : "")
+    "#{formatted_quarter(template.quarter)} " +
+      "#{template.name.titleize}#{template_text}"
   end
 
   def active_warning
