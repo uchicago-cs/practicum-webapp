@@ -73,6 +73,10 @@ class EvaluationTemplate < ActiveRecord::Base
     end
   end
 
+  def update_basic_info(info_params)
+
+  end
+
   def add_question(survey_params)
     num = self.survey ? self.survey.length + 1 : 1
     self.survey = {} unless self.survey
@@ -100,8 +104,8 @@ class EvaluationTemplate < ActiveRecord::Base
   def no_empty_radio_btn_opts
     blank_opts = false
     survey.each do |q, r|
-      survey.find_all {|k, h| h["question_type"]=="Radio button"}.each do |opt|
-        opt[1]["question_options"].each do |num, option|
+      survey.find_all {|k, h| h["question_type"]=="Radio button"}.each do |o|
+        o[1]["question_options"].each do |num, option|
           if option.blank?
             blank_opts = true
             break

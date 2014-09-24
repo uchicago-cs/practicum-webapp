@@ -3,8 +3,8 @@ class EvaluationTemplatesController < ApplicationController
   load_and_authorize_resource
 
   before_action :ensure_unique_question_positions, only: :update
-  before_action :get_quarter_of_template,          only: :create
-  before_action :get_formatted_quarters,           only: :new
+  before_action :get_quarter_of_template,          only: [:create, :show]
+  before_action :get_formatted_quarters,           only: [:new, :show]
 
   # Ideally, use strong parameters throughout (just use template_params instead
   # of params).
@@ -36,8 +36,20 @@ class EvaluationTemplatesController < ApplicationController
   # def edit
   # end
 
-  def update
+  # Not DRY. Maybe call model method based on what's in the params hash?
+  def update_survey
     @evaluation_template.update_survey(params)
+    if @evaluation_template.save
+      flash[:success] = "Template updated."
+      redirect_to @evaluation_template
+    else
+      flash.now[:error] = "Template could not be updated."
+      render 'show'
+    end
+  end
+
+  def update_basic_info
+    @evaluation_template.update_basic_info(params)
     if @evaluation_template.save
       flash[:success] = "Template updated."
       redirect_to @evaluation_template
@@ -84,13 +96,21 @@ class EvaluationTemplatesController < ApplicationController
   end
 
   def ensure_unique_question_positions
-    message = "No two questions can have the same position."
-    redirect_to evaluation_template_path, flash: { error: message } if
-      params[:ordering].values.length != params[:ordering].values.uniq.length
+    if params[:ordering]
+      message = "No two questions can have the same position."
+      redirect_to evaluation_template_path, flash: { error: message } if
+        params[:ordering].values.length != params[:ordering].values.uniq.length
+    end
   end
 
   def get_quarter_of_template
-    @quarter = Quarter.find(params[:evaluation_template][:quarter_id])
+    if params[:evaluation_template]
+      # If we're in #create
+      @quarter = Quarter.find(params[:evaluation_template][:quarter_id])
+    else
+      # If we're in #show
+      @quarter = @evaluation_template.quarter
+    end
   end
 
   def get_formatted_quarters

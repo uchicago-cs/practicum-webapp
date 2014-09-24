@@ -21,6 +21,8 @@ Practicum::Application.routes.draw do
     member do
       post  "add_question"
       patch "update_question"
+      patch "update_survey"
+      patch "update_basic_info"
     end
   end
 

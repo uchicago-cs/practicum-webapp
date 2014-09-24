@@ -1,4 +1,5 @@
-<%= bootstrap_form_tag(url: { action: 'update' }) do |f| %>
+<%= bootstrap_form_tag(url: { action: 'update_survey' },
+		       method: :patch) do |f| %>
 
   <table class="table table-bordered edit-eval">
     <colgroup>

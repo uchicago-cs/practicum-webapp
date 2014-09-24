@@ -1,0 +1,20 @@
+<%= bootstrap_form_for(template,
+		       layout: :horizontal, control_col: "col-sm-3",
+		       label_col: "col-sm-1",
+		       url: { action: 'update_basic_info' }) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.text_field :name %>
+
+  <%= f.select :quarter_id, @quarters,
+      selected: fmt_quarter_show_current(@quarter) %>
+
+  <%= f.form_group do %>
+    <%= f.check_box :active, label: "Active?" %>
+  <% end %>
+
+  <%= f.form_group do %>
+    <%= f.submit "Update template", class: "btn btn-success",
+	data: { confirm: "Are you sure?" } %>
+  <% end %>
+<% end %>

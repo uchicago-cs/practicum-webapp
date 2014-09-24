@@ -1,6 +1,18 @@
 <%= render 'shared/error_messages', object: @evaluation_template %>
 <h2>Evaluation Template</h2>
+
+<br />
+
+<h2>Basic Information</h2>
+
+<%= render 'edit_basic_info', template: db_template(@evaluation_template) %>
+
+<br />
+<br />
+
 <% if survey_has_questions?(db_template(@evaluation_template)) %>
+  <h2>Template Questions</h2>
+
   <%= render 'modal', template: db_template(@evaluation_template) %>
 
   <%= render 'template_table', template: db_template(@evaluation_template) %>
