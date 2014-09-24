@@ -15,7 +15,7 @@ class Submission < ActiveRecord::Base
 
   belongs_to :student, class_name: "User", foreign_key: "student_id"
   belongs_to :project
-  has_one :evaluation, foreign_key: "submission_id", dependent: :destroy
+  has_many :evaluations, foreign_key: "submission_id"
 
   validates :information, presence: true
   validates :qualifications, presence: true

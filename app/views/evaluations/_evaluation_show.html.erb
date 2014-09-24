@@ -1,6 +1,15 @@
 <table class="table table-bordered">
   <tbody>
     <tr>
+      <th>Evaluation type</th>
+      <td><%= @evaluation.evaluation_template.name %></td>
+    </tr>
+
+      <th>Quarter</th>
+      <td><%= formatted_quarter(@evaluation.evaluation_template.quarter) %></td>
+    </tr>
+
+    <tr>
       <th>Student</th>
       <td><%= display_name(@evaluation.student) %></td>
     </tr>

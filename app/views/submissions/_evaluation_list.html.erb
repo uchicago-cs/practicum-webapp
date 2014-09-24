@@ -1,0 +1,7 @@
+<% @submission.evaluations.each do |evaluation| %>
+  <p>
+    Click <%= link_to "here", evaluation_path(evaluation) %> to view this
+    student's <%= formatted_template_title(evaluation.evaluation_template,
+					   false) %> evaluation.
+  </p>
+<% end %>
