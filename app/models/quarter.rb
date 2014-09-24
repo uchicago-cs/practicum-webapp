@@ -16,6 +16,7 @@ class Quarter < ActiveRecord::Base
 
   validate :deadlines_between_start_and_end_dates
 
+  # Change name to `prevent_destroy_if_current`?
   before_destroy    :prevent_if_current
   after_validation  :set_current_false
   before_validation :downcase_season
@@ -35,9 +36,7 @@ class Quarter < ActiveRecord::Base
   def set_current_false
     to_set_false = (Quarter.where.not(id: self.id)).where(current: true)
     if self.current?
-      to_set_false.each do |q|
-        q.current = false
-      end
+      to_set_false.each { |q| q.update_attributes(current: false) }
     end
   end
 

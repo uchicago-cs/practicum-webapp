@@ -1,11 +1,15 @@
 class EvaluationTemplate < ActiveRecord::Base
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: { scope: :quarter_id,
+                                                 case_sensitive: false }
   validates :quarter_id, presence: true
 
   validate :no_empty_questions,      on: :update
   validate :no_empty_radio_btn_opts, on: :update
   validate :no_repeated_questions,   on: :update
+
+  # Should we instead use a validation to prevent
+  after_validation :set_active_inactive
 
   serialize :survey
 
@@ -124,6 +128,16 @@ class EvaluationTemplate < ActiveRecord::Base
     message = "Each question must be unique."
     prompts = survey.values.collect { |q| q["question_prompt"] }
     errors.add(:base, message) if prompts.length != prompts.uniq.length
+  end
+
+  # Make all other templates in this quarter inactive if this one is becoming
+  # active. Similar to Quarter#set_current_false.
+  def set_active_inactive
+    to_set_inactive = (EvaluationTemplate.where.not(id: self.id)).
+      where(active: true).where(quarter_id: self.quarter_id)
+    if self.active?
+      to_set_inactive.each { |t| t.update_attributes(active: false) }
+    end
   end
 
 end
