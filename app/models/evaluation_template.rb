@@ -16,6 +16,11 @@ class EvaluationTemplate < ActiveRecord::Base
   belongs_to :quarter
   has_many :evaluations
 
+  def EvaluationTemplate.current_active
+    EvaluationTemplate.where(active: true).
+      where(quarter: Quarter.current_quarter).take
+  end
+
   def delete_questions(delete_params)
     delete = false
     delete_params.each do |question_num, should_be_removed|

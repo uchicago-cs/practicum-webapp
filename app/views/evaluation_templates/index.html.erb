@@ -1,16 +1,25 @@
 <h2>Evaluation Templates</h2>
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Quarter</th>
-      <th>Active in quarter?</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @evaluation_templates.each do |template| %>
-      <%= render 'evaluation_template', template: template %>
-    <% end %>
-  </tbody>
-</table>
+<% if @evaluation_templates.length > 0 %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+	<th>Name</th>
+	<th>Quarter</th>
+	<th>Active in quarter?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @evaluation_templates.each do |template| %>
+	<%= render 'evaluation_template', template: template %>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  There are currently no evaluation templates.
+<% end %>
+
+<p>
+  Click <%= link_to "here", new_evaluation_template_path %> to create an
+  evaluation template.
+</p>

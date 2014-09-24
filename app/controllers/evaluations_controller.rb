@@ -20,6 +20,8 @@ class EvaluationsController < ApplicationController
 
   def create
     @evaluation = @submission.build_evaluation
+    @evaluation.assign_attributes(evaluation_template_id:
+                                  EvaluationTemplate.current_active.id)
     @evaluation.set_attributes_on_create(params)
 
     if @evaluation.save
@@ -56,7 +58,7 @@ class EvaluationsController < ApplicationController
   end
 
   def get_template
-    @template = EvaluationTemplate.new
+    @template = EvaluationTemplate.current_active
   end
 
   def get_student

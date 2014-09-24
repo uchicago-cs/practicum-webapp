@@ -1,12 +1,16 @@
 module EvaluationTemplatesHelper
 
+  def formatted_template_title(template)
+    "#{formatted_quarter(template.quarter)} #{template.name.titleize} Template"
+  end
+
   def active_warning
     "Setting this template to \"active\" will set all others in this " +
       "quarter to \"inactive\"."
   end
 
   def survey_has_questions?(template)
-    template.survey and template.survey.length > 0
+    template and template.survey and template.survey.length > 0
   end
 
   def formatted_active(template)

@@ -1,6 +1,6 @@
 <h2>New Evaluation for <%= display_name(@student) %></h2>
 
-<% if @template.survey.present? %>
+<% if survey_has_questions?(@template) %>
 
   <%= bootstrap_form_tag(url: { action: 'create' }) do |f| %>
 

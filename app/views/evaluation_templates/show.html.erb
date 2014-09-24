@@ -1,5 +1,5 @@
 <%= render 'shared/error_messages', object: @evaluation_template %>
-<h2><%= @evaluation_template.name.titleize %> Template</h2>
+<h2><%= formatted_template_title(db_template(@evaluation_template)) %></h2>
 
 <br />
 <br />
