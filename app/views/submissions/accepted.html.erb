@@ -1,0 +1,27 @@
+<h2>
+  Accepted Applicants for <%= formatted_quarter(Quarter.current_quarter) %>
+</h2>
+
+<strong>
+  TODO: Show only submissions / applicants from the current quarter
+</strong>
+
+<br />
+
+  <table class="table table-bordered">
+
+    <thead>
+      <tr>
+	<th>Student</th>
+	<th>Advisor</th>
+	<th>Notes</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @submissions.each do |submission| %>
+	<%= render 'accepted', submission: submission %>
+      <% end %>
+    </tbody>
+
+  </table>

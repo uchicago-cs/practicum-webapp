@@ -13,6 +13,8 @@ Practicum::Application.routes.draw do
         via: "patch", as: "publish_all_statuses", change: "publish"
   match "/applications/drafts", to: "pages#submission_drafts", via: "get",
         as: "submission_drafts"
+  match "/applications/accepted", to: "submissions#accepted", via: "get",
+        as: "accepted_submissions"
   match "/projects/pending/publish_all", to: "projects#publish_all_pending",
         via: "patch", as: "publish_all_pending_projects"
   match "/evaluations", to: "evaluations#index", via: "get", as: "evaluations"
@@ -27,15 +29,6 @@ Practicum::Application.routes.draw do
   end
 
   resources :projects, shallow: true do
-    resources :submissions, path: 'applications', shallow: true do
-      resources :evaluations, only: [:new, :create, :show]
-
-      member do
-        patch "accept_or_reject"
-        patch "update_status"
-      end
-
-    end
 
     collection do
       get "pending"
@@ -44,6 +37,17 @@ Practicum::Application.routes.draw do
 
     member do
       patch "update_status"
+    end
+
+    resources :submissions, path: 'applications', shallow: true do
+
+      resources :evaluations, only: [:new, :create, :show]
+
+      member do
+        patch "accept_or_reject"
+        patch "update_status"
+      end
+
     end
 
   end

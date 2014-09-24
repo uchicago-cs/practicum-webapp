@@ -11,7 +11,7 @@ class SubmissionsController < ApplicationController
   before_action :project_in_current_quarter?, only: [:new, :create]
   before_action :get_statuses,                only: [:show, :update_status]
   before_action :project_accepted_and_pub?,   only: [:new, :create]
-  before_action(except: :index) { |c|
+  before_action(except: [:index, :accepted]) { |c|
     c.get_this_user_for_object(@submission) }
   before_action(only: [:new, :create, :update]) { |c|
     c.before_deadline?("student_submission") }
@@ -84,6 +84,11 @@ class SubmissionsController < ApplicationController
   end
 
   def show
+  end
+
+  def accepted
+    @submissions = Submission.where(status: "accepted").
+      where(status_approved: true).where(status_published: true)
   end
 
   def accept_or_reject
