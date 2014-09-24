@@ -74,7 +74,9 @@ class EvaluationTemplate < ActiveRecord::Base
   end
 
   def update_basic_info(info_params)
-
+    p = info_params[:evaluation_template]
+    self.update_attributes(name: p[:name], quarter_id: p[:quarter_id],
+                           active: p[:active])
   end
 
   def add_question(survey_params)
