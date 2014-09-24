@@ -6,6 +6,8 @@ class EvaluationTemplatesController < ApplicationController
   # Ideally, use strong parameters throughout (just use template_params instead
   # of params).
 
+  # NOTE: We use 'show' in place of 'edit'.
+
   def index
   end
 
@@ -18,8 +20,8 @@ class EvaluationTemplatesController < ApplicationController
   def create
   end
 
-  def edit
-  end
+  # def edit
+  # end
 
   def update
     @evaluation_template.update_survey(params)
@@ -28,7 +30,7 @@ class EvaluationTemplatesController < ApplicationController
       redirect_to @evaluation_template
     else
       flash.now[:error] = "Template could not be updated."
-      render 'edit'
+      render 'show'
     end
   end
 
@@ -41,10 +43,10 @@ class EvaluationTemplatesController < ApplicationController
     if @evaluation_template.save
       flash[:success] = "Question added to template."
       # Fix routes.rb re: this.
-      redirect_to eit_evaluation_template_path(@evaluation_template)
+      redirect_to evaluation_template_path(@evaluation_template)
     else
       flash[:error] = "Question was unable to be added."
-      render 'edit'
+      render 'show'
     end
   end
 
@@ -54,10 +56,10 @@ class EvaluationTemplatesController < ApplicationController
     if @evaluation_template.save
       flash[:success] = "Question updated."
       # Fix routes.rb re: this.
-      redirect_to edit_evaluation_template_path(@evaluation_template)
+      redirect_to evaluation_template_path(@evaluation_template)
     else
       flash.now[:error] = "Question could not be updated."
-      render 'edit'
+      render 'show'
     end
   end
 
@@ -69,7 +71,7 @@ class EvaluationTemplatesController < ApplicationController
 
   def ensure_unique_question_positions
     message = "No two questions can have the same position."
-    redirect_to edit_evaluation_template_path, flash: { error: message } if
+    redirect_to evaluation_template_path, flash: { error: message } if
       params[:ordering].values.length != params[:ordering].values.uniq.length
   end
 end

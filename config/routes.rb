@@ -17,7 +17,7 @@ Practicum::Application.routes.draw do
         via: "patch", as: "publish_all_pending_projects"
   match "/evaluations", to: "evaluations#index", via: "get", as: "evaluations"
 
-  resources :evaluation_templates do
+  resources :evaluation_templates, except: :edit do
     member do
       post  "add_question"
       patch "update_question"
