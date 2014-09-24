@@ -19,16 +19,20 @@
 
   <%# ### Also, there's too much logic here. ### %>
 
-  <% if (can? :create_evaluation_for, @submission) and
-    @submission.status_sufficient? and @submission.evaluations.length == 0 %>
-    <%= render 'submission_create_evaluation', object: @submission %>
-  <%# else %>
-    <!-- You cannot create an evaluation for this student. -->
-  <% elsif @submission.evaluations.length > 0 and
-    (can? :read, @submission.evaluations) %>
+  <%# We need another condition on here to check which evaluation we can make.
+  It will always be the active evaluation, but how will it be decided whether
+  we can create it at any given time? %>
 
+  <% if (can? :create_evaluation_for, @submission) and
+    @submission.status_sufficient? and @submission.active_eval_not_made? %>
+    <%= render 'submission_create_evaluation', object: @submission %>
+  <% end %>
+
+  <% if @submission.evaluations.length > 0 and
+    (can? :read, @submission.evaluations) %>
     <%= render 'evaluation_list', object: @submission %>
   <% end %>
+
 </div>
 
 <% if @submission.draft? and (can? :edit, @submission) %>

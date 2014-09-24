@@ -77,6 +77,11 @@ class Submission < ActiveRecord::Base
     end
   end
 
+  def active_eval_not_made?
+    templates = self.evaluations.collect { |e| e.evaluation_template }
+    !(templates.include? EvaluationTemplate.current_active)
+  end
+
   private
 
   def Submission.update_selected_values(params, _attr, _val)
