@@ -1,15 +1,14 @@
 <%= render 'shared/error_messages', object: @evaluation_template %>
 <h2>Evaluation Template</h2>
-<% if db_template.id and db_template.survey.length > 0 %>
+<% if survey_has_questions?(db_template(@evaluation_template)) %>
+  <%= render 'modal', template: db_template(@evaluation_template) %>
 
-  <%= render 'modal' %>
-
-  <%= render 'template_table' %>
-
+  <%= render 'template_table', template: db_template(@evaluation_template) %>
 <% else %>
-  There is no evaluation template. To create one, you may add questions below.
+  There are currently no questions. You may add questions below.
 <% end %>
 
+<br />
 <br />
 
 <h2>New Question</h2>

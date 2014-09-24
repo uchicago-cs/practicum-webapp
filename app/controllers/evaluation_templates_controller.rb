@@ -23,6 +23,7 @@ class EvaluationTemplatesController < ApplicationController
   def create
     @evaluation_template = @quarter.evaluation_templates.
       build(evaluation_template_params)
+    @evaluation_template.update_attributes(survey: {})
     if @evaluation_template.save
       flash[:success] = "Evaluation template successfully created."
       redirect_to evaluation_template_path(@evaluation_template)

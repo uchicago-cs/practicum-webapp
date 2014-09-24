@@ -4,10 +4,6 @@ module EvaluationsHelper
     answer.present? ? answer : "(Unanswered)"
   end
 
-  def db_template
-    EvaluationTemplate.first || EvaluationTemplate.new
-  end
-
   def question_symbols(q_type)
     question_symbols =
       { "Text field" => :text_field, "Text area" => :text_area,
@@ -70,14 +66,6 @@ module EvaluationsHelper
         content_tag(:p, "#{num}. #{opt}")
       end.join.html_safe
     end
-  end
-
-  def box_checked(number)
-    (db_template.survey[number]["question_mandatory"] == "1") ? true : false
-  end
-
-  def sorted_option_indices
-    db_template.survey.keys.sort
   end
 
 end

@@ -22,18 +22,19 @@
       </tr>
     </thead>
     <tbody>
-      <% db_template.survey.each do |number, question| %>
+      <% template.survey.each do |number, question| %>
 	<tr>
 	  <td><%= question["question_type"] %></td>
 	  <td><%= question["question_prompt"] %></td>
 	  <td><%= question_options(question) %></td>
 	  <td>
 	    <%= f.check_box "mandatory[#{number}]",
-	    checked: box_checked(number), label: "", inline: true %>
+	    checked: box_checked(number, template), label: "", inline: true %>
 	  </td>
 	  <td>
 	    <div class="col-md-15">
-	      <%= f.select "ordering[#{number}]", sorted_option_indices,
+	      <%= f.select "ordering[#{number}]",
+	      sorted_option_indices(template),
 	      selected: number, hide_label: true, inline: true %>
 	    </div>
 	  </td>
