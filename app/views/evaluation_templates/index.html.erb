@@ -1,0 +1,16 @@
+<h2>Evaluation Templates</h2>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Quarter</th>
+      <th>Active in quarter?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @evaluation_templates.each do |template| %>
+      <%= render 'evaluation_template', template: template %>
+    <% end %>
+  </tbody>
+</table>
