@@ -16,9 +16,16 @@ class EvaluationTemplate < ActiveRecord::Base
   belongs_to :quarter
   has_many :evaluations
 
+  attr_accessor :has_grade
+
   def EvaluationTemplate.current_active
     EvaluationTemplate.where(active: true).
       where(quarter: Quarter.current_quarter).take
+  end
+
+  def has_grade_question?
+    survey.values.each { |q| return true if q["question_prompt"] == "Grade" }
+    false
   end
 
   def delete_questions(delete_params)

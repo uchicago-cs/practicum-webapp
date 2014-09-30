@@ -56,7 +56,8 @@
   </table>
 
   <%= f.form_group do %>
-    <%= f.submit "Update template", class: "btn btn-primary" %>
+    <%= f.submit "Update template", class: "btn btn-primary",
+      data: { confirm: "Are you sure?" } %>
   <% end %>
 
 <% end %>

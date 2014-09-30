@@ -6,6 +6,11 @@ module EvaluationTemplatesHelper
       "#{template.name.titleize}#{template_text}"
   end
 
+  def grade_warning
+    "If checked, this template will include a question allowing advisors to " +
+      "select a grade for their student."
+  end
+
   def active_warning
     "Setting this template to \"active\" will set all others in this " +
       "quarter to \"inactive\"."

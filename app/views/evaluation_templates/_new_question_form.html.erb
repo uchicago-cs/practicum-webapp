@@ -11,7 +11,8 @@
   <% end %>
 
   <%= f.form_group do %>
-    <%= f.submit "Create question", class: "btn btn-success" %>
+    <%= f.submit "Create question", class: "btn btn-success",
+      data: { confirm: "Are you sure?" } %>
   <% end %>
 
 <% end %>

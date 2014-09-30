@@ -13,6 +13,11 @@
     <%= f.check_box :active, label: "Active?", checked: template.active? %>
   <% end %>
 
+  <%= f.form_group help: grade_warning do %>
+    <%= f.check_box :has_grade, label: "Include grade question?",
+    checked: template.has_grade_question? %>
+  <% end %>
+
   <%= f.form_group do %>
     <%= f.submit "Update template", class: "btn btn-success",
 	data: { confirm: "Are you sure?" } %>

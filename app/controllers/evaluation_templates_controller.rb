@@ -6,6 +6,9 @@ class EvaluationTemplatesController < ApplicationController
   before_action :get_quarter_of_template,          only: [:create, :show]
   before_action :get_formatted_quarters,           only: [:new, :show, :create]
 
+  after_action(only: [:create, :update_basic_info]) { |c|
+    c.edit_grade_question params[:evaluation_template][:has_grade] }
+
   # Ideally, use strong parameters throughout (just use template_params instead
   # of params).
 
@@ -23,6 +26,7 @@ class EvaluationTemplatesController < ApplicationController
   def create
     @evaluation_template = @quarter.evaluation_templates.
       build(evaluation_template_params)
+
     @evaluation_template.update_attributes(survey: {})
     if @evaluation_template.save
       flash[:success] = "Evaluation template successfully created."
@@ -88,11 +92,52 @@ class EvaluationTemplatesController < ApplicationController
     end
   end
 
+
+  # Ideally, move this logic from the controller to the model.
+  def edit_grade_question(has_grade)
+    # TODO: Replace this (radio button) with a select box.
+    if params[:evaluation_template][:has_grade] == "1" and
+        !@evaluation_template.has_grade_question?
+      position = @evaluation_template.survey.length + 1
+      survey_on_save = @evaluation_template.survey
+      survey_on_save[position] =
+                    { "question_type"      => "Radio button",
+                      "question_prompt"    => "Grade",
+                      "question_mandatory" => "1",
+                      "question_options"   => { "1" => "A+",
+                                                "2" => "A",
+                                                "3" => "A-",
+                                                "4" => "B+",
+                                                "5" => "B",
+                                                "6" => "B-",
+                                                "7" => "C+",
+                                                "8" => "C",
+                                                "9" => "C-",
+                                                "10" => "D+",
+                                                "11" => "D",
+                                                "12" => "D-" } }
+      @evaluation_template.update_attributes(survey: survey_on_save)
+
+    elsif params[:evaluation_template][:has_grade] == "0" and
+        @evaluation_template.has_grade_question?
+      @evaluation_template.survey.each do |k, q|
+        if q["question_prompt"] == "Grade"
+          @evaluation_template.survey.delete(k)
+        end
+      end
+      # We need to edit and save the survey after we finish iterating over it.
+      @evaluation_template.reorganize_questions_after_deletion
+      @evaluation_template.save!
+    end
+
+  end
+
   private
 
   # Handle all params via template_params?
   def evaluation_template_params
-    params.require(:evaluation_template).permit(:name, :quarter_id, :active)
+    params.require(:evaluation_template).permit(:name, :quarter_id, :active,
+                                                :has_grade)
   end
 
   def ensure_unique_question_positions
