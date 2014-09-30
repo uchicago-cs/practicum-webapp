@@ -8,10 +8,11 @@ class Evaluation < ActiveRecord::Base
 
   serialize :survey
 
-  validates :advisor_id, presence: true
-  validates :student_id, presence: true
-  validates :project_id, presence: true
-  validates_uniqueness_of :student_id, scope: :project_id
+  validates :advisor_id,               presence: true
+  validates :student_id,               presence: true
+  validates :project_id,               presence: true
+  validates :evaluation_template_id,   presence: true
+  validates_uniqueness_of :student_id, scope:    :project_id
 
   validate :submission_status_is_sufficient, on: :create
   validate :mandatory_questions_answered

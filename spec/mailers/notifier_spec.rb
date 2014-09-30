@@ -14,6 +14,20 @@ RSpec.describe Notifier, type: :mailer do
     ActionMailer::Base.deliveries.clear
   end
 
+  context "when a user's roles are changed" do
+    before do
+      @student = FactoryGirl.create(:student)
+    end
+
+    it "should send the user an e-mail" do
+      expect { @student.update_attributes(advisor: true) }.
+        to change{ ActionMailer::Base.deliveries.count }.by(1)
+      expect(ActionMailer::Base.deliveries.first.encoded).
+        to have_content("You now have privileges for the following roles: " +
+                        "advisor and student.")
+    end
+  end
+
   # When a submission is submitted, its status becomes "pending".
   context "when a submission is submitted" do
 
@@ -163,13 +177,14 @@ RSpec.describe Notifier, type: :mailer do
       @submission.status = "accepted"
       @submission.status_approved = true
       @submission.status_published = true
-      @template = FactoryGirl.create(:evaluation_template)
+      @template = FactoryGirl.create(:evaluation_template, quarter: @quarter)
     end
 
     it "should send an e-mail" do
       # Why does this depend on having the id sequences reset?
       expect{ FactoryGirl.create(:evaluation, submission: @submission,
-                                 advisor_id: @advisor.id) }.
+                                 advisor_id: @advisor.id,
+                                 evaluation_template: @template) }.
         to change{ ActionMailer::Base.deliveries.count }.by(@num)
     end
   end

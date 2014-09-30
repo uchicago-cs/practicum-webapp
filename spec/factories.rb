@@ -158,6 +158,7 @@ FactoryGirl.define do
   end
 
   factory :evaluation_template do
+    name "Midterm"
     survey { { 1 => { "question_prompt"    => "How are you?",
                       "question_type"      => "Text area",
                       "question_mandatory" => "1" },
