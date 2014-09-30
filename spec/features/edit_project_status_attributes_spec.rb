@@ -466,7 +466,6 @@ describe "Editing a project's 'status' attributes", type: :feature do
         end
 
         it "should change the project's status" do
-          save_and_open_page
           expect(@project.reload.status).to eq("rejected")
           expect(@project.reload.status_published).to eq(true)
         end

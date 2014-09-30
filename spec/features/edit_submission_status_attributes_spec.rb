@@ -47,7 +47,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
       before(:each) { visit submission_path(@submission) }
 
       context "updating the submission's status" do
-        before(:each) { click_link "accept" }
+        before(:each) { click_button "Accept" }
 
         it "should change the submission's status" do
           expect(@submission.reload.status).to eq("accepted")
@@ -107,17 +107,6 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           before(:each) do
             logout
             ldap_sign_in(@admin)
-          end
-
-          it "should show the status dropdown and checkboxes on its page" do
-            visit submission_path(@submission)
-            within('tr', text: "Status") do
-              expect(page).to have_select("Status", selected: "Accepted")
-              expect(page.find("#submission_status_approved")).
-                not_to be_checked
-              expect(page.find("#submission_status_published")).
-                not_to be_checked
-            end
           end
 
           it "should show its status on the 'applications' page" do
