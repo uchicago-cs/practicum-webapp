@@ -21,6 +21,10 @@ describe "Editing a submission's 'status' attributes", type: :feature do
                                         project: @project, status: "pending",
                                         status_approved: false,
                                         status_published: false)
+    @template      = FactoryGirl.create(:evaluation_template,
+                                        name: "Midterm",
+                                        quarter: @quarter,
+                                        active: true)
   end
 
   # Accept _or_ reject? (Use shared examples?)
@@ -183,8 +187,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
 
       context "updating the submission's status" do
         before(:each) do
-          check "submission_status_approved"
-          click_button "Update application status"
+          click_button "Approve decision"
         end
 
         it "should change the submission's 'status_approved' state" do
@@ -244,17 +247,6 @@ describe "Editing a submission's 'status' attributes", type: :feature do
         context "viewed by an admin" do
           # We're already signed in as an admin; no need to log out and sign
           # in again.
-
-          it "should show the status dropdown and checkboxes on its page" do
-            visit submission_path(@submission)
-            within('tr', text: "Status") do
-              expect(page).to have_select("Status", selected: "Accepted")
-              expect(page.find("#submission_status_approved")).
-                to be_checked
-              expect(page.find("#submission_status_published")).
-                not_to be_checked
-            end
-          end
 
           it "should show its status on the 'applications' page" do
             visit submissions_path
@@ -333,8 +325,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
 
       context "updating the submission's status" do
         before(:each) do
-          check "submission_status_published"
-          click_button "Update application status"
+          click_button "Publish decision"
         end
 
         it "should change the submission's 'status_published' state" do
@@ -393,17 +384,6 @@ describe "Editing a submission's 'status' attributes", type: :feature do
         context "viewed by an admin" do
           # We're already signed in as an admin; no need to log out and sign
           # in again.
-
-          it "should show the status dropdown and checkboxes on its page" do
-            visit submission_path(@submission)
-            within('tr', text: "Status") do
-              expect(page).to have_select("Status", selected: "Accepted")
-              expect(page.find("#submission_status_approved")).
-                to be_checked
-              expect(page.find("#submission_status_published")).
-                to be_checked
-            end
-          end
 
           it "should show its status on the 'applications' page" do
             visit submissions_path
