@@ -24,7 +24,7 @@ describe "Filling out a form", type: :feature do
         visit new_project_url
         expect(current_path).to eq root_path
         expect(page).to have_selector('div.alert')
-        expect(page).to have_content("About the Practicum Program")
+        expect(page).to have_content("Welcome to the MPCS Practicum")
       end
     end
 

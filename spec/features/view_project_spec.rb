@@ -90,8 +90,7 @@ describe "Viewing a project", type: :feature do
         ldap_sign_in(@admin)
         visit pending_projects_path
         page.find_link(@project.name).click
-        choose "Approve"
-        click_button "Update project status"
+        click_button "Accept"
       end
 
       it "should have a success message" do
@@ -101,12 +100,6 @@ describe "Viewing a project", type: :feature do
       it "should have changed its status to 'accepted'" do
         # The #reload is necessary: we need to grab the updated value.
         expect(@project.reload.status).to eq "accepted"
-      end
-
-      it "should have 'Approve' selected on its page" do
-        within("table") do
-          expect(page).to have_checked_field("Approve")
-        end
       end
 
       it "should show 'accepted / pending' on pendng projects page" do

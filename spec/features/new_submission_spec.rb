@@ -49,7 +49,7 @@ describe "Creating a submission", type: :feature do
       # This should happen _only_ before the application deadline!
       it "should see the 'new application' button on the project's page" do
         click_link(@project.name)
-        expect(page).to have_content("Click here to apply.")
+        expect(page).to have_content("Click here to apply")
       end
 
       it "should go to the 'new application' page after clicking the button" do

@@ -87,7 +87,9 @@ describe "Drafting a submission", type: :feature do
           expect(page).to have_content(@project.name)
           expect(page).to have_content("Draft")
         end
-        visit submissions_path
+        # It will be visible on the drafts page, but not on the submissions
+        # page (for non-draft submissions).
+        visit submission_drafts_path
         within("table") do
           expect(page).to have_content(@project.name)
           expect(page).to have_content("Draft")

@@ -86,7 +86,7 @@ describe "Creating a project", type: :feature do
       it "should redirect the user to the home page" do
         visit new_project_url
         expect(page).to have_selector('div.alert')
-        expect(page).to have_content("About the Practicum Program")
+        expect(page).to have_content("Welcome to the MPCS Practicum Program")
       end
     end
   end
