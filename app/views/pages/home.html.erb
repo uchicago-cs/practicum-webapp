@@ -1,5 +1,23 @@
-<h2>About the Practicum Program</h2>
-
 <%= render 'layouts/noscript' %>
 <%= render 'pages/homepage' %>
-<%= Faker::Lorem.sentences(20).join(" ") %>
+
+<br />
+
+<p>
+  Welcome to the MPCS Practicum Program website! For more details on the
+  practicum program, please see the
+  <a href="http://csmasters.uchicago.edu/page/practicum-program">Practicum
+  Program</a> page on the MPCS website.
+</p>
+
+<p>
+  If you are an MPCS student, you can see the list of offered projects in the
+  <a href="<%= projects_path %>">Projects</a> page. Please note that the list
+  of projects is not published until Week 5 of the quarter.
+</p>
+
+<p>
+  If you are a faculty or staff member interested in proposing a practicum
+  project, please contact the <a href="mailto:masters-admin@cs.uchicago.edu">
+  Masters Program in Computer Science</a>.
+</p>

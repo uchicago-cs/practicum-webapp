@@ -18,7 +18,7 @@ class Quarter < ActiveRecord::Base
 
   # Change name to `prevent_destroy_if_current`?
   before_destroy    :prevent_if_current
-  after_validation  :set_current_false
+  after_save        :set_current_false
   before_validation :downcase_season
 
   def Quarter.deadlines
