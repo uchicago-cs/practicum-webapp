@@ -1,6 +1,8 @@
 require 'rails_helper'
 require 'spec_helper'
 
+# TODO: Spec comments and presence / absence of buttons.
+
 describe "Editing a project's 'status' attributes", type: :feature do
   Warden.test_mode!
 
@@ -85,8 +87,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
 
       context "updating the project's status" do
         before(:each) do
-          choose "Approve"
-          click_button "Update project status"
+          click_button "Accept"
         end
 
         it "should change the project's status" do
@@ -122,11 +123,17 @@ describe "Editing a project's 'status' attributes", type: :feature do
             before(:each) { visit project_path(@project) }
 
             it "should show the updated status" do
-              within('tr', text: "Status") do
-                expect(page.find("#project_status_accepted")).to be_checked
-                expect(page.find("#project_status_published")).
-                  not_to be_checked
+              within("tr", text: "Status") do
+                expect(page).to have_content("Accepted (flagged, not " +
+                                             "published")
+                expect(page).not_to have_content("Pending")
               end
+            end
+
+            it "should still show the comments section" do
+              expect(page).to have_selector("#project_comments")
+              expect(page).to have_button("Request changes")
+              expect(page).to have_button("Reject")
             end
 
           end
@@ -263,9 +270,8 @@ describe "Editing a project's 'status' attributes", type: :feature do
 
       context "updating the project's status" do
         before(:each) do
-          choose "Approve"
-          check "Publish status"
-          click_button "Update project status"
+          click_button "Accept"
+          click_button "Publish decision"
         end
 
         it "should change the project's status" do
@@ -301,9 +307,10 @@ describe "Editing a project's 'status' attributes", type: :feature do
             before(:each) { visit project_path(@project) }
 
             it "should show the updated status" do
-              within('tr', text: "Status") do
-                expect(page.find("#project_status_accepted")).to be_checked
-                expect(page.find("#project_status_published")).to be_checked
+              within("tr", text: "Status") do
+                expect(page).to have_content("Accepted")
+                expect(page).not_to have_content("Pending")
+                expect(page).not_to have_content("flagged")
               end
             end
           end
@@ -454,15 +461,14 @@ describe "Editing a project's 'status' attributes", type: :feature do
 
       context "updating the project's status" do
         before(:each) do
-          choose "Reject"
-          check "Publish status"
-          click_button "Update project status"
-          @project.reload
+          click_button "Reject"
+          click_button "Publish decision"
         end
 
         it "should change the project's status" do
-          expect(@project.status).to eq("rejected")
-          expect(@project.status_published).to eq(true)
+          save_and_open_page
+          expect(@project.reload.status).to eq("rejected")
+          expect(@project.reload.status_published).to eq(true)
         end
 
         context "viewed by the admin" do
@@ -493,9 +499,10 @@ describe "Editing a project's 'status' attributes", type: :feature do
             before(:each) { visit project_path(@project) }
 
             it "should show the updated status" do
-              within('tr', text: "Status") do
-                expect(page.find("#project_status_rejected")).to be_checked
-                expect(page.find("#project_status_published")).to be_checked
+              within("tr", text: "Status") do
+                expect(page).to have_content("Rejected")
+                expect(page).not_to have_content("Pending")
+                expect(page).not_to have_content("flagged")
               end
             end
           end

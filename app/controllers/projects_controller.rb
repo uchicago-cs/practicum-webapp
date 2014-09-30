@@ -162,7 +162,7 @@ class ProjectsController < ApplicationController
       end
 
     when "Reject"
-      if @db_project.update_attributes(status_published: "rejected")
+      if @db_project.update_attributes(status: "rejected")
         flash[:success] = "Project rejected."
         redirect_to @project
       else

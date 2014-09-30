@@ -36,7 +36,7 @@
 <br />
 <div class="row">
   <div class="col-md-3">
-    <% if @project.accepted? %>
+    <% if @project.accepted? or @project.rejected? %>
       <% if @project.status_published %>
 	<%= f.submit "Unpublish decision", class: "btn btn-warning",
 	  data: { confirm: "Are you sure?" } %>
