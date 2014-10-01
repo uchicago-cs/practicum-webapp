@@ -3,8 +3,11 @@ class EvaluationTemplatesController < ApplicationController
   load_and_authorize_resource
 
   before_action :ensure_unique_question_positions, only: :update
-  before_action :get_quarter_of_template,          only: [:create, :show]
-  before_action :get_formatted_quarters,           only: [:new, :show, :create]
+  before_action :get_quarter_of_template,          only: [:create, :show,
+                                                          :add_question]
+  before_action :get_formatted_quarters,           only: [:create, :show,
+                                                          :new, :add_question]
+
 
   after_action(only: [:create, :update_basic_info]) { |c|
     c.edit_grade_question params[:evaluation_template][:has_grade] }
@@ -153,7 +156,7 @@ class EvaluationTemplatesController < ApplicationController
       # If we're in #create
       @quarter = Quarter.find(params[:evaluation_template][:quarter_id])
     else
-      # If we're in #show
+      # If we're in #show or #add_question
       @quarter = @evaluation_template.quarter
     end
   end
