@@ -24,7 +24,7 @@
   we can create it at any given time? %>
 
   <% if (can? :create_evaluation_for, @submission) and
-    @submission.status_sufficient? and @submission.active_eval_not_made? %>
+    can_make_active_eval?(@submission) %>
     <%= render 'submission_create_evaluation', object: @submission %>
   <% end %>
 

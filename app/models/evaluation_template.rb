@@ -1,15 +1,16 @@
 class EvaluationTemplate < ActiveRecord::Base
 
-  validates :name, presence: true, uniqueness: { scope: :quarter_id,
-                                                 case_sensitive: false }
+  validates :name,       presence: true, uniqueness: { scope: :quarter_id,
+                                                       case_sensitive: false }
   validates :quarter_id, presence: true
+  validates :start_date, presence: true
+  validates :end_date,   presence: true
 
   validate :no_empty_questions,        on: :update
   validate :no_empty_radio_btn_opts,   on: :update
   validate :no_repeated_questions,     on: :update
   validate :end_date_after_start_date
 
-  # Should we instead use a validation to prevent
   after_validation :set_active_inactive
 
   serialize :survey
@@ -18,6 +19,15 @@ class EvaluationTemplate < ActiveRecord::Base
   has_many :evaluations
 
   attr_accessor :has_grade
+
+  def EvaluationTemplate.current_active_available?
+    if EvaluationTemplate.current_active
+      EvaluationTemplate.current_active.end_date > DateTime.now and
+        DateTime.now > EvaluationTemplate.current_active.start_date
+    else
+      false
+    end
+  end
 
   def EvaluationTemplate.current_active
     EvaluationTemplate.where(active: true).
@@ -90,10 +100,15 @@ class EvaluationTemplate < ActiveRecord::Base
     end
   end
 
+  # TODO: Improve the method below.
+  # Be careful with this... We shouldn't have to whitelist the allowed
+  # attributes here: we should just use the strong params filter in the
+  # controller.
   def update_basic_info(info_params)
     p = info_params[:evaluation_template]
     self.update_attributes(name: p[:name], quarter_id: p[:quarter_id],
-                           active: p[:active])
+                           active: p[:active], start_date: p[:start_date],
+                           end_date: p[:end_date])
   end
 
   def add_question(survey_params)
