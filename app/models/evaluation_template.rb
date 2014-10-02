@@ -4,9 +4,10 @@ class EvaluationTemplate < ActiveRecord::Base
                                                  case_sensitive: false }
   validates :quarter_id, presence: true
 
-  validate :no_empty_questions,      on: :update
-  validate :no_empty_radio_btn_opts, on: :update
-  validate :no_repeated_questions,   on: :update
+  validate :no_empty_questions,        on: :update
+  validate :no_empty_radio_btn_opts,   on: :update
+  validate :no_repeated_questions,     on: :update
+  validate :end_date_after_start_date
 
   # Should we instead use a validation to prevent
   after_validation :set_active_inactive
@@ -150,6 +151,11 @@ class EvaluationTemplate < ActiveRecord::Base
     if self.active?
       to_set_inactive.each { |t| t.update_attributes(active: false) }
     end
+  end
+
+  def end_date_after_start_date
+    msg = "The end date must be after the start date."
+    errors.add(:base, msg) if self.start_date >= self.end_date
   end
 
 end

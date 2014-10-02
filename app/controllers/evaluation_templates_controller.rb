@@ -4,9 +4,11 @@ class EvaluationTemplatesController < ApplicationController
 
   before_action :ensure_unique_question_positions, only: :update
   before_action :get_quarter_of_template,          only: [:create, :show,
-                                                          :add_question]
+                                                          :add_question,
+                                                          :update_basic_info]
   before_action :get_formatted_quarters,           only: [:create, :show,
-                                                          :new, :add_question]
+                                                          :new, :add_question,
+                                                          :update_basic_info]
 
 
   after_action(only: [:create, :update_basic_info]) { |c|
@@ -140,7 +142,8 @@ class EvaluationTemplatesController < ApplicationController
   # Handle all params via template_params?
   def evaluation_template_params
     params.require(:evaluation_template).permit(:name, :quarter_id, :active,
-                                                :has_grade)
+                                                :has_grade, :start_date,
+                                                :end_date)
   end
 
   def ensure_unique_question_positions

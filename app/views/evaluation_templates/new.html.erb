@@ -24,6 +24,10 @@
     <%= f.check_box :has_grade, label: "Include grade question?" %>
   <% end %>
 
+  <%=f.text_field :start_date, class: "datetimepicker", help: start_date_help%>
+
+  <%= f.text_field :end_date, class: "datetimepicker", help: end_date_help %>
+
   <%= f.form_group do %>
     <%= f.submit "Create template", class: "btn btn-success",
 	data: { confirm: "Are you sure?" } %>

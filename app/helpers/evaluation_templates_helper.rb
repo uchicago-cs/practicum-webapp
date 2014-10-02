@@ -6,6 +6,16 @@ module EvaluationTemplatesHelper
       "#{template.name.titleize}#{template_text}"
   end
 
+  def start_date_help
+    "After this point, the advisor will be be notified about and be able to " +
+      "fill out this evaluation."
+  end
+
+  def end_date_help
+    "After this point, the advisor will no longer be able to fill out this " +
+      "evaluation."
+  end
+
   def grade_warning
     "If checked, this template will include a question allowing advisors to " +
       "select a grade for their student."

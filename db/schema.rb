@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140923212452) do
+ActiveRecord::Schema.define(version: 20141002213343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 20140923212452) do
     t.string   "name",       default: ""
     t.integer  "quarter_id"
     t.boolean  "active",     default: false
+    t.datetime "start_date"
+    t.datetime "end_date"
   end
 
   add_index "evaluation_templates", ["quarter_id"], name: "index_evaluation_templates_on_quarter_id", using: :btree
