@@ -15,6 +15,12 @@ class User < ActiveRecord::Base
   # Current user, passed in from ApplicationController.
   attr_accessor :this_user
 
+  def can_write_eval?
+    advisor? and projects.each do |p|
+      p.submissions.any? { |s| s.active_eval_createable? }
+    end
+  end
+
   def roles
     roles = []
 

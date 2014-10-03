@@ -1,10 +1,5 @@
 module EvaluationTemplatesHelper
 
-  def can_make_active_eval?(submission)
-    submission.status_sufficient? and submission.active_eval_not_made? and
-      EvaluationTemplate.current_active_available?
-  end
-
   def formatted_template_title(template, with_template = true)
     template_text = (with_template ? " Template" : "")
     "#{formatted_quarter(template.quarter)} " +

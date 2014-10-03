@@ -23,8 +23,10 @@
   It will always be the active evaluation, but how will it be decided whether
   we can create it at any given time? %>
 
+  <%# TODO: Refactor the view logic out of here... %>
   <% if (can? :create_evaluation_for, @submission) and
-    can_make_active_eval?(@submission) %>
+    @submission.active_eval_createable? and
+    current_user.made_submission?(@submission) %>
     <%= render 'submission_create_evaluation', object: @submission %>
   <% end %>
 

@@ -56,6 +56,11 @@ class Submission < ActiveRecord::Base
   validates_attachment_size :resume, less_than: 5.megabytes
   # Could even use 1.megabyte.
 
+  def active_eval_createable?
+    status_sufficient? and active_eval_not_made? and
+      EvaluationTemplate.current_active_available?
+  end
+
   def status_sufficient?
     self.accepted? and self.status_approved? and self.status_published?
   end

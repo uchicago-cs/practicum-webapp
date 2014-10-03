@@ -21,6 +21,9 @@
 
     <div class="container" id="content-body">
       <div id="content">
+
+	<%= render 'site_wide_messages' %>
+
 	<% flash.each do |key, value| %>
 	  <div class="alert alert-<%= flash_class(key) %>">
 	    <%= value %>
