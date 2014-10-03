@@ -1,4 +1,4 @@
-<h2>New Evaluation for <%= display_name(@student) %></h2>
+<h2><%= formatted_template_title(@template, false) %> Evaluation for <%= display_name(@student) %></h2>
 
 <% if survey_has_questions?(@template) %>
 

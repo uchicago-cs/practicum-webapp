@@ -19,7 +19,7 @@ class EvaluationsController < ApplicationController
   end
 
   def create
-    @evaluation = @submission.build_evaluation
+    @evaluation = @submission.evaluations.build
     @evaluation.assign_attributes(evaluation_template_id:
                                   EvaluationTemplate.current_active.id)
     @evaluation.set_attributes_on_create(params)
@@ -43,9 +43,14 @@ class EvaluationsController < ApplicationController
   end
 
   def already_evaluated?
-    message = "You have already submitted an evaluation for this student."
-    redirect_to root_url, flash: { error: message } if
-      @project.advisor.evaluated_submission?(@submission)
+    # TODO:
+    # This filter should redirect the advisor only if the advisor has already
+    # made an evaluation of that particular type (is it possible to determine
+    # this from here?).
+
+    # message = "You have already submitted an evaluation for this student."
+    # redirect_to root_url, flash: { error: message } if
+    #   @project.advisor.evaluated_submission?(@submission)
   end
 
   def submission_status_sufficient?

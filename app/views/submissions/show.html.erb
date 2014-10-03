@@ -26,7 +26,7 @@
   <%# TODO: Refactor the view logic out of here... %>
   <% if (can? :create_evaluation_for, @submission) and
     @submission.active_eval_createable? and
-    current_user.made_submission?(@submission) %>
+    current_user.made_project?(@submission.project) %>
     <%= render 'submission_create_evaluation', object: @submission %>
   <% end %>
 
