@@ -1,8 +1,10 @@
 <h2><%= formatted_current_quarter %> Applications</h2>
 
 <div class="alert alert-<%= alert_type_by_deadline %>">
-  <strong>Suggested decision publishing deadline</strong>:
-  <%= formatted_deadline("admin_publish") %>
+  <p>
+    <strong>Suggested decision publishing deadline</strong>:
+    <%= formatted_deadline("admin_publish") %>
+  </p>
 </div>
 
 <% if @current_submitted_submissions.count > 0 %>
@@ -88,7 +90,7 @@
   </div>
 
 <% else %>
-  There are no applications for this quarter.
+  <p>There are no applications for this quarter.</p>
 <% end %>
 
 <div>
