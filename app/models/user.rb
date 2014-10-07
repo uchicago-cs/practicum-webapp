@@ -16,10 +16,18 @@ class User < ActiveRecord::Base
   attr_accessor :this_user
 
   def can_write_eval?
-    EvaluationTemplate.current_active_available? and
-      advisor? and projects.count > 0 and projects.each do |p|
-      p.submissions.any? { |s| s.active_eval_createable? }
+
+    # Quick fix to get the correct return value.
+    createable_exists = false
+
+    projects.each do |p|
+      p.submissions.each do |s|
+        createable_exists = true if s.active_eval_createable?
+      end
     end
+
+    EvaluationTemplate.current_active_available? and
+      advisor? and projects.any? and createable_exists
   end
 
   def roles

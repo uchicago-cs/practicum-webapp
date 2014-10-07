@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141002213343) do
+ActiveRecord::Schema.define(version: 20141007212015) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20141002213343) do
 
   add_index "evaluations", ["advisor_id"], name: "index_evaluations_on_advisor_id", using: :btree
   add_index "evaluations", ["evaluation_template_id"], name: "index_evaluations_on_evaluation_template_id", using: :btree
-  add_index "evaluations", ["student_id", "project_id"], name: "index_evaluations_on_student_id_and_project_id", unique: true, using: :btree
+  add_index "evaluations", ["student_id", "project_id", "evaluation_template_id"], name: "index_evaluations_on_student_and_project_and_template", unique: true, using: :btree
 
   create_table "messages", force: true do |t|
     t.datetime "created_at"
