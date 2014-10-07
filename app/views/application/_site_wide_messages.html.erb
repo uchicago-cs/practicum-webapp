@@ -1,6 +1,6 @@
-<% if current_user and current_user.advisor? and current_user.can_write_eval? %>
+<% if current_user and current_user.can_write_eval? %>
   <div class="alert alert-info">
     You can now write an evaluation for at least one of your students. To do so,
-    visit your students' application pages.
+    visit your students' applications.
   </div>
 <% end %>
