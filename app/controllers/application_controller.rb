@@ -18,6 +18,20 @@ class ApplicationController < ActionController::Base
   before_action :show_advisor_status_pending_message
 
   helper_method :is_admin?
+  helper_method :authenticate_user!
+  helper_method :current_user
+
+  def authenticate_user!
+    if ldap_user_signed_in?
+      authenticate_ldap_user!
+    elsif local_user_signed_in?
+      authenticate_local_user!
+    end
+  end
+
+  def current_user
+    current_ldap_user or current_local_user
+  end
 
   protected
 

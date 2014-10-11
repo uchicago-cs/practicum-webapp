@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  # def user_signed_in?
+  #   current_user
+  # end
+
   def projects_link_text
     if current_user and current_user.advisor? and !current_user.admin?
       "All Projects"
