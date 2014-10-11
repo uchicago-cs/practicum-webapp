@@ -43,9 +43,8 @@ def make_users
     ln = n.to_s
     email = "admin-#{n+1}@blah.org"
     password = "foobarfoo"
-    User.create!(cnet: cnet, first_name: fn, last_name: ln,
-                 email: email, password: password, student: false,
-                 password_confirmation: password, admin: true)
+    LdapUser.new(cnet: cnet, first_name: fn, last_name: ln,
+             email: email, student: false, admin: true).save(validate: false)
   end
 
   # Create advisor users
@@ -55,9 +54,9 @@ def make_users
     ln = n.to_s
     email = "advisor-#{n+1}@blah.org"
     password = "foobarfoo"
-    User.create!(cnet: cnet, first_name: fn, last_name: ln,
-                 email: email, password: password, student: false,
-                 password_confirmation: password, advisor: true)
+    LdapUser.new(cnet: cnet, first_name: fn, last_name: ln,
+                 email: email, student: false, advisor: true).
+      save(validate: false)
   end
 
   # Create student users
@@ -67,9 +66,8 @@ def make_users
     ln = n.to_s
     email = "student-#{n+1}@blah.org"
     password = "foobarfoo"
-    User.create!(cnet: cnet, first_name: fn, last_name: ln,
-                 email: email, password: password,
-                 password_confirmation: password, student: true)
+    LdapUser.new(cnet: cnet, first_name: fn, last_name: ln,
+                 email: email, student: true).save(validate: false)
   end
 
 end
