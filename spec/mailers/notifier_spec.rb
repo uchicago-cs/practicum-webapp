@@ -177,7 +177,10 @@ RSpec.describe Notifier, type: :mailer do
       @submission.status = "accepted"
       @submission.status_approved = true
       @submission.status_published = true
-      @template = FactoryGirl.create(:evaluation_template, quarter: @quarter)
+      @template = FactoryGirl.create(:evaluation_template, quarter: @quarter,
+                                     name: "Midterm",
+                                     start_date: DateTime.current - 1.day,
+                                     end_date: DateTime.current + 1.day)
     end
 
     it "should send an e-mail" do

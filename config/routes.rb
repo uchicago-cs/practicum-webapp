@@ -55,8 +55,10 @@ Practicum::Application.routes.draw do
   match "/applications/:id/resume",
   to: "submissions#download_resume", via: "get", as: "download_resume"
 
-  devise_for :users, skip: [:sessions, :registrations]
-  devise_scope :user do
+  devise_for :ldap_users, skip: [:sessions, :registrations]
+  devise_for :local_users, skip: [:sessions]
+
+  devise_scope :ldap_user do
     get "/signin" => "sessions/sessions#new", as: :new_user_session
     post "/signin" => "sessions/sessions#create", as: :user_session
     delete "/signout" => "sessions/sessions#destroy", as: :destroy_user_session
@@ -69,6 +71,20 @@ Practicum::Application.routes.draw do
       get :cancel
     end
   end
+
+  # devise_scope :local_user do
+  #   get "/signin" => "sessions/sessions#new", as: :new_user_session
+  #   post "/signin" => "sessions/sessions#create", as: :user_session
+  #   delete "/signout" => "sessions/sessions#destroy", as: :destroy_user_session
+
+  #   # Prevent users from deleting their own accounts.
+  #   resource :registration,
+  #   only: [:new, :create, :edit, :update],
+  #   controller: "devise/registrations",
+  #   as: :user_registration do
+  #     get :cancel
+  #   end
+  # end
 
   match "/users", to: "users#index", via: "get"
   match "/users/:id", to: "users#show", via: "get", as: "user"

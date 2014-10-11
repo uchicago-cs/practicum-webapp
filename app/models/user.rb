@@ -6,11 +6,7 @@ class User < ActiveRecord::Base
   has_many :projects, foreign_key: "advisor_id", dependent: :destroy
   has_many :submissions, foreign_key: "student_id", dependent: :destroy
 
-  devise :trackable, :validatable, :ldap_authenticatable,
-         authentication_keys: [:cnet]
-
-  before_validation :get_ldap_info
-  after_update      :send_roles_changed
+  after_update :send_roles_changed
 
   # Current user, passed in from ApplicationController.
   attr_accessor :this_user
@@ -84,22 +80,6 @@ class User < ActiveRecord::Base
 
   def current_projects
     self.projects.where(quarter: Quarter.current_quarter)
-  end
-
-  def get_ldap_info
-    if Devise::LDAP::Adapter.get_ldap_param(self.cnet, 'uid')
-      self.email = Devise::LDAP::Adapter.
-        get_ldap_param(self.cnet, "mail").first
-
-      self.first_name = (Devise::LDAP::Adapter.
-                         get_ldap_param(self.cnet,
-                                        "givenName") rescue nil).first
-
-      self.last_name = (Devise::LDAP::Adapter.
-                        get_ldap_param(self.cnet, "sn") rescue nil).first
-
-      self.student = true
-    end
   end
 
   def send_roles_changed
