@@ -14,7 +14,9 @@
       <div class="collapse navbar-collapse" id="bs-navbar-collapse">
 	<ul class="nav navbar-nav navbar-right">
 	<% if signed_in? %>
-	  <li><p class="navbar-text"><%= current_user.cnet %></p></li>
+	  <li>
+	    <p class="navbar-text"><%= cnet_display_name(current_user) %></p>
+	  </li>
 	<% else %>
 	  <li><%= link_to "Register", new_user_path %></li>
 	  <li><%= link_to "Sign in", new_user_session_path %></li>

@@ -29,6 +29,14 @@ module UsersHelper
     end
   end
 
+  def cnet_display_name(user)
+    if user.cnet.present?
+      user.cnet
+    else
+      "#{user.first_name} #{user.last_name}"
+    end
+  end
+
   def formatted_roles(user)
     user.roles.join(", ")
   end
