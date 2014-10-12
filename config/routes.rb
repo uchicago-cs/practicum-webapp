@@ -72,19 +72,19 @@ Practicum::Application.routes.draw do
     end
   end
 
-  # devise_scope :local_user do
-  #   get "/signin" => "sessions/sessions#new", as: :new_user_session
-  #   post "/signin" => "sessions/sessions#create", as: :user_session
-  #   delete "/signout" => "sessions/sessions#destroy", as: :destroy_user_session
-
-  #   # Prevent users from deleting their own accounts.
-  #   resource :registration,
-  #   only: [:new, :create, :edit, :update],
-  #   controller: "devise/registrations",
-  #   as: :user_registration do
-  #     get :cancel
-  #   end
-  # end
+  devise_scope :local_user do
+    # get "/signin" => "sessions/sessions#new", as: :new_user_session
+    # post "/signin" => "sessions/sessions#create", as: :user_session
+    # delete "/signout" => "sessions/sessions#destroy", as: :destroy_user_session
+    get "/register" => "devise/registrations#new", as: :new_user
+    # Prevent users from deleting their own accounts.
+    resource :registration,
+    only: [:new, :create, :edit, :update],
+    controller: "devise/registrations",
+    as: :user_registration do
+      get :cancel
+    end
+  end
 
   match "/users", to: "users#index", via: "get"
   match "/users/:id", to: "users#show", via: "get", as: "user"
