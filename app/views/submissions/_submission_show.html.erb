@@ -30,17 +30,17 @@
 
     <tr id="interests">
       <th>Interests</th>
-      <td><%= @submission.information %></td>
+      <td><%= simple_format(@submission.information) %></td>
     </tr>
 
     <tr id="qualifications">
       <th>Qualifications</th>
-      <td><%= @submission.qualifications %></td>
+      <td><%= simple_format(@submission.qualifications) %></td>
     </tr>
 
     <tr id="courses">
       <th>Courses</th>
-      <td><%= @submission.courses %></td>
+      <td><%= simple_format(@submission.courses) %></td>
     </tr>
 
     <tr>
@@ -58,7 +58,7 @@
     <% if @submission.comments.present? or !@submission.pending? %>
       <tr>
 	<th>Advisor feedback</th>
-	<td><%= advisor_feedback(@submission) %></td>
+	<td><%= simple_format(advisor_feedback(@submission)) %></td>
       </tr>
     <% end %>
 

@@ -56,22 +56,22 @@
 
     <tr>
       <th>Description</th>
-      <td><%= @project.description %></td>
+      <td><%= simple_format(@project.description) %></td>
     </tr>
 
     <tr>
       <th>Expected deliverables</th>
-      <td><%= @project.expected_deliverables %></td>
+      <td><%= simple_format(@project.expected_deliverables) %></td>
     </tr>
 
     <tr>
       <th>Prerequisites</th>
-      <td><%= @project.prerequisites %></td>
+      <td><%= simple_format(@project.prerequisites) %></td>
     </tr>
 
     <tr>
       <th>Related work</th>
-      <td><%= formatted_related_work(@project) %></td>
+      <td><%= simple_format(formatted_related_work(@project)) %></td>
     </tr>
 
   </tbody>
