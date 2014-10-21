@@ -51,7 +51,10 @@
 
     <tr>
       <th>Advisor</th>
-      <td><%= formatted_info(@project.advisor) %></td>
+      <td>
+	<%= formatted_info(@project.advisor) %>
+	(<%= formatted_email(@project.advisor) %>)
+      </td>
     </tr>
 
     <tr>

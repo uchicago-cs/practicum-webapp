@@ -1,5 +1,11 @@
 module UsersHelper
 
+  def formatted_email(user)
+    user.cnet.present? ? "#{user.cnet}@uchicago.edu" : user.email
+    # We could also automatically create a user's e-mail if they've
+    # authenticated with LDAP. Then this function would be unnecessary.
+  end
+
   # Write a similar method for submission notes?
   def project_notes(project)
     if project.pending?
