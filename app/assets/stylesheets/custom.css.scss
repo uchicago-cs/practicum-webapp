@@ -157,11 +157,13 @@ table {
     }
 }
 
+
 .project-form-show, .submission-form-show {
     td {
-	word-break: break-all;
+	text-align: justify;
     }
 }
+
 
 .no-word-break {
     word-break: normal !important;
