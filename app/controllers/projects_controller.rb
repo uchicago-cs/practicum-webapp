@@ -5,8 +5,7 @@ class ProjectsController < ApplicationController
   skip_before_action :authenticate_user!,        only: [:index, :show]
   before_action      :get_status_published,      only: [:show, :update_status]
   before_action      :get_old_project_info,      only: :clone_project
-  before_action(only: [:new, :create]) { |c|
-    c.before_deadline?("project_proposal") }
+  before_action      :can_create_projects?,      only: [:new, :create]
   before_action(only: [:update_status, :update]) { |c|
     c.get_this_user_for_object(@project) }
 
@@ -14,7 +13,26 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = current_user.projects.build(project_params)
+
+    # If an admin is creating the advisor's project proposal, then
+    # we figure out which advisor the admin is referring to.
+    if params[:advisor].present?
+      user_id = params[:advisor].downcase
+      actual_user = (user_id.include? '@') ?
+        User.where(email: user_id) : User.where(cnet: user_id)
+
+      @project = actual_user.projects.build(project_params)
+
+      if user_id.include? '@'
+        @project.assign_attributes(advisor: User.where(email: user_id))
+      else
+        @project.assign_attributes(advisor: User.where(cnet: user_id))
+      end
+    else
+      # Otherwise, just build the advisor's project normally.
+      @project = current_user.projects.build(project_params)
+    end
+
     @project.assign_attributes(quarter_id: Quarter.current_quarter.id)
 
     if params[:commit] == "Create my proposal"
@@ -253,4 +271,11 @@ class ProjectsController < ApplicationController
     @old_project = Project.find(params[:id])
     @old_project.this_user = current_user
   end
+
+  def can_create_projects?
+    unless current_user.admin?
+      before_deadline?("project_proposal")
+    end
+  end
+
 end

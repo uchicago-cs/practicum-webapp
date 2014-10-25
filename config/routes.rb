@@ -83,4 +83,7 @@ Practicum::Application.routes.draw do
         via: "get"
   match "/request_advisor_access", to: "pages#send_request_for_advisor_access",
         via: "post"
+
+  match "/admin/projects/new", to: "projects#admin_new", via: "get"
+  match "/admin/projects", to: "projects#admin_create", via: "post"
 end

@@ -13,6 +13,21 @@
 	</td>
       </tr>
 
+      <% if !before_deadline?("project_proposal") and can? :manage, Project %>
+	<tr>
+	  <th>
+	    <%= f.label :advisor, "Advisor", class: "table-col-name" %>
+	    <span class="table-col-desc">
+	      If the advisor has a CNetID, write their CNetID. If not, write
+	      their e-mail address.
+	    </span>
+	  </th>
+	  <td>
+	    <%= f.text_field :advisor, hide_label: true %>
+	  </td>
+	</tr>
+      <% end %>
+
       <tr>
 	<th>
 	  <%= f.label :description, "Description", class: "table-col-name" %>
