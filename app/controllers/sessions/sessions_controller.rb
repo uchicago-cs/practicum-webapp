@@ -18,33 +18,24 @@ class Sessions::SessionsController < Devise::SessionsController
     error_string = "Login failed"
     auth_attr = request.params['user']['auth_attr']
 
-    # if LocalUser.find_by(email: request.params['user']['auth_attr'])
     if auth_attr.include?("@") or auth_attr.include?(".")
       user_class = :local_user
       auth_method = :email
       error_string = "Invalid E-mail or password."
-      # elsif LdapUser.find_by(cnet: request.params['user']['auth_attr'])
     else
       user_class = :ldap_user
       auth_method = :cnet
       error_string = "Invalid CNetID or password."
     end
 
-  request.params[user_class] =
-    { auth_method => auth_attr, password: request.params['user']['password'] }
-
-#    request.params['ldap_user'] = request.params['local_user'] =
-#      request.params['user']
-
-#    binding.pry
+    request.params[user_class] = { auth_method => auth_attr,
+      password: request.params['user']['password'] }
 
     # At this point, passwords in our params hash are unfiltered...
 
     ao = auth_options
     ao[:scope] = user_class
     self.resource = warden.authenticate(ao)
-
-    binding.pry
 
     if self.resource.nil?
       flash[:error] = error_string

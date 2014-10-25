@@ -1,6 +1,12 @@
 <h2>Sign up</h2>
 
-<p>If you do not have a CNetID, you may create an account below.</p>
+<div class="alert alert-info">
+  <p>
+    <strong>Note:</strong> Creating an account is only necessary if you do not
+    have a CNetID. If you do have a CNetID, you may sign in
+    <%= link_to "here", :new_user_session, class: "alert-link" %>.
+  </p>
+</div>
 
 <br />
 <%= bootstrap_form_for(resource, as: resource_name,
