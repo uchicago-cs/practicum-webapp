@@ -9,11 +9,11 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require bootstrap-datetimepicker
- *= require rails_bootstrap_forms
- *= require parsley
  *= require_tree .
  */
 
-@import "bootstrap-sprockets";
 @import "bootstrap";
+@import "bootstrap-sprockets";
+@import "bootstrap-datetimepicker";
+@import "rails_bootstrap_forms";
+@import "parsley";
