@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
 
   # Current user, passed in from ApplicationController.
   attr_accessor :this_user
+  attr_accessor :auth_attr
 
   def can_write_eval?
 

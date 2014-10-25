@@ -59,8 +59,8 @@ Practicum::Application.routes.draw do
   devise_for :local_users, skip: [:sessions]
 
   devise_scope :ldap_user do
-    get "/cnet_signin" => "sessions/sessions#cnet_new", as: :new_cnet_session
-    post "/cnet_signin" => "sessions/sessions#cnet_create", as: :cnet_session
+    get "/signin" => "sessions/sessions#new", as: :new_user_session
+    post "/signin" => "sessions/sessions#create", as: :user_session
     delete "/signout" => "sessions/sessions#destroy", as: :destroy_user_session
 
     # Prevent users from deleting their own accounts.
@@ -73,9 +73,6 @@ Practicum::Application.routes.draw do
   end
 
   devise_scope :local_user do
-    get "/signin" => "sessions/sessions#new", as: :new_user_session
-    post "/signin" => "sessions/sessions#create", as: :user_session
-    #delete "/signout" => "sessions/sessions#destroy", as: :destroy_user_session
     get "/register" => "devise/registrations#new", as: :new_user
     post "/register" => "devise/registrations#create", as: :create_user
     # Prevent users from deleting their own accounts.

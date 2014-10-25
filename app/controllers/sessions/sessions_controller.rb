@@ -4,24 +4,60 @@ class Sessions::SessionsController < Devise::SessionsController
   prepend_before_filter :verify_signed_out_user, only: :destroy
   prepend_before_filter only: [ :create, :destroy ] { request.env["devise.skip_timeout"] = true }
 
-  def new
-  end
-
-  def create
-  end
-
   # GET /resource/sign_in
-  def cnet_new
+  def new
     self.resource = resource_class.new(sign_in_params)
     clean_up_passwords(resource)
     respond_with(resource, serialize_options(resource))
   end
 
   # POST /resource/sign_in
-  def cnet_create
-    self.resource = warden.authenticate!(auth_options)
+  def create
+    # Adapted from http://stackoverflow.com/a/21175515/3723769.
+    user_class = nil
+    error_string = "Login failed"
+    auth_attr = request.params['user']['auth_attr']
+
+    # if LocalUser.find_by(email: request.params['user']['auth_attr'])
+    if auth_attr.include?("@") or auth_attr.include?(".")
+      user_class = :local_user
+      auth_method = :email
+      error_string = "Invalid E-mail or password."
+      # elsif LdapUser.find_by(cnet: request.params['user']['auth_attr'])
+    else
+      user_class = :ldap_user
+      auth_method = :cnet
+      error_string = "Invalid CNetID or password."
+    end
+
+  request.params[user_class] =
+    { auth_method => auth_attr, password: request.params['user']['password'] }
+
+#    request.params['ldap_user'] = request.params['local_user'] =
+#      request.params['user']
+
+#    binding.pry
+
+    # At this point, passwords in our params hash are unfiltered...
+
+    ao = auth_options
+    ao[:scope] = user_class
+    self.resource = warden.authenticate(ao)
+
+    binding.pry
+
+    if self.resource.nil?
+      flash[:error] = error_string
+      # Note: The error_strings will appear as flash messages, not as
+      # form error messages.
+      return redirect_to new_user_session_path
+    end
+
+    # If we make it here, the user is authenticated, and self.resource is a
+    # valid user.
+
     set_flash_message(:success, :signed_in) if is_flashing_format?
-    sign_in(resource_name, resource)
+    sign_in(user_class, resource)
     yield resource if block_given?
     respond_with resource, location: after_sign_in_path_for(resource)
   end
