@@ -4,15 +4,21 @@ class Sessions::SessionsController < Devise::SessionsController
   prepend_before_filter :verify_signed_out_user, only: :destroy
   prepend_before_filter only: [ :create, :destroy ] { request.env["devise.skip_timeout"] = true }
 
-  # GET /resource/sign_in
   def new
+  end
+
+  def create
+  end
+
+  # GET /resource/sign_in
+  def cnet_new
     self.resource = resource_class.new(sign_in_params)
     clean_up_passwords(resource)
     respond_with(resource, serialize_options(resource))
   end
 
   # POST /resource/sign_in
-  def create
+  def cnet_create
     self.resource = warden.authenticate!(auth_options)
     set_flash_message(:success, :signed_in) if is_flashing_format?
     sign_in(resource_name, resource)

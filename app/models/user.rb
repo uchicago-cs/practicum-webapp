@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   has_many :projects, foreign_key: "advisor_id", dependent: :destroy
   has_many :submissions, foreign_key: "student_id", dependent: :destroy
 
+  validates :email, uniqueness: { case_sensitive: false }
+
   after_update :send_roles_changed
 
   # Current user, passed in from ApplicationController.
