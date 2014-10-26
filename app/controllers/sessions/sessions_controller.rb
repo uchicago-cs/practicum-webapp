@@ -37,6 +37,8 @@ class Sessions::SessionsController < Devise::SessionsController
     ao[:scope] = user_class
     self.resource = warden.authenticate(ao)
 
+    binding.pry
+
     if self.resource.nil?
       flash[:error] = error_string
       # Note: The error_strings will appear as flash messages, not as
