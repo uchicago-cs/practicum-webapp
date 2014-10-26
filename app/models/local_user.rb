@@ -6,8 +6,8 @@ class LocalUser < User
   validates :email, presence: true
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :affiliation, presence: true
-  validates :department, presence: true
+  # validates :affiliation, presence: true
+  # validates :department, presence: true
 
   # Password confirmation is needed only on registration, i.e., for
   # local_users only.
