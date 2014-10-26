@@ -31,4 +31,20 @@ class LocalUser < User
     end
   end
 
+  # See this link re: the two methods below:
+  # https://github.com/plataformatec/devise/wiki/
+  # How-To:-Require-admin-to-activate-account-before-sign_in
+
+  def active_for_authentication?
+    super && approved?
+  end
+
+  def inactive_message
+    if !approved?
+      :not_approved
+    else
+      super
+    end
+  end
+
 end

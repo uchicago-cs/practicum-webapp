@@ -2,6 +2,13 @@
 
 <p>This is your personal page.</p>
 
+<% if can? :approve, current_user %>
+  <h3>Approve Account</h3>
+  <%= render 'approval_form' %>
+<% end %>
+
+<br />
+
 <% if can? :update_affiliation_of, current_user %>
   <h3>Affiliation and Department</h3>
   <%= render 'affiliation_form' %>

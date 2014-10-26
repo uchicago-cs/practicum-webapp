@@ -4,6 +4,14 @@ class LdapUser < User
   authentication_keys: [:cnet]
 
   before_validation :get_ldap_info
+  after_create :approve_account
+
+  # Fix routes for STI subclass (LocalUser) of User so that we can call
+  # current_user and generate a path in the view, rather than calling
+  # user_path(current_user).
+  def self.model_name
+    User.model_name
+  end
 
   def get_ldap_info
     if Devise::LDAP::Adapter.get_ldap_param(self.cnet, 'uid')
@@ -21,11 +29,8 @@ class LdapUser < User
     end
   end
 
-  # Fix routes for STI subclass (LocalUser) of User so that we can call
-  # current_user and generate a path in the view, rather than calling
-  # user_path(current_user).
-  def self.model_name
-    User.model_name
+  def approve_account
+    self.update_attributes(approved: true)
   end
 
 end

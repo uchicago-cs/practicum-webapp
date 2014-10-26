@@ -1,0 +1,13 @@
+<%= bootstrap_form_for(@user, layout: :horizontal,
+		       control_col: "col-xs-3") do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.check_box :approved, label: "Approve account?" %>
+
+  <br \>
+
+  <%= f.form_group do %>
+    <%= f.submit "Update account status",
+      class: "btn btn-primary", data: { confirm: "Are you sure?" } %>
+  <% end %>
+<% end %>
