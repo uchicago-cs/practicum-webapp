@@ -124,6 +124,8 @@ class Notifier < ActionMailer::Base
 
   def request_for_advisor_access(user, admin)
     @user = user
+    @affiliation = user.affiliation
+    @department = user.department
     @admin = admin
     @to = @admin.email
     @title = "Advisor status request"

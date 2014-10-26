@@ -61,7 +61,15 @@ class PagesController < ApplicationController
       flash[:error] = "You are already an advisor."
       redirect_to root_url
     else
-      current_user.update_attributes(advisor_status_pending: true)
+      if advisor_request_params[:affiliation].empty? or
+          advisor_request_params[:department].empty?
+        flash.now[:error] = "You must provide your affiliation and department."
+        render 'request_advisor_access' and return
+      end
+      current_user.
+        update_attributes(advisor_status_pending: true,
+                          affiliation: advisor_request_params[:affiliation],
+                          department: advisor_request_params[:department])
       send_advisor_request_mail
       flash[:success] = "You have requested advisor privileges. You will be " +
       "notified if your privileges are elevated."
@@ -78,6 +86,10 @@ class PagesController < ApplicationController
   end
 
   private
+
+  def advisor_request_params
+    params.permit(:affiliation, :department)
+  end
 
   def get_current_submitted_submissions
     @current_submitted_submissions = Submission.current_submitted_submissions

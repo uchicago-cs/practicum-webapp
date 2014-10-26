@@ -3,6 +3,8 @@
 <p>A user has requested advisor privileges.</p>
 
 <p>User: <%= display_name(@user) %></p>
-<p>CNetID: <%= @user.cnet %></p>
+<p>Affiliation: <%= @affiliation %></p>
+<p>Department: <%= @department %></p>
+<p>CNetID or E-mail address: <%= @user.cnet || @user.email %></p>
 
 <p>Visit <%= user_url(@user) %> to change this user's status.</p>
