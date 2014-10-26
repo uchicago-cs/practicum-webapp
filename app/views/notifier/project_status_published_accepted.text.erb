@@ -1,4 +1,4 @@
-Hi <%= @advisor.first_name || @advisor.cnet %>,
+Hi <%= @advisor.first_name || @advisor.cnet || @advisor.email %>,
 
 Your project proposal for <%= @project.name %> has been made publicly available, and students may now apply to it. You will be notified when students apply.
 

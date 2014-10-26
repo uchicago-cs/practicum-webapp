@@ -1,4 +1,4 @@
-Hi <%= @advisor.first_name || @advisor.cnet %>,
+Hi <%= @advisor.first_name || @advisor.cnet || @advisor.email %>,
 
 <% if @status == "accepted" %>
 Your project proposal for <%= @project.name %> has been accepted. You will be notified when your proposal becomes publicly available and students may apply to it.

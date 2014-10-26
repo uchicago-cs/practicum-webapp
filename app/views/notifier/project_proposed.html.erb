@@ -5,7 +5,7 @@
   can apply to it.
 </p>
 
-<p>Advisor: <%= display_name(@advisor) || @advisor.cnet %></p>
+<p>Advisor: <%= display_name(@advisor) || @advisor.cnet || @advisor.email %></p>
 <p>Project title: <%= @project.name %></p>
 
 <p>

@@ -1,15 +1,15 @@
-Hi <%= @student.first_name || @student.cnet %>,
+Hi <%= @student.first_name || @student.cnet || @student.email %>,
 
 <%= "Congratulations!" if @submission.status == "accepted" %> Your application to <%= @project.name %> has been <%= @submission.status %>.
 
 <% if @comments.present? %>
-  <%= display_name(@project.advisor) || @project.advisor.cnet %> has provided you with the following feedback:
+  <%= display_name(@project.advisor) || @project.advisor.cnet || @project.advisor.email %> has provided you with the following feedback:
 
   "<%= @comments %>"
 <% end %>
 
 <% if @submission.status == "accepted" %>
-  You may contact the project advisor, <%= display_name(@project.advisor) || @project.advisor.cnet %>, at <%= @project.advisor.email %>.
+  You may contact the project advisor, <%= display_name(@project.advisor) || @project.advisor.cnet || @project.advisor.email %>, at <%= @project.advisor.email %>.
 <% end %>
 
 Visit <%= submission_url(@submission) %> to view your application.

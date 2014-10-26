@@ -2,8 +2,8 @@ Hi <%= @admin.first_name || @admin.cnet %>,
 
 An advisor has submitted an evaluation for a student.
 
-Advisor: <%= display_name(@advisor) || @advisor.cnet %>
+Advisor: <%= display_name(@advisor) || @advisor.cnet || @advisor.email %>
 Project: <%= @project.name %>
-Student: <%= display_name(@student) || @student.cnet %>
+Student: <%= display_name(@student) || @student.cnet || @advisor.email %>
 
 Visit <%= evaluation_url(@evaluation) %> to view this evaluation.

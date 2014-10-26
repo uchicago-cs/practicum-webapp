@@ -2,11 +2,12 @@
 
 <p>An advisor has made a decision about an application.</p>
 
-<p>Advisor: <%= display_name(@advisor) || @advisor.cnet %></p>
-<p>Student: <%= display_name(@student) || @student.cnet %></p>
+<p>Advisor: <%= display_name(@advisor) || @advisor.cnet || @advisor.email %></p>
+<p>Student: <%= display_name(@student) || @student.cnet || @student.email %></p>
 <p>Decision: <%= @submission.status %></p>
 
 <p>
   Click <%= link_to "here", submission_url(@submission) %> to view
-  <%= display_name(@student) || @student.cnet %>'s application.
+  <%= display_name(@student) || @student.cnet || @student.email %>'s
+  application.
 </p>

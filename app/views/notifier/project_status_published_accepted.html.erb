@@ -1,4 +1,4 @@
-<p>Hi <%= @advisor.first_name || @advisor.cnet %>,</p>
+<p>Hi <%= @advisor.first_name || @advisor.cnet || @advisor.email %>,</p>
 
 <p>
   Your project proposal for <%= @project.name %> has been made publicly

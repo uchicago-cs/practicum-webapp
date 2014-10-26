@@ -1,8 +1,9 @@
-<p>Hi <%= @advisor.first_name || @advisor.cnet %>,</p>
+<p>Hi <%= @advisor.first_name || @advisor.cnet || @advisor.email %>,</p>
 
 <p>A student has applied to your project titled <%= @project.name %>.</p>
 
-<p>Student name: <%= display_name(@student) || @student.cnet %></p>
+<p>Student name:
+  <%= display_name(@student) || @student.cnet || @student.email %></p>
 <p>
   Application: Click <%= link_to "here", submission_url(@submission) %> to view
   <%= @student.first_name %>'s application.
