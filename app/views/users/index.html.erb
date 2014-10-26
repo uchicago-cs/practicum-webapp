@@ -2,8 +2,14 @@
 <%# We probably want to paginate this and add a search bar. %>
 <% if @users.count > 0 %>
 
-<%= link_to "All users", action: :index %>
-<%= link_to "Users awaiting approval", action: :index, approved: "false" %>
+  <br />
+
+  <p><%= link_to "All users", action: :index %></p>
+  <p>
+    <%= link_to "Users awaiting approval", action: :index, approved: "false" %>
+  </p>
+
+  <br />
 
   <table class="table table-bordered">
     <tr>

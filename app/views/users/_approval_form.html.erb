@@ -2,8 +2,9 @@
 		       control_col: "col-xs-3") do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%= f.check_box :approved, label: "Approve account?" %>
-
+  <%= f.form_group do %>
+    <%= f.check_box :approved, label: "Approve account?" %>
+  <% end %>
   <br \>
 
   <%= f.form_group do %>
