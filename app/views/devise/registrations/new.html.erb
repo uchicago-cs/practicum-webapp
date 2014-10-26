@@ -12,7 +12,7 @@
 <%= bootstrap_form_for(resource, as: resource_name,
 		       url: :new_user,
 		       layout: :horizontal, control_col: "col-xs-2") do |f| %>
-  <%= devise_error_messages! %>
+  <%#= devise_error_messages! %>
 
   <div><%= f.email_field :email, autofocus: true %></div>
 
