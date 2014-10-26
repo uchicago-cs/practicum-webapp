@@ -16,11 +16,19 @@ class LocalUser < User
   validates :password, confirmation: true, presence: true,
                        length: { minimum: 8 }
 
+  after_create :send_admin_email
+
   # Fix routes for STI subclass (LocalUser) of User so that we can call
   # current_user and generate a path in the view, rather than calling
   # user_path(current_user).
   def self.model_name
     User.model_name
+  end
+
+  def send_admin_email
+    User.admins.each do |a|
+      Notifier.local_user_awaiting_approval(self, a).deliver
+    end
   end
 
 end

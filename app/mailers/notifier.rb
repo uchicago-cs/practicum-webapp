@@ -147,4 +147,17 @@ class Notifier < ActionMailer::Base
     end
   end
 
+  def local_user_awaiting_approval(user, admin)
+    @user = user
+    @admin = admin
+    @to = admin.email
+    @title = "Account pending approval"
+    @subject = subject_constant + @title
+
+    mail(to: @to, subject: @subject) do |format|
+      format.text { render 'local_user_awaiting_approval' }
+      format.html { render 'local_user_awaiting_approval' }
+    end
+  end
+
 end
