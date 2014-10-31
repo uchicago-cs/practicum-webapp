@@ -37,7 +37,10 @@ class Project < ActiveRecord::Base
   validates :prerequisites, presence: true
 
   validate :creator_role
-  validate :created_before_proposal_deadline, on: :create
+  # If `proj.proposer.present?`, then an admin is proposing the project for
+  # an advisor, so we don't stop them if the proposal deadline has passed.
+  validate :created_before_proposal_deadline, on: :create,
+           unless: Proc.new { |proj| proj.proposer.present? }
   validate :status_not_pending_when_published
   validate :advisor_cannot_edit_if_pending, on: :update
 

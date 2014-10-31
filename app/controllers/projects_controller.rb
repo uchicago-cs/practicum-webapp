@@ -16,19 +16,21 @@ class ProjectsController < ApplicationController
 
     # If an admin is creating the advisor's project proposal, then
     # we figure out which advisor the admin is referring to.
-    if params[:proposer].present?
-      proposing_user = params[:proposer].downcase
-      binding.pry
+    if params[:project][:proposer].present?
+      proposing_user = params[:project][:proposer].downcase
       actual_user = (proposing_user.include? '@') ?
-        User.where(email: proposing_user) : User.where(cnet: proposing_user)
+      User.find_by(email: proposing_user) :
+        User.find_by(cnet: proposing_user)
 
       @project = actual_user.projects.build(project_params)
+      @project.proposer = proposing_user
 
       if proposing_user.include? '@'
-        @project.assign_attributes(advisor: User.where(email: proposing_user))
+        @project.assign_attributes(advisor: User.find_by(email: proposing_user))
       else
-        @project.assign_attributes(advisor: User.where(cnet: proposing_user))
+        @project.assign_attributes(advisor: User.find_by(cnet: proposing_user))
       end
+
     else
       # Otherwise, just build the advisor's project normally.
       @project = current_user.projects.build(project_params)
