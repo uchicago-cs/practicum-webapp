@@ -16,14 +16,14 @@
       <% if !before_deadline?("project_proposal") and can? :manage, Project %>
 	<tr>
 	  <th>
-	    <%= f.label :advisor, "Advisor", class: "table-col-name" %>
+	    <%= f.label :proposer, "Advisor", class: "table-col-name" %>
 	    <span class="table-col-desc">
 	      If the advisor has a CNetID, write their CNetID. If not, write
 	      their e-mail address.
 	    </span>
 	  </th>
 	  <td>
-	    <%= f.text_field :advisor, hide_label: true %>
+	    <%= f.text_field :proposer, hide_label: true %>
 	  </td>
 	</tr>
       <% end %>

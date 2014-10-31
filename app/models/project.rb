@@ -22,6 +22,7 @@ class Project < ActiveRecord::Base
     ->(quarter) { where(status: "accepted").
     joins(:quarter).where(quarters: { id: quarter.id }) }
 
+  attr_accessor :proposer
   attr_accessor :this_user
   attr_accessor :comments
 
