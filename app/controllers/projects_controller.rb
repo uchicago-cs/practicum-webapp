@@ -22,14 +22,25 @@ class ProjectsController < ApplicationController
       User.find_by(email: proposing_user) :
         User.find_by(cnet: proposing_user)
 
-      @project = actual_user.projects.build(project_params)
-      @project.proposer = proposing_user
-
-      if proposing_user.include? '@'
-        @project.assign_attributes(advisor: User.find_by(email: proposing_user))
+      if actual_user
+        @project = actual_user.projects.build(project_params)
+        @project.proposer = proposing_user
+        @project.assign_attributes(advisor: actual_user)
       else
-        @project.assign_attributes(advisor: User.find_by(cnet: proposing_user))
+        flash.now[:error] = "There is no user with that CNetID or E-mail " +
+          "address."
+        render 'new' and return
       end
+
+      if !actual_user.advisor?
+        flash.now[:error] = "That user is not an advisor."
+        render 'new' and return
+      end
+      # if proposing_user.include? '@'
+      #   @project.assign_attributes(advisor: User.find_by(email: proposing_user))
+      # else
+      #   @project.assign_attributes(advisor: User.find_by(cnet: proposing_user))
+      # end
 
     else
       # Otherwise, just build the advisor's project normally.

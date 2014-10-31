@@ -13,7 +13,7 @@ module ApplicationHelper
   end
 
   def project_proposal_navbar_link
-    if before_deadline?("project_proposal")
+    if before_deadline?("project_proposal") or current_user.admin?
       content_tag(:li, link_to("Propose a project", new_project_path))
     else
       content_tag(:li, link_to("Propose a project", '#'), class: "disabled")
