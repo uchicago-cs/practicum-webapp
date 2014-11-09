@@ -17,6 +17,7 @@ class LocalUser < User
                        length: { minimum: 8 }, on: :create
 
   after_create :send_admin_email
+  after_update :send_account_approved
 
   # Fix routes for STI subclass (LocalUser) of User so that we can call
   # current_user and generate a path in the view, rather than calling
@@ -44,6 +45,14 @@ class LocalUser < User
       :not_approved
     else
       super
+    end
+  end
+
+  private
+
+  def send_account_approved
+    if approved_changed? and approved?
+      Notifier.account_approved(self).deliver
     end
   end
 

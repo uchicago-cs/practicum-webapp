@@ -160,4 +160,16 @@ class Notifier < ActionMailer::Base
     end
   end
 
+  def account_approved(user)
+    @user = user
+    @to = user.email
+    @title = "Practicum account approved"
+    @subject = subject_constant + @title
+
+    mail(to: @to, subject: @subject) do |format|
+      format.text { render 'account_approved' }
+      format.html { render 'account_approved' }
+    end
+  end
+
 end

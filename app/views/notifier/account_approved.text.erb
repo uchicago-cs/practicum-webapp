@@ -1,0 +1,5 @@
+Hi <%= @user.first_name || @user.cnet %>,
+
+An administrator has approved your Practicum account.
+
+You may now sign in <%= link_to "here", new_user_session_url %>.
