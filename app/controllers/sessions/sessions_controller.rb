@@ -31,8 +31,6 @@ class Sessions::SessionsController < Devise::SessionsController
     request.params[user_class] = { auth_method => auth_attr,
       password: request.params['user']['password'] }
 
-    # At this point, passwords in our params hash are unfiltered...
-
     ao = auth_options
     ao[:scope] = user_class
     self.resource = warden.authenticate(ao)

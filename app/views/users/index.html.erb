@@ -1,6 +1,16 @@
 <h2>Users</h2>
 <%# We probably want to paginate this and add a search bar. %>
 <% if @users.count > 0 %>
+
+  <br />
+
+  <p><%= link_to "All users", action: :index %></p>
+  <p>
+    <%= link_to "Users awaiting approval", action: :index, approved: "false" %>
+  </p>
+
+  <br />
+
   <table class="table table-bordered">
     <tr>
       <th>CNetID</th>
