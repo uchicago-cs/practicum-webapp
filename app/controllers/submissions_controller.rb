@@ -11,10 +11,9 @@ class SubmissionsController < ApplicationController
   before_action :project_in_current_quarter?, only: [:new, :create]
   before_action :get_statuses,                only: [:show, :update_status]
   before_action :project_accepted_and_pub?,   only: [:new, :create]
+  before_action :can_create_submissions?,     only: [:new, :create, :update]
   before_action(except: [:index, :accepted]) { |c|
     c.get_this_user_for_object(@submission) }
-  before_action(only: [:new, :create, :update]) { |c|
-    c.before_deadline?("student_submission") }
   before_action(only: [:accept, :reject]) { |c|
     c.before_deadline?("advisor_decision") }
 
@@ -22,9 +21,37 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new
   end
 
+  # TODO: Dry this up (see the create method of projects_controller.rb)
   def create
-    @submission = @project.submissions.build(submission_params)
-    @submission.assign_attributes(student_id: current_user.id)
+
+    # If an admin is creating the student's application, then
+    # we figure out which student the admin is referring to.
+    if params[:submission][:applicant].present?
+      applying_user = params[:submission][:applicant].downcase
+      actual_user = (applying_user.include? '@') ?
+      User.find_by(email: applying_user) :
+        User.find_by(cnet: applying_user)
+
+      if actual_user
+        @submission = @project.submissions.build(submission_params)
+        @submission.applicant = applying_user # Needed for the validation proc
+        @submission.assign_attributes(student_id: actual_user.id)
+      else
+        flash.now[:error] = "There is no user with that CNetID or E-mail " +
+          "address."
+        render 'new' and return
+      end
+
+      if !actual_user.student?
+        flash.now[:error] = "That user is not a student."
+        render 'new' and return
+      end
+
+    else
+      # Otherwise, build the submission normally.
+      @submission = @project.submissions.build(submission_params)
+      @submission.assign_attributes(student_id: current_user.id)
+    end
 
     # Could be DRYer, but be careful to not rely on whether params[:commit]
     # is one of the strings _or not_; we should check whether it is one of the
@@ -126,10 +153,10 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  # Not DRY.
   def update_status
     @db_submission = Submission.find(params[:id])
 
+    # TODO: Dry this up
     case params[:commit]
 
     when "Unapprove decision"
@@ -173,10 +200,18 @@ class SubmissionsController < ApplicationController
   private
 
   def submission_params
-    params.require(:submission).permit(:information, :student_id, :status,
-                                       :qualifications, :courses, :resume,
-                                       :status_approved, :status_published,
-                                       :comments)
+    # TODO: DRY this up
+    if current_user.admin?
+      params.require(:submission).permit(:information, :student_id, :status,
+                                         :qualifications, :courses, :resume,
+                                         :status_approved, :status_published,
+                                         :comments, :applicant)
+    else
+      params.require(:submission).permit(:information, :student_id, :status,
+                                         :qualifications, :courses, :resume,
+                                         :status_approved, :status_published,
+                                         :comments)
+    end
   end
 
   def get_project
@@ -192,7 +227,7 @@ class SubmissionsController < ApplicationController
   def already_applied_to_project?
     message = "You have already applied to this project."
     redirect_to root_url, flash: { error: message } if
-      current_user.applied_to_project?(@project)
+      current_user.applied_to_project?(@project) and !current_user.admin?
   end
 
   def project_in_current_quarter?
@@ -228,4 +263,11 @@ class SubmissionsController < ApplicationController
     message = "You cannot edit a submitted application."
     redirect_to root_url, flash: { error: message } unless @submission.draft?
   end
+
+  def can_create_submissions?
+    unless current_user.admin?
+      before_deadline?("student_submission")
+    end
+  end
+
 end

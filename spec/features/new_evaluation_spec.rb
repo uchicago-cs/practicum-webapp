@@ -16,7 +16,9 @@ describe "Creating an evaluation", type: :feature do
     @admin    = FactoryGirl.create(:admin)
     @advisor  = FactoryGirl.create(:advisor)
     @student  = FactoryGirl.create(:student)
-    @template = FactoryGirl.create(:evaluation_template, quarter: @quarter)
+    @template = FactoryGirl.create(:evaluation_template, quarter: @quarter,
+                                   start_date: @quarter.start_date,
+                                   end_date: @quarter.end_date)
     @project  = FactoryGirl.create(:project, :accepted_and_published,
                                    :in_current_quarter, advisor: @advisor)
   end

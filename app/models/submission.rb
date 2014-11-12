@@ -12,6 +12,7 @@ class Submission < ActiveRecord::Base
 
   attr_accessor :this_user
   attr_accessor :update_in_index
+  attr_accessor :applicant
 
   belongs_to :student, class_name: "User", foreign_key: "student_id"
   belongs_to :project
@@ -26,7 +27,8 @@ class Submission < ActiveRecord::Base
   validate :status_not_pending_before_approved
   validate :status_not_pending_before_published
   validate :status_approved_before_published
-  validate :created_before_submission_deadline, on: :create
+  validate :created_before_submission_deadline, on: :create,
+           unless: Proc.new { |sub| sub.applicant.present? }
   validate :decision_made_before_decision_deadline
   validate :creator_role, on: :create
   validate :created_when_project_visible, on: :create

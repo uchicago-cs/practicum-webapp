@@ -36,11 +36,6 @@ class ProjectsController < ApplicationController
         flash.now[:error] = "That user is not an advisor."
         render 'new' and return
       end
-      # if proposing_user.include? '@'
-      #   @project.assign_attributes(advisor: User.find_by(email: proposing_user))
-      # else
-      #   @project.assign_attributes(advisor: User.find_by(cnet: proposing_user))
-      # end
 
     else
       # Otherwise, just build the advisor's project normally.

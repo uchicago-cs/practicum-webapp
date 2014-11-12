@@ -4,6 +4,22 @@
   <table class="table table-bordered submission-form" >
     <tbody>
 
+      <% if !before_deadline?("student_submission") and
+	can? :manage, Submission %>
+	<tr>
+	  <th>
+	    <%= f.label :applicant, "Applicant", class: "table-col-name" %>
+	    <span class="table-col-desc">
+	      If the applicant has a CNetID, write their CNetID. If not, write
+	      their e-mail address.
+	    </span>
+	  </th>
+	  <td>
+	    <%= f.text_field :applicant, hide_label: true %>
+	  </td>
+	</tr>
+      <% end %>
+
       <tr>
 	<th>
 	  <%= f.label :information, "Interests", class: "table-col-name" %>

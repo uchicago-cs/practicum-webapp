@@ -2,8 +2,10 @@
 
 <% if can? :update, @project %>
   <div>
-    Click <%= link_to "here", edit_project_path %>
-    to edit this project's information.
+    <p>
+      Click <%= link_to "here", edit_project_path %>
+      to edit this project's information.
+    </p>
   </div>
   <br>
 <% end %>
@@ -17,6 +19,13 @@
 <% end %>
 
 <% if (can? :apply_to, @project) and before_deadline?("student_submission") %>
-  Click <%= link_to "here", new_project_submission_path(@project.id),
-  id: "new-submission-link" %> to apply to this project.
+  <p>
+    Click <%= link_to "here", new_project_submission_path(@project.id),
+    id: "new-submission-link" %> to apply to this project.
+  </p>
+<% elsif (can? :manage, Project) %>
+  <p>
+    Click <%= link_to "here", new_project_submission_path(@project.id),
+    id: "new-submission-link" %> to create an application for a student.
+  </p>
 <% end %>

@@ -24,7 +24,9 @@ describe "Editing a submission's 'status' attributes", type: :feature do
     @template      = FactoryGirl.create(:evaluation_template,
                                         name: "Midterm",
                                         quarter: @quarter,
-                                        active: true)
+                                        active: true,
+                                        start_date: @quarter.start_date,
+                                        end_date: @quarter.end_date)
   end
 
   # Accept _or_ reject? (Use shared examples?)
