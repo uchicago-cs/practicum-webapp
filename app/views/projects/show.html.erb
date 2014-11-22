@@ -8,7 +8,7 @@
   <br>
 <% end %>
 
-<%= render 'student_submission_deadline' if user_signed_in? %>
+<%= render 'student_submission_deadline' if signed_in? %>
 
 <%= render 'project_long', object: @project%>
 

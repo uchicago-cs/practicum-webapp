@@ -3,7 +3,7 @@ FactoryGirl.define do
   # has_many:   Use FactoryGirl's callbacks.
   # belongs_to: Write `thing_this_belong_to` in the belonging model.
 
-  factory :user do
+  factory :user, class: LdapUser do
     sequence(:email)      { |n| "user_#{n}@university.edu" }
     sequence(:first_name) { |n| "User" }
     sequence(:last_name)  { |n| "#{n}" }

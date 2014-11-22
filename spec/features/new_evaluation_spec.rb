@@ -132,7 +132,8 @@ describe "Creating an evaluation", type: :feature do
                                            submission: @submission,
                                            advisor_id: @advisor.id,
                                            student_id: @student.id,
-                                           project_id: @project.id)
+                                           project_id: @project.id,
+                                           evaluation_template: @template)
         end
 
         it "should not see the 'new evaluation' link" do
@@ -226,7 +227,8 @@ describe "Creating an evaluation", type: :feature do
                                            submission: @submission_2,
                                            advisor_id: @advisor_2.id,
                                            student_id: @student.id,
-                                           project_id: @project_2.id)
+                                           project_id: @project_2.id,
+                                           evaluation_template: @template)
         visit evaluation_path(@evaluation_2)
       end
 
