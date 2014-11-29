@@ -50,4 +50,6 @@ vendor/cache
 *.html
 
 # To prevent running a rake task that wipes the database on the server:
-lib/tasks/*
+init_app.rake
+sample_data.rake
+admins.rake
