@@ -13,9 +13,40 @@ class Sessions::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
-    self.resource = warden.authenticate!(auth_options)
+    # Adapted from http://stackoverflow.com/a/21175515/3723769.
+    user_class = nil
+    error_string = "Login failed"
+    auth_attr = request.params['user']['auth_attr']
+
+    if auth_attr.include?("@") or auth_attr.include?(".")
+      user_class = :local_user
+      auth_method = :email
+      error_string = "Invalid E-mail or password."
+    else
+      user_class = :ldap_user
+      auth_method = :cnet
+      error_string = "Invalid CNetID or password."
+    end
+
+    request.params[user_class] = { auth_method => auth_attr,
+      password: request.params['user']['password'] }
+
+    ao = auth_options
+    ao[:scope] = user_class
+    self.resource = warden.authenticate(ao)
+
+    if self.resource.nil?
+      flash[:error] = error_string
+      # Note: The error_strings will appear as flash messages, not as
+      # form error messages.
+      return redirect_to new_user_session_path
+    end
+
+    # If we make it here, the user is authenticated, and self.resource is a
+    # valid user.
+
     set_flash_message(:success, :signed_in) if is_flashing_format?
-    sign_in(resource_name, resource)
+    sign_in(user_class, resource)
     yield resource if block_given?
     respond_with resource, location: after_sign_in_path_for(resource)
   end

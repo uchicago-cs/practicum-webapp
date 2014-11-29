@@ -18,13 +18,28 @@ class ApplicationController < ActionController::Base
   before_action :show_advisor_status_pending_message
 
   helper_method :is_admin?
+  helper_method :authenticate_user!
+  helper_method :current_user
+
+  def authenticate_user!
+    if ldap_user_signed_in?
+      authenticate_ldap_user!
+    elsif local_user_signed_in?
+      authenticate_local_user!
+    end
+  end
+
+  def current_user
+    current_ldap_user or current_local_user
+  end
 
   protected
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:account_update) do |user|
       if current_user.admin?
-        user.permit(:admin, :advisor, :student, :affiliation, :department)
+        user.permit(:admin, :advisor, :student, :affiliation, :department,
+                    :approved)
       elsif current_user.advisor?
         user.permit(:affiliation, :department)
       end
@@ -32,6 +47,11 @@ class ApplicationController < ActionController::Base
 
     devise_parameter_sanitizer.for(:sign_in) do |user|
       user.permit(:cnet, :email, :password)
+    end
+
+    devise_parameter_sanitizer.for(:sign_up) do |user|
+      user.permit(:email, :password, :password_confirmation,
+                  :first_name, :last_name, :affiliation, :department)
     end
   end
 

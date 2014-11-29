@@ -1,5 +1,7 @@
-You proposed <%= link_to project.name, project %> with a deadline
-of <%= project.deadline %>. It is currently <%= project.status %>.
-You may no longer edit your proposal. You may view students'
-applications to this project
-<%= link_to "here", project_submissions_path(project.id) %>.
+<p>
+  You proposed <%= link_to project.name, project %> with a deadline
+  of <%= project.deadline %>. It is currently <%= project.status %>.
+  You may no longer edit your proposal. You may view students'
+  applications to this project
+  <%= link_to "here", project_submissions_path(project.id) %>.
+</p>

@@ -10,6 +10,11 @@ class UsersController < ApplicationController
   end
 
   def index
+    if params[:approved] == "false"
+      @users = User.where(approved: false)
+    else
+      @users = User.all
+    end
   end
 
   def edit
@@ -38,7 +43,7 @@ class UsersController < ApplicationController
   def user_params
     if current_user.admin?
       params.require(:user).permit(:student, :advisor, :admin,
-                                   :affiliation, :department)
+                                   :affiliation, :department, :approved)
     else
       if current_user.advisor?
         params.require(:user).permit(:affiliation, :department)

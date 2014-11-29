@@ -124,6 +124,8 @@ class Notifier < ActionMailer::Base
 
   def request_for_advisor_access(user, admin)
     @user = user
+    @affiliation = user.affiliation
+    @department = user.department
     @admin = admin
     @to = @admin.email
     @title = "Advisor status request"
@@ -144,6 +146,31 @@ class Notifier < ActionMailer::Base
     mail(to: @to, subject: @subject) do |format|
       format.text { render 'roles_changed' }
       format.html { render 'roles_changed' }
+    end
+  end
+
+  def local_user_awaiting_approval(user, admin)
+    @user = user
+    @admin = admin
+    @to = admin.email
+    @title = "Account pending approval"
+    @subject = subject_constant + @title
+
+    mail(to: @to, subject: @subject) do |format|
+      format.text { render 'local_user_awaiting_approval' }
+      format.html { render 'local_user_awaiting_approval' }
+    end
+  end
+
+  def account_approved(user)
+    @user = user
+    @to = user.email
+    @title = "Practicum account approved"
+    @subject = subject_constant + @title
+
+    mail(to: @to, subject: @subject) do |format|
+      format.text { render 'account_approved' }
+      format.html { render 'account_approved' }
     end
   end
 

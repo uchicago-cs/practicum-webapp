@@ -1,0 +1,8 @@
+Hi <%= @admin.first_name || @admin.cnet %>,
+
+A user has registered an account on the Practicum website and it must be approved before they can sign in.
+
+Name: <%= display_name(@user) || @user.email %>
+E-mail address: <%= @user.email %>
+
+Visit <%= user_url(@user) %> to approve this user's account.

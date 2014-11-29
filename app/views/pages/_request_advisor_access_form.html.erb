@@ -1,0 +1,13 @@
+<%= bootstrap_form_tag(url: { action: 'request_advisor_access' },
+		       method: :post, layout: :horizontal,
+		       control_col: "col-md-3") do |f| %>
+
+  <%= f.text_field :affiliation %>
+  <%= f.text_field :department, label: "Department, institution, etc." %>
+
+  <%= f.form_group do %>
+    <%= f.submit "Submit request", class: "btn btn-primary",
+      data: { confirm: "Are you sure?" } %>
+  <% end %>
+
+<% end %>

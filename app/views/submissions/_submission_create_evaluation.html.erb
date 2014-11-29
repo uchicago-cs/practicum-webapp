@@ -1,10 +1,12 @@
-Click
+<p>
+  Click
 
-<%= link_to "here",
-new_submission_evaluation_path(submission_id: @submission.id) %>
+  <%= link_to "here",
+  new_submission_evaluation_path(submission_id: @submission.id) %>
 
-to create the
+  to create the
 
-<%= formatted_template_title(EvaluationTemplate.current_active, false) %>
+  <%= formatted_template_title(EvaluationTemplate.current_active, false) %>
 
-evaluation for this student.
+  evaluation for this student.
+</p>

@@ -25,8 +25,8 @@ describe "Editing a submission's 'status' attributes", type: :feature do
                                         name: "Midterm",
                                         quarter: @quarter,
                                         active: true,
-                                        start_date: @quarter.start_date,
-                                        end_date: @quarter.end_date)
+                                        start_date: DateTime.current - 1.day,
+                                        end_date: DateTime.current + 1.day)
   end
 
   # Accept _or_ reject? (Use shared examples?)
