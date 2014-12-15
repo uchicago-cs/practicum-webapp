@@ -10,13 +10,15 @@
 
 <% if @users.count > 0 %>
 
-  <%= bootstrap_form_tag path: :users_path, layout: :horizontal,
-    control_col: "col-sm-3", label_col: "no-column" do |f| %>
-    <p>
-      <%= f.text_field :search, hide_label: true, append:
-      link_to("Search", "#") %>
-    </p>
-  <% end %>
+  <%#= bootstrap_form_tag path: :users_path, layout: :horizontal,
+    control_col: "col-sm-3", label_col: "no-column" [do |f| %>
+
+  <!--     <p>     -->
+  <%#= f.text_field :search, hide_label: true %>
+  <%#= f.submit "Search" %>
+  <!--     </p>     -->
+
+  <%# end %>
 
   <%= paginate @users %>
 
