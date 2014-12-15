@@ -4,21 +4,6 @@ Practicum::Application.routes.draw do
 
   root 'pages#home'
 
-  match "/applications/update_all_submissions",
-        to: "pages#update_all_submissions", via: "patch",
-        as: "update_all_submissions"
-  match "/applications/approve_all_statuses", to: "pages#change_all_statuses",
-        via: "patch", as: "approve_all_statuses", change: "approve"
-  match "/applications/publish_all_statuses", to: "pages#change_all_statuses",
-        via: "patch", as: "publish_all_statuses", change: "publish"
-  match "/applications/drafts", to: "pages#submission_drafts", via: "get",
-        as: "submission_drafts"
-  match "/applications/accepted", to: "submissions#accepted", via: "get",
-        as: "accepted_submissions"
-  match "/projects/pending/publish_all", to: "projects#publish_all_pending",
-        via: "patch", as: "publish_all_pending_projects"
-  match "/evaluations", to: "evaluations#index", via: "get", as: "evaluations"
-
   resources :evaluation_templates, except: :edit do
     member do
       post  "add_question"
@@ -28,32 +13,61 @@ Practicum::Application.routes.draw do
     end
   end
 
-  resources :projects, shallow: true do
+  scope "(/:year/:season)", year: /\d{4}/,
+       season: /spring|summer|autumn|winter/ do
 
-    collection do
-      get "pending"
-      resources :quarters
-    end
+    match "/applications/update_all_submissions",
+          to: "pages#update_all_submissions", via: "patch",
+          as: "update_all_submissions"
+    match "/applications/approve_all_statuses",
+          to: "pages#change_all_statuses", via: "patch",
+          as: "approve_all_statuses", change: "approve"
+    match "/applications/publish_all_statuses",
+          to: "pages#change_all_statuses", via: "patch",
+          as: "publish_all_statuses", change: "publish"
+    match "/applications/drafts",
+          to: "pages#submission_drafts", via: "get", as: "submission_drafts"
+    match "/applications/accepted", to: "submissions#accepted",
+          via: "get", as: "accepted_submissions"
+    match "/projects/pending/publish_all",
+          to: "projects#publish_all_pending", via: "patch",
+          as: "publish_all_pending_projects"
+    match "/evaluations", to: "evaluations#index", via: "get",
+          as: "evaluations"
 
-    member do
-      patch "update_status"
-    end
+    match "/applications/:id/resume",
+          to: "submissions#download_resume", via: "get", as: "download_resume"
 
-    resources :submissions, path: 'applications', shallow: true do
+    match "/my_projects", to: "users#my_projects", via: "get",
+          as: "users_projects"
+    match "/my_applications", to: "users#my_submissions",
+          via: "get", as: "users_submissions"
 
-      resources :evaluations, only: [:new, :create, :show]
+    match "/admin/projects/new", to: "projects#admin_new", via: "get"
+
+    resources :projects, shallow: true do
+
+      collection do
+        get "pending"
+      end
 
       member do
-        patch "accept_or_reject"
         patch "update_status"
       end
 
+      resources :submissions, path: 'applications', shallow: true do
+
+        resources :evaluations, only: [:new, :create, :show]
+
+        member do
+          patch "accept_or_reject"
+          patch "update_status"
+        end
+
+      end
+
     end
-
   end
-
-  match "/applications/:id/resume",
-  to: "submissions#download_resume", via: "get", as: "download_resume"
 
   devise_for :ldap_users, skip: [:sessions, :registrations]
   devise_for :local_users, skip: [:sessions]
@@ -89,17 +103,11 @@ Practicum::Application.routes.draw do
   match "/users", to: "users#index", via: "get"
   match "/users/:id", to: "users#show", via: "get", as: "user"
   match "/users/:id", to: "users#update", via: "patch"
-  match "/users/:id/my_projects", to: "users#my_projects", via: "get",
-        as: "users_projects"
-  match "/users/:id/my_applications", to: "users#my_submissions", via: "get",
-        as: "users_submissions"
   match "/applications", to: "pages#submissions", via: "get", as: "submissions"
   match "/projects/:id", to: "projects#clone_project", via: "post"
   match "/request_advisor_access", to: "pages#request_advisor_access",
         via: "get"
   match "/request_advisor_access", to: "pages#send_request_for_advisor_access",
         via: "post"
-
-  match "/admin/projects/new", to: "projects#admin_new", via: "get"
   match "/admin/projects", to: "projects#admin_create", via: "post"
 end

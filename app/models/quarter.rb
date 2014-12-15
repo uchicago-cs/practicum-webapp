@@ -24,7 +24,7 @@ class Quarter < ActiveRecord::Base
   before_destroy    :prevent_if_current
   before_validation :downcase_season
 
-  def current
+  def current?
     (start_date <= DateTime.now) and (DateTime.now <= end_date)
   end
 
