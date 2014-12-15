@@ -1,7 +1,11 @@
 class Quarter < ActiveRecord::Base
 
+  attr_reader :current
+
   default_scope { order('quarters.created_at DESC') }
-  scope :current_quarter, -> { where(current: true).take }
+  scope :current_quarter, -> {
+    where("start_date <= ? AND ? <= end_date",
+          DateTime.now, DateTime.now).take }
 
   has_many :projects
   has_many :evaluation_templates
@@ -18,8 +22,11 @@ class Quarter < ActiveRecord::Base
 
   # Change name to `prevent_destroy_if_current`?
   before_destroy    :prevent_if_current
-  after_save        :set_current_false
   before_validation :downcase_season
+
+  def current
+    (start_date <= DateTime.now) and (DateTime.now <= end_date)
+  end
 
   def Quarter.deadlines
     [:start_date, :project_proposal_deadline, :student_submission_deadline,
@@ -32,13 +39,6 @@ class Quarter < ActiveRecord::Base
   end
 
   private
-
-  def set_current_false
-    to_set_false = (Quarter.where.not(id: self.id)).where(current: true)
-    if self.current?
-      to_set_false.each { |q| q.update_attributes(current: false) }
-    end
-  end
 
   def prevent_if_current
     message = "You cannot delete the current quarter."

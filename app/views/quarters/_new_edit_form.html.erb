@@ -40,12 +40,6 @@
   <br />
 
   <%= f.form_group do %>
-    <div id="quarter-form-tooltip" data-toggle="tooltip" data-placement="right"
-	 title="<%= current_change_warning %>">
-      <%= f.check_box :current, label: "Current quarter?" %>
-    </div>
-    <br />
-
     <%= f.submit "#{change.capitalize} quarter",
     class: new_quarter_btn_class(change), data: { confirm: "Are you sure?" } %>
   <% end %>

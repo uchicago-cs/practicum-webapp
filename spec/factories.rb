@@ -60,7 +60,6 @@ FactoryGirl.define do
     admin_publish_deadline { start_date +
       deadline_weeks["admin"].weeks + 4.days + 5.hours }
     end_date { start_date + 9.weeks + 5.days }
-    current { true }
 
     trait :can_create_submission do
       student_submission_deadline { DateTime.tomorrow }
