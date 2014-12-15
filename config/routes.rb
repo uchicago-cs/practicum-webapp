@@ -4,6 +4,8 @@ Practicum::Application.routes.draw do
 
   root 'pages#home'
 
+  resources :quarters
+
   resources :evaluation_templates, except: :edit do
     member do
       post  "add_question"
