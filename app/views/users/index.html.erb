@@ -1,13 +1,14 @@
 <h2>Users</h2>
 <%# We probably want to paginate this and add a search bar. %>
+
+<br />
+
+<p>Filter:
+  <%= link_to "All users", action: :index %> |
+  <%= link_to "Users awaiting approval", action: :index, approved: "false" %>
+</p>
+
 <% if @users.count > 0 %>
-
-  <br />
-
-  <p><%= link_to "All users", action: :index %></p>
-  <p>
-    <%= link_to "Users awaiting approval", action: :index, approved: "false" %>
-  </p>
 
   <br />
 
@@ -29,4 +30,6 @@
       <% end %>
     </tbody>
   </table>
+<% else %>
+  <p>No users found.</p>
 <% end %>
