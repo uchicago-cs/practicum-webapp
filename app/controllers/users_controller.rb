@@ -11,9 +11,9 @@ class UsersController < ApplicationController
 
   def index
     if params[:approved] == "false"
-      @users = User.where(approved: false)
+      @users = User.where(approved: false).page(params[:page])
     else
-      @users = User.all
+      @users = User.all.page(params[:page])
     end
   end
 
