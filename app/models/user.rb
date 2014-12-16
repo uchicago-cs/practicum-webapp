@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
 
   def relevant_quarters
     if admin?
+      # See all active quarters.
       qs = []
 
       Quarter.all.each do |q|
@@ -23,26 +24,38 @@ class User < ActiveRecord::Base
           qs << q
         end
       end
+
       qs
+
     elsif advisor?
-      []
+      # See 1. quarters for which the proposal period is open, and
+      # 2. quarters with passed proposal periods but for which the advisor
+      # has submitted a proposal and which are not yet over.
+      qs = Quarter.open_for_proposals.to_set
+
+      # loop through projects. for each project, check if the quarter is active.
+      # if so, add it to the set.
+      projects.each { |p| qs.add(p.quarter) if p.quarter.current? }
+
+      qs.to_a
+
     elsif student?
       # Returns a list of all the quarters in which the user created objects
       # (proposals, applications, or evaluations).
-      quarters = Set.new []
+      qs = Set.new []
       objects = projects + submissions + Evaluation.where(advisor_id: self.id)
 
       objects.each do |o|
         if o.instance_of? Evaluation
           # The quarter of an evaluation is the quarter in which its project
           # was made.
-          quarters.add(o.project.quarter)
+          qs.add(o.project.quarter)
         else
-          quarters.add(o.quarter)
+          qs.add(o.quarter)
         end
       end
 
-      quarters.to_a
+      qs.to_a
     end
   end
 

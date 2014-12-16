@@ -4,9 +4,23 @@ class Quarter < ActiveRecord::Base
 
   default_scope { order('quarters.created_at DESC') }
   # TODO: DRY this (see project.rb)
+  # TODO: Move away from returning just one quarter here
   scope :current_quarter, -> {
     where("start_date <= ? AND ? <= end_date",
           DateTime.now, DateTime.now).take }
+
+  # Maybe call these quarters "active" instead?
+  scope :current_quarters, -> {
+    where("start_date <= ? AND ? <= end_date",
+          DateTime.now, DateTime.now) }
+
+  scope :open_for_proposals, -> {
+    Quarter.current_quarters.where("? <= project_proposal_deadline",
+                                   DateTime.now) }
+
+  scope :open_for_proposals, -> {
+    Quarter.current_quarters.where("? <= student_submission_deadline",
+                                   DateTime.now) }
 
   has_many :projects
   has_many :evaluation_templates
@@ -25,6 +39,7 @@ class Quarter < ActiveRecord::Base
   before_destroy    :prevent_if_current
   before_validation :downcase_season
 
+  # Rename to `active?` ?
   def current?
     (start_date <= DateTime.now) and (DateTime.now <= end_date)
   end
