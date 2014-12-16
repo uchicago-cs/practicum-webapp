@@ -40,11 +40,6 @@ Practicum::Application.routes.draw do
     match "/applications/:id/resume",
           to: "submissions#download_resume", via: "get", as: "download_resume"
 
-    match "/my_projects", to: "users#my_projects", via: "get",
-          as: "users_projects"
-    match "/my_applications", to: "users#my_submissions",
-          via: "get", as: "users_submissions"
-
     match "/admin/projects/new", to: "projects#admin_new", via: "get"
 
     resources :projects, shallow: true do
@@ -69,6 +64,8 @@ Practicum::Application.routes.draw do
       end
 
     end
+
+    match "/projects/:id", to: "projects#clone_project", via: "post"
   end
 
   devise_for :ldap_users, skip: [:sessions, :registrations]
@@ -105,11 +102,22 @@ Practicum::Application.routes.draw do
   match "/users", to: "users#index", via: "get"
   match "/users/:id", to: "users#show", via: "get", as: "user"
   match "/users/:id", to: "users#update", via: "patch"
+  match "/users/:id/my_projects", to: "users#my_projects_all", via: "get",
+        as: "users_projects_all"
+  match "/users/:id/my_applications", to: "users#my_submissions_all",
+        via: "get", as: "users_submissions_all"
   match "/applications", to: "pages#submissions", via: "get", as: "submissions"
-  match "/projects/:id", to: "projects#clone_project", via: "post"
   match "/request_advisor_access", to: "pages#request_advisor_access",
         via: "get"
   match "/request_advisor_access", to: "pages#send_request_for_advisor_access",
         via: "post"
   match "/admin/projects", to: "projects#admin_create", via: "post"
+
+  scope "/:year/:season", year: /\d{4}/,
+       season: /spring|summer|autumn|winter/ do
+    match "/my_projects", to: "users#my_projects", via: "get",
+          as: "users_projects"
+    match "/users/:id/my_applications", to: "users#my_submissions",
+          via: "get", as: "users_submissions"
+  end
 end

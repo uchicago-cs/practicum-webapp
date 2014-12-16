@@ -1,0 +1,25 @@
+<h2><%= display_name(@user) %>'s Projects</h2>
+
+<% if @user.advisor? or @user.admin? %>
+
+  <% if @user.projects.count > 0 %>
+    <table class="table table-bordered">
+      <tr>
+	<th>Project name</th>
+	<th>Quarter</th>
+	<th>Date created</th>
+	<th>Status</th>
+	<th>Applicants</th>
+	<th>Notes</th>
+      </tr>
+      <tbody>
+	<% @user.current_projects.each do |project| %>
+	  <%= render 'project', project: project %>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>You have not proposed any projects yet.</p>
+  <% end %>
+
+<% end %>

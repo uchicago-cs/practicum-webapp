@@ -1,5 +1,7 @@
 <%= format_cloned(@project) %>
 No student completed this project, so you may
-<%= link_to "clone", @project, method: 'clone_project',
+<%= link_to "clone", project_path(@project, year: @project.quarter.year,
+				  season: @project.quarter.season),
+				  method: 'clone_project',
     data: { confirm: "Are you sure?" } %>
 it into the current quarter.

@@ -47,7 +47,9 @@ class ProjectsController < ApplicationController
     if params[:commit] == "Create my proposal"
       if @project.save
         flash[:success] = "Project successfully proposed."
-        redirect_to users_projects_path(current_user)
+        redirect_to users_projects_path(current_user,
+                                        year: @project.quarter.year,
+                                        season: @project.quarter.season)
       else
         render 'new'
       end
@@ -56,7 +58,9 @@ class ProjectsController < ApplicationController
       if @project.save(validate: false)
         flash[:success] = "Proposal saved as a draft. You may edit it " +
           "by navigating to your \"my projects\" page."
-        redirect_to users_projects_path(current_user)
+        redirect_to users_projects_path(current_user,
+                                        year: @project.quarter.year,
+                                        season: @project.quarter.season)
       else
         render 'new'
       end
@@ -82,7 +86,9 @@ class ProjectsController < ApplicationController
         @project.assign_attributes(status: "pending")
         if @project.save
           flash[:success] = "Proposal submitted."
-          redirect_to users_projects_path(current_user)
+          redirect_to users_projects_path(current_user,
+                                          year: @project.quarter.year,
+                                          season: @project.quarter.season)
         else
           render 'edit'
         end
@@ -90,7 +96,9 @@ class ProjectsController < ApplicationController
         if @project.save(validate: false)
           flash[:success] = "Proposal saved as a draft. You may edit it " +
             "by navigating to your \"my projects\" page."
-          redirect_to users_projects_path(current_user)
+          redirect_to users_projects_path(current_user,
+                                          year: @project.quarter.year,
+                                          season: @project.quarter.season)
         else
           render 'edit'
         end

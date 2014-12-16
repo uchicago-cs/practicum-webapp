@@ -1,0 +1,44 @@
+<%# Must be signed in to see this. %>
+<%# The current quarter's information. %>
+<li class="dropdown" id="dropdown-personal">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    <%= formatted_quarter(q) %>
+      <span class="caret"></span>
+  </a>
+
+  <ul class="dropdown-menu" role="menu">
+    <%# The below will be moved to the new tabs, and new pages
+    <%# will be created for them. %>
+    <%# Applications %>
+    <% if can? :my_submissions, User %>
+      <li>
+	<%= link_to "My applications",
+	    users_submissions_path(current_user.id,
+				   year: q.year, season: q.season) %>
+      </li>
+    <% end %>
+
+    <%# Projects %>
+    <% if can? :my_projects, User %>
+      <%= project_proposal_navbar_link %>
+      <li>
+	<%= link_to "My projects",
+	    users_projects_path(current_user.id,
+				year: q.year, season: q.season) %>
+      </li>
+    <% end %>
+
+    <%# Administrative stuff %>
+    <% if can? :manage, :all %>
+      <li class="divider"></li>
+      <li><%= link_to "Pending projects",
+              pending_projects_path(year: q.year, season: q.season) %></li>
+      <li><%= link_to "Applications", submissions_path(year: q.year,
+						       season: q.season) %></li>
+      <li><%= link_to "Accepted students",
+              accepted_submissions_path(year: q.year, season: q.season) %></li>
+      <li><%= link_to "Evaluations", evaluations_path(year: q.year,
+						      season: q.season %></li>
+    <% end %>
+  </ul>
+</li>

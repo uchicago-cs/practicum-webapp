@@ -42,46 +42,12 @@
 	<% end %>
 
 	<% if can? :read, Submission %>
-	  <%# Must be signed in to see this. %>
-	  <%# The current quarter's information. %>
-	  <li class="dropdown" id="dropdown-personal">
-	    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-	      <%= formatted_quarter(Quarter.current_quarter) %>
-	      <span class="caret"></span>
-	    </a>
-
-	    <ul class="dropdown-menu" role="menu">
-	      <%# The below will be moved to the new tabs, and new pages
-	      <%# will be created for them. %>
-	      <%# Applications %>
-              <% if can? :my_submissions, User %>
-		<li>
-		  <%= link_to "My applications",
-		  users_submissions_path(current_user.id) %>
-		</li>
-              <% end %>
-
-	      <%# Projects %>
-              <% if can? :my_projects, User %>
-		<%= project_proposal_navbar_link %>
-		<li>
-		  <%= link_to "My projects",
-		  users_projects_path(current_user.id) %>
-		</li>
-              <% end %>
-
-	      <%# Administrative stuff %>
-	      <% if can? :manage, :all %>
-		<li class="divider"></li>
-		<li><%= link_to "Pending projects",
-		        pending_projects_path %></li>
-		<li><%= link_to "Applications", submissions_path %></li>
-		<li><%= link_to "Accepted students",
-		        accepted_submissions_path %></li>
-		<li><%= link_to "Evaluations", evaluations_path %></li>
-              <% end %>
-	    </ul>
-	  </li>
+	  <%# For each quarter relevant to the user, show a tab with links
+	      to pages about that users' resources within that quarter.
+	      Limit it to the first two or three quarters? %>
+	  <% current_user.relevant_quarters.each do |q| %>
+	    <%= render 'quarter_tab', quarter: q %>
+          <% end %>
 	<% end %>
 
 	<% if can? :manage, :all %>

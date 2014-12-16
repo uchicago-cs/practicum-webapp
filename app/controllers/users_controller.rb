@@ -32,10 +32,20 @@ class UsersController < ApplicationController
     end
   end
 
+  # For a specific quarter
   def my_projects
   end
 
+  # For a specific quarter
   def my_submissions
+  end
+
+  # All of this user's projects
+  def my_projects_all
+  end
+
+  # All of this user's applications
+  def my_submissions_all
   end
 
   private

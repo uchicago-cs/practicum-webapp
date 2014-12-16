@@ -1,0 +1,25 @@
+<h2><%= display_name(@user) %>'s Applications</h2>
+
+<% if @user.student? or @user.admin? %>
+
+  <% if @user.submissions.count > 0 %>
+     <table class="table table-bordered">
+      <tr>
+	<th>Project name</th>
+	<% if can? :manage, @user %>
+	  <th>Date created</th>
+	<% end %>
+	<th>Status</th>
+	<th>Notes</th>
+      </tr>
+      <tbody>
+	<% @user.submissions.each do |submission| %>
+	  <%= render 'submission', submission: submission %>
+        <% end %>
+      </tbody>
+     </table>
+  <% else %>
+     <p>You have not applied to any projects yet.</p>
+  <% end %>
+
+<% end %>
