@@ -3,6 +3,7 @@ class Quarter < ActiveRecord::Base
   attr_reader :current
 
   default_scope { order('quarters.created_at DESC') }
+  # TODO: DRY this (see project.rb)
   scope :current_quarter, -> {
     where("start_date <= ? AND ? <= end_date",
           DateTime.now, DateTime.now).take }

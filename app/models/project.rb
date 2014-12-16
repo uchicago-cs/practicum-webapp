@@ -14,10 +14,12 @@ class Project < ActiveRecord::Base
     -> { current_unpublished_projects.where.not(status: "pending") }
   scope :current_accepted_projects,
     -> { where(status: "accepted").
-    joins(:quarter).where(quarters: { current: true }) }
+    joins(:quarter).where("start_date <= ? AND ? <= end_date",
+                          DateTime.now, DateTime.now).first }
   scope :current_accepted_published_projects,
     -> { where({status: "accepted", status_published: true}).
-    joins(:quarter).where(quarters: { current: true }) }
+    joins(:quarter).where("start_date <= ? AND ? <= end_date",
+                          DateTime.now, DateTime.now).first }
   scope :quarter_accepted_projects,
     ->(quarter) { where(status: "accepted").
     joins(:quarter).where(quarters: { id: quarter.id }) }
