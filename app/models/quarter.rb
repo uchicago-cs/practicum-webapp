@@ -18,7 +18,7 @@ class Quarter < ActiveRecord::Base
     Quarter.current_quarters.where("? <= project_proposal_deadline",
                                    DateTime.now) }
 
-  scope :open_for_proposals, -> {
+  scope :open_for_submissions, -> {
     Quarter.current_quarters.where("? <= student_submission_deadline",
                                    DateTime.now) }
 

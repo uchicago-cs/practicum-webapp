@@ -17,15 +17,7 @@ class User < ActiveRecord::Base
   def relevant_quarters
     if admin?
       # See all active quarters.
-      qs = []
-
-      Quarter.all.each do |q|
-        if q.start_date <= DateTime.now and DateTime.now <= q.end_date
-          qs << q
-        end
-      end
-
-      qs
+      Quarter.current_quarters.to_a
 
     elsif advisor?
       # See 1. quarters for which the proposal period is open, and
@@ -33,29 +25,34 @@ class User < ActiveRecord::Base
       # has submitted a proposal and which are not yet over.
       qs = Quarter.open_for_proposals.to_set
 
-      # loop through projects. for each project, check if the quarter is active.
-      # if so, add it to the set.
+      # Loop through this user's projects. For each project, check if the
+      # quarter is active. If so, add it to the set.
       projects.each { |p| qs.add(p.quarter) if p.quarter.current? }
 
       qs.to_a
 
     elsif student?
-      # Returns a list of all the quarters in which the user created objects
-      # (proposals, applications, or evaluations).
-      qs = Set.new []
-      objects = projects + submissions + Evaluation.where(advisor_id: self.id)
+      # Same rule as for advisors, except that it applies to submissions.
+      qs = Quarter.open_for_submissions.to_set
 
-      objects.each do |o|
-        if o.instance_of? Evaluation
-          # The quarter of an evaluation is the quarter in which its project
-          # was made.
-          qs.add(o.project.quarter)
-        else
-          qs.add(o.quarter)
-        end
-      end
+      submissions.each { |s| qs.add(s.quarter) if s.quarter.current? }
+
+      #objects = projects + submissions + Evaluation.where(advisor_id: self.id)
+
+      # objects.each do |o|
+      #   if o.instance_of? Evaluation
+      #     # The quarter of an evaluation is the quarter in which its project
+      #     # was made.
+      #     qs.add(o.project.quarter)
+      #   else
+      #     qs.add(o.quarter)
+      #   end
+      # end
 
       qs.to_a
+
+    else # The user is not logged in.
+      Quarter.current_quarters.to_a
     end
   end
 
