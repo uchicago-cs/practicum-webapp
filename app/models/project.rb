@@ -12,6 +12,8 @@ class Project < ActiveRecord::Base
          where("status != ?", "draft") }
   scope :unpublished_nonpending_projects,
     -> { current_unpublished_projects.where.not(status: "pending") }
+
+  # TODO: DRY this (see quarter.rb)
   scope :current_accepted_projects,
     -> { where(status: "accepted").
     joins(:quarter).where("start_date <= ? AND ? <= end_date",
@@ -22,6 +24,10 @@ class Project < ActiveRecord::Base
                           DateTime.now, DateTime.now).first }
   scope :quarter_accepted_projects,
     ->(quarter) { where(status: "accepted").
+    joins(:quarter).where(quarters: { id: quarter.id }) }
+  # Similar to the above scope:
+  scope :accepted_published_projects_in_quarter,
+    ->(quarter) { where({status: "accepted", status_published: true}).
     joins(:quarter).where(quarters: { id: quarter.id }) }
 
   attr_accessor :proposer

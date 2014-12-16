@@ -9,6 +9,7 @@
 <p>Project title: <%= @project.name %></p>
 
 <p>
-  Click <%= link_to "here", project_url(@project) %> to view this project's
-  information and edit its status.
+  Click <%= link_to "here", project_url(@project, year: @project.quarter.year,
+					season: @project.quarter.season) %> to
+  view this project's information and edit its status.
 </p>

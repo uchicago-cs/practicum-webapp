@@ -128,7 +128,16 @@ class ProjectsController < ApplicationController
       redirect_to root_url and return
     end
 
-    @projects = Project.current_accepted_published_projects
+    if params[:year] and params[:season]
+      # We're visiting a quarter-specific projects page
+      @quarter = Quarter.where(year: params[:year],
+                               season: params[:season]).take
+      # get the accepted published projects from this quarter
+      @projects = Project.accepted_published_projects_in_quarter(@quarter)
+    else
+      # We're visiting the global projects page
+      @projects = Project.current_accepted_published_projects
+    end
   end
 
   def show

@@ -3,6 +3,6 @@ Hi <%= @advisor.first_name || @advisor.cnet || @advisor.email %>,
 A student has applied to your project titled <%= @project.name %>.
 
 Student name: <%= display_name(@student) || @student.cnet || @student.email %>
-Application: Click <%= submission_url(@submission) %> to view <%= @student.first_name %>'s application.
+Application: Click <%= submission_url(@submission, year: @submission.quarter.year, season: @submission.quarter.season) %> to view <%= @student.first_name %>'s application.
 
-Visit <%= project_url(@project) %> to view your project information.
+Visit <%= project_url(@project, year: @project.quarter.year, season: @project.quarter.season) %> to view your project information.

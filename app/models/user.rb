@@ -37,18 +37,6 @@ class User < ActiveRecord::Base
 
       submissions.each { |s| qs.add(s.quarter) if s.quarter.current? }
 
-      #objects = projects + submissions + Evaluation.where(advisor_id: self.id)
-
-      # objects.each do |o|
-      #   if o.instance_of? Evaluation
-      #     # The quarter of an evaluation is the quarter in which its project
-      #     # was made.
-      #     qs.add(o.project.quarter)
-      #   else
-      #     qs.add(o.quarter)
-      #   end
-      # end
-
       qs.to_a
 
     else # The user is not logged in.
