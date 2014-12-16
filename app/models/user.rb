@@ -15,22 +15,35 @@ class User < ActiveRecord::Base
   attr_accessor :auth_attr
 
   def relevant_quarters
-    # Returns a list of all the quarters in which the user created objects
-    # (proposals, applications, or evaluations).
-    quarters = Set.new []
-    objects = projects + submissions + Evaluation.where(advisor_id: self.id)
+    if admin?
+      qs = []
 
-    objects.each do |o|
-      if o.instance_of? Evaluation
-        # The quarter of an evaluation is the quarter in which its project
-        # was made.
-        quarters.add(o.project.quarter)
-      else
-        quarters.add(o.quarter)
+      Quarter.all.each do |q|
+        if q.start_date <= DateTime.now and DateTime.now <= q.end_date
+          qs << q
+        end
       end
-    end
+      qs
+    elsif advisor?
+      []
+    elsif student?
+      # Returns a list of all the quarters in which the user created objects
+      # (proposals, applications, or evaluations).
+      quarters = Set.new []
+      objects = projects + submissions + Evaluation.where(advisor_id: self.id)
 
-    quarters.to_a
+      objects.each do |o|
+        if o.instance_of? Evaluation
+          # The quarter of an evaluation is the quarter in which its project
+          # was made.
+          quarters.add(o.project.quarter)
+        else
+          quarters.add(o.quarter)
+        end
+      end
+
+      quarters.to_a
+    end
   end
 
   def can_write_eval?

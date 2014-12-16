@@ -46,7 +46,7 @@
 	      to pages about that users' resources within that quarter.
 	      Limit it to the first two or three quarters? %>
 	  <% current_user.relevant_quarters.each do |q| %>
-	    <%= render 'quarter_tab', quarter: q %>
+	    <%= render 'layouts/quarter_tab', quarter: q %>
           <% end %>
 	<% end %>
 

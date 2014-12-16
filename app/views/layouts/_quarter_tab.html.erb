@@ -2,7 +2,7 @@
 <%# The current quarter's information. %>
 <li class="dropdown" id="dropdown-personal">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-    <%= formatted_quarter(q) %>
+    <%= formatted_quarter(quarter) %>
       <span class="caret"></span>
   </a>
 
@@ -14,7 +14,8 @@
       <li>
 	<%= link_to "My applications",
 	    users_submissions_path(current_user.id,
-				   year: q.year, season: q.season) %>
+				   year: quarter.year,
+				   season: quarter.season) %>
       </li>
     <% end %>
 
@@ -24,7 +25,7 @@
       <li>
 	<%= link_to "My projects",
 	    users_projects_path(current_user.id,
-				year: q.year, season: q.season) %>
+				year: quarter.year, season: quarter.season) %>
       </li>
     <% end %>
 
@@ -32,13 +33,15 @@
     <% if can? :manage, :all %>
       <li class="divider"></li>
       <li><%= link_to "Pending projects",
-              pending_projects_path(year: q.year, season: q.season) %></li>
-      <li><%= link_to "Applications", submissions_path(year: q.year,
-						       season: q.season) %></li>
+              pending_projects_path(year: quarter.year,
+				    season: quarter.season) %></li>
+      <li><%= link_to "Applications",
+      submissions_path(year: quarter.year, season: quarter.season) %></li>
       <li><%= link_to "Accepted students",
-              accepted_submissions_path(year: q.year, season: q.season) %></li>
-      <li><%= link_to "Evaluations", evaluations_path(year: q.year,
-						      season: q.season %></li>
+              accepted_submissions_path(year: quarter.year,
+					season: quarter.season) %></li>
+      <li><%= link_to "Evaluations",
+      evaluations_path(year: quarter.year, season: quarter.season) %></li>
     <% end %>
   </ul>
 </li>
