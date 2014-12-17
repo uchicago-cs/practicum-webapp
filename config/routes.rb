@@ -18,6 +18,8 @@ Practicum::Application.routes.draw do
   scope "(/:year/:season)", year: /\d{4}/,
        season: /spring|summer|autumn|winter/ do
 
+    match "/applications", to: "pages#submissions", via: "get",
+          as: "submissions"
     match "/applications/update_all_submissions",
           to: "pages#update_all_submissions", via: "patch",
           as: "update_all_submissions"
@@ -106,7 +108,6 @@ Practicum::Application.routes.draw do
         as: "users_projects_all"
   match "/users/:id/my_applications", to: "users#my_submissions_all",
         via: "get", as: "users_submissions_all"
-  match "/applications", to: "pages#submissions", via: "get", as: "submissions"
   match "/request_advisor_access", to: "pages#request_advisor_access",
         via: "get"
   match "/request_advisor_access", to: "pages#send_request_for_advisor_access",

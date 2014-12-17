@@ -12,9 +12,11 @@ module ApplicationHelper
     "practicum-support@mailman.cs.uchicago.edu"
   end
 
-  def project_proposal_navbar_link
+  def project_proposal_navbar_link(quarter)
     if before_deadline?("project_proposal") or current_user.admin?
-      content_tag(:li, link_to("Propose a project", new_project_path))
+      content_tag(:li, link_to("Propose a project",
+                               new_project_path(year: quarter.year,
+                                                season: quarter.season)))
     else
       content_tag(:li, link_to("Propose a project", '#'), class: "disabled")
     end

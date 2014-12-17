@@ -21,7 +21,7 @@
 
     <%# Projects %>
     <% if can? :my_projects, User %>
-      <%= project_proposal_navbar_link %>
+      <%= project_proposal_navbar_link(quarter) %>
       <li>
 	<%= link_to "My projects",
 	    users_projects_path(current_user.id,
