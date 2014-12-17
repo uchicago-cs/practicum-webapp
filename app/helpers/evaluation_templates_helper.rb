@@ -7,12 +7,12 @@ module EvaluationTemplatesHelper
   end
 
   def start_date_help
-    "After this point, the advisor will be be notified about and be able to " +
-      "fill out this evaluation."
+    "After this point, advisors will be notified about and be able to fill " +
+      "out this evaluation."
   end
 
   def end_date_help
-    "After this point, the advisor will no longer be able to fill out this " +
+    "After this point, advisors will no longer be able to fill out this " +
       "evaluation."
   end
 

@@ -97,7 +97,6 @@ class PagesController < ApplicationController
                                season: params[:season]).take
       @current_submitted_submissions =
         Submission.submitted_submissions_in_quarter(@quarter)
-      binding.pry
     else
       # TODO: Replace `current_submitted_submissions` with a non-`current` scope
       @current_submitted_submissions =
