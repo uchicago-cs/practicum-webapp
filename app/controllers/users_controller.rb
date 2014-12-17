@@ -34,10 +34,12 @@ class UsersController < ApplicationController
 
   # For a specific quarter
   def my_projects
+    @user = current_user
   end
 
   # For a specific quarter
   def my_submissions
+    @user = current_user
   end
 
   # All of this user's projects

@@ -4,11 +4,20 @@ class Submission < ActiveRecord::Base
 
   default_scope { order('submissions.created_at DESC') }
   scope :current_submissions, -> { includes(:project).
-      where(projects: { quarter_id: Quarter.current_quarter.id }) }
+        where(projects: { quarter_id: Quarter.current_quarter.id }) }
+
   scope :current_submitted_submissions, -> { current_submissions.
-    where.not(status: "draft") }
+        where.not(status: "draft") }
+
   scope :current_unsubmitted_submissions, -> { current_submissions.
-    where(status: "draft") }
+        where(status: "draft") }
+
+  scope :quarter_submissions, ->(quarter) { includes(:project).
+        where(projects: { quarter_id: quarter.id }) }
+
+  scope :submitted_submissions_in_quarter,
+        ->(quarter) { quarter_submissions(quarter).where.not(status: "draft") }
+
 
   attr_accessor :this_user
   attr_accessor :update_in_index
@@ -16,7 +25,7 @@ class Submission < ActiveRecord::Base
 
   belongs_to :student, class_name: "User", foreign_key: "student_id"
   belongs_to :project
-  has_many :evaluations, foreign_key: "submission_id"
+  has_many   :evaluations, foreign_key: "submission_id"
 
   validates :information, presence: true
   validates :qualifications, presence: true

@@ -1,13 +1,18 @@
 <tr class="<%= row_class(submission.status) %>">
   <td><%= display_name(submission.student) %></td>
   <td><%= display_name(submission.project.advisor) %></td>
-  <td><%= link_to submission.project_name, submission.project %></td>
+  <td><%= link_to(submission.project_name,
+		  project_path(submission.project,
+			       year: submission.quarter.year,
+			       season: submission.quarter.season)) %></td>
   <td><%= submission.created_at.to_date %></td>
   <td><%= formatted_status(submission) %></td>
   <td><%= formatted_status_approved?(submission) %></td>
   <td><%= formatted_status_published?(submission) %></td>
   <td>
-    Click <%= link_to "here", submission_path(submission.id) %>
+    Click <%= link_to "here",
+              submission_path(submission.id, year: submission.quarter.year,
+			      season: submission.quarter.season) %>
     to read this student's application.
   </td>
   <td><%= form.check_box :update_in_index %></td>

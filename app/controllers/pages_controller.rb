@@ -3,7 +3,7 @@ class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:submissions,
                                             :request_advisor_access]
   before_action :is_admin?, only: :submissions
-  before_action :get_current_submitted_submissions,
+  before_action :get_submitted_submissions,
                 only: [:submissions, :publish_all_statuses,
                        :approve_all_statuses, :change_all_statuses]
   before_action :get_current_unsubmitted_submissions,
@@ -91,8 +91,18 @@ class PagesController < ApplicationController
     params.permit(:affiliation, :department)
   end
 
-  def get_current_submitted_submissions
-    @current_submitted_submissions = Submission.current_submitted_submissions
+  def get_submitted_submissions
+    if params[:year] and params[:season]
+      @quarter = Quarter.where(year: params[:year],
+                               season: params[:season]).take
+      @current_submitted_submissions =
+        Submission.submitted_submissions_in_quarter(@quarter)
+      binding.pry
+    else
+      # TODO: Replace `current_submitted_submissions` with a non-`current` scope
+      @current_submitted_submissions =
+        Submission.current_submitted_submissions
+    end
   end
 
   def get_current_unsubmitted_submissions
