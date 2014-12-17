@@ -6,10 +6,17 @@ class Project < ActiveRecord::Base
   scope :accepted_projects, -> { where(status: "accepted") }
   scope :rejected_projects, -> { where(status: "rejected") }
   scope :pending_projects,  -> { where(status: "pending") }
+
   scope :current_unpublished_projects,
     -> { where(status_published: false,
-               quarter: Quarter.current_quarter).
+               quarter: Quarter.active_quarters).
          where("status != ?", "draft") }
+
+  scope :unpublished_in_quarter,
+    ->(quarter) { where(status_published: false,
+                        quarter: quarter).
+                  where("status != ?", "draft") }
+
   scope :unpublished_nonpending_projects,
     -> { current_unpublished_projects.where.not(status: "pending") }
 
@@ -17,14 +24,17 @@ class Project < ActiveRecord::Base
   scope :current_accepted_projects,
     -> { where(status: "accepted").
     joins(:quarter).where("start_date <= ? AND ? <= end_date",
-                          DateTime.now, DateTime.now).first }
+                          DateTime.now, DateTime.now) }
+
   scope :current_accepted_published_projects,
     -> { where({status: "accepted", status_published: true}).
     joins(:quarter).where("start_date <= ? AND ? <= end_date",
-                          DateTime.now, DateTime.now).first }
+                          DateTime.now, DateTime.now) }
+
   scope :quarter_accepted_projects,
     ->(quarter) { where(status: "accepted").
     joins(:quarter).where(quarters: { id: quarter.id }) }
+
   # Similar to the above scope:
   scope :accepted_published_projects_in_quarter,
     ->(quarter) { where({status: "accepted", status_published: true}).

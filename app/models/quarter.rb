@@ -10,16 +10,16 @@ class Quarter < ActiveRecord::Base
           DateTime.now, DateTime.now).take }
 
   # Maybe call these quarters "active" instead?
-  scope :current_quarters, -> {
+  scope :active_quarters, -> {
     where("start_date <= ? AND ? <= end_date",
           DateTime.now, DateTime.now) }
 
   scope :open_for_proposals, -> {
-    Quarter.current_quarters.where("? <= project_proposal_deadline",
+    Quarter.active_quarters.where("? <= project_proposal_deadline",
                                    DateTime.now) }
 
   scope :open_for_submissions, -> {
-    Quarter.current_quarters.where("? <= student_submission_deadline",
+    Quarter.active_quarters.where("? <= student_submission_deadline",
                                    DateTime.now) }
 
   has_many :projects

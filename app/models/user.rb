@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   def relevant_quarters
     if admin?
       # See all active quarters.
-      Quarter.current_quarters.to_a
+      Quarter.active_quarters.to_a
 
     elsif advisor?
       # See 1. quarters for which the proposal period is open, and
@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
       qs.to_a
 
     else # The user is not logged in.
-      Quarter.current_quarters.to_a
+      Quarter.active_quarters.to_a
     end
   end
 

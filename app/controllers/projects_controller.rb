@@ -144,7 +144,13 @@ class ProjectsController < ApplicationController
   end
 
   def pending
-    @current_unpublished_projects = Project.current_unpublished_projects
+    if params[:year] and params[:season]
+      @quarter = Quarter.where(year: params[:year],
+                               season: params[:season]).take
+      @projects = Project.unpublished_in_quarter(@quarter)
+    else
+      @projects = Project.current_unpublished_projects
+    end
   end
 
   def update_status

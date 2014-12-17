@@ -16,10 +16,19 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :show_advisor_status_pending_message
+  before_action :redirect_if_invalid_quarter
 
   helper_method :is_admin?
   helper_method :authenticate_user!
   helper_method :current_user
+
+  def redirect_if_invalid_quarter
+    if params[:year] and params[:season]
+      if Quarter.where(year: params[:year], season: params[:season]).empty?
+        redirect_to root_url, flash: { error: "That quarter does not exist." }
+      end
+    end
+  end
 
   def authenticate_user!
     if ldap_user_signed_in?

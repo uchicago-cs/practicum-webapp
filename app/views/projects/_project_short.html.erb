@@ -1,5 +1,6 @@
 <tr class="<%= row_class(project.status) %>">
-  <td><%= link_to project.name, project %></td>
+  <td><%= link_to(project.name, id: project.id, year: project.quarter.year,
+		  season: project.quarter.season) %></td>
   <td><%= display_name(project.advisor) %></td>
   <td><%= formatted_project_status(project) %></td>
 </tr>
