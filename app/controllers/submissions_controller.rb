@@ -59,7 +59,7 @@ class SubmissionsController < ApplicationController
     if params[:commit] == "Submit my application"
       if @submission.save
         flash[:success] = "Application submitted."
-        redirect_to users_submissions_path(current_user)
+        redirect_to users_submissions_path
       else
         render 'new'
       end
@@ -68,7 +68,7 @@ class SubmissionsController < ApplicationController
       if @submission.save(validate: false)
         flash[:success] = "Application saved as a draft. You may edit it " +
           "by navigating to your \"my applications\" page."
-        redirect_to users_submissions_path(current_user)
+        redirect_to users_submissions_path
       else
         render 'new'
       end
@@ -88,7 +88,7 @@ class SubmissionsController < ApplicationController
       @submission.assign_attributes(status: "pending")
       if @submission.save
         flash[:success] = "Application submitted."
-        redirect_to users_submissions_path(current_user)
+        redirect_to users_submissions_path
       else
         render 'edit'
       end
@@ -96,7 +96,7 @@ class SubmissionsController < ApplicationController
       if @submission.save(validate: false)
         flash[:success] = "Application saved as a draft. You may edit it " +
           "by navigating to your \"my applications\" page."
-        redirect_to users_submissions_path(current_user)
+        redirect_to users_submissions_path
       else
         render 'edit'
       end

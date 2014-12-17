@@ -85,8 +85,7 @@ class ProjectsController < ApplicationController
         @project.assign_attributes(status: "pending")
         if @project.save
           flash[:success] = "Proposal submitted."
-          redirect_to users_projects_path(current_user,
-                                          year: @project.quarter.year,
+          redirect_to users_projects_path(year: @project.quarter.year,
                                           season: @project.quarter.season)
         else
           render 'edit'
@@ -95,8 +94,7 @@ class ProjectsController < ApplicationController
         if @project.save(validate: false)
           flash[:success] = "Proposal saved as a draft. You may edit it " +
             "by navigating to your \"my projects\" page."
-          redirect_to users_projects_path(current_user,
-                                          year: @project.quarter.year,
+          redirect_to users_projects_path(year: @project.quarter.year,
                                           season: @project.quarter.season)
         else
           render 'edit'
