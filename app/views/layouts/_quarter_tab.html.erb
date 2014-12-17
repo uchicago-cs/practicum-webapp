@@ -21,8 +21,7 @@
     <% if can? :my_submissions, User %>
       <li>
 	<%= link_to "My applications",
-	    users_submissions_path(current_user.id,
-				   year: quarter.year,
+	    users_submissions_path(year: quarter.year,
 				   season: quarter.season) %>
       </li>
     <% end %>
@@ -32,8 +31,7 @@
       <%= project_proposal_navbar_link(quarter) %>
       <li>
 	<%= link_to "My projects",
-	    users_projects_path(current_user.id,
-				year: quarter.year, season: quarter.season) %>
+	    users_projects_path(year: quarter.year, season: quarter.season) %>
       </li>
     <% end %>
 

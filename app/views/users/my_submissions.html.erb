@@ -1,4 +1,6 @@
-<h2><%= display_name(@user) %>'s Applications</h2>
+<h2>
+  <%= display_name(@user) %>'s <%= formatted_quarter_by_params %> Applications
+</h2>
 
 <% if @user.student? or @user.admin? %>
 
