@@ -7,6 +7,8 @@
 <p>Student: <%= display_name(@student) || @student.cnet || @advisor.email %></p>
 
 <p>
-  Click <%= link_to "here", evaluation_url(@evaluation) %> to view this
-  evaluation.
+  Click <%= link_to "here",
+            evaluation_url(@evaluation, year: @project.quarter.year,
+			   season: @project.quarter.season) %>
+  to view this evaluation.
 </p>

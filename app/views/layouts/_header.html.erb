@@ -75,7 +75,10 @@
 	  <% end %>
 
   	  <% if can? :read, Project %>
-	    <li><%= link_to projects_link_text, projects_path %></li>
+	    <%# We pass nil and nil here to override the defaults (which set the
+	        year and season to whatever's currently in the params hash). %>
+	    <li><%= link_to projects_link_text,
+	            projects_path(year: nil, season: nil) %></li>
 	  <% end %>
 
 	</ul>

@@ -6,4 +6,4 @@ Advisor: <%= display_name(@advisor) || @advisor.cnet || @advisor.email %>
 Project: <%= @project.name %>
 Student: <%= display_name(@student) || @student.cnet || @advisor.email %>
 
-Visit <%= evaluation_url(@evaluation) %> to view this evaluation.
+Visit <%= evaluation_url(@evaluation, year: @project.quarter.year, season: @project.quarter.season) %> to view this evaluation.
