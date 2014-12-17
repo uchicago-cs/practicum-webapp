@@ -107,7 +107,8 @@ class ProjectsController < ApplicationController
       # Editing the proposal while it's pending
       if @project.update_attributes(project_params)
         flash[:success] = "Project proposal successfully updated."
-        redirect_to @project
+        redirect_to project_path(@project, year: @project.quarter.year,
+                                 season: @project.quarter.season)
       else
         render 'edit'
       end
