@@ -1,6 +1,4 @@
-<%= bootstrap_form_for @project,
-    url: project_path(@project, year: @project.quarter.year,
-		      season: @project.quarter.season) do |f| %>
+<%= bootstrap_form_for @project do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
   <table class="table table-bordered project-form">
