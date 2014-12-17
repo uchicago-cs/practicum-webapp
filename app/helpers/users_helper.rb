@@ -8,15 +8,20 @@ module UsersHelper
 
   # Write a similar method for submission notes?
   def project_notes(project)
+    q = project.quarter
+
     if project.pending?
       "You may edit this proposal " +
-        link_to("here", edit_project_path(project.id)) + "."
+        link_to("here", edit_project_path(project.id, year: q.year,
+                                          season: q.season)) + "."
     elsif project.accepted?
       "You may view students' applications to this project " +
-        link_to("here", project_submissions_path(project.id)) + "."
+        link_to("here", project_submissions_path(project.id, year: q.year,
+                                                 season: q.season)) + "."
     elsif project.draft?
       "You may edit and / or submit this proposal draft " +
-        link_to("here", edit_project_path(project.id)) + "."
+        link_to("here", edit_project_path(project.id, year: q.year,
+                                          season: q.season)) + "."
     else
       ""
     end.html_safe

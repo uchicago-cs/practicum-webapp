@@ -2,11 +2,13 @@
 
 <%= render 'student_submission_deadline' %>
 
-<% @future_quarters.each do |q| %>
-  <p>
-    Practicum <%= formatted_quarter(q) %> will start accepting applications on
-    <%= q.project_proposal_deadline.strftime("%A, %B %d, %Y") %>.
-  </p>
+<% if @future_quarters.present? %>
+  <% @future_quarters.each do |q| %>
+    <p>
+      Practicum <%= formatted_quarter(q) %> will start accepting applications on
+      <%= q.project_proposal_deadline.strftime("%A, %B %d, %Y") %>.
+    </p>
+  <% end %>
 <% end %>
 
 <% if @projects.present? %>

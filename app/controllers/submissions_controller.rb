@@ -114,12 +114,15 @@ class SubmissionsController < ApplicationController
   end
 
   def accepted
-    # `@submissions` contains all accepted, approved, and published
-    # submissions whose projects are in the current quarter.
-    @submissions = Submission.where(status: "accepted").
-      where(status_approved: true).where(status_published: true).
-      joins(:project).
-      where(projects: { quarter_id: Quarter.current_quarter.id })
+    if params[:year] and params[:season]
+      @quarter = Quarter.where(year: params[:year],
+                               season: params[:season]).take
+      # `@submissions` contains all accepted, approved, and published
+      # submissions whose projects are in the given quarter.
+      @submissions = Submission.accepted_approved_published_in_quarter(@quarter)
+    else
+      @submissions = []
+    end
   end
 
   def accept_or_reject

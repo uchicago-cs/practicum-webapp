@@ -18,6 +18,11 @@ class Submission < ActiveRecord::Base
   scope :submitted_submissions_in_quarter,
         ->(quarter) { quarter_submissions(quarter).where.not(status: "draft") }
 
+  scope :accepted_approved_published_in_quarter,
+  ->(quarter) { where(status: "accepted", status_approved: true,
+                      status_published: true).joins(:project).
+                where(projects: { quarter_id: quarter.id })}
+
 
   attr_accessor :this_user
   attr_accessor :update_in_index

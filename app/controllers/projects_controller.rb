@@ -42,13 +42,13 @@ class ProjectsController < ApplicationController
       @project = current_user.projects.build(project_params)
     end
 
+    @quarter = Quarter.where()
     @project.assign_attributes(quarter_id: Quarter.current_quarter.id)
 
     if params[:commit] == "Create my proposal"
       if @project.save
         flash[:success] = "Project successfully proposed."
-        redirect_to users_projects_path(current_user,
-                                        year: @project.quarter.year,
+        redirect_to users_projects_path(year: @project.quarter.year,
                                         season: @project.quarter.season)
       else
         render 'new'
@@ -58,8 +58,7 @@ class ProjectsController < ApplicationController
       if @project.save(validate: false)
         flash[:success] = "Proposal saved as a draft. You may edit it " +
           "by navigating to your \"my projects\" page."
-        redirect_to users_projects_path(current_user,
-                                        year: @project.quarter.year,
+        redirect_to users_projects_path(year: @project.quarter.year,
                                         season: @project.quarter.season)
       else
         render 'new'
