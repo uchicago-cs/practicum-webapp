@@ -26,6 +26,12 @@ class Project < ActiveRecord::Base
     joins(:quarter).where("start_date <= ? AND ? <= end_date",
                           DateTime.now, DateTime.now) }
 
+  scope :accepting_submissions,
+    -> { where({status: "accepted", status_published: true}).
+         joins(:quarter).where("start_date <= ? AND ? <= end_date",
+                               DateTime.now, DateTime.now).
+         where("? < student_submission_deadline", DateTime.now) }
+
   scope :current_accepted_published_projects,
     -> { where({status: "accepted", status_published: true}).
     joins(:quarter).where("start_date <= ? AND ? <= end_date",

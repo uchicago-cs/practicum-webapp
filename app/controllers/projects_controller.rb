@@ -137,6 +137,9 @@ class ProjectsController < ApplicationController
     else
       # We're visiting the global projects page
       @projects = Project.current_accepted_published_projects
+
+      # Get the quarters with future start_dates
+      @future_quarters = Quarter.future_quarters
     end
   end
 

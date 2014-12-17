@@ -14,6 +14,8 @@ class Quarter < ActiveRecord::Base
     where("start_date <= ? AND ? <= end_date",
           DateTime.now, DateTime.now) }
 
+  scope :future_quarters, -> { where("? < start_date", DateTime.now) }
+
   scope :open_for_proposals, -> {
     Quarter.active_quarters.where("? <= project_proposal_deadline",
                                    DateTime.now) }

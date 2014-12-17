@@ -9,6 +9,14 @@
   <ul class="dropdown-menu" role="menu">
     <%# The below will be moved to the new tabs, and new pages
     <%# will be created for them. %>
+
+    <%# Projects %>
+    <li>
+      <%= link_to "Projects",
+          projects_path(year: quarter.year, season: quarter.season) %>
+    </li>
+    <li class="divider"></li>
+
     <%# Applications %>
     <% if can? :my_submissions, User %>
       <li>
