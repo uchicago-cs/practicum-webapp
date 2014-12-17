@@ -1,15 +1,22 @@
 <tr class="<%= advisor_submission_row_class(submission) %>">
-  <td><%= link_to submission.project_name, submission.project %></td>
+  <td><%= link_to submission.project_name,
+          project_path(submission.project, year: submission.quarter.year,
+		       season: submission.quarter.season) %></td>
   <% if can? :manage, @user %>
     <td><%= submission.created_at.to_date %></td>
   <% end %>
   <td><%= formatted_status_for_student(submission) %></td>
   <td>
     <% if submission.status != "draft" %>
-      Click <%= link_to "here", submission_path(submission.id) %>
+      Click <%= link_to "here",
+                submission_path(submission.id, year: submission.quarter.year,
+				season: submission.quarter.season) %>
       to view your application.
     <% elsif submission.status == "draft" %>
-      Click <%= link_to "here", edit_submission_path(submission.id) %>
+      Click <%= link_to "here",
+                edit_submission_path(submission.id,
+				     year: submission.quarter.year,
+				     season: submission.quarter.season) %>
       to edit your application.
     <% end %>
   </td>

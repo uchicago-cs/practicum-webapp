@@ -30,22 +30,21 @@
 	    </a>
 	    <ul class="dropdown-menu" role="menu">
 	      <%# User information %>
+	      <% if can? :create, Submission %>
+  		<li><%= link_to "My applications",
+		        users_submissions_all_path(current_user.id) %></li>
+		<li class="divider"></li>
+              <% end %>
 	      <%# Note that we only show the "my account" link to advisors
 	          and admins, since students can't do anything with it %>
 	      <% if can? :my_projects, User %>
-		<% if can? :create, Submission %>
-  		  <li><%= link_to "My applications",
-			  users_submissions_all_path(current_user.id) %></li>
-                <% end %>
-		<% if can? :create, Project %>
-		  <li><%= link_to "My projects",
-		          users_projects_all_path(current_user.id) %></li>
-		<% end %>
+		<li><%= link_to "My projects",
+		        users_projects_all_path(current_user.id) %></li>
 		<li class="divider"></li>
 		<li><%= link_to "My account", current_user %></li>
 	      <% end %>
 	      <li><%= link_to "Sign out", destroy_user_session_path,
-	      method: :delete %></li>
+	              method: :delete %></li>
 	    </ul>
 	  </li>
 	<% end %>
