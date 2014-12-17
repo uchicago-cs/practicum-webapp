@@ -42,6 +42,19 @@ class ApplicationController < ActionController::Base
     current_ldap_user or current_local_user
   end
 
+  # Override url_options to include default year and season options if they're
+  # given in the params hash. Doesn't cover spec urls or mailer urls.
+  # TODO: test.
+  # See: http://stackoverflow.com/a/9945652/3723769
+  def url_options
+      options = {}
+      if params[:year] and params[:season]
+        options[:year] = params[:year]
+        options[:season] = params[:season]
+      end
+      options.merge(super)
+  end
+
   protected
 
   def configure_permitted_parameters
