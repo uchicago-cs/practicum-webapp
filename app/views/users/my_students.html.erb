@@ -1,0 +1,22 @@
+<h2>
+  <%= display_name(@user) %>'s <%= formatted_quarter_by_params %> Students
+</h2>
+
+<% if @students.present? %>
+  <table class="table table-bordered">
+    <tr>
+      <th>Name</th>
+      <th>CNetID</th>
+      <th>E-mail address</th>
+      <th>Project</th>
+      <th>Application</th>
+    </tr>
+    <tbody>
+      <% @students.each do |student, submission| %>
+	<%= render 'student', student: student, submission: submission %>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>You have not been paired with any students yet.</p>
+<% end %>

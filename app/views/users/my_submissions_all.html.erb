@@ -2,7 +2,7 @@
 
 <% if @user.student? or @user.admin? %>
 
-  <% if @user.submissions.count > 0 %>
+  <% if @user.submissions.present? %>
      <table class="table table-bordered">
       <tr>
 	<th>Project name</th>

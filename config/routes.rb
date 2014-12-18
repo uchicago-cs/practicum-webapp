@@ -118,7 +118,9 @@ Practicum::Application.routes.draw do
        season: /spring|summer|autumn|winter/ do
     match "/my_projects", to: "users#my_projects", via: "get",
           as: "users_projects"
-    match "/my_applications", to: "users#my_submissions",
-          via: "get", as: "users_submissions"
+    match "/my_applications", to: "users#my_submissions", via: "get",
+          as: "users_submissions"
+    match "/my_students", to: "users#my_students", via: "get",
+          as: "users_students"
   end
 end

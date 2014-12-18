@@ -44,6 +44,22 @@ class User < ActiveRecord::Base
     end
   end
 
+  def students_and_submissions_in_quarter(quarter)
+    # Returns a hash of students (keys) and applications (values) the current
+    # advisor is managing in the given quarter.
+    students = Hash.new
+
+    projects.where(quarter: quarter).each do |p|
+      p.submissions.each do |s|
+        if s.accepted? and s.status_approved? and s.status_published?
+          students[s.student] = s
+        end
+      end
+    end
+
+    students
+  end
+
   def can_write_eval?
 
     # Quick fix to get the correct return value.

@@ -32,14 +32,21 @@ class UsersController < ApplicationController
     end
   end
 
-  # For a specific quarter
+  # Quarter-specific
   def my_projects
     @user = current_user
   end
 
-  # For a specific quarter
+  # Quarter-specific
   def my_submissions
     @user = current_user
+  end
+
+  # Quarter-specific
+  def my_students
+    @user     = current_user
+    @quarter  = Quarter.where(year: params[:year], season: params[:season]).take
+    @students = @user.students_and_submissions_in_quarter(@quarter)
   end
 
   # All of this user's projects

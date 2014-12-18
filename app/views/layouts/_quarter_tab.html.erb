@@ -17,7 +17,7 @@
     </li>
     <li class="divider"></li>
 
-    <%# Applications %>
+    <%# Student's applications %>
     <% if can? :my_submissions, User %>
       <li>
 	<%= link_to "My applications",
@@ -26,12 +26,16 @@
       </li>
     <% end %>
 
-    <%# Projects %>
+    <%# Advisor's projects %>
     <% if can? :my_projects, User %>
       <%= project_proposal_navbar_link(quarter) %>
       <li>
 	<%= link_to "My projects",
 	    users_projects_path(year: quarter.year, season: quarter.season) %>
+      </li>
+      <li>
+	<%= link_to "My students",
+	    users_students_path(year: quarter.year, season: quarter.season) %>
       </li>
     <% end %>
 
