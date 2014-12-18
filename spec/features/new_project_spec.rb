@@ -12,6 +12,8 @@ describe "Creating a project", type: :feature do
 
     before(:each) do
       @quarter = FactoryGirl.create(:quarter, :no_deadlines_passed)
+      @year    = @quarter.year
+      @season  = @quarter.season
       @advisor = FactoryGirl.create(:advisor)
       ldap_sign_in(@advisor)
       visit new_project_url

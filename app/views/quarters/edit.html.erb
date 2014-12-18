@@ -8,3 +8,18 @@
   form_advisor_decision_deadline: @quarter.advisor_decision_deadline,
   form_admin_publish_deadline: @quarter.admin_publish_deadline,
   form_end_date: @quarter.end_date %>
+
+<br />
+
+<p><%= link_to "Projects", projects_path(year: @quarter.year,
+					 season: @quarter.season) %></p>
+<p><%= link_to "Pending Projects",
+       pending_projects_path(year: @quarter.year,
+			     season: @quarter.season) %></p>
+<p><%= link_to "Applications",
+       submissions_path(year: @quarter.year, season: @quarter.season) %></p>
+<p><%= link_to "Accepted students",
+       accepted_submissions_path(year: @quarter.year,
+				 season: @quarter.season) %></p>
+<p><%= link_to "Evaluations", evaluations_path(year: @quarter.year,
+					       season: @quarter.season) %></p>

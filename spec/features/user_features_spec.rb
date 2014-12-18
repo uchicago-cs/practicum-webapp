@@ -42,8 +42,7 @@ describe "Users viewing pages", type: :feature do
 
       it "should be asked to sign in or sign up" do
         visit user_path(@user_1)
-        expect(page).to have_content("You need to sign in or sign up before " +
-                                     "continuing.")
+        expect(page).to have_content("Access denied")
       end
     end
 
@@ -140,8 +139,11 @@ describe "Users viewing pages", type: :feature do
 
     context "viewing the pending projects page" do
       it "should show the appropriate information" do
-        visit pending_projects_path
-        expect(current_path).to eq pending_projects_path
+        visit pending_projects_path(year: @quarter.year,
+                                    season: @quarter.season)
+        expect(current_path).
+          to eq pending_projects_path(year: @quarter.year,
+                                      season: @quarter.season)
         expect(page).to have_content("#{@quarter.season.capitalize} " +
                                      "#{@quarter.year} Pending Projects")
       end
