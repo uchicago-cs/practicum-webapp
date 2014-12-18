@@ -42,8 +42,6 @@ Practicum::Application.routes.draw do
     match "/applications/:id/resume",
           to: "submissions#download_resume", via: "get", as: "download_resume"
 
-    match "/admin/projects/new", to: "projects#admin_new", via: "get"
-
     resources :projects, shallow: true do
 
       collection do
@@ -112,7 +110,6 @@ Practicum::Application.routes.draw do
         via: "get"
   match "/request_advisor_access", to: "pages#send_request_for_advisor_access",
         via: "post"
-  match "/admin/projects", to: "projects#admin_create", via: "post"
 
   scope "/:year/:season", year: /\d{4}/,
        season: /spring|summer|autumn|winter/ do
@@ -122,5 +119,8 @@ Practicum::Application.routes.draw do
           as: "users_submissions"
     match "/my_students", to: "users#my_students", via: "get",
           as: "users_students"
+    match "/admin/projects/new", to: "projects#admin_new", via: "get"
+    match "/admin/projects", to: "projects#admin_create", via: "post"
   end
+
 end
