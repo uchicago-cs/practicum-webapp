@@ -7,7 +7,6 @@
 </p>
 
 <p>
-  Click <%= link_to "here", project_url(@project, year: @project.quarter.year,
-					season: @project.quarter.season) %>
-  to view your project information.
+  Click <%= q_link_to "here", @project, :project_url %> to view your project
+  information.
 </p>

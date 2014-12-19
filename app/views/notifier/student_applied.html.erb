@@ -5,15 +5,11 @@
 <p>Student name:
   <%= display_name(@student) || @student.cnet || @student.email %></p>
 <p>
-  Application: Click <%= link_to "here",
-                         submission_url(@submission,
-					year: @submission.quarter.year,
-					season: @submission.quarter.season) %>
-  to view <%= @student.first_name %>'s application.
+  Application: Click <%= q_link_to "here", @submission, :submission_url %> to
+  view <%= @student.first_name %>'s application.
 </p>
 
 <p>
-  Click <%= link_to "here", project_url(@project, year: @project.quarter.year,
-					season: @project.quarter.season) %>
-  to view your project information.
+  Click <%= q_link_to "here", @project, :project_url %> to view your project
+  information.
 </p>

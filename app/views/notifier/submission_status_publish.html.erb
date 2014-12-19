@@ -27,8 +27,6 @@
 <% end %>
 
 <p>
-  Click <%= link_to "here",
-            submission_url(@submission, year: @submission.quarter.year,
-			   season: @submission.quarter.season) %>
-  to view your application.
+  Click <%= q_link_to "here", @submission, :submission_url %> to view your
+  application.
 </p>

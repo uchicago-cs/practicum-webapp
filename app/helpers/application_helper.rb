@@ -22,6 +22,16 @@ module ApplicationHelper
     link_to(txt, send(path_type, obj, {year: y, season: s}), opts).html_safe
   end
 
+  def q_url(obj, url_type=obj.class.name.to_sym)
+    # Similar to q_link_to but for url helpers, and does not wrap the link in
+    # a link_to.
+
+    y = obj.quarter.year
+    s = obj.quarter.season
+    url_type = (url_type.to_s + "_url").downcase
+    send(url_type, obj, {year: y, season: s})
+  end
+
   def projects_link_text
     if current_user and current_user.advisor? and !current_user.admin?
       "All Projects"

@@ -13,4 +13,4 @@ Administrator feedback:
 "<%= @comments %>"
 <% end %>
 
-Visit <%= project_url(@project, year: @project.quarter.year, season: @project.quarter.season) %> to view <%= "and edit" unless @status == "rejected" %> your project information.
+Visit <%= q_url(@project) %> to view <%= "and edit" unless @status == "rejected" %> your project information.

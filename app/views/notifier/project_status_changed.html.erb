@@ -25,8 +25,6 @@
 <% end %>
 
 <p>
-  Click <%= link_to "here",
-            project_url(@project, year: @project.quarter.year,
-			season: @project.quarter.season) %> to view
+  Click <%= q_link_to "here", @project, :project_url %> to view
   <%= "and edit" unless @status == "rejected" %> your project information.
 </p>

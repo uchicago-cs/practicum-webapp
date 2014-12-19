@@ -12,4 +12,4 @@ Hi <%= @student.first_name || @student.cnet || @student.email %>,
   You may contact the project advisor, <%= display_name(@project.advisor) || @project.advisor.cnet || @project.advisor.email %>, at <%= @project.advisor.email %>.
 <% end %>
 
-Visit <%= submission_url(@submission, year: @submission.quarter.year, season: @submission.quarter.season) %> to view your application.
+Visit <%= q_url(@submission) %> to view your application.

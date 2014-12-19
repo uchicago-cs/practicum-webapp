@@ -7,9 +7,7 @@
 <p>Decision: <%= @submission.status %></p>
 
 <p>
-  Click <%= link_to "here",
-            submission_url(@submission, year: @submission.quarter.year,
-			   season: @submission.quarter.season) %>
-  to view <%= display_name(@student) || @student.cnet || @student.email %>'s
+  Click <%= q_link_to "here", @submission, :submission_url %> to view
+  <%= display_name(@student) || @student.cnet || @student.email %>'s
   application.
 </p>
