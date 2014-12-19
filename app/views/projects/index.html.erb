@@ -20,9 +20,7 @@
     <tbody>
       <% @projects.each do |project| %>
 	<tr>
-	  <td><%= link_to project.name,
-	           project_path(project, year: project.quarter.year,
-				season: project.quarter.season) %></td>
+	  <td><%= q_link_to project.name, project %></td>
 	  <td><%= display_name(project.advisor) %></td>
 	</tr>
       <% end %>

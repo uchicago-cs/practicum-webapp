@@ -20,15 +20,14 @@
 
 <% if (can? :apply_to, @project) and before_deadline?("student_submission") %>
   <p>
-    Click <%= link_to "here",
-    new_project_submission_path(@project.id,
-				year: @project.quarter.year,
-				season: @project.quarter.season),
-    id: "new-submission-link" %> to apply to this project.
+    Click <%= q_link_to "here", @project, :new_project_submission,
+              { id: "new-submission-link" } %>
+    to apply to this project.
   </p>
 <% elsif (can? :manage, Project) %>
   <p>
-    Click <%= link_to "here", new_project_submission_path(@project.id),
-    id: "new-submission-link" %> to create an application for a student.
+    Click <%= q_link_to "here", @project, :new_project_submission,
+              { id: "new-submission-link" } %>
+    to create an application for a student.
   </p>
 <% end %>

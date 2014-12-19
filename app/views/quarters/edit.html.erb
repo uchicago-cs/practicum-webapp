@@ -1,8 +1,8 @@
 <h2>Edit <%= formatted_quarter(@quarter) %></h2>
 
 <%= render 'new_edit_form', change: "update",
-  form_season: @quarter.season.capitalize,
-  form_year: @quarter.year, form_start_date: @quarter.start_date,
+  form_season: @season.capitalize,
+  form_year: @year, form_start_date: @quarter.start_date,
   form_project_proposal_deadline: @quarter.project_proposal_deadline,
   form_student_submission_deadline: @quarter.student_submission_deadline,
   form_advisor_decision_deadline: @quarter.advisor_decision_deadline,
@@ -11,15 +11,12 @@
 
 <br />
 
-<p><%= link_to "Projects", projects_path(year: @quarter.year,
-					 season: @quarter.season) %></p>
+<p><%= link_to "Projects", projects_path(year: @year, season: @season) %></p>
 <p><%= link_to "Pending Projects",
-       pending_projects_path(year: @quarter.year,
-			     season: @quarter.season) %></p>
+       pending_projects_path(year: @year, season: @season) %></p>
 <p><%= link_to "Applications",
-       submissions_path(year: @quarter.year, season: @quarter.season) %></p>
+       submissions_path(year: @year, season: @season) %></p>
 <p><%= link_to "Accepted students",
-       accepted_submissions_path(year: @quarter.year,
-				 season: @quarter.season) %></p>
-<p><%= link_to "Evaluations", evaluations_path(year: @quarter.year,
-					       season: @quarter.season) %></p>
+       accepted_submissions_path(year: @year, season: @season) %></p>
+<p><%= link_to "Evaluations",
+       evaluations_path(year: @year, season: @season) %></p>

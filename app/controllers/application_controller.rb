@@ -57,14 +57,14 @@ class ApplicationController < ActionController::Base
   # given in the params hash. Doesn't cover spec urls or mailer urls.
   # TODO: test.
   # See: http://stackoverflow.com/a/9945652/3723769
-  def url_options
-      options = {}
-      if params[:year] and params[:season]
-        options[:year] = params[:year]
-        options[:season] = params[:season]
-      end
-      options.merge(super)
-  end
+  # def url_options
+  #     options = {}
+  #     if params[:year] and params[:season]
+  #       options[:year] = params[:year]
+  #       options[:season] = params[:season]
+  #     end
+  #     options.merge(super)
+  # end
 
   protected
 

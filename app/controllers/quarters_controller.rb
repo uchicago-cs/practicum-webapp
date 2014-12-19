@@ -6,6 +6,7 @@ class QuartersController < ApplicationController
   before_action :is_admin?,                    only: [:new, :create]
   before_action :quarter_belongs_to_projects?, only: :destroy
   before_action :all_fields_present?,          only: [:create, :update]
+  before_action :get_year_and_season,          only: [:edit, :update]
 
   def index
   end
@@ -94,6 +95,11 @@ class QuartersController < ApplicationController
       flash.now[:error] = "You must enter each date and deadline."
         render 'new'
     end
+  end
+
+  def get_year_and_season
+    @year   = @quarter.year
+    @season = @quarter.season
   end
 
 end

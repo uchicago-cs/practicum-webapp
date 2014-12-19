@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  def q_link_to(txt, obj, path_type=obj.class.name.to_sym)
+  def q_link_to(txt, obj, path_type=obj.class.name.to_sym, opts={})
     # Link to a persisted project, submission, or evaluation, but the record's
     # quarter information is plugged into the path generator. Should not be used
     # when we don't need a quarter specified (e.g., for the global /projects
@@ -14,10 +14,12 @@ module ApplicationHelper
 
     y = obj.quarter.year
     s = obj.quarter.season
-    path_type = (path_type.to_s + "_path").downcase
-    # TODO: generate proper path helper method; year: y and season: s are part
-    # of a hash
-    link_to(txt, send(path_type, obj, {year: y, season: s})).html_safe
+    # If path_type ends with _url, change nothing; otherwise, default to _path.
+    # A path_type of :project will generate project_path, and a path_type
+    # of :project_url will generate project_url.
+    suffix = /_url$/.match(path_type.to_s) ? "_url" : "_path"
+    path_type = (path_type.to_s + suffix).downcase
+    link_to(txt, send(path_type, obj, {year: y, season: s}), opts).html_safe
   end
 
   def projects_link_text
@@ -43,7 +45,7 @@ module ApplicationHelper
   end
 
   def full_site_title
-    "Practicum Program | Masters Program in Computer Science "\
+    "Practicum Program | Masters Program in Computer Science " +
     "| The University of Chicago"
   end
 
