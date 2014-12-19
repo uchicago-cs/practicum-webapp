@@ -10,12 +10,14 @@ module ApplicationHelper
     # link_to("here", project_path(@project, year: @project.quarter.year,
     #                              season: @project.quarter.season))
 
+    # [Alternatively, try `polymorphic_path`?]
+
     y = obj.quarter.year
     s = obj.quarter.season
-    path_type = (path_type.to_s + "_path").downcase.to_sym
+    path_type = (path_type.to_s + "_path").downcase
     # TODO: generate proper path helper method; year: y and season: s are part
     # of a hash
-    link_to(txt, path_type.to_proc.(obj, year: y, season: s)).html_safe
+    link_to(txt, send(path_type, obj, {year: y, season: s})).html_safe
   end
 
   def projects_link_text

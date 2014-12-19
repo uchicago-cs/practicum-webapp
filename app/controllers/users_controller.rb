@@ -4,6 +4,7 @@ class UsersController < ApplicationController
 
   before_action :is_admin?,                only: :index
   before_action :prevent_self_demotion,    only: :update
+  #before_action :get_season_and_year,      only: :my_submissions
   before_action(only: :update) { |c| c.get_this_user_for_object(@user) }
 
   def show

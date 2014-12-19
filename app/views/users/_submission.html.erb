@@ -15,7 +15,8 @@
 				season: submission.quarter.season) %>
       to view your application.
     <% elsif submission.status == "draft" %>
-      Click <%= link_to "here",
+      Click <%= q_link_to "here", submission, :edit_submission %>
+<%#= link_to "here",
                 edit_submission_path(submission.id,
 				     year: submission.quarter.year,
 				     season: submission.quarter.season) %>
