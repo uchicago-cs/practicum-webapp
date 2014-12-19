@@ -16,13 +16,14 @@ describe "Creating a project", type: :feature do
       @season  = @quarter.season
       @advisor = FactoryGirl.create(:advisor)
       ldap_sign_in(@advisor)
-      visit new_project_url
+      visit new_project_url(year: @year, season: @season)
     end
 
     describe "visiting the 'new project' page" do
 
       it "should show the h2 text" do
-        expect(page).to have_content("Propose a Project")
+        expect(page).to have_content("Propose a #{@season.capitalize} " +
+                                     "#{@year} Project")
       end
 
       describe "with valid input" do

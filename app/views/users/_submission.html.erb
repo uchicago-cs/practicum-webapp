@@ -8,7 +8,9 @@
   <td><%= formatted_status_for_student(submission) %></td>
   <td>
     <% if submission.status != "draft" %>
-      Click <%= link_to "here",
+      Click <%= q_link_to "here", submission %>
+
+      <%#= link_to "here",
                 submission_path(submission.id, year: submission.quarter.year,
 				season: submission.quarter.season) %>
       to view your application.

@@ -1,5 +1,23 @@
 module ApplicationHelper
 
+  def q_link_to(txt, obj, path_type=obj.class.name.to_sym)
+    # Link to a persisted project, submission, or evaluation, but the record's
+    # quarter information is plugged into the path generator. Should not be used
+    # when we don't need a quarter specified (e.g., for the global /projects
+    # path) or when the record hasn't been created yet (for new records).
+
+    # q_link_to("here", :project_path, @project) is the same as
+    # link_to("here", project_path(@project, year: @project.quarter.year,
+    #                              season: @project.quarter.season))
+
+    y = obj.quarter.year
+    s = obj.quarter.season
+    path_type = (path_type.to_s + "_path").downcase.to_sym
+    # TODO: generate proper path helper method; year: y and season: s are part
+    # of a hash
+    link_to(txt, path_type.to_proc.(obj, year: y, season: s)).html_safe
+  end
+
   def projects_link_text
     if current_user and current_user.advisor? and !current_user.admin?
       "All Projects"

@@ -13,6 +13,8 @@ describe "Creating a submission", type: :feature do
 
     before(:each) do
       @quarter = FactoryGirl.create(:quarter, :no_deadlines_passed)
+      @year    = @quarter.year
+      @season  = @quarter.season
       @admin   = FactoryGirl.create(:admin)
       @advisor = FactoryGirl.create(:advisor)
       @student = FactoryGirl.create(:student)
@@ -23,7 +25,7 @@ describe "Creating a submission", type: :feature do
 
     describe "the student viewing the project" do
 
-      before(:each) { visit projects_path }
+      before(:each) { visit projects_path(year: @year, season: @season) }
 
       it "should see the deadline on the projects page" do
         expect(page).to have_selector("div.alert.alert-info")
@@ -63,7 +65,8 @@ describe "Creating a submission", type: :feature do
     describe "the student creating a submission" do
 
       before(:each) do
-        visit new_project_submission_path(@project)
+        visit new_project_submission_path(@project, year: @year,
+                                          season: @season)
       end
 
       describe "the student correctly filling out the application form" do
@@ -82,7 +85,9 @@ describe "Creating a submission", type: :feature do
 
         it "should see a link to the application" do
           expect(page).to have_link("here", href:
-                                    submission_path(Submission.first))
+                                    submission_path(Submission.first,
+                                                    year: @year,
+                                                    season: @season))
         end
 
         it "should see the app information after clicking the app link" do
