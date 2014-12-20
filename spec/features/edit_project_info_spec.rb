@@ -29,7 +29,7 @@ describe "Editing a project's information", type: :feature do
       context "as the advisor" do
         it "should have the 'edit proposal' link" do
           ldap_sign_in(@advisor)
-          visit project_path(@project)
+          visit q_path(@project)
           within("#content") do
             expect(page).to have_link("here")
             expect(page).to have_content("Click here to edit this " +
@@ -42,7 +42,7 @@ describe "Editing a project's information", type: :feature do
         before(:each) { ldap_sign_in(@other_advisor) }
 
         it "should redirect to the homepage" do
-          visit project_path(@project)
+          visit q_path(@project)
           expect(current_path).to eq(root_path)
           expect(page).to have_content("Access denied")
           expect(page).to have_selector("div.alert.alert-danger")
@@ -50,7 +50,7 @@ describe "Editing a project's information", type: :feature do
 
         context "visiting the project's edit page" do
           it "should redirect to the homepage" do
-            visit edit_project_path(@project)
+            visit q_path(@project, :edit_project)
             expect(current_path).to eq(root_path)
             expect(page).to have_content("Access denied")
             expect(page).to have_selector("div.alert.alert-danger")
@@ -62,7 +62,7 @@ describe "Editing a project's information", type: :feature do
         before(:each) { ldap_sign_in(@student) }
 
         it "should redirect to the homepage" do
-          visit project_path(@project)
+          visit q_path(@project)
           expect(current_path).to eq(root_path)
           expect(page).to have_content("Access denied")
           expect(page).to have_selector("div.alert.alert-danger")
@@ -70,7 +70,7 @@ describe "Editing a project's information", type: :feature do
 
         context "visiting the project's edit page" do
           it "should redirect to the homepage" do
-            visit edit_project_path(@project)
+            visit q_path(@project, :edit_project)
             expect(current_path).to eq(root_path)
             expect(page).to have_content("Access denied")
             expect(page).to have_selector("div.alert.alert-danger")
@@ -83,7 +83,7 @@ describe "Editing a project's information", type: :feature do
       context "with valid information" do
         before(:each) do
           ldap_sign_in(@advisor)
-          visit project_path(@project)
+          visit q_path(@project)
           within("#content") { click_link "here" }
           fill_in "Name", with: "New title"
           fill_in "Description", with: "test " * 50
@@ -100,7 +100,7 @@ describe "Editing a project's information", type: :feature do
         context "as the advisor" do
 
           it "should be valid" do
-            expect(current_path).to eq(project_path(@project))
+            expect(current_path).to eq(q_path(@project))
             expect(page).to have_selector("div.alert.alert-success")
             expect(page).to have_content("Project proposal successfully " +
                                          "updated.")
@@ -128,7 +128,7 @@ describe "Editing a project's information", type: :feature do
           end
 
           it "should show the updated information" do
-            visit project_path(@project)
+            visit q_path(@project)
             within('tr', text: "Title") do
               expect(page).to have_content("New title")
             end
@@ -147,7 +147,7 @@ describe "Editing a project's information", type: :feature do
       context "with an invalid title" do
         before(:each) do
           ldap_sign_in(@advisor)
-          visit project_path(@project)
+          visit q_path(@project)
           within("#content") { click_link "here" }
           fill_in "Name", with: ""
           click_button "Edit my proposal"
@@ -161,7 +161,7 @@ describe "Editing a project's information", type: :feature do
         it "should show the advisor an error message" do
           # We're on the `create` path (which is the project's path) but we
           # have rendered `new`.
-          expect(current_path).to eq(project_path(@project))
+          expect(current_path).to eq(q_path(@project))
           expect(page).to have_content("error")
           expect(page).to have_content("Name can't be blank")
           expect(page).to have_selector("div.alert.alert-danger")
@@ -171,7 +171,7 @@ describe "Editing a project's information", type: :feature do
       context "with an invalid description" do
         before(:each) do
           ldap_sign_in(@advisor)
-          visit project_path(@project)
+          visit q_path(@project)
           within("#content") { click_link "here" }
           fill_in "Description", with: ""
           click_button "Edit my proposal"
@@ -183,7 +183,7 @@ describe "Editing a project's information", type: :feature do
         end
 
         it "should show the advisor an error message" do
-          expect(current_path).to eq(project_path(@project))
+          expect(current_path).to eq(q_path(@project))
           expect(page).to have_content("error")
           expect(page).to have_content("Description can't be blank")
           expect(page).to have_selector("div.alert.alert-danger")
@@ -205,7 +205,7 @@ describe "Editing a project's information", type: :feature do
 
       context "visiting the project's page" do
         it "should redirect to the homepage" do
-          visit project_path(@project)
+          visit q_path(@project)
           expect(current_path).to eq(root_path)
           expect(page).to have_content("Access denied")
           expect(page).to have_selector("div.alert.alert-danger")
@@ -214,7 +214,7 @@ describe "Editing a project's information", type: :feature do
 
       context "visiting the project's edit page" do
         it "should redirect to the homepage" do
-          visit edit_project_path(@project)
+          visit q_path(@project, :edit_project)
           expect(current_path).to eq(root_path)
           expect(page).to have_content("Access denied")
           expect(page).to have_selector("div.alert.alert-danger")
@@ -227,7 +227,7 @@ describe "Editing a project's information", type: :feature do
 
       context "visiting the project's page" do
         it "should redirect to the homepage" do
-          visit project_path(@project)
+          visit q_path(@project)
           expect(current_path).to eq(root_path)
           expect(page).to have_content("Access denied")
           expect(page).to have_selector("div.alert.alert-danger")
@@ -236,7 +236,7 @@ describe "Editing a project's information", type: :feature do
 
       context "visiting the project's edit page" do
         it "should redirect to the homepage" do
-          visit edit_project_path(@project)
+          visit q_path(@project, :edit_project)
           expect(current_path).to eq(root_path)
           expect(page).to have_content("Access denied")
           expect(page).to have_selector("div.alert.alert-danger")
@@ -248,7 +248,7 @@ describe "Editing a project's information", type: :feature do
       before(:each) { ldap_sign_in(@advisor) }
 
       context "visiting the project page" do
-        before(:each) { visit project_path(@project) }
+        before(:each) { visit q_path(@project) }
 
         it "should not have the 'edit proposal' link" do
           within("#content") do
@@ -260,7 +260,7 @@ describe "Editing a project's information", type: :feature do
       end
 
       context "visiting the advisor's 'my_projects'  page" do
-        before(:each) { visit project_path(@project) }
+        before(:each) { visit q_path(@project) }
 
         it "should not have the 'edit proposal' link" do
           within("#content") do
@@ -289,8 +289,8 @@ describe "Editing a project's information", type: :feature do
 
       context "visiting the project's page" do
         it "should not show the 'edit' text or link" do
-          visit project_path(@project)
-          expect(current_path).to eq(project_path(@project))
+          visit q_path(@project)
+          expect(current_path).to eq(q_path(@project))
 
           within("#content") do
             expect(page).not_to have_link("here")
@@ -301,7 +301,7 @@ describe "Editing a project's information", type: :feature do
 
       context "visiting the project's edit page" do
         it "should redirect to the homepage" do
-          visit edit_project_path(@project)
+          visit q_path(@project, :edit_project)
           expect(current_path).to eq(root_path)
           expect(page).to have_content("Access denied")
           expect(page).to have_selector("div.alert.alert-danger")
@@ -314,11 +314,11 @@ describe "Editing a project's information", type: :feature do
 
       context "visiting the project's page" do
       it "should not show the 'edit' text or link" do
-          visit project_path(@project)
-          expect(current_path).to eq(project_path(@project))
+          visit q_path(@project)
+          expect(current_path).to eq(q_path(@project))
           within("#content") do
             expect(page).not_to have_link("here",
-                                          href: edit_project_path(@project))
+                                          href: q_path(@project, :edit_project))
             expect(page).not_to have_content("edit")
           end
         end
@@ -326,7 +326,7 @@ describe "Editing a project's information", type: :feature do
 
       context "visiting the project's edit page" do
         it "should redirect to the homepage" do
-          visit edit_project_path(@project)
+          visit q_path(@project, :edit_project)
           expect(current_path).to eq(root_path)
           expect(page).to have_content("Access denied")
           expect(page).to have_selector("div.alert.alert-danger")
@@ -338,7 +338,7 @@ describe "Editing a project's information", type: :feature do
       before(:each) { ldap_sign_in(@advisor) }
 
       context "visiting the project page" do
-        before(:each) { visit project_path(@project) }
+        before(:each) { visit q_path(@project) }
 
         it "should not have the 'edit proposal' link" do
           within("#content") do
@@ -350,7 +350,7 @@ describe "Editing a project's information", type: :feature do
       end
 
       context "visiting the advisor's 'my_projects'  page" do
-        before(:each) { visit project_path(@project) }
+        before(:each) { visit q_path(@project) }
 
         it "should not have the 'edit proposal' link" do
           within("#content") do

@@ -1,4 +1,4 @@
-<%= bootstrap_form_for @project do |f| %>
+<%= bootstrap_form_for @project, url: q_path(@project) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
   <table class="table table-bordered project-form">

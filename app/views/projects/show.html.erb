@@ -3,7 +3,7 @@
 <% if can? :update, @project %>
   <div>
     <p>
-      Click <%= link_to "here", edit_project_path %>
+      Click <%= q_link_to "here", @project, :edit_project %>
       to edit this project's information.
     </p>
   </div>

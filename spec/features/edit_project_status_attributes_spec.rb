@@ -12,6 +12,8 @@ describe "Editing a project's 'status' attributes", type: :feature do
 
   before(:each) do
     @quarter       = FactoryGirl.create(:quarter, :no_deadlines_passed)
+    @y             = @quarter.year
+    @s             = @quarter.season
     @admin         = FactoryGirl.create(:admin)
     @advisor       = FactoryGirl.create(:advisor)
     @other_advisor = FactoryGirl.create(:advisor)
@@ -28,7 +30,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
 
       context "visiting the project page" do
         it "should show a 'pending' status" do
-          visit project_path(@project)
+          visit q_path(@project)
           expect(page).to have_content("Pending")
           expect(page).to have_content("Click here to edit this project's " +
                                        "information.")
@@ -37,7 +39,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
 
       context "visiting the pending projects page" do
         it "should show a 'pending' status" do
-          visit pending_projects_path
+          visit pending_projects_path(year: @y, season: @s)
           expect(page).to have_content("Pending")
         end
       end
@@ -49,7 +51,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
 
       context "visiting the project page" do
         it "should show a 'pending' status" do
-          visit project_path(@project)
+          visit q_path(@project)
           expect(page).to have_content("Pending")
           expect(page).to have_content("Click here to edit this project's " +
                                        "information.")
@@ -66,7 +68,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
       context "visiting the project page" do
 
         it "should redirect the advisor to the homepage" do
-          visit project_path(@project)
+          visit q_path(@project)
           expect(current_path).to eq(root_path)
           expect(page).to have_selector("div.alert.alert-danger")
           expect(page).to have_content("Access denied")
@@ -83,7 +85,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
     before(:each) { ldap_sign_in(@admin) }
 
     context "visiting the project page" do
-      before(:each) { visit project_path(@project) }
+      before(:each) { visit q_path(@project) }
 
       context "updating the project's status" do
         before(:each) do
@@ -111,7 +113,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the projects index page" do
-            before(:each) { visit projects_path }
+            before(:each) { visit projects_path(year: @y, season: @s) }
 
             it "should not show the project" do
               expect(page).not_to have_content(@project.name)
@@ -120,7 +122,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the project's page" do
-            before(:each) { visit project_path(@project) }
+            before(:each) { visit q_path(@project) }
 
             it "should show the updated status" do
               within("tr", text: "Status") do
@@ -161,7 +163,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the projects index page" do
-            before(:each) { visit projects_path }
+            before(:each) { visit projects_path(year: @y, season: @s) }
 
             it "should not show the project" do
               expect(page).not_to have_content(@project.name)
@@ -170,7 +172,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the project's page" do
-            before(:each) { visit project_path(@project) }
+            before(:each) { visit q_path(@project) }
 
             it "should show the updated status" do
               within('tr', text: "Status") do
@@ -202,7 +204,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the projects index page" do
-            before(:each) { visit projects_path }
+            before(:each) { visit projects_path(year: @y, season: @s) }
 
             it "should not show the project" do
               expect(page).not_to have_content(@project.name)
@@ -211,7 +213,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the project's page" do
-            before(:each) { visit project_path(@project) }
+            before(:each) { visit q_path(@project) }
 
             it "should redirect the student to the homepage" do
               expect(current_path).to eq(root_path)
@@ -240,7 +242,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the projects index page" do
-            before(:each) { visit projects_path }
+            before(:each) { visit projects_path(year: @y, season: @s) }
 
             it "should not show the project" do
               expect(page).not_to have_content(@project.name)
@@ -249,7 +251,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the project's page" do
-            before(:each) { visit project_path(@project) }
+            before(:each) { visit q_path(@project) }
 
             it "should redirect the other advisor to the homepage" do
               expect(current_path).to eq(root_path)
@@ -266,7 +268,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
     before(:each) { ldap_sign_in(@admin) }
 
     context "visiting the project page" do
-      before(:each) { visit project_path(@project) }
+      before(:each) { visit q_path(@project) }
 
       context "updating the project's status" do
         before(:each) do
@@ -295,7 +297,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the projects index page" do
-            before(:each) { visit projects_path }
+            before(:each) { visit projects_path(year: @y, season: @s) }
 
             it "should show the project" do
               expect(page).to have_content(@project.name)
@@ -304,7 +306,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the project's page" do
-            before(:each) { visit project_path(@project) }
+            before(:each) { visit q_path(@project) }
 
             it "should show the updated status" do
               within("tr", text: "Status") do
@@ -337,7 +339,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the projects index page" do
-            before(:each) { visit projects_path }
+            before(:each) { visit projects_path(year: @y, season: @s) }
 
             it "should show the project" do
               expect(page).to have_content(@project.name)
@@ -346,7 +348,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the project's page" do
-            before(:each) { visit project_path(@project) }
+            before(:each) { visit q_path(@project) }
 
             it "should show the updated status" do
               within('tr', text: "Status") do
@@ -377,7 +379,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the projects index page" do
-            before(:each) { visit projects_path }
+            before(:each) { visit projects_path(year: @y, season: @s) }
 
             it "should show the project" do
               expect(page).to have_content(@project.name)
@@ -386,7 +388,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the project's page" do
-            before(:each) { visit project_path(@project) }
+            before(:each) { visit q_path(@project) }
 
             it "should show the project information" do
               expect(page).to have_content(@project.name)
@@ -421,7 +423,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
             end
 
             context "visiting the projects index page" do
-              before(:each) { visit projects_path }
+              before(:each) { visit projects_path(year: @y, season: @s) }
 
               it "should show the project" do
                 expect(page).to have_content(@project.name)
@@ -430,7 +432,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
             end
 
             context "visiting the project's page" do
-              before(:each) { visit project_path(@project) }
+              before(:each) { visit q_path(@project) }
 
               it "should show the project information" do
                 expect(page).to have_content(@project.name)
@@ -457,7 +459,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
     before(:each) { ldap_sign_in(@admin) }
 
     context "visiting the project page" do
-      before(:each) { visit project_path(@project) }
+      before(:each) { visit q_path(@project) }
 
       context "updating the project's status" do
         before(:each) do
@@ -486,7 +488,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the projects index page" do
-            before(:each) { visit projects_path }
+            before(:each) { visit projects_path(year: @y, season: @s) }
 
             it "should not show the project" do
               expect(page).not_to have_content(@project.name)
@@ -495,7 +497,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the project's page" do
-            before(:each) { visit project_path(@project) }
+            before(:each) { visit q_path(@project) }
 
             it "should show the updated status" do
               within("tr", text: "Status") do
@@ -528,7 +530,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the projects index page" do
-            before(:each) { visit projects_path }
+            before(:each) { visit projects_path(year: @y, season: @s) }
 
             it "should not show the project" do
               expect(page).not_to have_content(@project.name)
@@ -537,7 +539,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the project's page" do
-            before(:each) { visit project_path(@project) }
+            before(:each) { visit q_path(@project) }
 
             it "should show the updated status" do
               within('tr', text: "Status") do
@@ -567,7 +569,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the projects index page" do
-            before(:each) { visit projects_path }
+            before(:each) { visit projects_path(year: @y, season: @s) }
 
             it "should not show the project" do
               expect(page).not_to have_content(@project.name)
@@ -576,7 +578,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the project's page" do
-            before(:each) { visit project_path(@project) }
+            before(:each) { visit q_path(@project) }
 
             it "should redirect the student to the homepage" do
               expect(current_path).to eq(root_path)
@@ -605,7 +607,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the projects index page" do
-            before(:each) { visit projects_path }
+            before(:each) { visit projects_path(year: @y, season: @s) }
 
             it "should not show the project" do
               expect(page).not_to have_content(@project.name)
@@ -614,7 +616,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the project's page" do
-            before(:each) { visit project_path(@project) }
+            before(:each) { visit q_path(@project) }
 
             it "should be redirected to the homepage" do
               expect(current_path).to eq(root_path)
