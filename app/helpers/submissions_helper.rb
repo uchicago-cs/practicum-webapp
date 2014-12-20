@@ -34,8 +34,7 @@ module SubmissionsHelper
   # Shows resume info if student uploaded a resume.
   def formatted_resume_info(submission)
     if submission.resume.exists?
-      link_to(submission.resume_file_name,
-              download_resume_path(submission.id)) +
+      q_link_to(submission.resume_file_name, submission, :download_resume) +
       " (#{number_to_human_size(submission.resume_file_size)})"
     else
       "No resume uploaded"

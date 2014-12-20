@@ -18,7 +18,7 @@ module ApplicationHelper
     # If path_type ends with _url, change nothing; otherwise, default to _path.
     # A path_type of :project will generate project_path, and a path_type
     # of :project_url will generate project_url.
-    suffix = /_url$/.match(path_type.to_s) ? "_url" : "_path"
+    suffix = /_url$/.match(path_type.to_s) ? "" : "_path"
     path_type = (path_type.to_s + suffix).downcase
     link_to(txt, send(path_type, obj, {year: y, season: s}), opts).html_safe
   end

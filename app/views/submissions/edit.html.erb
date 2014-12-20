@@ -6,5 +6,5 @@
   edit this application again.
 </div>
 
-<%= render 'new_edit_form', form_object: @submission,
+<%= render 'new_edit_form', form_object: @submission, url: q_path(@submission),
   include_saved_resume: true %>
