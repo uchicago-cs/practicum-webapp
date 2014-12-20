@@ -1,5 +1,6 @@
 class Notifier < ActionMailer::Base
 
+  add_template_helper ApplicationHelper
   add_template_helper UsersHelper
 
   default from: "practicum-notification@cs.uchicago.edu"

@@ -1,5 +1,6 @@
 module ApplicationHelper
 
+  # TODO: DRY these quarter (q_) methods? (Also see /spec/support/utilities.rb)
   def q_link_to(txt, obj, path_type=obj.class.name.to_sym, opts={})
     # Link to a persisted project, submission, or evaluation, but the record's
     # quarter information is plugged into the path generator. Should not be used
@@ -20,6 +21,15 @@ module ApplicationHelper
     suffix = /_url$/.match(path_type.to_s) ? "_url" : "_path"
     path_type = (path_type.to_s + suffix).downcase
     link_to(txt, send(path_type, obj, {year: y, season: s}), opts).html_safe
+  end
+
+  # See /spec/support/utilities.rb
+  def q_path(obj, path_type=obj.class.name.to_sym)
+    y = obj.quarter.year
+    s = obj.quarter.season
+    path_type = (path_type.to_s + "_path").downcase
+    h = { year: y, season: s }
+    send(path_type, obj, h)
   end
 
   def q_url(obj, url_type=obj.class.name.to_sym)

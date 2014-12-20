@@ -1,4 +1,4 @@
 <h2>Apply to <%= @project.name %></h2>
 
 <%= render 'new_edit_form', form_object: [@project, @submission],
-  include_saved_resume: false %>
+  url: q_path(@project, :new_project_submission), include_saved_resume: false %>

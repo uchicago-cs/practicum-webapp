@@ -1,5 +1,5 @@
 <%= format_cloned(@project) %>
 No student completed this project, so you may
-<%= q_link_to "clone", project, :project,
+<%= q_link_to "clone", @project, :project,
     { method: 'clone_project', data: { confirm: "Are you sure?" } } %>
 it into the current quarter.

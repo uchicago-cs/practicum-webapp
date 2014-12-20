@@ -65,8 +65,7 @@ describe "Creating a submission", type: :feature do
     describe "the student creating a submission" do
 
       before(:each) do
-        visit new_project_submission_path(@project, year: @year,
-                                          season: @season)
+        visit q_path(@project, :new_project_submission)
       end
 
       describe "the student correctly filling out the application form" do
@@ -84,10 +83,7 @@ describe "Creating a submission", type: :feature do
         end
 
         it "should see a link to the application" do
-          expect(page).to have_link("here", href:
-                                    submission_path(Submission.first,
-                                                    year: @year,
-                                                    season: @season))
+          expect(page).to have_link("here", href: q_path(Submission.first))
         end
 
         it "should see the app information after clicking the app link" do
@@ -225,20 +221,19 @@ describe "Creating a submission", type: :feature do
       @quarter = FactoryGirl.create(:quarter, :no_deadlines_passed)
       @advisor = FactoryGirl.create(:advisor)
       @student = FactoryGirl.create(:student)
-      @q2 = FactoryGirl.create(:quarter, :no_deadlines_passed,
-                               season: "Winter", current: false)
+      @q2 = FactoryGirl.create(:quarter, :no_deadlines_passed, season: "Winter")
       @project_2 = FactoryGirl.create(:project, :accepted_and_published,
                                       quarter: @q2, advisor: @advisor)
       ldap_sign_in(@student)
     end
 
     it "should not show the 'apply' button on the project's page" do
-      visit project_path(@project_2)
+      visit q_path(@project_2)
       expect(page).not_to have_content("Click here to apply")
     end
 
     it "should redirect the student visiting the project's 'apply' page" do
-      visit new_project_submission_path(@project_2)
+      visit q_path(@project_2, :new_project_submission)
       expect(current_path).to eq(root_path)
       expect(page).to have_selector("div.alert.alert-danger")
       expect(page).to have_content("That project was offered in a previous " +
