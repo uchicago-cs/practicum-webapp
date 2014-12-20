@@ -100,7 +100,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
         context "viewed by the admin" do
 
           context "visiting the advisor's my_projects page" do
-            before(:each) { visit users_projects_path(@advisor) }
+            before(:each) { visit users_projects_all_path(@advisor) }
 
             it "should show the updated status" do
               within("table") do
@@ -150,7 +150,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the advisor's my_projects page" do
-            before(:each) { visit users_projects_path(@advisor) }
+            before(:each) { visit users_projects_all_path(@advisor) }
 
             it "should show the updated status" do
               within("table") do
@@ -193,7 +193,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the advisor's my_projects page" do
-            before(:each) { visit users_projects_path(@advisor) }
+            before(:each) { visit users_projects_all_path(@advisor) }
 
             it "should be redirected to the homepage" do
               expect(current_path).to eq(root_path)
@@ -231,7 +231,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the advisor's my_projects page" do
-            before(:each) { visit users_projects_path(@advisor) }
+            before(:each) { visit users_projects_all_path(@advisor) }
 
             it "should be redirected to the homepage" do
               expect(current_path).to eq(root_path)
@@ -284,7 +284,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
         context "viewed by the admin" do
 
           context "visiting the advisor's my_projects page" do
-            before(:each) { visit users_projects_path(@advisor) }
+            before(:each) { visit users_projects_all_path(@advisor) }
 
             it "should show the updated status" do
               within("table") do
@@ -326,7 +326,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the advisor's my_projects page" do
-            before(:each) { visit users_projects_path(@advisor) }
+            before(:each) { visit users_projects_all_path(@advisor) }
 
             it "should show the updated status" do
               within("table") do
@@ -368,7 +368,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the advisor's my_projects page" do
-            before(:each) { visit users_projects_path(@advisor) }
+            before(:each) { visit users_projects_all_path(@advisor) }
 
             it "should be redirected to the homepage" do
               expect(current_path).to eq(root_path)
@@ -412,7 +412,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
             end
 
             context "visiting the advisor's my_projects page" do
-              before(:each) { visit users_projects_path(@advisor) }
+              before(:each) { visit users_projects_all_path(@advisor) }
 
               it "should be redirected to the homepage" do
                 expect(current_path).to eq(root_path)
@@ -475,7 +475,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
         context "viewed by the admin" do
 
           context "visiting the advisor's my_projects page" do
-            before(:each) { visit users_projects_path(@advisor) }
+            before(:each) { visit users_projects_all_path(@advisor) }
 
             it "should show the updated status" do
               within("table") do
@@ -517,7 +517,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the advisor's my_projects page" do
-            before(:each) { visit users_projects_path(@advisor) }
+            before(:each) { visit users_projects_all_path(@advisor) }
 
             it "should show the updated status" do
               within("table") do
@@ -558,7 +558,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the advisor's my_projects page" do
-            before(:each) { visit users_projects_path(@advisor) }
+            before(:each) { visit users_projects_all_path(@advisor) }
 
             it "should be redirected to the homepage" do
               expect(current_path).to eq(root_path)
@@ -596,7 +596,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
           end
 
           context "visiting the advisor's my_projects page" do
-            before(:each) { visit users_projects_path(@advisor) }
+            before(:each) { visit users_projects_all_path(@advisor) }
 
             it "should be redirected to the homepage" do
               expect(current_path).to eq(root_path)

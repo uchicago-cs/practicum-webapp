@@ -10,6 +10,8 @@ describe "Editing a submission's 'status' attributes", type: :feature do
 
   before(:each) do
     @quarter       = FactoryGirl.create(:quarter, :no_deadlines_passed)
+    @y             = @quarter.year
+    @s             = @quarter.season
     @admin         = FactoryGirl.create(:admin)
     @advisor       = FactoryGirl.create(:advisor)
     @other_advisor = FactoryGirl.create(:advisor)
@@ -50,7 +52,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
     before(:each) { ldap_sign_in(@advisor) }
 
     context "visiting the submission page" do
-      before(:each) { visit submission_path(@submission) }
+      before(:each) { visit q_path(@submission) }
 
       context "updating the submission's status" do
         before(:each) { click_button "Accept" }
@@ -67,7 +69,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should show the updated status on the submission's page" do
-            expect(current_path).to eq(submission_path(@submission))
+            expect(current_path).to eq(q_path(@submission))
             expect(page).to have_content("Application accepted.")
             expect(page).to have_selector("div.alert.alert-success")
             within('tr', text: "Status") do
@@ -77,7 +79,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should show the updated status on the 'project's subs' page" do
-            visit project_submissions_path(@project)
+            visit q_path(@project, :project_submissions)
             within("table") do
               expect(page).to have_content("Accepted (pending administrator " +
                                            "approval)")
@@ -92,7 +94,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should not be visible on the submission's page" do
-            visit submission_path(@submission)
+            visit q_path(@submission)
             within('tr', text: "Status") do
               expect(page).to have_content("Pending")
               expect(page).not_to have_content("Accepted")
@@ -116,7 +118,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should show its status on the 'applications' page" do
-            visit submissions_path(@submission)
+            visit submissions_path(year: @y, season: @s) # pass @submission?
             within("table") do
               expect(page).to have_content("Accepted (pending administrator " +
                                            "approval)")
@@ -132,7 +134,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should redirect when trying to view the sub" do
-            visit submission_path(@submission)
+            visit q_path(@submission)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
@@ -154,7 +156,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should redirect when trying to view the sub" do
-            visit submission_path(@submission)
+            visit q_path(@submission)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
@@ -185,7 +187,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
     end
 
     context "visiting the submission page" do
-      before(:each) { visit submission_path(@submission) }
+      before(:each) { visit q_path(@submission) }
 
       context "updating the submission's status" do
         before(:each) do
@@ -205,7 +207,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
 
           # It should show "accepted", not "accepted (pending approval)."
           it "should show the updated status on the submission's page" do
-            visit submission_path(@submission)
+            visit q_path(@submission)
             within('tr', text: "Status") do
               expect(page).to have_content("Accepted")
               expect(page).not_to have_content("Accepted (pending " +
@@ -214,7 +216,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should show the updated status on the 'project's subs' page" do
-            visit project_submissions_path(@project)
+            visit q_path(@project, :project_submissions)
             within("table") do
               expect(page).to have_content("Accepted")
               expect(page).not_to have_content("Accepted (pending " +
@@ -230,7 +232,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should not be visible on the submission's page" do
-            visit submission_path(@submission)
+            visit q_path(@submission)
             within('tr', text: "Status") do
               expect(page).not_to have_content("Accepted")
               expect(page).to have_content("Pending")
@@ -251,7 +253,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           # in again.
 
           it "should show its status on the 'applications' page" do
-            visit submissions_path
+            visit submissions_path(year: @y, season: @s)
             within("table") do
               expect(page).not_to have_content("Accepted (pending " +
                                                "administrator approval)")
@@ -267,7 +269,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should redirect when trying to view the sub" do
-            visit submission_path(@submission)
+            visit q_path(@submission)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
@@ -289,7 +291,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should redirect when trying to view the sub" do
-            visit submission_path(@submission)
+            visit q_path(@submission)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
@@ -323,7 +325,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
     end
 
     context "visiting the submission page" do
-      before(:each) { visit submission_path(@submission) }
+      before(:each) { visit q_path(@submission) }
 
       context "updating the submission's status" do
         before(:each) do
@@ -342,7 +344,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should show the updated status on the submission's page" do
-            visit submission_path(@submission)
+            visit q_path(@submission)
             within('tr', text: "Status") do
               expect(page).to have_content("Accepted")
               expect(page).not_to have_content("Accepted (pending " +
@@ -351,7 +353,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should show the updated status on the 'project's subs' page" do
-            visit project_submissions_path(@project)
+            visit q_path(@project, :project_submissions)
             within("table") do
               expect(page).to have_content("Accepted")
               expect(page).not_to have_content("Accepted (pending " +
@@ -367,7 +369,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should be visible on the submission's page" do
-            visit submission_path(@submission)
+            visit q_path(@submission)
             within('tr', text: "Status") do
               expect(page).to have_content("Accepted")
               expect(page).not_to have_content("Pending")
@@ -388,7 +390,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           # in again.
 
           it "should show its status on the 'applications' page" do
-            visit submissions_path
+            visit submissions_path(year: @y, season: @s)
             within("table") do
               expect(page).not_to have_content("Accepted (pending " +
                                                "administrator approval)")
@@ -404,7 +406,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should redirect when trying to view the sub" do
-            visit submission_path(@submission)
+            visit q_path(@submission)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
@@ -426,7 +428,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should redirect when trying to view the sub" do
-            visit submission_path(@submission)
+            visit q_path(@submission)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")

@@ -193,7 +193,7 @@ class ProjectsController < ApplicationController
     when "Accept"
       if @db_project.update_attributes(status: "accepted")
         flash[:success] = "Project accepted."
-        redirect_to @project
+        redirect_to q_path(@project)
       else
         flash.now[:error] = "Project could not be accepted."
         render 'show'
@@ -205,7 +205,7 @@ class ProjectsController < ApplicationController
                                        comments: params[:project][:comments])
         flash[:success] = "Changes requested and project status set to " +
           "\"pending\"."
-        redirect_to @project
+        redirect_to q_path(@project)
       else
         flash.now[:error] = "Changes could not be requested and project " +
           "status could not be set to \"pending\"."
@@ -215,7 +215,7 @@ class ProjectsController < ApplicationController
     when "Reject"
       if @db_project.update_attributes(status: "rejected")
         flash[:success] = "Project rejected."
-        redirect_to @project
+        redirect_to q_path(@project)
       else
         flash.now[:error] = "Project could not be rejected."
         render 'show'
@@ -224,7 +224,7 @@ class ProjectsController < ApplicationController
     when "Unpublish decision"
       if @db_project.update_attributes(status_published: false)
         flash[:success] = "Project decision unpublished."
-        redirect_to @project
+        redirect_to q_path(@project)
       else
         flash.now[:error] = "Project decision could not be unpublished."
         render 'show'
@@ -233,7 +233,7 @@ class ProjectsController < ApplicationController
     when "Publish decision"
       if @db_project.update_attributes(status_published: true)
         flash[:success] = "Project decision published."
-        redirect_to @project
+        redirect_to q_path(@project)
       else
         flash.now[:error] = "Project decision could not be published."
         render 'show'
