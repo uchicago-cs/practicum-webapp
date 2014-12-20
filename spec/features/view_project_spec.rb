@@ -12,14 +12,16 @@ describe "Viewing a project", type: :feature do
 
     before do
       @quarter = FactoryGirl.create(:quarter, :no_deadlines_passed)
+      @y       = @quarter.year
+      @s       = @quarter.season
       @advisor = FactoryGirl.create(:advisor)
-      @admin = FactoryGirl.create(:admin)
+      @admin   = FactoryGirl.create(:admin)
     end
 
     describe "after the advisor fills out the form and hits submit" do
       before(:each) do
         ldap_sign_in(@advisor)
-        visit new_project_path
+        visit new_project_path(year: @y, season: @s)
       end
 
       it "should have created a project" do
@@ -88,7 +90,7 @@ describe "Viewing a project", type: :feature do
         @project = FactoryGirl.create(:project, :in_current_quarter,
                                       advisor: @advisor)
         ldap_sign_in(@admin)
-        visit pending_projects_path
+        visit pending_projects_path(year: @y, season: @s)
         page.find_link(@project.name).click
         click_button "Accept"
       end
@@ -123,6 +125,8 @@ describe "Viewing a project", type: :feature do
   context "as a different user" do
     before do
       @quarter       = FactoryGirl.create(:quarter, :no_deadlines_passed)
+      @y             = @quarter.year
+      @s             = @quarter.season
       @advisor       = FactoryGirl.create(:advisor)
       @admin         = FactoryGirl.create(:admin)
     end
@@ -134,12 +138,12 @@ describe "Viewing a project", type: :feature do
       end
 
       it "shouldn't show the project on the project index page" do
-        visit projects_path
+        visit projects_path(year: @y, season: @s)
         expect(page).not_to have_content(@project.name)
       end
 
       it "shouldn't be able to access the project's page" do
-        visit project_path(@project)
+        visit q_path(@project)
         expect(page).to have_selector("div.alert.alert-danger")
         expect(page).to have_content("Access denied")
         expect(current_path).to eq(root_path)
@@ -147,7 +151,7 @@ describe "Viewing a project", type: :feature do
 
       # We might want to put these two (below) in new_submission_spec.rb.
       it "shouldn't be able to apply to the project on the site" do
-        visit new_project_submission_path(@project)
+        visit q_path(@project, :new_project_submission)
         expect(page).to have_selector("div.alert.alert-danger")
         expect(page).to have_content("Access denied")
         expect(current_path).to eq(root_path)

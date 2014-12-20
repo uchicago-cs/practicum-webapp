@@ -53,19 +53,6 @@ class ApplicationController < ActionController::Base
     current_ldap_user or current_local_user
   end
 
-  # Override url_options to include default year and season options if they're
-  # given in the params hash. Doesn't cover spec urls or mailer urls.
-  # TODO: test.
-  # See: http://stackoverflow.com/a/9945652/3723769
-  # def url_options
-  #     options = {}
-  #     if params[:year] and params[:season]
-  #       options[:year] = params[:year]
-  #       options[:season] = params[:season]
-  #     end
-  #     options.merge(super)
-  # end
-
   protected
 
   def configure_permitted_parameters
@@ -94,9 +81,12 @@ class ApplicationController < ActionController::Base
       current_user.admin?
   end
 
-  # Why is this in both the controller and the helper?
   def before_deadline?(deadline)
-    humanized_deadline = deadline.humanize.downcase
+    if deadline == "student_submission"
+      humanized_deadline = "application"
+    else
+      humanized_deadline = deadline.humanize.downcase
+    end
     message = "The #{humanized_deadline} deadline for this quarter has passed."
     redirect_to root_url, flash: { error: message } unless
       DateTime.now <= Quarter.current_quarter.deadline(deadline)

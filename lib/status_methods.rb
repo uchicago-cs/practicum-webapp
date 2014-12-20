@@ -17,7 +17,7 @@ module StatusMethods
   end
 
   def in_current_quarter?
-    self.quarter == Quarter.current_quarter
+    Quarter.active_quarters.include? self.quarter
   end
 
 end

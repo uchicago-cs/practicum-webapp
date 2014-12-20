@@ -135,7 +135,7 @@ describe "Creating a submission", type: :feature do
           click_button "Submit my application"
           # We go through the #create action and render 'new', so we are on
           # the project_submissions_path for @project.
-          expect(current_path).to eq(project_submissions_path(@project))
+          expect(current_path).to eq(q_path(@project, :project_submissions))
           expect(page).to have_selector("div.alert.alert-danger")
           expect(page).to have_content("error")
         end
@@ -153,7 +153,7 @@ describe "Creating a submission", type: :feature do
 
         describe "visiting the 'new application' link" do
           it "should redirect the student" do
-            visit new_project_submission_path(@project)
+            visit q_path(@project, :new_project_submission)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("already applied")
@@ -181,6 +181,8 @@ describe "Creating a submission", type: :feature do
       @quarter = FactoryGirl.create(:quarter, :can_create_project,
                                     :cannot_create_submission,
                                     :earlier_start_date, :later_end_date)
+      @year    = @quarter.year
+      @season  = @quarter.season
       @admin   = FactoryGirl.create(:admin)
       @advisor = FactoryGirl.create(:advisor)
       @student = FactoryGirl.create(:student)
@@ -191,7 +193,7 @@ describe "Creating a submission", type: :feature do
 
     describe "the student viewing the project" do
 
-      before(:each) { visit projects_path }
+      before(:each) { visit projects_path(year: @year, season: @season) }
 
       it "should see a notification that the deadline has passed" do
         expect(page).to have_selector("div.alert.alert-warning")
@@ -206,10 +208,10 @@ describe "Creating a submission", type: :feature do
       end
 
       it "should be redirected away when visiting the new sub. url" do
-        visit new_project_submission_path(@project)
+        visit q_path(@project, :new_project_submission)
         expect(page).to have_selector("div.alert.alert-danger")
-        expect(page).to have_content("The student submission deadline for " +
-                                     "this quarter has passed.")
+        expect(page).to have_content("The application deadline for this " +
+                                     "quarter has passed.")
         expect(current_path).to eq(root_path)
       end
     end
@@ -221,9 +223,11 @@ describe "Creating a submission", type: :feature do
       @quarter = FactoryGirl.create(:quarter, :no_deadlines_passed)
       @advisor = FactoryGirl.create(:advisor)
       @student = FactoryGirl.create(:student)
-      @q2 = FactoryGirl.create(:quarter, :no_deadlines_passed, season: "Winter")
-      @project_2 = FactoryGirl.create(:project, :accepted_and_published,
-                                      quarter: @q2, advisor: @advisor)
+      @q2 = FactoryGirl.create(:quarter, :inactive_and_deadlines_passed,
+                               season: "spring")
+      @project_2 = FactoryGirl.build(:project, :accepted_and_published,
+                                     quarter: @q2, advisor: @advisor)
+      @project_2.save(validate: false)
       ldap_sign_in(@student)
     end
 

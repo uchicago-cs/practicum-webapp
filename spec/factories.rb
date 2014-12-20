@@ -108,9 +108,14 @@ FactoryGirl.define do
       later_end_date
     end
 
-    # trait :current_quarter do
-    #   current { true }
-    # end
+    trait :inactive_and_deadlines_passed do
+      earlier_start_date
+      end_date { start_date + 9.weeks + 5.days }
+      project_proposal_deadline { start_date + 1.day }
+      student_submission_deadline { start_date + 2.days }
+      advisor_decision_deadline { start_date + 3.days }
+      admin_publish_deadline { start_date + 4.days }
+    end
   end
 
   factory :project do
