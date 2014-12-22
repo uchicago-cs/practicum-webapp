@@ -53,7 +53,7 @@ describe "Viewing a project", type: :feature do
       end
 
       it "should show 'pending' to the advisor" do
-        within("#dropdown-personal") { click_link("My projects") }
+        within("#dropdown-#{@y}-#{@s}") { click_link("My projects") }
         click_link(@project.name)
         within("table") do
           expect(page).to have_content("Pending")
@@ -61,7 +61,7 @@ describe "Viewing a project", type: :feature do
       end
 
       it "should not be in the published projects list" do
-        click_link("Projects")
+        within("#dropdown-#{@y}-#{@s}") { click_link("Projects") }
         expect(page.text).not_to have_content(@project.name)
       end
     end
@@ -76,7 +76,7 @@ describe "Viewing a project", type: :feature do
       it "should show 'pending'" do
         ldap_sign_in(@admin)
         visit root_path
-        within("#dropdown-administrative") { click_link("Pending projects") }
+        within("#dropdown-#{@y}-#{@s}") { click_link("Pending projects") }
         within("table") do
           expect(page).to have_content("Pending")
         end

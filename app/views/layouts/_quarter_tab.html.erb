@@ -1,6 +1,6 @@
 <%# Must be signed in to see this. %>
 <%# The current quarter's information. %>
-<li class="dropdown" id="dropdown-personal">
+<li class="dropdown" id="dropdown-<%= quarter.year %>-<%= quarter.season %>">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
     <%= formatted_quarter(quarter) %>
       <span class="caret"></span>
