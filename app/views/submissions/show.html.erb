@@ -39,7 +39,7 @@
 
 <% if @submission.draft? and (can? :edit, @submission) %>
   <p>
-    Click <%= link_to "here", edit_submission_path(@submission) %> to continue
-    editing and / or submit this application.
+    Click <%= link_to "here", q_path(@submission, :edit_submission) %> to
+    continue editing and / or submit this application.
   </p>
 <% end %>

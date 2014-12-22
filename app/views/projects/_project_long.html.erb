@@ -41,7 +41,7 @@
 	    <%= @project.submitted_submissions.count %>
 	    <% if @project.has_submissions? %>
 	      (click <%= link_to "here",
-	      project_submissions_path(@project.id) %>
+	      q_path(@project, :project_submissions) %>
 	      to view students' applications to this project)
 	    <% end %>
 	  </td>

@@ -84,7 +84,7 @@ describe "Drafting a submission", type: :feature do
         click_button "Save as draft"
         logout
         ldap_sign_in(@admin)
-        visit users_submissions_path(year: @y, season: @s)
+        visit users_submissions_all_path(@student)
         within("table") do
           expect(page).to have_content(@project.name)
           expect(page).to have_content("Draft")
@@ -144,6 +144,7 @@ describe "Drafting a submission", type: :feature do
         before(:each) do
           click_button "Save as draft"
           logout
+          @student.reload # TODO: This is necessary!
           ldap_sign_in(@student)
           visit q_path(Submission.first)
         end
