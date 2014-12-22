@@ -66,7 +66,7 @@ describe "Drafting a submission", type: :feature do
           click_link "here"
         end
 
-        expect(current_path).to eq(edit_project_path(Project.first))
+        expect(current_path).to eq(q_path(Project.first, :edit_project))
       end
 
       it "should display the 'edit' link on the project's page" do
@@ -89,7 +89,7 @@ describe "Drafting a submission", type: :feature do
           end
 
           it "should be viewable and show the 'edit' link" do
-            visit users_projects_path(year: @y, season: @s)
+            visit users_projects_all_path(@advisor)
             within("table") do
               expect(page).to have_content(Project.first.name)
               # We expect to see the 'edit' link.
@@ -97,7 +97,7 @@ describe "Drafting a submission", type: :feature do
               click_link("here")
             end
 
-            expect(current_path).to eq(edit_project_path(Project.first))
+            expect(current_path).to eq(q_path(Project.first, :edit_project))
             expect(page).to have_button("Create my proposal")
             expect(page).to have_button("Save as draft")
           end

@@ -6,6 +6,8 @@ class ProjectsController < ApplicationController
   before_action      :get_status_published,      only: [:show, :update_status]
   before_action      :get_old_project_info,      only: :clone_project
   before_action      :can_create_projects?,      only: [:new, :create]
+  before_action      :get_year_and_season,       only: [:new, :create, :edit,
+                                                        :update]
   before_action(only: [:update_status, :update]) { |c|
     c.get_this_user_for_object(@project) }
 
@@ -309,6 +311,11 @@ class ProjectsController < ApplicationController
     unless current_user.admin?
       before_deadline?("project_proposal")
     end
+  end
+
+  def get_year_and_season
+    @year   = params[:year]
+    @season = params[:season]
   end
 
 end

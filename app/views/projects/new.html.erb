@@ -17,4 +17,5 @@
   </div>
 <% end %>
 
-<%= render 'new_edit_project_form', change: 'create' %>
+<%= render 'new_edit_project_form', change: 'create',
+    url: projects_path(year: @year, season: @season) %>

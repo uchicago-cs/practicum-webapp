@@ -1,3 +1,4 @@
 <h2>Edit Proposal for <%= @project.name %></h2>
 
-<%= render 'new_edit_project_form', change: edit_change_type %>
+<%= render 'new_edit_project_form', change: edit_change_type,
+    url: q_path(@project) %>
