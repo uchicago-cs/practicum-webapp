@@ -40,32 +40,35 @@ describe "Requesting advisor status", type: :feature do
       it "should render the page and button" do
         expect(current_path).to eq(request_advisor_access_path)
         expect(page).to have_content("Request Advisor Privileges")
-        # We expect to see a button, but we use #link_to in the view.
-        expect(page).to have_link("Submit request")
+        expect(page).to have_button("Submit request")
       end
 
-      context "clicking the button" do
+      context "clicking the button with completed fields" do
+
+        before(:each) do
+          fill_in "Affiliation", with: "Lecturer"
+          fill_in "Department, institution, etc.", with: "Computer Science"
+        end
 
         it "should change the user's advisor_status_pending boolean" do
-          # Again, we /appear/ to be clicking a button.
-          expect{ click_link "Submit request" }.
+          expect{ click_button "Submit request" }.
             to change{ @user.reload.advisor_status_pending }.from(false).
             to(true)
         end
 
         it "should redirect the user to the homepage" do
-          click_link "Submit request"
+          click_button "Submit request"
           expect(current_path).to eq(root_path)
         end
 
         it "should show the temporary 'your request has been sent' message" do
-          click_link "Submit request"
+          click_button "Submit request"
           expect(page).to have_selector("div.alert.alert-success")
           expect(page).to have_content("You have requested advisor privileges")
         end
 
         it "should show the advisor_status_pending message on every page" do
-          click_link "Submit request"
+          click_button "Submit request"
           expect(page).to have_selector("div.alert.alert-info")
           expect(page).to have_content("pending approval by an administrator")
           # Visit an arbitrary page to test for the presence of the message.
@@ -74,6 +77,19 @@ describe "Requesting advisor status", type: :feature do
           expect(page).to have_content("pending approval by an administrator")
           # It won't have the temporary message, though.
           expect(page).not_to have_selector("div.alert.alert-success")
+        end
+
+      end
+
+      context "clicking the button with incomplete fields" do
+
+        it "should tell the user to provide affiliation and department info" do
+          fill_in "Affiliation", with: "Lecturer"
+          click_button "Submit request"
+          expect(current_path).to eq(request_advisor_access_path)
+          expect(page).to have_selector("div.alert.alert-danger")
+          expect(page).to have_content("You must provide your affiliation " +
+                                       "and department.")
         end
 
       end

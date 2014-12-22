@@ -41,15 +41,16 @@ describe "Creating an evaluation", type: :feature do
 
       context "visiting the submission page" do
 
-        before(:each) { visit submission_path(@submission) }
+        before(:each) { visit q_path(@submission) }
 
         it "should land on the submission page" do
-          expect(current_path).to eq(submission_path(@submission))
+          expect(current_path).to eq(q_path(@submission))
         end
 
         it "should see the 'new evaluation' link" do
           expect(page).
-            to have_link("here", new_submission_evaluation_path(@submission))
+            to have_link("here", q_path(@submission,
+                                        :new_submission_evaluation))
         end
 
         # Note: there is no 'edit evaluation' feature.
@@ -59,7 +60,7 @@ describe "Creating an evaluation", type: :feature do
 
           it "should go to the 'new evaluation' page" do
             expect(current_path).
-              to eq(new_submission_evaluation_path(@submission))
+              to eq(q_path(@submission, :new_submission_evaluation))
           end
 
           it "should see the appropriate form" do
@@ -76,7 +77,7 @@ describe "Creating an evaluation", type: :feature do
 
         context "filling out the 'new evaluation' form" do
 
-          before(:each) { visit new_submission_evaluation_path(@submission) }
+          before(:each) {visit q_path(@submission, :new_submission_evaluation)}
 
           context "with valid responses" do
             it "should be valid and send us to the evaluation" do
@@ -95,7 +96,7 @@ describe "Creating an evaluation", type: :feature do
               end
               expect{ click_button "Submit evaluation" }.
                 to change{ Evaluation.count }.by(1)
-              expect(current_path).to eq(evaluation_path(Evaluation.first))
+              expect(current_path).to eq(q_path(Evaluation.first))
               expect(page).to have_content("Evaluation for " +
                                            @student.first_name + " " +
                                            @student.last_name)
@@ -112,7 +113,7 @@ describe "Creating an evaluation", type: :feature do
               # We only render 'new'; we don't redirect to it.
               # (See EvaluationsController#create.)
               expect(current_path).
-                to eq(submission_evaluations_path(@submission))
+                to eq(q_path(@submission, :submission_evaluations))
               expect(page).to have_content("Evaluation was not submitted.")
               expect(page).to have_selector("div.alert.alert-danger")
             end
@@ -137,13 +138,13 @@ describe "Creating an evaluation", type: :feature do
         end
 
         it "should not see the 'new evaluation' link" do
-          visit submission_path(@submission)
-          new_path_ = new_submission_evaluation_path(@submission)
+          visit q_path(@submission)
+          new_path_ = q_path(@submission, :new_submission_evaluation)
           expect(page).not_to have_css("a[href~='#{new_path_}']")
         end
 
         it "should go to the homepage when visiting the 'new eval' page" do
-          visit new_submission_evaluation_path(@submission)
+          visit q_path(@submission, :new_submission_evaluation)
           expect(current_path).to eq(root_path)
           expect(page).to have_selector("div.alert.alert-danger")
           expect(page).to have_content("You have already submitted an " +
@@ -151,19 +152,19 @@ describe "Creating an evaluation", type: :feature do
         end
 
         it "should see a link to the evaluation" do
-          visit submission_path(@submission)
-          expect(page).to have_link("here", evaluation_path(@evaluation))
+          visit q_path(@submission)
+          expect(page).to have_link("here", q_path(@evaluation))
         end
 
         context "clicking the evaluation link" do
 
           before(:each) do
-            visit submission_path(@submission)
+            visit q_path(@submission)
             within("#content") { click_link "here" }
           end
 
           it "should bring the advisor to the evaluation page" do
-            expect(current_path).to eq(evaluation_path(@evaluation))
+            expect(current_path).to eq(q_path(@evaluation))
           end
 
           it "should show the user the evaluation" do
@@ -190,7 +191,7 @@ describe "Creating an evaluation", type: :feature do
 
       context "visiting the submission's page" do
 
-        before(:each) { visit submission_path(@submission) }
+        before(:each) { visit q_path(@submission) }
 
         it "should not have the 'new evaluation' link" do
           expect(page).not_to have_content("Click here to create an " +
@@ -200,7 +201,7 @@ describe "Creating an evaluation", type: :feature do
 
       context "visiting the 'new evaluation' page for the submission" do
 
-        before(:each) { visit new_submission_evaluation_path(@submission) }
+        before(:each) { visit q_path(@submission, :new_submission_evaluation) }
 
         it "should redirect the user to the homepage" do
           expect(current_path).to eq(root_path)
@@ -229,7 +230,7 @@ describe "Creating an evaluation", type: :feature do
                                            student_id: @student.id,
                                            project_id: @project_2.id,
                                            evaluation_template: @template)
-        visit evaluation_path(@evaluation_2)
+        visit q_path(@evaluation_2)
       end
 
       it "should redirect the advisor to the homepage" do
