@@ -10,6 +10,8 @@ describe "Drafting a submission", type: :feature do
 
   before(:each) do
     @quarter       = FactoryGirl.create(:quarter, :no_deadlines_passed)
+    @y             = @quarter.year
+    @s             = @quarter.season
     @admin         = FactoryGirl.create(:admin)
     @advisor       = FactoryGirl.create(:advisor)
     @other_advisor = FactoryGirl.create(:advisor)
@@ -20,7 +22,7 @@ describe "Drafting a submission", type: :feature do
 
     before(:each) do
       ldap_sign_in(@advisor)
-      visit new_project_path
+      visit new_project_path(year: @y, season: @s)
     end
 
     it "should show the 'save as draft' button" do
@@ -46,7 +48,8 @@ describe "Drafting a submission", type: :feature do
       # on the edit page.
 
       it "should redirect the advisor to their projects page" do
-        expect(current_path).to eq(users_projects_path(@advisor))
+        expect(current_path).to eq(users_projects_path(year: @y,
+                                                       season: @s))
       end
 
       it "should appear to the advisor on their projects page" do
@@ -86,7 +89,7 @@ describe "Drafting a submission", type: :feature do
           end
 
           it "should be viewable and show the 'edit' link" do
-            visit users_projects_path(@advisor)
+            visit users_projects_path(year: @y, season: @s)
             within("table") do
               expect(page).to have_content(Project.first.name)
               # We expect to see the 'edit' link.
@@ -100,14 +103,14 @@ describe "Drafting a submission", type: :feature do
           end
 
           it "should not be visible on the projects page" do
-            visit projects_path
+            visit projects_path(year: @y, season: @s)
             # We test for the presence of the project's advisor's name.
             expect(page).not_to have_content(@advisor.first_name + " " +
                                              @advisor.last_name)
           end
 
           it "should not be visible on the 'pending projects' page" do
-            visit pending_projects_path
+            visit pending_projects_path(year: @y, season: @s)
             expect(page).not_to have_content(@advisor.first_name + " " +
                                              @advisor.last_name)
           end
@@ -119,21 +122,21 @@ describe "Drafting a submission", type: :feature do
           before(:each) { ldap_sign_in(@student) }
 
           it "should not be visible on the projects page" do
-            visit projects_path
+            visit projects_path(year: @y, season: @s)
             # We test for the presence of the project's advisor's name.
             expect(page).not_to have_content(@advisor.first_name + " " +
                                              @advisor.last_name)
           end
 
           it "should redirect when trying to view project" do
-            visit project_path(Project.first)
+            visit q_path(Project.first)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
           end
 
           it "should redirect when trying to edit the project" do
-            visit edit_project_path(Project.first)
+            visit q_path(Project.first, :edit_project)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
@@ -146,21 +149,21 @@ describe "Drafting a submission", type: :feature do
           before(:each) { ldap_sign_in(@other_advisor) }
 
           it "should not be visible on the projects page" do
-            visit projects_path
+            visit projects_path(year: @y, season: @s)
             # We test for the presence of the project's advisor's name.
             expect(page).not_to have_content(@advisor.first_name + " " +
                                              @advisor.last_name)
           end
 
           it "should redirect when trying to view project" do
-            visit project_path(Project.first)
+            visit q_path(Project.first)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
           end
 
           it "should redirect when trying to edit the project" do
-            visit edit_project_path(Project.first)
+            visit q_path(Project.first, :edit_project)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
@@ -175,7 +178,7 @@ describe "Drafting a submission", type: :feature do
       context "returning to it later" do
 
         it "should show its info on the project's page" do
-          visit project_path(Project.first)
+          visit q_path(Project.first)
           # Testing for "" doesn't test for anything (?)
           within('tr', text: 'Title') do
             expect(page).to have_content("")
@@ -199,7 +202,7 @@ describe "Drafting a submission", type: :feature do
         end
 
         it "should show its info on the project's 'edit' page" do
-          visit edit_project_path(Project.first)
+          visit q_path(Project.first, :edit_project)
           expect(page).to have_field("Name", with: "")
           expect(page).to have_field("Description", with: "")
           expect(page).to have_field("Expected deliverables", with: "")
@@ -210,7 +213,7 @@ describe "Drafting a submission", type: :feature do
         context "submitting it" do
 
           before(:each) do
-            visit edit_project_path(Project.first)
+            visit q_path(Project.first, :edit_project)
             fill_in "Name", with: "a" * 5
             fill_in "Description", with: "a" * 5
             fill_in "Expected deliverables", with: "a" * 5
@@ -223,7 +226,8 @@ describe "Drafting a submission", type: :feature do
 
           it "should redirect the advisor to their projects page" do
             click_button "Create my proposal"
-            expect(current_path).to eq(users_projects_path(@advisor))
+            expect(current_path).to eq(users_projects_path(year: @y,
+                                                           season: @s))
           end
 
           it "should show the project as 'pending' on their projects page" do
@@ -251,7 +255,7 @@ describe "Drafting a submission", type: :feature do
             click_button "Create my proposal"
             logout
             ldap_sign_in(@admin)
-            visit pending_projects_path
+            visit pending_projects_path(year: @y, season: @s)
             within("table") do
               expect(page).to have_content(Project.first.name)
               expect(page).to have_content(@advisor.first_name + " " +
@@ -265,7 +269,7 @@ describe "Drafting a submission", type: :feature do
               # Go to the project's "edit" page.
               click_link "here"
             end
-            expect(current_path).to eq(edit_project_path(Project.first))
+            expect(current_path).to eq(q_path(Project.first, :edit_project))
             expect(page).to have_content("Edit Proposal for " +
                                          Project.first.name)
           end

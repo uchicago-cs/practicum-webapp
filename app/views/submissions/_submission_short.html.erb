@@ -3,7 +3,7 @@
   <td><%= submission.created_at.to_date %></td>
   <td><%= formatted_status_for_advisor(submission) %></td>
   <td>
-    Click <%= link_to "here", submission_path(submission.id) %>
+    Click <%= link_to "here", q_path(submission) %>
     to view this application.
   </td>
 </tr>

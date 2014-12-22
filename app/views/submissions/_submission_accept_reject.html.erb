@@ -1,6 +1,6 @@
 <% if acceptable?(@submission) %>
   <%= bootstrap_form_for(@submission,
-			 url: accept_or_reject_submission_path(@submission),
+			 url: q_path(@submission, :accept_or_reject_submission),
 			 html: { method: :patch }) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 

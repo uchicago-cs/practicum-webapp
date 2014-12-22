@@ -102,7 +102,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should not be visible on the student's submission index page" do
-            visit users_submissions_path(@student)
+            visit users_submissions_path(year: @y, season: @s)
             # We should look within the "Status" column, not just the table.
             within("table") do
               expect(page).to have_content("Pending")
@@ -141,7 +141,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should redirect when visiting the user's subs pg" do
-            visit users_submissions_path(@student)
+            visit users_submissions_path(year: @y, season: @s)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
@@ -163,7 +163,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should redirect when visiting the user's subs pg" do
-            visit users_submissions_path(@student)
+            visit users_submissions_all_path(@student)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
@@ -240,7 +240,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should not be visible on the student's submission index page" do
-            visit users_submissions_path(@student)
+            visit users_submissions_path(year: @y, season: @s)
             within("table") do
               expect(page).not_to have_content("Accepted")
               expect(page).to have_content("Pending")
@@ -276,7 +276,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should redirect when visiting the user's subs pg" do
-            visit users_submissions_path(@student)
+            visit users_submissions_path(year: @y, season: @s)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
@@ -298,7 +298,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should redirect when visiting the user's subs pg" do
-            visit users_submissions_path(@student)
+            visit users_submissions_all_path(@student)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
@@ -377,7 +377,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should be visible on the student's submission index page" do
-            visit users_submissions_path(@student)
+            visit users_submissions_path(year: @y, season: @s)
             within("table") do
               expect(page).to have_content("Accepted")
               expect(page).not_to have_content("Pending")
@@ -413,7 +413,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should redirect when visiting the user's subs pg" do
-            visit users_submissions_path(@student)
+            visit users_submissions_path(year: @y, season: @s)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
@@ -435,7 +435,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
           end
 
           it "should redirect when visiting the user's subs pg" do
-            visit users_submissions_path(@student)
+            visit users_submissions_all_path(@student)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")

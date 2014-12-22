@@ -10,6 +10,8 @@ describe "Drafting a submission", type: :feature do
 
   before(:each) do
     @quarter       = FactoryGirl.create(:quarter, :no_deadlines_passed)
+    @y             = @quarter.year
+    @s             = @quarter.season
     @admin         = FactoryGirl.create(:admin)
     @advisor       = FactoryGirl.create(:advisor)
     @other_advisor = FactoryGirl.create(:advisor)
@@ -26,7 +28,7 @@ describe "Drafting a submission", type: :feature do
 
     before(:each) do
       ldap_sign_in(@student)
-      visit new_project_submission_path(@project)
+      visit q_path(@project, :new_project_submission)
     end
 
     it "should show the 'save as draft' button" do
@@ -49,12 +51,12 @@ describe "Drafting a submission", type: :feature do
 
       it "should redirect the student to their submissions page" do
         click_button "Save as draft"
-        expect(current_path).to eq(users_submissions_path(@student))
+        expect(current_path).to eq(users_submissions_path(year: @y,
+                                                          season: @s))
       end
 
       it "should appear to the student on their submissions page" do
         click_button "Save as draft"
-        # We should be redirected to `users_submissions_path(@student)`.
         within "table" do
           expect(page).to have_content(@project.name)
           expect(page).to have_content("Draft (unsubmitted)")
@@ -82,14 +84,14 @@ describe "Drafting a submission", type: :feature do
         click_button "Save as draft"
         logout
         ldap_sign_in(@admin)
-        visit users_submissions_path(@student)
+        visit users_submissions_path(year: @y, season: @s)
         within("table") do
           expect(page).to have_content(@project.name)
           expect(page).to have_content("Draft")
         end
         # It will be visible on the drafts page, but not on the submissions
         # page (for non-draft submissions).
-        visit submission_drafts_path
+        visit submission_drafts_path(year: @y, season: @s)
         within("table") do
           expect(page).to have_content(@project.name)
           expect(page).to have_content("Draft")
@@ -105,7 +107,7 @@ describe "Drafting a submission", type: :feature do
         end
 
         it "should not be visible via the \"@project's submissions\" page" do
-          visit users_projects_path(@advisor)
+          visit users_projects_path(year: @y, season: @s)
           within("table") do
             click_link("here")
           end
@@ -115,21 +117,21 @@ describe "Drafting a submission", type: :feature do
         end
 
         it "should redirect when visiting the submission's page" do
-          visit submission_path(Submission.first)
+          visit q_path(Submission.first)
           expect(current_path).to eq(root_path)
           expect(page).to have_selector("div.alert.alert-danger")
           expect(page).to have_content("Access denied")
         end
 
         it "should redirect when visiting the submission's edit page" do
-          visit edit_submission_path(Submission.first)
+          visit q_path(Submission.first, :edit_submission)
           expect(current_path).to eq(root_path)
           expect(page).to have_selector("div.alert.alert-danger")
           expect(page).to have_content("Access denied")
         end
 
         it "should not include the # of drafts in the project's apps count" do
-          visit project_path(@project)
+          visit q_path(@project)
           # This should be tested within the td cell that has the number.
           within("table") do
             expect(page).to have_content(@project.submitted_submissions.count)
@@ -143,7 +145,7 @@ describe "Drafting a submission", type: :feature do
           click_button "Save as draft"
           logout
           ldap_sign_in(@student)
-          visit submission_path(Submission.first)
+          visit q_path(Submission.first)
         end
 
         it "should show the info the student entered on the sub's page" do
@@ -175,7 +177,7 @@ describe "Drafting a submission", type: :feature do
                                          "and / or submit this application.")
             expect(page).
               to have_link("here",
-                           href: edit_submission_path(Submission.first))
+                           href: q_path(Submission.first, :edit_submission))
           end
         end
 
@@ -197,7 +199,8 @@ describe "Drafting a submission", type: :feature do
           end
 
           it "should redirect the student to their submissions page" do
-            expect(current_path).to eq(users_submissions_path(@student))
+            expect(current_path).to eq(users_submissions_path(year: @y,
+                                                              season: @s))
             expect(page).to have_selector("div.alert.alert-success")
             expect(page).to have_content("submitted")
           end
@@ -209,7 +212,7 @@ describe "Drafting a submission", type: :feature do
           end
 
           it "should not be editable by the student" do
-            visit edit_submission_path(Submission.first)
+            visit q_path(Submission.first, :edit_submission)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("You cannot edit a submitted " +
@@ -223,14 +226,15 @@ describe "Drafting a submission", type: :feature do
                                     "or submit this application.")
               expect(page).
                 not_to have_link("here",
-                                 href: edit_submission_path(Submission.first))
+                                 href: q_path(Submission.first,
+                                              :edit_submission))
             end
           end
 
           it "should not be editable by the advisor" do
             logout
             ldap_sign_in(@advisor)
-            visit edit_submission_path(Submission.first)
+            visit q_path(Submission.first, :edit_submission)
             expect(current_path).to eq(root_path)
             expect(page).to have_selector("div.alert.alert-danger")
             expect(page).to have_content("Access denied")
@@ -239,14 +243,14 @@ describe "Drafting a submission", type: :feature do
           it "should not show the 'edit' link to the advisor" do
             logout
             ldap_sign_in(@advisor)
-            visit submission_path(Submission.first)
+            visit q_path(Submission.first)
             within("#content") do
               expect(page).
                 not_to have_content("Click here to continue editing and / " +
                                     "or submit this application.")
               expect(page).
                 not_to have_link("here",
-                                 href: edit_submission_path(Submission.first))
+                                 href: q_path(Submission.first, :edit_submission))
             end
           end
 
@@ -260,7 +264,7 @@ describe "Drafting a submission", type: :feature do
             end
 
             it "should appear via the \"@project's submissions\" page" do
-              visit users_projects_path(@advisor)
+              visit users_projects_path(year: @y, season: @s)
               within("table") do
                 click_link "here"
               end

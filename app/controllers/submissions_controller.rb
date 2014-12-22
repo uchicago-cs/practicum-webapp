@@ -53,13 +53,16 @@ class SubmissionsController < ApplicationController
       @submission.assign_attributes(student_id: current_user.id)
     end
 
+    @year   = @submission.quarter.year
+    @season = @submission.quarter.season
+
     # Could be DRYer, but be careful to not rely on whether params[:commit]
     # is one of the strings _or not_; we should check whether it is one of the
     # strings _or the other_. (?)
     if params[:commit] == "Submit my application"
       if @submission.save
         flash[:success] = "Application submitted."
-        redirect_to users_submissions_path
+        redirect_to users_submissions_path(year: @year, season: @season)
       else
         render 'new'
       end
@@ -68,7 +71,7 @@ class SubmissionsController < ApplicationController
       if @submission.save(validate: false)
         flash[:success] = "Application saved as a draft. You may edit it " +
           "by navigating to your \"my applications\" page."
-        redirect_to users_submissions_path
+        redirect_to users_submissions_path(year: @year, season: @season)
       else
         render 'new'
       end
@@ -83,12 +86,14 @@ class SubmissionsController < ApplicationController
   # Students can only edit drafts, i.e., submissions where status == "draft".
   def update
     @submission.assign_attributes(submission_params)
+    @year   = @submission.quarter.year
+    @season = @submission.quarter.season
 
     if params[:commit] == "Submit my application"
       @submission.assign_attributes(status: "pending")
       if @submission.save
         flash[:success] = "Application submitted."
-        redirect_to users_submissions_path
+        redirect_to users_submissions_path(year: @year, season: @season)
       else
         render 'edit'
       end
@@ -96,7 +101,7 @@ class SubmissionsController < ApplicationController
       if @submission.save(validate: false)
         flash[:success] = "Application saved as a draft. You may edit it " +
           "by navigating to your \"my applications\" page."
-        redirect_to users_submissions_path
+        redirect_to users_submissions_path(year: @year, season: @season)
       else
         render 'edit'
       end
@@ -131,14 +136,14 @@ class SubmissionsController < ApplicationController
     if params[:commit] == "Accept"
       if @submission.update_attributes(status: "accepted")
         flash[:success] = "Application accepted."
-        redirect_to @submission
+        redirect_to q_path(@submission)
       else
         render 'show'
       end
     elsif params[:commit] == "Reject"
       if @submission.update_attributes(status: "rejected")
         flash[:success] = "Application rejected."
-        redirect_to @submission
+        redirect_to q_path(@submission)
       else
         render 'show'
       end
@@ -165,7 +170,7 @@ class SubmissionsController < ApplicationController
     when "Unapprove decision"
       if @db_submission.update_attributes(status_approved: false)
         flash[:success] = "Application decision unapproved."
-        redirect_to @submission
+        redirect_to q_path(@submission)
       else
         flash.now[:error] = "Application decision could not be unapproved."
         render 'show'
@@ -174,7 +179,7 @@ class SubmissionsController < ApplicationController
     when "Approve decision"
       if @db_submission.update_attributes(status_approved: true)
         flash[:success] = "Application decision approved."
-        redirect_to @submission
+        redirect_to q_path(@submission)
       else
         flash.now[:error] = "Application decision could not be approved."
         render 'show'
@@ -183,7 +188,7 @@ class SubmissionsController < ApplicationController
     when "Unpublish decision"
       if @db_submission.update_attributes(status_published: false)
         flash[:success] = "Application decision unpublished."
-        redirect_to @submission
+        redirect_to q_path(@submission)
       else
         flash.now[:error] = "Application decision could not be unpublished."
         render 'show'
@@ -192,7 +197,7 @@ class SubmissionsController < ApplicationController
     when "Publish decision"
       if @db_submission.update_attributes(status_published: true)
         flash[:success] = "Application decision published."
-        redirect_to @submission
+        redirect_to q_path(@submission)
       else
         flash.now[:error] = "Application decision could not be published."
         render 'show'
