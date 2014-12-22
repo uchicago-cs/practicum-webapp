@@ -17,11 +17,11 @@
   <%# We check !@submission.evaluation here and in ability.rb so that %>
   <%# admins don't see this link. %>
 
-  <%# ### Also, there's too much logic here. ### %>
+  <%# ### TODO: move logic out of here. ### %>
 
-  <%# We need another condition on here to check which evaluation we can make.
-  It will always be the active evaluation, but how will it be decided whether
-  we can create it at any given time? %>
+  <%# TODO: We need another condition on here to check which evaluation we can
+  make. It will always be the active evaluation, but how will it be decided
+  whether we can create it at any given time? %>
 
   <%# TODO: Refactor the view logic out of here... %>
   <% if (can? :create_evaluation_for, @submission) and
@@ -30,8 +30,8 @@
     <%= render 'submission_create_evaluation', object: @submission %>
   <% end %>
 
-  <% if @submission.evaluations.length > 0 and
-    (can? :read, @submission.evaluations) %>
+  <% if @submission.evaluations.present? and
+    (can? :read_evaluations_for, @submission) %>
     <%= render 'evaluation_list', object: @submission %>
   <% end %>
 

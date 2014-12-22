@@ -56,7 +56,7 @@ describe "Creating an evaluation", type: :feature do
         # Note: there is no 'edit evaluation' feature.
         context "clicking the 'new evaluation' link" do
 
-          before(:each) { within("#content") { click_link("here") } }
+          before(:each) { within("div#content") { click_link("here") } }
 
           it "should go to the 'new evaluation' page" do
             expect(current_path).
@@ -64,7 +64,7 @@ describe "Creating an evaluation", type: :feature do
           end
 
           it "should see the appropriate form" do
-            expect(page).to have_content("New Evaluation for " +
+            expect(page).to have_content("Evaluation for " +
                                          @student.first_name + " " +
                                          @student.last_name)
 
@@ -160,7 +160,7 @@ describe "Creating an evaluation", type: :feature do
 
           before(:each) do
             visit q_path(@submission)
-            within("#content") { click_link "here" }
+            within("div#content") { click_link "here" }
           end
 
           it "should bring the advisor to the evaluation page" do

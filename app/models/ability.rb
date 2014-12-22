@@ -73,9 +73,13 @@ class Ability
             submission.accepted? and !submission.draft?
         end
 
-        can :read, Evaluation do |evaluation|
-          evaluation.advisor_id == user.id
+        can :read_evaluations_for, Submission do |submission|
+          submission.project.advisor.id == user.id
         end
+
+        # can :read, Evaluation do |evaluation|
+        #   evaluation.advisor_id == user.id
+        # end
       end
 
       if user.student?
