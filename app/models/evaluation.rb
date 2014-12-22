@@ -24,6 +24,7 @@ class Evaluation < ActiveRecord::Base
   delegate :accepted?, to: :submission, prefix: true, allow_nil: true
   delegate :status_approved?, to: :submission, prefix: true, allow_nil: true
   delegate :status_published?, to: :submission, prefix: true, allow_nil: true
+  delegate :quarter, to: :submission, prefix: false, allow_nil: false
 
   after_create :send_evaluation_submitted
 

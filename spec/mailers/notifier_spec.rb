@@ -114,11 +114,13 @@ RSpec.describe Notifier, type: :mailer do
 
     context "as a draft" do
       before(:each) do
+        ActionMailer::Base.deliveries.clear
         @project = FactoryGirl.create(:project, :in_current_quarter,
                                       status: "draft",
                                       advisor: @advisor)
       end
 
+      # TODO: Test the same thing for submission drafts
       it "should not send e-mails to anyone" do
         expect(ActionMailer::Base.deliveries.count).to eq(0)
       end
