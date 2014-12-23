@@ -12,6 +12,7 @@ class SubmissionsController < ApplicationController
   before_action :get_statuses,                only: [:show, :update_status]
   before_action :project_accepted_and_pub?,   only: [:new, :create]
   before_action :can_create_submissions?,     only: [:new, :create, :update]
+  before_action :redirect_if_wrong_quarter_params, only: :show
   before_action(except: [:index, :accepted]) { |c|
     c.get_this_user_for_object(@submission) }
   before_action(only: [:accept, :reject]) { |c|
@@ -275,6 +276,16 @@ class SubmissionsController < ApplicationController
   def can_create_submissions?
     unless current_user.admin?
       before_deadline?("student_submission")
+    end
+  end
+
+  def redirect_if_wrong_quarter_params
+    y = @submission.quarter.year
+    s = @submission.quarter.season
+    if params[:year] and params[:season]
+      if params[:year].to_i != y or params[:season] != s
+        redirect_to q_path(@submission) and return
+      end
     end
   end
 

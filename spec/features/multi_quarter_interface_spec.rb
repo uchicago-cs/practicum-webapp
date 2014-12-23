@@ -237,12 +237,78 @@ describe "Interacting with records from different quarters", type: :feature do
   end
 
   context "when viewing projects" do
+    before do
+      @q4      = FactoryGirl.create(:quarter, :no_deadlines_passed,
+                                    :earlier_start_date, year: 2015,
+                                    season: "winter")
+      @p_new   = FactoryGirl.create(:project, quarter: @q4,
+                                    advisor: @advisor, status: "accepted",
+                                    status_published: true)
+      @p_old   = FactoryGirl.build(:project, quarter: @q1,
+                                   advisor: @advisor, status: "accepted",
+                                   status_published: true)
+      @p_old.save(validate: false)
 
+      # We don't need to sign in since the projects are public.
+    end
+
+    before(:each) { ldap_sign_in(@student) }
+
+    context "viewing an old project in the right quarter" do
+      it "should be valid" do
+        visit q_path(@p_old)
+        expect(current_path).to eq(q_path(@p_old))
+      end
+    end
+
+    context "viewing a new project in the right quarter" do
+      it "should be valid" do
+        visit q_path(@p_new)
+        expect(current_path).to eq(q_path(@p_new))
+      end
+    end
+
+    context "viewing a project at a path in an invalid quarter" do
+      it "should redirect to the path with the right quarter" do
+        visit project_path(@p_new, year: @q3.year, season: @q3.season)
+        expect(current_path).to eq(q_path(@p_new))
+      end
+    end
   end
 
   context "when viewing submissions" do
+    before do
+      @q4      = FactoryGirl.create(:quarter, :no_deadlines_passed,
+                                    :earlier_start_date, year: 2015,
+                                    season: "winter")
+      @p_new   = FactoryGirl.create(:project, quarter: @q4,
+                                    advisor: @advisor, status: "accepted",
+                                    status_published: true)
+      @sub    = FactoryGirl.create(:submission, student: @student,
+                                   project: @p_new,
+                                   status: "accepted",
+                                   status_approved: true,
+                                   status_published: true)
+    end
 
+    before(:each) { ldap_sign_in(@student) }
+
+    context "viewing a submission with a path in a valid quarter" do
+      it "should be valid" do
+        visit q_path(@sub)
+        expect(current_path).to eq(q_path(@sub))
+      end
+    end
+
+    context "viewing a submission with a path in an invalid quarter" do
+      it "should redirect to the path with the right quarter" do
+        visit submission_path(@sub, year: @q3.year, season: @q3.season)
+        expect(current_path).to eq(q_path(@sub))
+      end
+    end
   end
 
   # viewing as an admin, as a student, etc...
+
+  # viewing evaluations (as an admin and as an advisor)
 end
