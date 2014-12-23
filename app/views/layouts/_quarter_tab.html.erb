@@ -7,18 +7,17 @@
   </a>
 
   <ul class="dropdown-menu" role="menu">
-    <%# The below will be moved to the new tabs, and new pages
-    <%# will be created for them. %>
-
     <%# Projects %>
     <li>
       <%= link_to "Projects",
           projects_path(year: quarter.year, season: quarter.season) %>
     </li>
-    <li class="divider"></li>
+    <% if (can? :view_my_submissions, User) or can? :view_my_projects, User %>
+      <li class="divider"></li>
+    <% end %>
 
     <%# Student's applications %>
-    <% if can? :my_submissions, User %>
+    <% if can? :view_my_submissions, User %>
       <li>
 	<%= link_to "My applications",
 	    users_submissions_path(year: quarter.year,
@@ -27,7 +26,7 @@
     <% end %>
 
     <%# Advisor's projects %>
-    <% if can? :my_projects, User %>
+    <% if can? :view_my_projects, User %>
       <%= project_proposal_navbar_link(quarter) %>
       <li>
 	<%= link_to "My projects",
@@ -39,7 +38,7 @@
       </li>
     <% end %>
 
-    <%# Administrative stuff %>
+    <%# Administrative pages %>
     <% if can? :manage, :all %>
       <li class="divider"></li>
       <li><%= link_to "Pending projects",

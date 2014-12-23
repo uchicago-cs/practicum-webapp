@@ -16,10 +16,19 @@ class Ability
         cannot :clone, Project do |project|
           !project.cloneable?
         end
+        cannot :view_my_projects, User do |u|
+          !u.advisor?
+        end
+        cannot :view_my_submissions, User do |u|
+          !u.student?
+        end
       end
 
       if user.advisor?
         can :create, Project
+        # For viewing links in the quarter tabs
+        can :view_my_projects, User, id: user.id
+        # For going to the appropriate pages
         can :my_students, User, id: user.id
         can :my_projects, User, id: user.id
         can :my_projects_all, User, id: user.id
@@ -84,6 +93,9 @@ class Ability
 
       if user.student?
         can :read, Project, status: "accepted", status_published: true
+        # For the quarter tabs
+        can :view_my_submissions, User, id: user.id
+        # For the submission pages
         can :my_submissions, User, id: user.id
         can :my_submissions_all, User, id: user.id
         can :read, User, id: user.id
