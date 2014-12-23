@@ -117,10 +117,12 @@ class User < ActiveRecord::Base
     Project.all.where(advisor_id: self.id).pluck(:id)
   end
 
-  def evaluated_submission?(submission)
-    Evaluation.where(advisor_id: self.id,
-                     student_id: submission.student_id,
-                     project_id: submission.project_id).exists?
+  def completed_active_evaluation?(submission)
+    e = Evaluation.where(advisor_id: self.id,
+                         student_id: submission.student_id,
+                         project_id: submission.project_id).take
+    # Note that e should be unique
+    e.present? and e.evaluation_template == EvaluationTemplate.current_active
   end
 
   def missing_proposal_info?

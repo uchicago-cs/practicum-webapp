@@ -134,7 +134,9 @@ describe "Creating an evaluation", type: :feature do
                                            advisor_id: @advisor.id,
                                            student_id: @student.id,
                                            project_id: @project.id,
-                                           evaluation_template: @template)
+                                           evaluation_template_id: @template.id)
+          # @evaluation.reload
+          # @submission.reload
         end
 
         it "should not see the 'new evaluation' link" do

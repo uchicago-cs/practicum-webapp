@@ -22,7 +22,7 @@ RSpec.describe User, :type => :model do
     it { should respond_to(:accepted_projects) }
     it { should respond_to(:pending_projects) }
     it { should respond_to(:projects_made_by_id) }
-    it { should respond_to(:evaluated_submission?) }
+    it { should respond_to(:completed_active_evaluation?) }
     it { should respond_to(:missing_proposal_info?) }
 
     it { should be_valid }

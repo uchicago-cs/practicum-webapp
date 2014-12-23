@@ -48,9 +48,9 @@ class EvaluationsController < ApplicationController
     # made an evaluation of that particular type (is it possible to determine
     # this from here?).
 
-    # message = "You have already submitted an evaluation for this student."
-    # redirect_to root_url, flash: { error: message } if
-    #   @project.advisor.evaluated_submission?(@submission)
+    message = "You have already submitted an evaluation for this student."
+    redirect_to root_url, flash: { error: message } if
+      @project.advisor.completed_active_evaluation?(@submission)
   end
 
   def submission_status_sufficient?
