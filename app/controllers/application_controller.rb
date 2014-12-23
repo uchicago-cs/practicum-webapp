@@ -33,11 +33,9 @@ class ApplicationController < ActionController::Base
 
   # TODO: Prevent access to this page and the post action in routes.rb.
   def redirect_if_no_quarter_and_proposing_project
-    if not (params[:year] and params[:season])
-      if request.path == "/projects/new"
-        redirect_to root_url, flash:
-          { error: "You must propose a project in a quarter." }
-      end
+    if request.path == new_project_path # Missing year and season params
+      redirect_to root_url, flash:
+        { error: "You must propose a project in a quarter." } and return
     end
   end
 
@@ -81,15 +79,17 @@ class ApplicationController < ActionController::Base
       current_user.admin?
   end
 
-  def before_deadline?(deadline)
-    if deadline == "student_submission"
+  def before_deadline?(d)
+    if d == "student_submission"
       humanized_deadline = "application"
     else
-      humanized_deadline = deadline.humanize.downcase
+      humanized_deadline = d.humanize.downcase
     end
+
+    e = Quarter.active_exists?
+    b = Quarter.active_quarters.map { |q| DateTime.now <= q.deadline(d) }.all?
     message = "The #{humanized_deadline} deadline for this quarter has passed."
-    redirect_to root_url, flash: { error: message } unless
-      DateTime.now <= Quarter.current_quarter.deadline(deadline)
+    redirect_to root_url, flash: { error: message } unless (b and e)
   end
 
   def get_this_user_for_object(obj)

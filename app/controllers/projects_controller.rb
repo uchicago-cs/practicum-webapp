@@ -308,8 +308,11 @@ class ProjectsController < ApplicationController
   end
 
   def can_create_projects?
-    unless current_user.admin?
+    if Quarter.active_exists? and !current_user.admin?
       before_deadline?("project_proposal")
+    else
+      redirect_to root_url, flash: { error: "This quarter is inactive." } and
+        return
     end
   end
 
