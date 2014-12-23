@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :show_advisor_status_pending_message
   before_action :redirect_if_invalid_quarter
-  before_action :redirect_if_no_quarter_and_proposing_project
+  before_action :redirect_if_no_quarter_and_new_record
 
   helper_method :is_admin?
   helper_method :authenticate_user!
@@ -31,11 +31,17 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # TODO: Prevent access to this page and the post action in routes.rb.
-  def redirect_if_no_quarter_and_proposing_project
-    if request.path == new_project_path # Missing year and season params
+  # TODO: Prevent access to this page and the post action in routes.rb. (?)
+  def redirect_if_no_quarter_and_new_record
+    # If the path is missing year and season params
+    if request.path == new_project_path
       redirect_to root_url, flash:
         { error: "You must propose a project in a quarter." } and return
+    end
+
+    if (/\A\/projects\/\d\/applications\/new\Z/).match(request.path)
+      redirect_to root_url, flash:
+        { error: "You must apply to a project in a quarter." } and return
     end
   end
 

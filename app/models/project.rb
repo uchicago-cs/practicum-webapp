@@ -65,6 +65,7 @@ class Project < ActiveRecord::Base
   # an advisor, so we don't stop them if the proposal deadline has passed.
   validate :created_before_proposal_deadline, on: :create,
            unless: Proc.new { |proj| proj.proposer.present? }
+  validate :created_in_an_active_quarter, on: :create
   validate :status_not_pending_when_published
   validate :advisor_cannot_edit_if_pending, on: :update
 
@@ -135,6 +136,12 @@ class Project < ActiveRecord::Base
   def created_before_proposal_deadline
     errors.add(:base, "The proposal deadline has passed.") if
       DateTime.now > Quarter.current_quarter.project_proposal_deadline
+  end
+
+  def created_in_an_active_quarter
+    errors.add(:base, "Projects must be proposed in active quarters before " +
+               "their proposal deadlines.") unless
+      Quarter.active_quarters.include? self.quarter
   end
 
   def accepted_before_submission_deadline
