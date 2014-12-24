@@ -322,7 +322,8 @@ class ProjectsController < ApplicationController
     @season = params[:season]
   end
 
-  # TODO: DRY up (see method with same name in submissions_controller.rb)
+  # TODO: DRY up (see methods with same name in submissions_controller.rb,
+  # submissions_controller.rb)
   def redirect_if_wrong_quarter_params
     y = @project.quarter.year
     s = @project.quarter.season

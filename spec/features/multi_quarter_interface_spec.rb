@@ -25,7 +25,8 @@ describe "Interacting with records from different quarters", type: :feature do
   end
 
   context "when there are multiple quarters" do
-    before(:each) do
+
+    before do
       ldap_sign_in(@student)
       visit root_path
     end
@@ -169,9 +170,7 @@ describe "Interacting with records from different quarters", type: :feature do
                                    advisor: @advisor, status: "accepted",
                                    status_published: true)
       @p_old.save(validate: false)
-    end
 
-    before(:each) do
       ldap_sign_in(@student)
       visit root_path
     end
@@ -238,21 +237,20 @@ describe "Interacting with records from different quarters", type: :feature do
 
   context "when viewing projects" do
     before do
-      @q4      = FactoryGirl.create(:quarter, :no_deadlines_passed,
+      @q4    = FactoryGirl.create(:quarter, :no_deadlines_passed,
                                     :earlier_start_date, year: 2015,
                                     season: "winter")
-      @p_new   = FactoryGirl.create(:project, quarter: @q4,
+      @p_new = FactoryGirl.create(:project, quarter: @q4,
                                     advisor: @advisor, status: "accepted",
                                     status_published: true)
-      @p_old   = FactoryGirl.build(:project, quarter: @q1,
+      @p_old = FactoryGirl.build(:project, quarter: @q1,
                                    advisor: @advisor, status: "accepted",
                                    status_published: true)
       @p_old.save(validate: false)
 
       # We don't need to sign in since the projects are public.
+      #before(:each) { ldap_sign_in(@student) }
     end
-
-    before(:each) { ldap_sign_in(@student) }
 
     context "viewing an old project in the right quarter" do
       it "should be valid" do
@@ -278,22 +276,21 @@ describe "Interacting with records from different quarters", type: :feature do
 
   context "when viewing submissions" do
     before do
-      @q4      = FactoryGirl.create(:quarter, :no_deadlines_passed,
-                                    :earlier_start_date, year: 2015,
-                                    season: "winter")
-      @p_new   = FactoryGirl.create(:project, quarter: @q4,
-                                    advisor: @advisor, status: "accepted",
-                                    status_published: true)
-      @sub    = FactoryGirl.create(:submission, student: @student,
-                                   project: @p_new,
-                                   status: "accepted",
-                                   status_approved: true,
-                                   status_published: true)
+      @q4    = FactoryGirl.create(:quarter, :no_deadlines_passed,
+                                  :earlier_start_date, year: 2015,
+                                  season: "winter")
+      @p_new = FactoryGirl.create(:project, quarter: @q4,
+                                  advisor: @advisor, status: "accepted",
+                                  status_published: true)
+      @sub   = FactoryGirl.create(:submission, student: @student,
+                                  project: @p_new,
+                                  status: "accepted",
+                                  status_approved: true,
+                                  status_published: true)
+      ldap_sign_in(@student)
     end
 
-    before(:each) { ldap_sign_in(@student) }
-
-    context "viewing a submission with a path in a valid quarter" do
+    context "viewing a submission with a path in the valid quarter" do
       it "should be valid" do
         visit q_path(@sub)
         expect(current_path).to eq(q_path(@sub))
@@ -306,6 +303,59 @@ describe "Interacting with records from different quarters", type: :feature do
         expect(current_path).to eq(q_path(@sub))
       end
     end
+  end
+
+  context "when viewing evaluations" do
+    before do
+      @q4       = FactoryGirl.create(:quarter, :no_deadlines_passed,
+                                     :earlier_start_date, year: 2015,
+                                     season: "winter")
+      @p_new    = FactoryGirl.create(:project, quarter: @q4,
+                                     advisor: @advisor, status: "accepted",
+                                     status_published: true)
+      @sub      = FactoryGirl.create(:submission, student: @student,
+                                     project: @p_new,
+                                     status: "accepted",
+                                     status_approved: true,
+                                     status_published: true)
+      @template = FactoryGirl.create(:evaluation_template, quarter: @q4,
+                                     start_date: DateTime.current - 1.day,
+                                     end_date: DateTime.current + 1.day,
+                                     name: "Midterm",
+                                     active: true)
+      @eval     = FactoryGirl.create(:evaluation, submission: @sub,
+                                     advisor_id: @advisor.id,
+                                     student_id: @student.id,
+                                     project_id: @p_new.id,
+                                     evaluation_template_id: @template.id)
+      ldap_sign_in(@advisor)
+    end
+
+    context "viewing an evaluation with a path in the valid quarter" do
+      it "should be valid" do
+        visit q_path(@eval)
+        expect(current_path).to eq(q_path(@eval))
+        expect(page).to have_content(@p_new.name)
+      end
+    end
+
+    context "viewing an evaluation with a path without a quarter" do
+      it "should redirect to the path with the valid quarter" do
+        visit evaluation_path(@eval, year: nil, season: nil)
+        expect(current_path).to eq(q_path(@eval))
+        expect(page).not_to have_selector("div.alert.alert-danger")
+      end
+    end
+
+    context "viewing an evaluation with a path in an invalid quarter" do
+      it "should redirect to the path with the valid quarter" do
+        visit evaluation_path(@eval, year: @q3.year, season: @q3.season)
+        expect(current_path).to eq(q_path(@eval))
+        expect(page).not_to have_selector("div.alert.alert-danger")
+      end
+    end
+
+    # TODO: Global evaluations path (remove?)
   end
 
   context "viewing projects and submissions pages" do

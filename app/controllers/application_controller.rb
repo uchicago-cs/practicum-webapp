@@ -43,6 +43,11 @@ class ApplicationController < ActionController::Base
       redirect_to root_url, flash:
         { error: "You must apply to a project in a quarter." } and return
     end
+
+    if (/\A\/submissions\/\d\/evaluations\/new\Z/).match(request.path)
+      redirect_to root_url, flash:
+        { error: "You must create an evaluation in a quarter." } and return
+    end
   end
 
   def authenticate_user!
