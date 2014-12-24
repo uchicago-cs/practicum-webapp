@@ -308,7 +308,126 @@ describe "Interacting with records from different quarters", type: :feature do
     end
   end
 
-  # viewing as an admin, as a student, etc...
+  context "viewing projects and submissions pages" do
+    before do
+      @q4 = FactoryGirl.create(:quarter, :no_deadlines_passed,
+                               :earlier_start_date, year: 2015,
+                               season: "winter")
+      @q5 = FactoryGirl.create(:quarter, start_date: DateTime.now + 1.year,
+                               year: 2016,
+                               season: "winter")
+      @q5.update_column(:start_date, DateTime.yesterday)
+      @q5.update_column(:project_proposal_deadline, DateTime.now - 5.hours)
 
-  # viewing evaluations (as an admin and as an advisor)
+      @p1 = FactoryGirl.build(:project, quarter: @q1,
+                               advisor: @advisor, status: "accepted",
+                               status_published: true)
+      @p2 = FactoryGirl.build(:project, quarter: @q2,
+                               advisor: @advisor, status: "accepted",
+                               status_published: true)
+      @p3 = FactoryGirl.build(:project, quarter: @q3,
+                               advisor: @advisor, status: "accepted",
+                               status_published: true)
+      @p4 = FactoryGirl.build(:project, quarter: @q4,
+                               advisor: @advisor, status: "accepted",
+                               status_published: true)
+      @p5 = FactoryGirl.build(:project, quarter: @q5,
+                               advisor: @advisor, status: "accepted",
+                              status_published: true)
+      @p1.save(validate: false)
+      @p2.save(validate: false)
+      @p3.save(validate: false)
+      @p4.save(validate: false)
+      @p5.save(validate: false)
+    end
+
+    context "on the global projects page" do
+      it "should show projects in the active and future quarters" do
+        visit projects_path
+        expect(page).not_to have_content(@p1.name)
+        expect(page).not_to have_content(@p2.name)
+        expect(page).not_to have_content(@p3.name)
+        expect(page).to have_content(@p4.name)
+        expect(page).to have_content(@p5.name)
+      end
+    end
+
+    context "on quarter-specific projects pages" do
+      it "should show the projects in the respective quarters" do
+        visit projects_path(year: @q1.year, season: @q1.season)
+        expect(page).to have_content(@p1.name)
+        # We expect to see two table rows: the head row and the only proj row.
+        expect(page).to have_selector("table tr", maximum: 2)
+
+        visit projects_path(year: @q2.year, season: @q2.season)
+        expect(page).to have_content(@p2.name)
+        expect(page).to have_selector("table tr", maximum: 2)
+
+        visit projects_path(year: @q3.year, season: @q3.season)
+        expect(page).to have_content(@p3.name)
+        expect(page).to have_selector("table tr", maximum: 2)
+
+        visit projects_path(year: @q4.year, season: @q4.season)
+        expect(page).to have_content(@p4.name)
+        expect(page).to have_selector("table tr", maximum: 2)
+
+        visit projects_path(year: @q5.year, season: @q5.season)
+        expect(page).to have_content(@p5.name)
+        expect(page).to have_selector("table tr", maximum: 2)
+      end
+    end
+
+    context "on submissions pages" do
+      before do
+        @s1 = FactoryGirl.build(:submission, student: @student, project: @p1,
+                                status: "pending", status_approved: false,
+                                status_published: false)
+        @s2 = FactoryGirl.build(:submission, student: @student, project: @p2,
+                                status: "pending", status_approved: false,
+                                status_published: false)
+        @s3 = FactoryGirl.build(:submission, student: @student, project: @p3,
+                                status: "pending", status_approved: false,
+                                status_published: false)
+        @s4 = FactoryGirl.build(:submission, student: @student, project: @p4,
+                                status: "pending", status_approved: false,
+                                status_published: false)
+        @s5 = FactoryGirl.build(:submission, student: @student, project: @p5,
+                                status: "pending", status_approved: false,
+                                status_published: false)
+        @s1.save(validate: false)
+        @s2.save(validate: false)
+        @s3.save(validate: false)
+        @s4.save(validate: false)
+        @s5.save(validate: false)
+
+        ldap_sign_in(@admin)
+      end
+
+      # Note: there is no global submissions page.
+
+      context "on quarter-specific submissions pages" do
+        it "should show the submissions in the respective quarters" do
+          visit submissions_path(year: @q1.year, season: @q1.season)
+          expect(page).to have_content(@s1.project.name)
+          expect(page).to have_selector("table tr", maximum: 2)
+
+          visit submissions_path(year: @q2.year, season: @q2.season)
+          expect(page).to have_content(@s2.project.name)
+          expect(page).to have_selector("table tr", maximum: 2)
+
+          visit submissions_path(year: @q3.year, season: @q3.season)
+          expect(page).to have_content(@s3.project.name)
+          expect(page).to have_selector("table tr", maximum: 2)
+
+          visit submissions_path(year: @q4.year, season: @q4.season)
+          expect(page).to have_content(@s4.project.name)
+          expect(page).to have_selector("table tr", maximum: 2)
+
+          visit submissions_path(year: @q5.year, season: @q5.season)
+          expect(page).to have_content(@s5.project.name)
+          expect(page).to have_selector("table tr", maximum: 2)
+        end
+      end
+    end
+  end
 end

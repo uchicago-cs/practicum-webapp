@@ -156,7 +156,7 @@ RSpec.describe Notifier, type: :mailer do
   context "when a project proposal's status is changed" do
     before do
       @admin = FactoryGirl.create(:admin)
-      @project = FactoryGirl.create(:project)
+      @project = FactoryGirl.create(:project, :in_current_quarter)
       @project.this_user = @admin
     end
 

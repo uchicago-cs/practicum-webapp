@@ -57,7 +57,7 @@ RSpec.describe User, :type => :model do
     describe "who tries to create a submission" do
       before do
         @quarter = FactoryGirl.create(:quarter, :no_deadlines_passed)
-        @project = FactoryGirl.create(:project)
+        @project = FactoryGirl.create(:project, quarter: @quarter)
       end
       it "should fail" do
         expect{FactoryGirl.create(:submission, project: @project,
