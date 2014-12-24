@@ -358,7 +358,7 @@ describe "Interacting with records from different quarters", type: :feature do
     # TODO: Global evaluations path (remove?)
   end
 
-  context "viewing projects and submissions pages" do
+  context "viewing projects, submissions, and evaluations pages" do
     before do
       @q4 = FactoryGirl.create(:quarter, :no_deadlines_passed,
                                :earlier_start_date, year: 2015,
@@ -389,6 +389,29 @@ describe "Interacting with records from different quarters", type: :feature do
       @p3.save(validate: false)
       @p4.save(validate: false)
       @p5.save(validate: false)
+
+      @s1 = FactoryGirl.build(:submission, student: @student, project: @p1,
+                              status: "accepted", status_approved: true,
+                              status_published: true)
+      @s2 = FactoryGirl.build(:submission, student: @student, project: @p2,
+                              status: "accepted", status_approved: true,
+                              status_published: true)
+      @s3 = FactoryGirl.build(:submission, student: @student, project: @p3,
+                              status: "accepted", status_approved: true,
+                              status_published: true)
+      @s4 = FactoryGirl.build(:submission, student: @student, project: @p4,
+                              status: "accepted", status_approved: true,
+                              status_published: true)
+      @s5 = FactoryGirl.build(:submission, student: @student, project: @p5,
+                              status: "accepted", status_approved: true,
+                              status_published: true)
+      # Note: these submisions do not have to be accepted, approved, and
+      # published for these specs to pass.
+      @s1.save(validate: false)
+      @s2.save(validate: false)
+      @s3.save(validate: false)
+      @s4.save(validate: false)
+      @s5.save(validate: false)
     end
 
     context "on the global projects page" do
@@ -428,30 +451,7 @@ describe "Interacting with records from different quarters", type: :feature do
     end
 
     context "on submissions pages" do
-      before do
-        @s1 = FactoryGirl.build(:submission, student: @student, project: @p1,
-                                status: "pending", status_approved: false,
-                                status_published: false)
-        @s2 = FactoryGirl.build(:submission, student: @student, project: @p2,
-                                status: "pending", status_approved: false,
-                                status_published: false)
-        @s3 = FactoryGirl.build(:submission, student: @student, project: @p3,
-                                status: "pending", status_approved: false,
-                                status_published: false)
-        @s4 = FactoryGirl.build(:submission, student: @student, project: @p4,
-                                status: "pending", status_approved: false,
-                                status_published: false)
-        @s5 = FactoryGirl.build(:submission, student: @student, project: @p5,
-                                status: "pending", status_approved: false,
-                                status_published: false)
-        @s1.save(validate: false)
-        @s2.save(validate: false)
-        @s3.save(validate: false)
-        @s4.save(validate: false)
-        @s5.save(validate: false)
-
-        ldap_sign_in(@admin)
-      end
+      before { ldap_sign_in(@admin) }
 
       # Note: there is no global submissions page.
 
@@ -475,6 +475,66 @@ describe "Interacting with records from different quarters", type: :feature do
 
           visit submissions_path(year: @q5.year, season: @q5.season)
           expect(page).to have_content(@s5.project.name)
+          expect(page).to have_selector("table tr", maximum: 2)
+        end
+      end
+    end
+
+    context "on evaluations pages" do
+      before do
+        @template = FactoryGirl.create(:evaluation_template, quarter: @q4,
+                                       start_date: DateTime.current - 1.day,
+                                       end_date: DateTime.current + 1.day,
+                                       name: "Midterm",
+                                       active: true)
+        @e1     = FactoryGirl.create(:evaluation, submission: @s1,
+                                    advisor_id: @advisor.id,
+                                    student_id: @student.id,
+                                    project_id: @p1.id,
+                                    evaluation_template_id: @template.id)
+        @e2     = FactoryGirl.create(:evaluation, submission: @s2,
+                                    advisor_id: @advisor.id,
+                                    student_id: @student.id,
+                                    project_id: @p2.id,
+                                    evaluation_template_id: @template.id)
+        @e3     = FactoryGirl.create(:evaluation, submission: @s3,
+                                    advisor_id: @advisor.id,
+                                    student_id: @student.id,
+                                    project_id: @p3.id,
+                                    evaluation_template_id: @template.id)
+        @e4     = FactoryGirl.create(:evaluation, submission: @s4,
+                                    advisor_id: @advisor.id,
+                                    student_id: @student.id,
+                                    project_id: @p4.id,
+                                    evaluation_template_id: @template.id)
+        @e5     = FactoryGirl.create(:evaluation, submission: @s5,
+                                    advisor_id: @advisor.id,
+                                    student_id: @student.id,
+                                    project_id: @p5.id,
+                                    evaluation_template: @template)
+        ldap_sign_in(@admin)
+      end
+
+      context "on the global evaluations page" do
+        # redirect or invalid path?
+      end
+
+      context "on quarter-specific evaluations pages" do
+        it "should show the projects in the respective quarters" do
+          visit evaluations_path(year: @q1.year, season: @q1.season)
+          expect(page).to have_content(@p1.name)
+          expect(page).to have_selector("table tr", maximum: 2)
+          visit evaluations_path(year: @q2.year, season: @q2.season)
+          expect(page).to have_content(@p2.name)
+          expect(page).to have_selector("table tr", maximum: 2)
+          visit evaluations_path(year: @q3.year, season: @q3.season)
+          expect(page).to have_content(@p3.name)
+          expect(page).to have_selector("table tr", maximum: 2)
+          visit evaluations_path(year: @q4.year, season: @q4.season)
+          expect(page).to have_content(@p4.name)
+          expect(page).to have_selector("table tr", maximum: 2)
+          visit evaluations_path(year: @q5.year, season: @q5.season)
+          expect(page).to have_content(@p5.name)
           expect(page).to have_selector("table tr", maximum: 2)
         end
       end

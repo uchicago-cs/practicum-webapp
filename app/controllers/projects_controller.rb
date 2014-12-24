@@ -323,11 +323,11 @@ class ProjectsController < ApplicationController
   end
 
   # TODO: DRY up (see methods with same name in submissions_controller.rb,
-  # submissions_controller.rb)
+  # evaluations_controller.rb)
   def redirect_if_wrong_quarter_params
     y = @project.quarter.year
     s = @project.quarter.season
-    if params[:year] and params[:season]
+    if params[:year] and params[:season] # is this `if` needed?
       if params[:year].to_i != y or params[:season] != s
         redirect_to q_path(@project) and return
       end

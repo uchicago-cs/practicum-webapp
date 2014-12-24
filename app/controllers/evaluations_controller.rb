@@ -11,6 +11,21 @@ class EvaluationsController < ApplicationController
   before_action :redirect_if_wrong_quarter_params, only: :show
 
   def index
+    # TODO: DRY up (see ProjectsController#index)
+    if Quarter.count == 0
+      flash[:error] = "There are no quarters. A quarter must exist before " +
+        "you can view evaluations."
+      redirect_to root_url and return
+    end
+
+    if params[:year] and params[:season]
+      @quarter = Quarter.where(year: params[:year],
+                               season: params[:season]).take
+      @evaluations = Evaluation.in_quarter(@quarter)
+    else
+      flash[:error] = "You must view evaluations in a quarter."
+      redirect_to root_url and return
+    end
   end
 
   def show
@@ -74,10 +89,8 @@ class EvaluationsController < ApplicationController
   def redirect_if_wrong_quarter_params
     y = @evaluation.quarter.year
     s = @evaluation.quarter.season
-    # if params[:year] and params[:season]
-      if params[:year].to_i != y or params[:season] != s
-        redirect_to q_path(@evaluation) and return
-      end
-    # end
+    if params[:year].to_i != y or params[:season] != s
+      redirect_to q_path(@evaluation) and return
+    end
   end
 end
