@@ -336,7 +336,7 @@ class ProjectsController < ApplicationController
   end
 
   def redirect_if_no_quarter_params
-    if !params[:quarter] or !params[:season]
+    if !params[:year] or !params[:season]
       flash[:error] = "You may only view pending projects in specific quarters."
       redirect_to root_path and return
     end

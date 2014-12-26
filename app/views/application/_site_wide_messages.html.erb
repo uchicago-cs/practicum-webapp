@@ -6,3 +6,12 @@
     </p>
   </div>
 <% end %>
+
+<% if (can? :manage, :all) and Quarter.active_quarters.empty? %>
+  <div class="alert alert-warning">
+    <p>
+      There is no active quarter. An active quarter must be made for the site's
+      features to work properly.
+    </p>
+  </div>
+<% end %>
