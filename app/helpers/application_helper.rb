@@ -32,7 +32,7 @@ module ApplicationHelper
     send(path_type, obj, h)
   end
 
-  def q_url(obj, url_type=obj.class.name.to_sym)
+  def q_url(obj, url_type=obj.class.name.to_sym, opts={})
     # Similar to q_link_to but for url helpers, and does not wrap the link in
     # a link_to.
 
