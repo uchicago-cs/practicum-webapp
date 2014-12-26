@@ -8,7 +8,7 @@ describe "Interacting with records from different quarters", type: :feature do
 
   after(:each) { Warden.test_reset! }
 
-  before(:each) do
+  before do
     @q1            = FactoryGirl.create(:quarter,
                                        :inactive_and_deadlines_passed)
     @q2            = FactoryGirl.create(:quarter,
@@ -535,6 +535,105 @@ describe "Interacting with records from different quarters", type: :feature do
           expect(page).to have_selector("table tr", maximum: 2)
           visit evaluations_path(year: @q5.year, season: @q5.season)
           expect(page).to have_content(@p5.name)
+          expect(page).to have_selector("table tr", maximum: 2)
+        end
+      end
+    end
+  end
+
+  context "when viewing pending projects" do
+
+    before do
+      @p_1 = FactoryGirl.build(:project, advisor: @advisor,
+                               quarter: @q1,
+                               status: "pending",
+                               status_published: false,
+                               name: "abcdefghi",
+                               description: "a",
+                               expected_deliverables: "a",
+                               prerequisites: "a")
+      @p_2 = FactoryGirl.build(:project, advisor: @advisor,
+                               quarter: @q2,
+                               status: "pending",
+                               status_published: false,
+                               name: "jklmnop",
+                               description: "n",
+                               expected_deliverables: "a",
+                               prerequisites: "n")
+
+      @p_1.save(validate: false)
+      @p_2.save(validate: false)
+    end
+
+    context "as an admin" do
+      before { ldap_sign_in(@admin) }
+      context "in specific quarters" do
+        it "should show the right projects on the right pages" do
+          visit pending_projects_path(year: @q1.year, season: @q1.season)
+          expect(page).to have_content(@p_1.name)
+          expect(page).not_to have_content(@p_2.name)
+          expect(page).to have_selector("table tr", maximum: 2)
+
+          visit pending_projects_path(year: @q2.year, season: @q2.season)
+          expect(page).to have_content(@p_2.name)
+          expect(page).not_to have_content(@p_1.name)
+          expect(page).to have_selector("table tr", maximum: 2)
+        end
+      end
+
+      context "on the global 'pending projects' page" do
+        it "should redirect to the homepage" do
+          visit pending_projects_path
+          expect(current_path).to eq(root_path)
+          expect(page).to have_selector("div.alert.alert-danger")
+        end
+      end
+    end
+  end
+
+  context "when viewing submission drafts" do
+
+    before do
+      @p_1 = FactoryGirl.build(:project, advisor: @advisor,
+                               quarter: @q1,
+                               status: "accepted",
+                               status_published: true,
+                               name: "abcdefghi",
+                               description: "a",
+                               expected_deliverables: "n",
+                               prerequisites: "n")
+      @p_2 = FactoryGirl.build(:project, advisor: @advisor,
+                               quarter: @q2,
+                               status: "accepted",
+                               status_published: true,
+                               name: "jklmnop",
+                               description: "n",
+                               expected_deliverables: "a",
+                               prerequisites: "n")
+      @p_1.save(validate: false)
+      @p_2.save(validate: false)
+      @s_1 = FactoryGirl.build(:submission, student: @student, project: @p_1,
+                               status: "draft", status_approved: false,
+                               status_published: false)
+      @s_2 = FactoryGirl.build(:submission, student: @student, project: @p_2,
+                               status: "draft", status_approved: false,
+                               status_published: false)
+      @s_1.save(validate: false)
+      @s_2.save(validate: false)
+    end
+
+    context "in a specific quarter" do
+      context "as an admin" do
+        before { ldap_sign_in(@admin) }
+        it "should show the right submission drafts on the right pages" do
+          visit submission_drafts_path(year: @q1.year, season: @q1.season)
+          expect(page).to have_content(@s_1.project.name)
+          expect(page).not_to have_content(@s_2.project.name)
+          expect(page).to have_selector("table tr", maximum: 2)
+
+          visit submission_drafts_path(year: @q2.year, season: @q2.season)
+          expect(page).to have_content(@s_2.project.name)
+          expect(page).not_to have_content(@s_1.project.name)
           expect(page).to have_selector("table tr", maximum: 2)
         end
       end

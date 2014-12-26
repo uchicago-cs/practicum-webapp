@@ -1,6 +1,6 @@
-<h2><%= formatted_current_quarter %> Application Drafts</h2>
+<h2><%= formatted_quarter_by_params %> Application Drafts</h2>
 
-<% if @current_unsubmitted_submissions.count > 0 %>
+<% if @unsubmitted_submissions.count > 0 %>
   <table class="table table-bordered">
     <tr>
       <th>Student</th>
@@ -13,7 +13,7 @@
       <th>Notes</th>
     </tr>
     <tbody>
-      <% @current_unsubmitted_submissions.each do |submission| %>
+      <% @unsubmitted_submissions.each do |submission| %>
         <%= render 'submission_draft_short', submission: submission %>
       <% end %>
     </tbody>

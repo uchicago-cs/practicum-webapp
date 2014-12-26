@@ -2,12 +2,12 @@ class PagesController < ApplicationController
 
   before_action :authenticate_user!, only: [:submissions,
                                             :request_advisor_access]
-  before_action :is_admin?, only: :submissions
+  before_action :is_admin?, only: [:submissions, :submission_drafts]
   before_action :get_submitted_submissions,
                 only: [:submissions, :publish_all_statuses,
                        :approve_all_statuses, :change_all_statuses]
-  before_action :get_current_unsubmitted_submissions,
-                only: :submission_drafts
+  before_action :get_unsubmitted_submissions, only: :submission_drafts
+  before_action :redirect_if_invaid_quarter_params, only: :submission_drafts
   before_action :get_current_decided_submissions,
                 only: [:publish_all_statuses, :approve_all_statuses,
                        :change_all_statuses]
@@ -104,9 +104,10 @@ class PagesController < ApplicationController
     end
   end
 
-  def get_current_unsubmitted_submissions
-    @current_unsubmitted_submissions =
-      Submission.current_unsubmitted_submissions
+  def get_unsubmitted_submissions
+    quarter = Quarter.where(year: params[:year], season: params[:season]).take
+    @unsubmitted_submissions =
+      Submission.unsubmitted_submissions(quarter)
   end
 
   def get_current_decided_submissions
@@ -117,6 +118,20 @@ class PagesController < ApplicationController
   def send_advisor_request_mail
     User.admins.each do |admin|
       Notifier.request_for_advisor_access(current_user, admin).deliver
+    end
+  end
+
+  # TODO: Reuse this among the relevant controller actions?
+  def redirect_if_invaid_quarter_params
+    if params[:year] and params[:season]
+      if Quarter.where(year: params[:year], season: params[:season]).empty?
+        flash[:error] = "Invalid quarter."
+        redirect_to root_path and return
+      end
+    else
+      msg = "Application drafts must be viewed within a specific quarter."
+      flash[:error] = msg
+      redirect_to root_path and return;
     end
   end
 

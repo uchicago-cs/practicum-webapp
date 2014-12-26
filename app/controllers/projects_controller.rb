@@ -9,6 +9,7 @@ class ProjectsController < ApplicationController
   before_action      :get_year_and_season,       only: [:new, :create, :edit,
                                                         :update]
   before_action      :redirect_if_wrong_quarter_params, only: :show
+  before_action      :redirect_if_no_quarter_params, only: :pending
   before_action(only: [:update_status, :update]) { |c|
     c.get_this_user_for_object(@project) }
 
@@ -331,6 +332,13 @@ class ProjectsController < ApplicationController
       if params[:year].to_i != y or params[:season] != s
         redirect_to q_path(@project) and return
       end
+    end
+  end
+
+  def redirect_if_no_quarter_params
+    if !params[:quarter] or !params[:season]
+      flash[:error] = "You may only view pending projects in specific quarters."
+      redirect_to root_path and return
     end
   end
 
