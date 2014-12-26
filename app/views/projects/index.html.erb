@@ -1,6 +1,8 @@
 <h2><%= formatted_quarter_by_params %> Projects</h2>
 
-<%= render 'student_submission_deadline' %>
+<% if @projects.present? %>
+  <%= render 'student_submission_deadline' %>
+<% end %>
 
 <% if @future_quarters.present? %>
   <% @future_quarters.each do |q| %>
