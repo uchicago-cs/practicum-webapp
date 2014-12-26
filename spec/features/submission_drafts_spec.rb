@@ -96,6 +96,22 @@ describe "Drafting a submission", type: :feature do
           expect(page).to have_content(@project.name)
           expect(page).to have_content("Draft")
         end
+
+        visit submissions_path(year: @y, season: @s)
+        expect(page).not_to have_content(@project.name)
+        expect(page).not_to have_content("Draft")
+      end
+
+      it "should not be visible to non-admin users" do
+        ldap_sign_in(@advisor)
+        visit submission_drafts_path(year: @y, season: @s)
+        expect(current_path).to eq(root_path)
+        expect(page).to have_selector("div.alert.alert-danger")
+
+        ldap_sign_in(@student)
+        visit submission_drafts_path(year: @y, season: @s)
+        expect(current_path).to eq(root_path)
+        expect(page).to have_selector("div.alert.alert-danger")
       end
 
       context "viewing the site as the advisor" do
