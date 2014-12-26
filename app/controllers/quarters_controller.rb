@@ -80,9 +80,9 @@ class QuartersController < ApplicationController
 
   def quarter_belongs_to_projects?
     if @quarter.projects.count > 0
-      flash.now[:error] = "Projects have already been made in this quarter, "\
+      flash[:error] = "Projects have already been made in this quarter, "\
       "so you cannot delete it."
-      render 'index'
+      redirect_to quarters_path and return
     end
   end
 
