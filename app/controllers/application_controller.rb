@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
   before_action :show_advisor_status_pending_message
   before_action :redirect_if_invalid_quarter
   before_action :redirect_if_no_quarter_and_new_record
+  before_action :redirect_if_no_quarters_exist
 
   helper_method :is_admin?
   helper_method :authenticate_user!
@@ -113,6 +114,16 @@ class ApplicationController < ActionController::Base
         "an administrator. You will be able to submit project proposals " +
         "once your request is approved."
       flash.now[:notice] = message
+    end
+  end
+
+  def redirect_if_no_quarters_exist
+    unless Quarter.all.present?
+      unless [new_quarter_path, quarters_path, root_path].include? request.path
+        flash[:error] = "There are no quarters. An admin must create a " +
+          "quarter before the site can be used."
+        redirect_to root_path and return
+      end
     end
   end
 

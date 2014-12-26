@@ -1,31 +1,37 @@
 <h2>Quarters</h2>
 
-<% if can? :manage, Quarter %>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-	<th>Quarter</th>
-	<th>Edit</th>
-	<th>Delete</th>
-	<th>Notes</th>
-      </tr>
-    </thead>
+<% if Quarter.all.present? %>
+  <% if can? :manage, Quarter %>
+    <table class="table table-bordered">
+      <thead>
+	<tr>
+	  <th>Quarter</th>
+	  <th>Edit</th>
+	  <th>Delete</th>
+	  <th>Notes</th>
+	</tr>
+      </thead>
 
-    <tbody>
-      <% @quarters.each do |quarter| %>
-	<%= render 'quarter_short', quarter: quarter %>
-      <% end %>
-    </tbody>
-  </table>
+      <tbody>
+	<% @quarters.each do |quarter| %>
+	  <%= render 'quarter_short', quarter: quarter %>
+	<% end %>
+      </tbody>
+    </table>
 
-  Click <%= link_to "here", new_quarter_path %> to make a new quarter.
-<% else %>
+  <% else %>
 
-  <% @quarters.each do |quarter| %>
-    <p>
-      <%= link_to formatted_quarter(quarter), quarter %>
-      <%= "(current)" if quarter.current? %>
-    </p>
+    <% @quarters.each do |quarter| %>
+      <p>
+	<%= link_to formatted_quarter(quarter), quarter %>
+	<%= "(current)" if quarter.current? %>
+      </p>
+    <% end %>
+
   <% end %>
-
+<% else %>
+  <p>There are currently no quarters.</p>
+  <% if can? :manage, Quarter %>
+    <p>Click <%= link_to "here", new_quarter_path %> to make a new quarter.</p>
+  <% end %>
 <% end %>
