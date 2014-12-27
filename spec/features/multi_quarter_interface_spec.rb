@@ -696,4 +696,8 @@ describe "Interacting with records from different quarters", type: :feature do
     end
   end
 
+  context "when an admin creates a project for an advisor in a quarter" do
+
+  end
+
 end
