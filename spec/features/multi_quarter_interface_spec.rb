@@ -543,7 +543,7 @@ describe "Interacting with records from different quarters", type: :feature do
 
   context "viewing quarter-specific pages" do
     before do
-          @p_1 = FactoryGirl.build(:project, advisor: @advisor,
+      @p_1 = FactoryGirl.build(:project, advisor: @advisor,
                                quarter: @q1,
                                status: "accepted",
                                status_published: true,
@@ -563,11 +563,11 @@ describe "Interacting with records from different quarters", type: :feature do
       @p_2.save(validate: false)
 
       @s_1 = FactoryGirl.build(:submission, student: @student, project: @p_1,
-                               status: "draft", status_approved: false,
-                               status_published: false)
-      @s_2 = FactoryGirl.build(:submission, student: @student, project: @p_2,
-                               status: "draft", status_approved: false,
-                               status_published: false)
+                               status: "accepted", status_approved: true,
+                               status_published: true)
+      @s_2 = FactoryGirl.build(:submission, student: @other_student,
+                               project: @p_2, status: "accepted",
+                               status_approved: true, status_published: true)
       @s_1.save(validate: false)
       @s_2.save(validate: false)
     end
@@ -672,7 +672,27 @@ describe "Interacting with records from different quarters", type: :feature do
     end
 
     context "visiting an advisor's my_students page in different quarters" do
+      before { ldap_sign_in(@advisor) }
 
+      it "should show the right students on the right pages" do
+        visit(users_students_path(year: @q1.year, season: @q1.season))
+        expect(current_path).to eq(users_students_path(year: @q1.year,
+                                                       season: @q1.season))
+        expect(page).to have_content(@s_1.student.first_name + " " +
+                                     @s_1.student.last_name)
+        expect(page).not_to have_content(@s_2.student.first_name + " " +
+                                         @s_2.student.last_name)
+        expect(page).to have_selector("table tr", maximum: 2)
+
+        visit(users_students_path(year: @q2.year, season: @q2.season))
+        expect(current_path).to eq(users_students_path(year: @q2.year,
+                                                       season: @q2.season))
+        expect(page).to have_content(@s_2.student.first_name + " " +
+                                     @s_2.student.last_name)
+        expect(page).not_to have_content(@s_1.student.first_name + " " +
+                                         @s_1.student.last_name)
+        expect(page).to have_selector("table tr", maximum: 2)
+      end
     end
   end
 

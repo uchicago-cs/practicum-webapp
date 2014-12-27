@@ -48,8 +48,8 @@ class UsersController < ApplicationController
 
   # Quarter-specific
   def my_students
-    @quarter  = Quarter.where(year: params[:year], season: params[:season]).take
-    @students = @user.students_and_submissions_in_quarter(@quarter)
+    q  = Quarter.where(year: params[:year], season: params[:season]).take
+    @students = @user.students_and_submissions_in_quarter(q)
   end
 
   # All of this user's projects
