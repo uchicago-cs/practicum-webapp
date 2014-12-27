@@ -24,6 +24,14 @@ class ApplicationController < ActionController::Base
   helper_method :authenticate_user!
   helper_method :current_user
 
+  def redirect_if_wrong_quarter_params(obj)
+    y = obj.quarter.year
+    s = obj.quarter.season
+    if params[:year].to_i != y or params[:season] != s
+      redirect_to q_path(obj) and return
+    end
+  end
+
   def redirect_if_invalid_quarter
     if params[:year] and params[:season]
       if Quarter.where(year: params[:year], season: params[:season]).empty?

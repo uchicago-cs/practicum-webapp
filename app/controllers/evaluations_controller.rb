@@ -8,7 +8,8 @@ class EvaluationsController < ApplicationController
   before_action :submission_status_sufficient?, only: [:new, :create]
   before_action :get_template
   before_action :get_student,                   only: [:new, :create]
-  before_action :redirect_if_wrong_quarter_params, only: :show
+  before_action(only: :show) { |c|
+    c.redirect_if_wrong_quarter_params(@evaluation) }
 
   def index
     # TODO: DRY up (see ProjectsController#index)
@@ -84,13 +85,5 @@ class EvaluationsController < ApplicationController
 
   def get_student
     @student = Submission.find(params[:submission_id]).student
-  end
-
-  def redirect_if_wrong_quarter_params
-    y = @evaluation.quarter.year
-    s = @evaluation.quarter.season
-    if params[:year].to_i != y or params[:season] != s
-      redirect_to q_path(@evaluation) and return
-    end
   end
 end

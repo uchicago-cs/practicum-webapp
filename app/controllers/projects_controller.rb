@@ -8,10 +8,11 @@ class ProjectsController < ApplicationController
   before_action      :can_create_projects?,      only: [:new, :create]
   before_action      :get_year_and_season,       only: [:new, :create, :edit,
                                                         :update]
-  before_action      :redirect_if_wrong_quarter_params, only: :show
   before_action      :redirect_if_no_quarter_params, only: :pending
   before_action(only: [:update_status, :update]) { |c|
     c.get_this_user_for_object(@project) }
+  before_action(only: :show) { |c|
+    c.redirect_if_wrong_quarter_params(@project) }
 
   def new
   end
@@ -325,15 +326,6 @@ class ProjectsController < ApplicationController
 
   # TODO: DRY up (see methods with same name in submissions_controller.rb,
   # evaluations_controller.rb)
-  def redirect_if_wrong_quarter_params
-    y = @project.quarter.year
-    s = @project.quarter.season
-    if params[:year] and params[:season] # is this `if` needed?
-      if params[:year].to_i != y or params[:season] != s
-        redirect_to q_path(@project) and return
-      end
-    end
-  end
 
   def redirect_if_no_quarter_params
     if !params[:year] or !params[:season]
