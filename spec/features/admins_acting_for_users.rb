@@ -28,17 +28,22 @@ describe "Admins creating records for advisors and students", type: :feature do
 
     context "when the admin fills out and submits the form" do
       before do
-        fill_in "Title", with: "a"
+        fill_in "Title", with: "abcabcabc"
         fill_in "Advisor", with: @advisor.email
-        fill_in "Description", with: "a"
-        fill_in "Expected deliverables", with: "a"
-        fill_in "Prerequisites", with: "a"
+        fill_in "Description", with: "defdefdef"
+        fill_in "Expected deliverables", with: "ghighighi"
+        fill_in "Prerequisites", with: "jkljkljkl"
       end
 
-      it "should be valid and create the proposal" do
+      it "should create the proposal and be visible to the advisor" do
         expect { click_button "Create my proposal" }.
           to change{ Project.count }.by(1)
         expect(Project.find(1).advisor).to eq(@advisor)
+        logout
+        ldap_sign_in(@advisor)
+        visit q_path(Project.find(1))
+        expect(current_path).to eq(q_path(Project.find(1)))
+        expect(page).to have_content("jkljkljkl")
       end
     end
   end
@@ -59,16 +64,34 @@ describe "Admins creating records for advisors and students", type: :feature do
     context "when the admin fills out and submits the form" do
       before do
         fill_in "Applicant", with: @student.email
-        fill_in "Interests", with: "a"
-        fill_in "Qualifications", with: "a"
-        fill_in "Courses", with: "a"
+        fill_in "Interests", with: "abcdefg"
+        fill_in "Qualifications", with: "hijklmnop"
+        fill_in "Courses", with: "qrstuv"
       end
 
-      it "should be valid and create the proposal" do
+      it "should create the submission and be visible to the student" do
         expect { click_button "Submit my application" }.
           to change{ Submission.count }.by(1)
         expect(Submission.find(1).student).to eq(@student)
+        logout
+        ldap_sign_in(@student)
+        visit q_path(Submission.find(1))
+        expect(current_path).to eq(q_path(Submission.find(1)))
+        expect(page).to have_content("qrstuv")
       end
+
+      # context "viewing the submission as the student" do
+      #   before do
+      #     logout
+      #     ldap_sign_in(@student)
+      #   end
+
+      #   it "should be visible to the student in the right quarter" do
+      #     visit q_path(Submission.find(1))
+      #     expect(current_path).to eq(q_path(Submission.find(1)))
+      #     expect(page).to have_content("qrstuv")
+      #   end
+      # end
     end
   end
 end
