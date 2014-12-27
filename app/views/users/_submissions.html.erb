@@ -1,0 +1,27 @@
+<h2>
+  <%= display_name(@user) %>'s <%= submission_quarter %> Applications
+</h2>
+
+<% if can? :create, Submission %>
+
+  <% if @submissions.present? %>
+     <table class="table table-bordered">
+      <tr>
+	<th>Project name</th>
+	<% if can? :manage, @user %>
+	  <th>Date created</th>
+	<% end %>
+	<th>Status</th>
+	<th>Notes</th>
+      </tr>
+      <tbody>
+	<% @submissions.each do |submission| %>
+	  <%= render 'submission', submission: submission %>
+        <% end %>
+      </tbody>
+     </table>
+  <% else %>
+     <p>You have not applied to any projects yet.</p>
+  <% end %>
+
+<% end %>

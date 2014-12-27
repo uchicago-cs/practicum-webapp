@@ -647,7 +647,28 @@ describe "Interacting with records from different quarters", type: :feature do
     end
 
     context "visiting a student's my_submissions page in different quarters" do
+      before { ldap_sign_in(@student) }
 
+      it "should show the right submissions on the right pages" do
+        visit(users_submissions_path(year: @q1.year, season: @q1.season))
+        expect(current_path).to eq(users_submissions_path(year: @q1.year,
+                                                          season: @q1.season))
+        expect(page).to have_content(@s_1.project.name)
+        expect(page).not_to have_content(@s_2.project.name)
+        expect(page).to have_selector("table tr", maximum: 2)
+
+        visit(users_submissions_path(year: @q2.year, season: @q2.season))
+        expect(current_path).to eq(users_submissions_path(year: @q2.year,
+                                                          season: @q2.season))
+        expect(page).to have_content(@s_2.project.name)
+        expect(page).not_to have_content(@s_1.project.name)
+        expect(page).to have_selector("table tr", maximum: 2)
+
+        visit (users_submissions_all_path(@student))
+        expect(page).to have_content(@s_1.project.name)
+        expect(page).to have_content(@s_2.project.name)
+        expect(page).to have_selector("table tr", maximum: 3)
+      end
     end
 
     context "visiting an advisor's my_students page in different quarters" do

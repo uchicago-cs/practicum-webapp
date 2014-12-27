@@ -7,7 +7,9 @@ class UsersController < ApplicationController
   before_action :get_user,                 only: [:my_projects, :my_submissions,
                                                  :my_students]
   before_action :get_my_projects,          only: :my_projects
-  before_action :get_all_my_projects,         only: :my_projects_all
+  before_action :get_all_my_projects,      only: :my_projects_all
+  before_action :get_my_submissions,       only: :my_submissions
+  before_action :get_all_my_submissions,   only: :my_submissions_all
   before_action(only: :update) { |c| c.get_this_user_for_object(@user) }
 
   def show
@@ -92,6 +94,15 @@ class UsersController < ApplicationController
 
   def get_all_my_projects
     @projects = Project.where(advisor_id: @user.id)
+  end
+
+  def get_my_submissions
+    q = Quarter.where(year: params[:year], season: params[:season]).take
+    @submissions = Submission.quarter_submissions(q).where(student_id: @user.id)
+  end
+
+  def get_all_my_submissions
+    @submissions = Submission.where(student_id: @user.id)
   end
 
 end
