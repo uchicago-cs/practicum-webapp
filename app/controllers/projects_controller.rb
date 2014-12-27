@@ -324,14 +324,10 @@ class ProjectsController < ApplicationController
     @season = params[:season]
   end
 
-  # TODO: DRY up (see methods with same name in submissions_controller.rb,
-  # evaluations_controller.rb)
-
   def redirect_if_no_quarter_params
     if !params[:year] or !params[:season]
       flash[:error] = "You may only view pending projects in specific quarters."
       redirect_to root_path and return
     end
   end
-
 end

@@ -545,16 +545,16 @@ describe "Interacting with records from different quarters", type: :feature do
     before do
       @p_1 = FactoryGirl.build(:project, advisor: @advisor,
                                quarter: @q1,
-                               status: "accepted",
-                               status_published: true,
+                               status: "pending",
+                               status_published: false,
                                name: "abcdefghi",
                                description: "a",
                                expected_deliverables: "n",
                                prerequisites: "n")
       @p_2 = FactoryGirl.build(:project, advisor: @advisor,
                                quarter: @q2,
-                               status: "accepted",
-                               status_published: true,
+                               status: "pending",
+                               status_published: false,
                                name: "jklmnop",
                                description: "n",
                                expected_deliverables: "a",
@@ -563,13 +563,17 @@ describe "Interacting with records from different quarters", type: :feature do
       @p_2.save(validate: false)
 
       @s_1 = FactoryGirl.build(:submission, student: @student, project: @p_1,
-                               status: "accepted", status_approved: true,
-                               status_published: true)
-      @s_2 = FactoryGirl.build(:submission, student: @other_student,
-                               project: @p_2, status: "accepted",
+                               status: "draft", status_approved: false,
+                               status_published: false)
+      @s_2 = FactoryGirl.build(:submission, student: @student,
+                               project: @p_2, status: "draft",
+                               status_approved: false, status_published: false)
+      @s_3 = FactoryGirl.build(:submission, student: @other_student,
+                               project: @p_1, status: "accepted",
                                status_approved: true, status_published: true)
       @s_1.save(validate: false)
       @s_2.save(validate: false)
+      @s_3.save(validate: false)
     end
 
 
@@ -672,7 +676,14 @@ describe "Interacting with records from different quarters", type: :feature do
     end
 
     context "visiting an advisor's my_students page in different quarters" do
-      before { ldap_sign_in(@advisor) }
+      before do
+        ldap_sign_in(@advisor)
+        @p_1.update_column(:status, "approved")
+        @p_1.update_column(:status_published, true)
+        @s_1.update_column(:status, "approved")
+        @s_1.update_column(:status_approved, true)
+        @s_1.update_column(:status_published, true)
+      end
 
       it "should show the right students on the right pages" do
         visit(users_students_path(year: @q1.year, season: @q1.season))
