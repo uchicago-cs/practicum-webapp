@@ -44,6 +44,13 @@ describe "Admins creating records for advisors and students", type: :feature do
         visit q_path(Project.find(1))
         expect(current_path).to eq(q_path(Project.find(1)))
         expect(page).to have_content("jkljkljkl")
+        visit users_projects_path(year: @q1.year, season: @q1.season)
+        expect(current_path).to eq(users_projects_path(year: @q1.year,
+                                                       season: @q1.season))
+        expect(page).to have_content("abcabcabc")
+        visit users_projects_all_path(@advisor)
+        expect(current_path).to eq(users_projects_all_path(@advisor))
+        expect(page).to have_content("abcabcabc")
       end
     end
   end
@@ -78,20 +85,14 @@ describe "Admins creating records for advisors and students", type: :feature do
         visit q_path(Submission.find(1))
         expect(current_path).to eq(q_path(Submission.find(1)))
         expect(page).to have_content("qrstuv")
+        visit users_submissions_path(year: @q1.year, season: @q1.season)
+        expect(current_path).to eq(users_submissions_path(year: @q1.year,
+                                                          season: @q1.season))
+        expect(page).to have_content(@p.name)
+        visit users_submissions_all_path(@student)
+        expect(current_path).to eq(users_submissions_all_path(@student))
+        expect(page).to have_content(@p.name)
       end
-
-      # context "viewing the submission as the student" do
-      #   before do
-      #     logout
-      #     ldap_sign_in(@student)
-      #   end
-
-      #   it "should be visible to the student in the right quarter" do
-      #     visit q_path(Submission.find(1))
-      #     expect(current_path).to eq(q_path(Submission.find(1)))
-      #     expect(page).to have_content("qrstuv")
-      #   end
-      # end
     end
   end
 end
