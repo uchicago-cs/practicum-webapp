@@ -1,0 +1,27 @@
+<h2>
+  <%= display_name(@user) %>'s <%= project_types %> Projects
+</h2>
+
+<% if can? :create, Project %>
+
+  <% if @projects.present? %>
+    <table class="table table-bordered">
+      <tr>
+	<th>Project name</th>
+	<th>Quarter</th>
+	<th>Date created</th>
+	<th>Status</th>
+	<th>Applicants</th>
+	<th>Notes</th>
+      </tr>
+      <tbody>
+	<% @projects.each do |project| %>
+	  <%= render 'project', project: project %>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>You have not proposed any projects yet.</p>
+  <% end %>
+
+<% end %>

@@ -4,7 +4,10 @@ class UsersController < ApplicationController
 
   before_action :is_admin?,                only: :index
   before_action :prevent_self_demotion,    only: :update
-  #before_action :get_season_and_year,      only: :my_submissions
+  before_action :get_user,                 only: [:my_projects, :my_submissions,
+                                                 :my_students]
+  before_action :get_my_projects,          only: :my_projects
+  before_action :get_all_my_projects,         only: :my_projects_all
   before_action(only: :update) { |c| c.get_this_user_for_object(@user) }
 
   def show
@@ -35,17 +38,14 @@ class UsersController < ApplicationController
 
   # Quarter-specific
   def my_projects
-    @user = current_user
   end
 
   # Quarter-specific
   def my_submissions
-    @user = current_user
   end
 
   # Quarter-specific
   def my_students
-    @user     = current_user
     @quarter  = Quarter.where(year: params[:year], season: params[:season]).take
     @students = @user.students_and_submissions_in_quarter(@quarter)
   end
@@ -79,6 +79,19 @@ class UsersController < ApplicationController
       message = "You cannot demote yourself."
       redirect_to @user, flash: { error: message }
     end
+  end
+
+  def get_user
+    @user = current_user
+  end
+
+  def get_my_projects
+    q = Quarter.where(year: params[:year], season: params[:season]).take
+    @projects = Project.where(advisor_id: @user.id, quarter_id: q.id)
+  end
+
+  def get_all_my_projects
+    @projects = Project.where(advisor_id: @user.id)
   end
 
 end
