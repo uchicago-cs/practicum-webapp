@@ -31,7 +31,8 @@
   <% end %>
 <% else %>
   <p>There are currently no quarters.</p>
-  <% if can? :manage, Quarter %>
-    <p>Click <%= link_to "here", new_quarter_path %> to make a new quarter.</p>
-  <% end %>
+<% end %>
+
+<% if can? :manage, Quarter %>
+  <p>Click <%= link_to "here", new_quarter_path %> to make a new quarter.</p>
 <% end %>

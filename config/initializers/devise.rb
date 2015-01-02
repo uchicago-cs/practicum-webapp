@@ -247,13 +247,13 @@ Devise.setup do |config|
   # change the failure app, you can configure them inside the config.warden block.
   #
 
- # As per https://github.com/plataformatec/devise/wiki/
+  # As per https://github.com/plataformatec/devise/wiki/
   # How-To:-Redirect-to-a-specific-page-when-the-user-can-not-be-authenticated:
   # If an unauthenticated user tries to sign in:
   config.warden do |manager|
     manager.failure_app = CustomFailure
   end
- #   manager.intercept_401 = false
+  #   manager.intercept_401 = false
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   # end
 

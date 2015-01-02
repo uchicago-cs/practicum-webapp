@@ -37,8 +37,6 @@ class Sessions::SessionsController < Devise::SessionsController
 
     if self.resource.nil?
       flash[:error] = error_string
-      # Note: The error_strings will appear as flash messages, not as
-      # form error messages.
       return redirect_to new_user_session_path
     end
 

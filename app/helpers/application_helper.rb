@@ -79,7 +79,7 @@ module ApplicationHelper
     when "success" then "success"
     when "error"   then "danger"
     when "alert"   then "warning"
-    else               flash_type
+    else                flash_type
     end
   end
 

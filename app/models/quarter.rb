@@ -71,7 +71,6 @@ class Quarter < ActiveRecord::Base
     self.season.downcase!
   end
 
-  # We might change this later (e.g., allow deadlines beyond the end_date). (?)
   def deadlines_between_start_and_end_dates
     message = "Deadlines must be between the quarter's start and end dates."
     if project_proposal_deadline <= start_date or
