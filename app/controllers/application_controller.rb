@@ -102,7 +102,7 @@ class ApplicationController < ActionController::Base
     hdl = (dl == "student_submission") ? "application" : dl.humanize.downcase
 
     if year and season
-      quarter = Quarter.where(year: year, season: season)
+      quarter = Quarter.find_by(year: year, season: season)
       e = quarter
       b = DateTime.now <= quarter.deadline(dl)
     else

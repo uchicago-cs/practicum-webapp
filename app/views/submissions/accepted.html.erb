@@ -4,21 +4,42 @@
 
 <br />
 
-<%# TODO: Check that this table has entries before showing it %>
-<table class="table table-bordered">
+<% if @submissions.present? %>
+  <table class="table table-bordered">
 
-  <thead>
-    <tr>
-      <th>Student</th>
-      <th>Advisor</th>
-      <th>Notes</th>
-    </tr>
-  </thead>
+    <thead>
+      <tr>
+	<th>Student</th>
+	<th>Advisor</th>
+	<th>Notes</th>
+      </tr>
+    </thead>
 
-  <tbody>
-    <% @submissions.each do |submission| %>
-      <%= render 'accepted', submission: submission %>
-  <% end %>
-  </tbody>
+    <tbody>
+      <% @submissions.each do |submission| %>
+	<%= render 'accepted', submission: submission %>
+      <% end %>
+    </tbody>
 
-</table>
+  </table>
+
+  <br />
+
+  <p>Student's e-mail addresses:</p>
+  <ul>
+    <% @student_emails.each do |s_email| %>
+      <li><%= s_email %></li>
+    <% end %>
+  </ul>
+
+  <br />
+
+  <p>Advisor's e-mail addresses:</p>
+  <ul>
+    <% @advisor_emails.each do |a_email| %>
+      <li><%= a_email %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no accepted applications in this quarter.</p>
+<% end %>

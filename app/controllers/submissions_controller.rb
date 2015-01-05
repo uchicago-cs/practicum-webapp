@@ -127,6 +127,10 @@ class SubmissionsController < ApplicationController
       # `@submissions` contains all accepted, approved, and published
       # submissions whose projects are in the given quarter.
       @submissions = Submission.accepted_approved_published_in_quarter(@quarter)
+      @student_emails = User.where(id: @submissions.pluck(:student_id)).
+        pluck(:email)
+      @advisor_emails = User.where(id: @submissions.pluck(:advisor_id)).
+        pluck(:email)
     else
       @submissions = []
     end
