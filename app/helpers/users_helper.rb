@@ -28,7 +28,7 @@ module UsersHelper
   end
 
   def user_role_warning
-    "If you update this user's roles (and you are not this user), an e-mail "\
+    "If you update this user's roles (and you are not this user), an e-mail " +
     "will be sent to them."
   end
 

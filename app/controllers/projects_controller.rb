@@ -47,8 +47,8 @@ class ProjectsController < ApplicationController
       @project = current_user.projects.build(project_params)
     end
 
-    @quarter = Quarter.where(year: params[:year], season: params[:season])
-    @project.assign_attributes(quarter_id: Quarter.current_quarter.id)
+    @quarter = Quarter.find_by(year: params[:year], season: params[:season])
+    @project.assign_attributes(quarter_id: @quarter.id)
 
     if params[:commit] == "Create my proposal"
       if @project.save
