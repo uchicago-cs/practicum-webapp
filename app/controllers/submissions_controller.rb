@@ -130,7 +130,7 @@ class SubmissionsController < ApplicationController
       @student_emails = User.where(id: @submissions.pluck(:student_id)).
         pluck(:email)
       @advisor_emails = User.where(id: @submissions.pluck(:advisor_id)).
-        pluck(:email)
+        pluck(:email).uniq
     else
       @submissions = []
     end
