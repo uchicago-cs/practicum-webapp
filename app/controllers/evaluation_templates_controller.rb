@@ -2,7 +2,8 @@ class EvaluationTemplatesController < ApplicationController
 
   load_and_authorize_resource
 
-  before_action :ensure_unique_question_positions, only: :update
+  before_action :ensure_unique_question_positions, only: [:update,
+                                                          :update_survey]
   before_action :get_quarter_of_template,          only: [:create, :show,
                                                           :add_question,
                                                           :update_basic_info,
