@@ -5,10 +5,12 @@ class EvaluationTemplatesController < ApplicationController
   before_action :ensure_unique_question_positions, only: :update
   before_action :get_quarter_of_template,          only: [:create, :show,
                                                           :add_question,
-                                                          :update_basic_info]
+                                                          :update_basic_info,
+                                                          :update_survey]
   before_action :get_formatted_quarters,           only: [:create, :show,
                                                           :new, :add_question,
-                                                          :update_basic_info]
+                                                          :update_basic_info,
+                                                          :update_survey]
 
 
   after_action(only: [:create, :update_basic_info]) { |c|
