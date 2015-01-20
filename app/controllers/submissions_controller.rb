@@ -155,23 +155,15 @@ class SubmissionsController < ApplicationController
   private
 
   def submission_params
-    # TODO: DRY this up
-    if current_user.admin?
-      params.require(:submission).permit(:information, :student_id, :status,
-                                         :qualifications, :courses, :resume,
-                                         :status_approved, :status_published,
-                                         :comments, :applicant)
-    else
-      params.require(:submission).permit(:information, :student_id, :status,
-                                         :qualifications, :courses, :resume,
-                                         :status_approved, :status_published,
-                                         :comments)
-    end
+    as = [:information, :student_id, :status, :qualifications, :courses,
+          :resume, :status_approved, :status_published, :comments]
+    as << :applicant if current_user.admin?
+
+    params.require(:submission).permit(*as)
   end
 
   def get_project
-    @project = Project.find(params[:project_id])#params[:project_id] ?
-      #Project.find(params[:project_id]) : @submission.project
+    @project = Project.find(params[:project_id])
   end
 
   def project_accepted?
