@@ -97,9 +97,4 @@ class QuartersController < ApplicationController
     end
   end
 
-  def get_year_and_season
-    @year   = @quarter.year
-    @season = @quarter.season
-  end
-
 end

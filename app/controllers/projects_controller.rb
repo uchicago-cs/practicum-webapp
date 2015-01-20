@@ -1,6 +1,7 @@
 class ProjectsController < ApplicationController
 
   include ProjectPatterns
+  include ProjectSubmissionPatterns
 
   load_and_authorize_resource
 
@@ -23,7 +24,7 @@ class ProjectsController < ApplicationController
     # If an admin is creating the advisor's project proposal, then
     # we figure out which advisor the admin is referring to.
     if params[:project][:proposer].present?
-      create_project_for_proposer
+      create_record_for_target_user :proposer
     else
       # Otherwise, we just build the advisor's project normally.
       @project = current_user.projects.build(project_params)
@@ -38,20 +39,13 @@ class ProjectsController < ApplicationController
   def edit
   end
 
-  # Not DRY (see #create and submissions_controller.rb), and a bit too much
-  # logic.
-
-  # ***
-  # TODO: Check whether we should be checking the params instead in the
-  # outermost `if` statement?
-  # ***
   def update
     if @project.draft?
-      # Editing the proposal while it's a draft
+      # Edit the proposal while it's a draft
       @project.assign_attributes(project_params)
       create_or_update_project :edit
     else
-      # Editing the proposal while it's pending
+      # Edit the proposal while it's submitted and pending
       if @project.update_attributes(project_params)
         flash[:success] = "Project proposal successfully updated."
         redirect_to project_path(@project, year: @project.quarter.year,
@@ -59,7 +53,6 @@ class ProjectsController < ApplicationController
       else
         render 'edit'
       end
-
     end
   end
 
@@ -67,8 +60,9 @@ class ProjectsController < ApplicationController
   end
 
   def index
+    # TODO:
     # Something similar should be put in the application controller for every
-    # page.
+    # page, but visible only to admins.
     if Quarter.count == 0
       flash[:error] = "There are no quarters. A quarter must exist before " +
         "you can view projects."
@@ -79,7 +73,8 @@ class ProjectsController < ApplicationController
       # We're visiting a quarter-specific projects page
       @quarter = Quarter.where(year: params[:year],
                                season: params[:season]).take
-      # get the accepted published projects from this quarter
+
+      # Get the accepted published projects from this quarter
       @projects = Project.accepted_published_projects_in_quarter(@quarter)
     else
       # We're visiting the global projects page
@@ -261,11 +256,6 @@ class ProjectsController < ApplicationController
       redirect_to root_url, flash: { error: "This quarter is inactive." } and
         return
     end
-  end
-
-  def get_year_and_season
-    @year   = params[:year]
-    @season = params[:season]
   end
 
   def redirect_if_no_quarter_params

@@ -1,5 +1,8 @@
 class SubmissionsController < ApplicationController
 
+  include SubmissionPatterns
+  include ProjectSubmissionPatterns
+
   load_and_authorize_resource
 
   # before_actions on both new and create?
@@ -12,6 +15,7 @@ class SubmissionsController < ApplicationController
   before_action :get_statuses,                only: [:show, :update_status]
   before_action :project_accepted_and_pub?,   only: [:new, :create]
   before_action :can_create_submissions?,     only: [:new, :create, :update]
+  before_action :get_year_and_season,         only: [:create, :update]
   before_action(except: [:index, :accepted]) { |c|
     c.get_this_user_for_object(@submission) }
   before_action(only: [:accept, :reject]) { |c|
@@ -23,91 +27,28 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new
   end
 
-  # TODO: Dry this up (see the create method of projects_controller.rb)
   def create
 
     # If an admin is creating the student's application, then
     # we figure out which student the admin is referring to.
     if params[:submission][:applicant].present?
-      applying_user = params[:submission][:applicant].downcase
-      actual_user = (applying_user.include? '@') ?
-      User.find_by(email: applying_user) :
-        User.find_by(cnet: applying_user)
-
-      if actual_user
-        @submission = @project.submissions.build(submission_params)
-        @submission.applicant = applying_user # Needed for the validation proc
-        @submission.assign_attributes(student_id: actual_user.id)
-      else
-        flash.now[:error] = "There is no user with that CNetID or E-mail " +
-          "address."
-        render 'new' and return
-      end
-
-      if !actual_user.student?
-        flash.now[:error] = "That user is not a student."
-        render 'new' and return
-      end
-
+      create_record_for_target_user :applicant
     else
       # Otherwise, build the submission normally.
       @submission = @project.submissions.build(submission_params)
       @submission.assign_attributes(student_id: current_user.id)
     end
 
-    @year   = @submission.quarter.year
-    @season = @submission.quarter.season
-
-    # Could be DRYer, but be careful to not rely on whether params[:commit]
-    # is one of the strings _or not_; we should check whether it is one of the
-    # strings _or the other_. (?)
-    if params[:commit] == "Submit my application"
-      if @submission.save
-        flash[:success] = "Application submitted."
-        redirect_to users_submissions_path(year: @year, season: @season)
-      else
-        render 'new'
-      end
-    elsif params[:commit] == "Save as draft"
-      @submission.assign_attributes(status: "draft")
-      if @submission.save(validate: false)
-        flash[:success] = "Application saved as a draft. You may edit it " +
-          "by navigating to your \"my applications\" page."
-        redirect_to users_submissions_path(year: @year, season: @season)
-      else
-        render 'new'
-      end
-    end
+    create_or_update_submission :new
   end
 
 
   def edit
   end
 
-  # Not DRY. (See #create.)
-  # Students can only edit drafts, i.e., submissions where status == "draft".
   def update
+    # Note: students can only edit drafts.
     @submission.assign_attributes(submission_params)
-    @year   = @submission.quarter.year
-    @season = @submission.quarter.season
-
-    if params[:commit] == "Submit my application"
-      @submission.assign_attributes(status: "pending")
-      if @submission.save
-        flash[:success] = "Application submitted."
-        redirect_to users_submissions_path(year: @year, season: @season)
-      else
-        render 'edit'
-      end
-    elsif params[:commit] == "Save as draft"
-      if @submission.save(validate: false)
-        flash[:success] = "Application saved as a draft. You may edit it " +
-          "by navigating to your \"my applications\" page."
-        redirect_to users_submissions_path(year: @year, season: @season)
-      else
-        render 'edit'
-      end
-    end
   end
 
   def destroy
