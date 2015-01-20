@@ -1,5 +1,7 @@
 class ProjectsController < ApplicationController
 
+  include ProjectPatterns
+
   load_and_authorize_resource
 
   skip_before_action :authenticate_user!,        only: [:index, :show]
@@ -18,57 +20,19 @@ class ProjectsController < ApplicationController
   end
 
   def create
-
     # If an admin is creating the advisor's project proposal, then
     # we figure out which advisor the admin is referring to.
     if params[:project][:proposer].present?
-      proposing_user = params[:project][:proposer].downcase
-      actual_user = (proposing_user.include? '@') ?
-      User.find_by(email: proposing_user) :
-        User.find_by(cnet: proposing_user)
-
-      if actual_user
-        @project = actual_user.projects.build(project_params)
-        @project.proposer = proposing_user
-        @project.assign_attributes(advisor: actual_user)
-      else
-        flash.now[:error] = "There is no user with that CNetID or E-mail " +
-          "address."
-        render 'new' and return
-      end
-
-      if !actual_user.advisor?
-        flash.now[:error] = "That user is not an advisor."
-        render 'new' and return
-      end
-
+      create_project_for_proposer
     else
-      # Otherwise, just build the advisor's project normally.
+      # Otherwise, we just build the advisor's project normally.
       @project = current_user.projects.build(project_params)
     end
 
     @quarter = Quarter.find_by(year: params[:year], season: params[:season])
     @project.assign_attributes(quarter_id: @quarter.id)
 
-    if params[:commit] == "Create my proposal"
-      if @project.save
-        flash[:success] = "Project successfully proposed."
-        redirect_to users_projects_path(year: @project.quarter.year,
-                                        season: @project.quarter.season)
-      else
-        render 'new'
-      end
-    elsif params[:commit] == "Save as draft"
-      @project.assign_attributes(status: "draft")
-      if @project.save(validate: false)
-        flash[:success] = "Proposal saved as a draft. You may edit it " +
-          "by navigating to your \"my projects\" page."
-        redirect_to users_projects_path(year: @project.quarter.year,
-                                        season: @project.quarter.season)
-      else
-        render 'new'
-      end
-    end
+    create_or_update_project :new
   end
 
   def edit
@@ -85,27 +49,7 @@ class ProjectsController < ApplicationController
     if @project.draft?
       # Editing the proposal while it's a draft
       @project.assign_attributes(project_params)
-
-      if params[:commit] == "Create my proposal"
-        @project.assign_attributes(status: "pending")
-        if @project.save
-          flash[:success] = "Proposal submitted."
-          redirect_to users_projects_path(year: @project.quarter.year,
-                                          season: @project.quarter.season)
-        else
-          render 'edit'
-        end
-      elsif params[:commit] == "Save as draft"
-        if @project.save(validate: false)
-          flash[:success] = "Proposal saved as a draft. You may edit it " +
-            "by navigating to your \"my projects\" page."
-          redirect_to users_projects_path(year: @project.quarter.year,
-                                          season: @project.quarter.season)
-        else
-          render 'edit'
-        end
-      end
-
+      create_or_update_project :edit
     else
       # Editing the proposal while it's pending
       if @project.update_attributes(project_params)
