@@ -4,16 +4,14 @@ module ProjectSubmissionPatterns
   # user (either a proposer (advisor) or applicant (student)).
   def create_record_for_target_user(user_type)
     target_user = params[:project][user_type].downcase
-    actual_user = (target_user.include? '@') ?
-    User.find_by(email: target_user) :
-      User.find_by(cnet: target_user)
+    attr_type = (target_user.include? '@') ? :email : :cnet
+    actual_user = User.find_by(attr_type => target_user)
 
     if actual_user
       # TODO: move to model
       if user_type == :proposer
         @project = actual_user.projects.build(project_params)
-        @project.proposer = target_user
-        @project.assign_attributes(advisor: actual_user)
+        @project.assign_attributes(proposer: target_user, advisor: actual_user)
       elsif user_type == :applicant
         @submission = @project.submissions.build(submission_params)
         @submission.applicant = target_user # Needed for the validation proc

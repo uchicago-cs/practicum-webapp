@@ -101,7 +101,7 @@ class ProjectsController < ApplicationController
   def update_status
     @db_project = Project.find(params[:id])
 
-    status_strings = {
+    s_info = {
       "Accept"             => { attr: "status", val: "accepted",
                                 txt: "accepted" },
       "Request changes"    => { attr: "status", val: "pending",
@@ -114,8 +114,8 @@ class ProjectsController < ApplicationController
                                 txt: "published" }
     }
 
-    changed_attrs = { "#{status_strings[params[:commit]][:attr]}" =>
-                      status_strings[params[:commit]][:val] }
+    changed_attrs = { "#{s_info[params[:commit]][:attr]}" =>
+                      s_info[params[:commit]][:val] }
 
     # Comments will be sent whenever they're present (for accept, reject,
     # or request_changes).
@@ -124,66 +124,14 @@ class ProjectsController < ApplicationController
     end
 
     if @db_project.update_attributes(changed_attrs)
-      flash[:success] = "Project #{status_strings[params[:commit]][:txt]}."
+      flash[:success] = "Project #{s_info[params[:commit]][:txt]}."
       redirect_to view_context.q_path(@project)
       # TODO: Why do we need `view_context` here but not in other controllers?
     else
       flash.now[:error] = "Project could not be " +
-        "#{status_strings[params[:commit]][:txt]}."
+        "#{s_info[params[:commit]][:txt]}."
       render 'show'
     end
-
-    # case params[:commit]
-
-    # when "Accept"
-    #   if @db_project.update_attributes(status: "accepted")
-    #     flash[:success] = "Project accepted."
-    #     redirect_to view_context.q_path(@db_project)
-    #   else
-    #     flash.now[:error] = "Project could not be accepted."
-    #     render 'show'
-    #   end
-
-    # when "Request changes"
-    #   # Note: the comments aren't persisted to the database.
-    #   if @db_project.update_attributes(status: "pending",
-    #                                    comments: params[:project][:comments])
-    #     flash[:success] = "Changes requested and project status set to " +
-    #       "\"pending\"."
-    #     redirect_to view_context.q_path(@db_project)
-    #   else
-    #     flash.now[:error] = "Changes could not be requested and project " +
-    #       "status could not be set to \"pending\"."
-    #     render 'show'
-    #   end
-
-    # when "Reject"
-    #   if @db_project.update_attributes(status: "rejected")
-    #     flash[:success] = "Project rejected."
-    #     redirect_to view_context.q_path(@db_project)
-    #   else
-    #     flash.now[:error] = "Project could not be rejected."
-    #     render 'show'
-    #   end
-
-    # when "Unpublish decision"
-    #   if @db_project.update_attributes(status_published: false)
-    #     flash[:success] = "Project decision unpublished."
-    #     redirect_to view_context.q_path(@db_project)
-    #   else
-    #     flash.now[:error] = "Project decision could not be unpublished."
-    #     render 'show'
-    #   end
-
-    # when "Publish decision"
-    #   if @db_project.update_attributes(status_published: true)
-    #     flash[:success] = "Project decision published."
-    #     redirect_to view_context.q_path(@db_project)
-    #   else
-    #     flash.now[:error] = "Project decision could not be published."
-    #     render 'show'
-    #   end
-    # end
   end
 
   # Publish all proposals that are flagged as approved or rejected.

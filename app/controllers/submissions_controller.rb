@@ -79,21 +79,13 @@ class SubmissionsController < ApplicationController
 
   def accept_or_reject
     @submission.update_attributes(comments: params[:submission][:comments])
+    stat = { "Accept" => "accepted", "Reject" => "rejected" }[params[:commit]]
 
-    if params[:commit] == "Accept"
-      if @submission.update_attributes(status: "accepted")
-        flash[:success] = "Application accepted."
-        redirect_to q_path(@submission)
-      else
-        render 'show'
-      end
-    elsif params[:commit] == "Reject"
-      if @submission.update_attributes(status: "rejected")
-        flash[:success] = "Application rejected."
-        redirect_to q_path(@submission)
-      else
-        render 'show'
-      end
+    if @submission.update_attributes(status: stat)
+      flash[:success] = "Application #{stat}."
+      redirect_to q_path(@submission)
+    else
+      render 'show'
     end
   end
 
@@ -111,44 +103,27 @@ class SubmissionsController < ApplicationController
   def update_status
     @db_submission = Submission.find(params[:id])
 
-    # TODO: Dry this up
-    case params[:commit]
+    s_info = {
+      "Unapprove decision" => { attr: "status_approved", val: false,
+                                txt: "unapproved" },
+      "Approve changes"    => { attr: "status_approved", val: true,
+                                txt: "approved" },
+      "Unpublish decision" => { attr: "status_published", val: false,
+                                txt: "unplished" },
+      "Publish decision"   => { attr: "status_published", val: true,
+                                txt: "published" }
+    }
 
-    when "Unapprove decision"
-      if @db_submission.update_attributes(status_approved: false)
-        flash[:success] = "Application decision unapproved."
-        redirect_to q_path(@submission)
-      else
-        flash.now[:error] = "Application decision could not be unapproved."
-        render 'show'
-      end
+    changed_attrs = { "#{s_info[params[:commit]][:attr]}" =>
+                      s_info[params[:commit]][:val] }
 
-    when "Approve decision"
-      if @db_submission.update_attributes(status_approved: true)
-        flash[:success] = "Application decision approved."
-        redirect_to q_path(@submission)
-      else
-        flash.now[:error] = "Application decision could not be approved."
-        render 'show'
-      end
-
-    when "Unpublish decision"
-      if @db_submission.update_attributes(status_published: false)
-        flash[:success] = "Application decision unpublished."
-        redirect_to q_path(@submission)
-      else
-        flash.now[:error] = "Application decision could not be unpublished."
-        render 'show'
-      end
-
-    when "Publish decision"
-      if @db_submission.update_attributes(status_published: true)
-        flash[:success] = "Application decision published."
-        redirect_to q_path(@submission)
-      else
-        flash.now[:error] = "Application decision could not be published."
-        render 'show'
-      end
+    if @db_submission.update_attributes(changed_attrs)
+      flash[:success] = "Application decision #{s_info[params[:commit]][:txt]}."
+      redirect_to q_path(@submission)
+    else
+      flash.now[:error] = "Application decision could not be " +
+        "#{s_info[params[:commit]][:txt]}."
+      render 'show'
     end
   end
 
