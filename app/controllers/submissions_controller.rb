@@ -103,7 +103,7 @@ class SubmissionsController < ApplicationController
   def update_status
     @db_submission = Submission.find(params[:id])
 
-    s_info = {
+    status_strings = {
       "Unapprove decision" => { attr: "status_approved", val: false,
                                 txt: "unapproved" },
       "Approve changes"    => { attr: "status_approved", val: true,
@@ -111,20 +111,9 @@ class SubmissionsController < ApplicationController
       "Unpublish decision" => { attr: "status_published", val: false,
                                 txt: "unplished" },
       "Publish decision"   => { attr: "status_published", val: true,
-                                txt: "published" }
-    }
+                                txt: "published" } }
 
-    changed_attrs = { "#{s_info[params[:commit]][:attr]}" =>
-                      s_info[params[:commit]][:val] }
-
-    if @db_submission.update_attributes(changed_attrs)
-      flash[:success] = "Application decision #{s_info[params[:commit]][:txt]}."
-      redirect_to q_path(@submission)
-    else
-      flash.now[:error] = "Application decision could not be " +
-        "#{s_info[params[:commit]][:txt]}."
-      render 'show'
-    end
+    save_status(@db_submission, @submission, status_strings)
   end
 
   private

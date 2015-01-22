@@ -32,4 +32,29 @@ module ProjectSubmissionPatterns
     end
   end
 
+  def save_status(db_record, record, s_info)
+    changed_attrs = { "#{s_info[params[:commit]][:attr]}" =>
+      s_info[params[:commit]][:val] }
+
+    rec_obj = (db_record.class == Project) ? "Project" : "Application decision"
+
+    if db_record.class == Project
+      # Comments will be sent whenever they're present (for accept, reject,
+      # or request_changes, and only for projects).
+      if params[:project] and params[:project][:comments].present?
+        changed_attrs[:comments] = params[:project][:comments]
+      end
+    end
+
+    if db_record.update_attributes(changed_attrs)
+      flash[:success] = "#{rec_obj} #{s_info[params[:commit]][:txt]}."
+      redirect_to view_context.q_path(record)
+      # TODO: Why do we need `view_context` here but not in other controllers?
+    else
+      flash.now[:error] = "#{rec_obj} could not be " +
+        "#{s_info[params[:commit]][:txt]}."
+      render 'show'
+    end
+  end
+
 end

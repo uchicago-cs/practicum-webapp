@@ -101,7 +101,7 @@ class ProjectsController < ApplicationController
   def update_status
     @db_project = Project.find(params[:id])
 
-    s_info = {
+    status_strings = {
       "Accept"             => { attr: "status", val: "accepted",
                                 txt: "accepted" },
       "Request changes"    => { attr: "status", val: "pending",
@@ -111,27 +111,9 @@ class ProjectsController < ApplicationController
       "Unpublish decision" => { attr: "status_published", val: false,
                                 txt: "unpublished" },
       "Publish decision"   => { attr: "status_published", val: true,
-                                txt: "published" }
-    }
+                                txt: "published" } }
 
-    changed_attrs = { "#{s_info[params[:commit]][:attr]}" =>
-                      s_info[params[:commit]][:val] }
-
-    # Comments will be sent whenever they're present (for accept, reject,
-    # or request_changes).
-    if params[:project] and params[:project][:comments].present?
-      changed_attrs[:comments] = params[:project][:comments]
-    end
-
-    if @db_project.update_attributes(changed_attrs)
-      flash[:success] = "Project #{s_info[params[:commit]][:txt]}."
-      redirect_to view_context.q_path(@project)
-      # TODO: Why do we need `view_context` here but not in other controllers?
-    else
-      flash.now[:error] = "Project could not be " +
-        "#{s_info[params[:commit]][:txt]}."
-      render 'show'
-    end
+    save_status(@db_project, @project, status_strings)
   end
 
   # Publish all proposals that are flagged as approved or rejected.
