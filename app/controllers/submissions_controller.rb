@@ -123,7 +123,9 @@ class SubmissionsController < ApplicationController
           :resume, :status_approved, :status_published, :comments]
     as << :applicant if current_user.admin?
 
-    params.require(:submission).permit(*as)
+    if current_user.admin? or current_user.advisor?
+      params.require(:project).permit(*as)
+    end
   end
 
   def get_project
