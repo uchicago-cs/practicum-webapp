@@ -66,10 +66,8 @@ class UsersController < ApplicationController
     if current_user.admin?
       params.require(:user).permit(:student, :advisor, :admin,
                                    :affiliation, :department, :approved)
-    else
-      if current_user.advisor?
-        params.require(:user).permit(:affiliation, :department)
-      end
+    elsif current_user.advisor?
+      params.require(:user).permit(:affiliation, :department)
     end
   end
 

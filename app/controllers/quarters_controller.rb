@@ -66,12 +66,11 @@ class QuartersController < ApplicationController
   private
 
   def quarter_params
-    params.require(:quarter).permit(:season, :year, :current,
-                                    :project_proposal_deadline,
-                                    :student_submission_deadline,
-                                    :advisor_decision_deadline,
-                                    :start_date, :end_date,
-                                    :admin_publish_deadline)
+    as = [:season, :year, :current, :project_proposal_deadline,
+          :student_submission_deadline, :advisor_decision_deadline,
+          :start_date, :end_date, :admin_publish_deadline]
+
+    params.require(:quarter).permit(*as)
   end
 
   def downcase_season
