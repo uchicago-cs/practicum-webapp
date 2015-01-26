@@ -13,4 +13,8 @@ module ProjectsHelper
       "This project has not been cloned."
   end
 
+  def projects_table
+    @grouped_projects ? 'quarter_projects_tables' : 'projects_table'
+  end
+
 end

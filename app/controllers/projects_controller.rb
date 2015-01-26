@@ -142,7 +142,7 @@ class ProjectsController < ApplicationController
       @projects = Project.current_accepted_published_projects
 
       # Filter the projects by quarter
-      @projects = @projects.group_by(&:quarter).to_a.reverse
+      @grouped_projects = @projects.group_by(&:quarter)
 
       # Get the quarters with future start_dates
       @future_quarters = Quarter.future_quarters
