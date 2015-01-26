@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
   before_action      :get_old_project_info,      only: :clone_project
   before_action      :can_create_projects?,      only: [:new, :create]
   before_action      :get_year_and_season,       only: [:new, :create, :edit,
-                                                        :update]
+                                                        :update, :pending]
   before_action      :redirect_if_no_quarter_params, only: :pending
   before_action(only: [:update_status, :update]) { |c|
     c.get_this_user_for_object(@project) }
@@ -141,6 +141,9 @@ class ProjectsController < ApplicationController
       # We're visiting the global projects page
       @projects = Project.current_accepted_published_projects
 
+      # Filter the projects by quarter
+      @projects = @projects.group_by(&:quarter).to_a.reverse
+
       # Get the quarters with future start_dates
       @future_quarters = Quarter.future_quarters
     end
@@ -265,7 +268,8 @@ class ProjectsController < ApplicationController
     end
 
     flash[:success] = "Published all flagged project statuses."
-    redirect_to pending_projects_path
+    redirect_to pending_projects_path(year: params[:year],
+                                      season: params[:season])
   end
 
   # `clone` is a keyword, so we use #clone_project instead of #clone.

@@ -14,20 +14,27 @@
 <% end %>
 
 <% if @projects.present? %>
-  <table class="table table-bordered">
-    <tr>
-      <th>Title</th>
-      <th>Advisor</th>
-    </tr>
-    <tbody>
-      <% @projects.each do |project| %>
-	<tr>
-	  <td><%= q_link_to project.name, project %></td>
-	  <td><%= display_name(project.advisor) %></td>
-	</tr>
-      <% end %>
-    </tbody>
-  </table>
+  <% @projects.each do |quarter, projects| %>
+
+    <h3><%= formatted_quarter(quarter) %> Projects</h3>
+
+    <table class="table table-bordered">
+      <tr>
+	<th>Title</th>
+	<th>Advisor</th>
+      </tr>
+
+      <tbody>
+	<% projects.each do |project| %>
+	  <tr>
+	    <td><%= q_link_to project.name, project %></td>
+	    <td><%= display_name(project.advisor) %></td>
+	  </tr>
+	<% end %>
+      </tbody>
+    </table>
+
+  <% end %>
 
 <% else %>
   The application period for the Practicum Program opens on Week 5 of the

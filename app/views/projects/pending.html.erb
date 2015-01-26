@@ -15,7 +15,8 @@
   </table>
 
   <div>
-    Click <%= link_to "here", publish_all_pending_projects_path,
+    Click <%= link_to "here",
+              publish_all_pending_projects_path(year: @year, season: @season),
               method: :patch, data: { confirm: "Are you sure?" } %>
     to publish all project proposals that are flagged as either approved or
     rejected.
