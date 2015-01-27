@@ -53,7 +53,7 @@ class QuartersController < ApplicationController
   end
 
   def destroy
-    redirect_to quarters_path and return if @quarter.current?
+    redirect_to quarters_path and return if @quarter.active?
     if @quarter.destroy
       flash[:success] = "Quarter successfully deleted."
       redirect_to quarters_path and return

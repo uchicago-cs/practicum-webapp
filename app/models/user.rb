@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
 
       # Loop through this user's projects. For each project, check if the
       # quarter is active. If so, add it to the set.
-      projects.each { |p| qs.add(p.quarter) if p.quarter.current? }
+      projects.each { |p| qs.add(p.quarter) if p.quarter.active? }
 
       qs.to_a
 
@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
       # Same rule as for advisors, except that it applies to submissions.
       qs = Quarter.open_for_submissions.to_set
 
-      submissions.each { |s| qs.add(s.quarter) if s.quarter.current? }
+      submissions.each { |s| qs.add(s.quarter) if s.quarter.active? }
 
       qs.to_a
 

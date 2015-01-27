@@ -4,5 +4,5 @@
   <td><%= link_to "Delete", quarter, method: :delete,
   data: { confirm: "Are you sure?" } %></td>
   <td><%= "Proposals and applications can be submitted in this quarter." if
-          quarter.current? %></td>
+          quarter.active? %></td>
 </tr>

@@ -46,7 +46,7 @@ class Quarter < ActiveRecord::Base
   end
 
   # Rename to `active?` ?
-  def current?
+  def active?
     (start_date <= DateTime.now) and (DateTime.now <= end_date)
   end
 
@@ -64,7 +64,7 @@ class Quarter < ActiveRecord::Base
 
   def prevent_if_current
     message = "You cannot delete the current quarter."
-    errors.add(:base, message) if self.current?
+    errors.add(:base, message) if self.active?
   end
 
   def downcase_season
