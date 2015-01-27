@@ -107,7 +107,7 @@ class ApplicationController < ActionController::Base
       b = DateTime.now <= quarter.deadline(dl)
     else
       e = Quarter.active_exists?
-      b = DateTime.now <= Quarter.active_quarter
+      b = DateTime.now <= Quarter.active_quarter.deadline(dl)
     end
 
     message = "The #{hdl} deadline for this quarter has passed."

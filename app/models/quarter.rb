@@ -9,6 +9,10 @@ class Quarter < ActiveRecord::Base
     where("start_date <= ? AND ? <= end_date",
           DateTime.now, DateTime.now).take }
 
+  scope :active_quarter, -> {
+    where("start_date <= ? AND ? <= end_date",
+          DateTime.now, DateTime.now).take }
+
   # Maybe call these quarters "active" instead?
   scope :active_quarters, -> {
     where("start_date <= ? AND ? <= end_date",
