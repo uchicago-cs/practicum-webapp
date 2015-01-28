@@ -10,7 +10,9 @@ describe "Interacting with records from different quarters", type: :feature do
 
   before do
     @q1            = FactoryGirl.create(:quarter,
-                                       :inactive_and_deadlines_passed)
+                                        :inactive_and_deadlines_passed,
+                                        year: 2001,
+                                        season: "winter")
     @q2            = FactoryGirl.create(:quarter,
                                        :inactive_and_deadlines_passed,
                                        year: 2000)
@@ -41,7 +43,7 @@ describe "Interacting with records from different quarters", type: :feature do
     end
 
     context "when there is one active quarter" do
-      before do
+      before(:each) do
         @q4 = FactoryGirl.create(:quarter, :no_deadlines_passed,
                                  :earlier_start_date, year: 2015,
                                  season: "winter")
@@ -55,7 +57,7 @@ describe "Interacting with records from different quarters", type: :feature do
     end
 
     context "when there are multiple active quarters" do
-      before do
+      before(:each) do
         @q4 = FactoryGirl.create(:quarter, :no_deadlines_passed,
                                  :earlier_start_date, year: 2015,
                                  season: "winter")
@@ -569,7 +571,7 @@ describe "Interacting with records from different quarters", type: :feature do
                                project: @p_2, status: "draft",
                                status_approved: false, status_published: false)
       @s_3 = FactoryGirl.build(:submission, student: @other_student,
-                               project: @p_1, status: "accepted",
+                               project: @p_2, status: "accepted",
                                status_approved: true, status_published: true)
       @s_1.save(validate: false)
       @s_2.save(validate: false)
@@ -678,28 +680,34 @@ describe "Interacting with records from different quarters", type: :feature do
     context "visiting an advisor's my_students page in different quarters" do
       before do
         ldap_sign_in(@advisor)
-        @p_1.update_column(:status, "approved")
-        @p_1.update_column(:status_published, true)
-        @s_1.update_column(:status, "approved")
+
+        @s_1.update_column(:status, "accepted")
         @s_1.update_column(:status_approved, true)
         @s_1.update_column(:status_published, true)
+
+        @p_1.update_column(:status, "approved")
+        @p_1.update_column(:status_published, true)
+
+        @s_1.reload
+        @p_1.reload
       end
 
       it "should show the right students on the right pages" do
         visit(users_students_path(year: @q1.year, season: @q1.season))
+
         expect(current_path).to eq(users_students_path(year: @q1.year,
                                                        season: @q1.season))
         expect(page).to have_content(@s_1.student.first_name + " " +
                                      @s_1.student.last_name)
-        expect(page).not_to have_content(@s_2.student.first_name + " " +
-                                         @s_2.student.last_name)
+        expect(page).not_to have_content(@s_3.student.first_name + " " +
+                                         @s_3.student.last_name)
         expect(page).to have_selector("table tr", maximum: 2)
 
         visit(users_students_path(year: @q2.year, season: @q2.season))
         expect(current_path).to eq(users_students_path(year: @q2.year,
                                                        season: @q2.season))
-        expect(page).to have_content(@s_2.student.first_name + " " +
-                                     @s_2.student.last_name)
+        expect(page).to have_content(@s_3.student.first_name + " " +
+                                     @s_3.student.last_name)
         expect(page).not_to have_content(@s_1.student.first_name + " " +
                                          @s_1.student.last_name)
         expect(page).to have_selector("table tr", maximum: 2)
