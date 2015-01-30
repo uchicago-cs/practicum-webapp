@@ -1,5 +1,8 @@
 class ProjectsController < ApplicationController
 
+  include ProjectPatterns
+  include ProjectSubmissionPatterns
+
   load_and_authorize_resource
 
   skip_before_action :authenticate_user!,        only: [:index, :show]
@@ -20,57 +23,19 @@ class ProjectsController < ApplicationController
   end
 
   def create
-
     # If an admin is creating the advisor's project proposal, then
     # we figure out which advisor the admin is referring to.
     if params[:project][:proposer].present?
-      proposing_user = params[:project][:proposer].downcase
-      actual_user = (proposing_user.include? '@') ?
-      User.find_by(email: proposing_user) :
-        User.find_by(cnet: proposing_user)
-
-      if actual_user
-        @project = actual_user.projects.build(project_params)
-        @project.proposer = proposing_user
-        @project.assign_attributes(advisor: actual_user)
-      else
-        flash.now[:error] = "There is no user with that CNetID or E-mail " +
-          "address."
-        render 'new' and return
-      end
-
-      if !actual_user.advisor?
-        flash.now[:error] = "That user is not an advisor."
-        render 'new' and return
-      end
-
+      create_record_for_target_user :proposer
     else
-      # Otherwise, just build the advisor's project normally.
+      # Otherwise, we just build the advisor's project normally.
       @project = current_user.projects.build(project_params)
     end
 
     @quarter = Quarter.find_by(year: params[:year], season: params[:season])
     @project.assign_attributes(quarter_id: @quarter.id)
 
-    if params[:commit] == "Create my proposal"
-      if @project.save
-        flash[:success] = "Project successfully proposed."
-        redirect_to users_projects_path(year: @project.quarter.year,
-                                        season: @project.quarter.season)
-      else
-        render 'new'
-      end
-    elsif params[:commit] == "Save as draft"
-      @project.assign_attributes(status: "draft")
-      if @project.save(validate: false)
-        flash[:success] = "Proposal saved as a draft. You may edit it " +
-          "by navigating to your \"my projects\" page."
-        redirect_to users_projects_path(year: @project.quarter.year,
-                                        season: @project.quarter.season)
-      else
-        render 'new'
-      end
-    end
+    create_or_update_project :new
   end
 
   def edit
@@ -80,31 +45,11 @@ class ProjectsController < ApplicationController
   # logic.
   def update
     if @project.draft?
-      # Editing the proposal while it's a draft
+      # Edit the proposal while it's a draft
       @project.assign_attributes(project_params)
-
-      if params[:commit] == "Create my proposal"
-        @project.assign_attributes(status: "pending")
-        if @project.save
-          flash[:success] = "Proposal submitted."
-          redirect_to users_projects_path(year: @project.quarter.year,
-                                          season: @project.quarter.season)
-        else
-          render 'edit'
-        end
-      elsif params[:commit] == "Save as draft"
-        if @project.save(validate: false)
-          flash[:success] = "Proposal saved as a draft. You may edit it " +
-            "by navigating to your \"my projects\" page."
-          redirect_to users_projects_path(year: @project.quarter.year,
-                                          season: @project.quarter.season)
-        else
-          render 'edit'
-        end
-      end
-
+      create_or_update_project :edit
     else
-      # Editing the proposal while it's pending
+      # Edit the proposal while it's submitted and pending
       if @project.update_attributes(project_params)
         flash[:success] = "Project proposal successfully updated."
         redirect_to project_path(@project, year: @project.quarter.year,
@@ -112,7 +57,6 @@ class ProjectsController < ApplicationController
       else
         render 'edit'
       end
-
     end
   end
 
@@ -124,7 +68,8 @@ class ProjectsController < ApplicationController
       # We're visiting a quarter-specific projects page
       @quarter = Quarter.where(year: params[:year],
                                season: params[:season]).take
-      # get the accepted published projects from this quarter
+
+      # Get the accepted published projects from this quarter
       @projects = Project.accepted_published_projects_in_quarter(@quarter)
     else
       # We're visiting the global projects page
@@ -154,88 +99,19 @@ class ProjectsController < ApplicationController
   def update_status
     @db_project = Project.find(params[:id])
 
-    # status_strings = {
-    #   "Accept"             => { attr: "status", val: "accepted",
-    #                             txt: "accepted" },
-    #   "Request changes"    => { attr: "status", val: "pending",
-    #                             txt: "set to \"pending\"" },
-    #   "Reject"             => { attr: "status", val: "rejected",
-    #                             txt: "rejected" },
-    #   "Unpublish decision" => { attr: "status_published", val: false,
-    #                             txt: "unpublished" },
-    #   "Publish decision"   => { attr: "status_published", val: true,
-    #                             txt: "published" }
-    # }
+    status_strings = {
+      "Accept"             => { attr: "status", val: "accepted",
+                                txt: "accepted" },
+      "Request changes"    => { attr: "status", val: "pending",
+                                txt: "set to \"pending\"" },
+      "Reject"             => { attr: "status", val: "rejected",
+                                txt: "rejected" },
+      "Unpublish decision" => { attr: "status_published", val: false,
+                                txt: "unpublished" },
+      "Publish decision"   => { attr: "status_published", val: true,
+                                txt: "published" } }
 
-    # changed_attrs = { "#{status_strings[params[:commit]][:attr]}" =>
-    #                   status_strings[params[:commit]][:val] }
-
-    # # Comments will be sent whenever they're present (for accept, reject,
-    # # or request_changes).
-    # if params[:project][:comments].present?
-    #   changed_attrs[:comments] = params[:project][:comments]
-    # end
-
-    # if @db_project.update_attributes(changed_attrs)
-    #   flash[:success] = "Project #{status_strings[params[:commit]][:txt]}."
-    #   redirect_to @project
-    # else
-    #   flash.now[:error] = "Project could not be " +
-    #     "#{status_strings[params[:commit]][:txt]}."
-    #   render 'show'
-    # end
-
-    case params[:commit]
-
-    when "Accept"
-      if @db_project.update_attributes(status: "accepted")
-        flash[:success] = "Project accepted."
-        redirect_to view_context.q_path(@db_project)
-      else
-        flash.now[:error] = "Project could not be accepted."
-        render 'show'
-      end
-
-    when "Request changes"
-      # Note: the comments aren't persisted to the database.
-      if @db_project.update_attributes(status: "pending",
-                                       comments: params[:project][:comments])
-        flash[:success] = "Changes requested and project status set to " +
-          "\"pending\"."
-        redirect_to view_context.q_path(@db_project)
-      else
-        flash.now[:error] = "Changes could not be requested and project " +
-          "status could not be set to \"pending\"."
-        render 'show'
-      end
-
-    when "Reject"
-      if @db_project.update_attributes(status: "rejected")
-        flash[:success] = "Project rejected."
-        redirect_to view_context.q_path(@db_project)
-      else
-        flash.now[:error] = "Project could not be rejected."
-        render 'show'
-      end
-
-    when "Unpublish decision"
-      if @db_project.update_attributes(status_published: false)
-        flash[:success] = "Project decision unpublished."
-        redirect_to view_context.q_path(@db_project)
-      else
-        flash.now[:error] = "Project decision could not be unpublished."
-        render 'show'
-      end
-
-    when "Publish decision"
-      if @db_project.update_attributes(status_published: true)
-        flash[:success] = "Project decision published."
-        redirect_to view_context.q_path(@db_project)
-      else
-        flash.now[:error] = "Project decision could not be published."
-        render 'show'
-      end
-    end
+    save_status(@db_project, @project, status_strings)
   end
 
   # Publish all proposals that are flagged as approved or rejected.
@@ -282,15 +158,12 @@ class ProjectsController < ApplicationController
   private
 
   def project_params
-    if current_user.admin?
-      params.require(:project).permit(:name, :description, :status,
-                                      :expected_deliverables, :prerequisites,
-                                      :related_work, :comments, :cloned,
-                                      :status_published, :advisor)
-    elsif current_user.advisor?
-      params.require(:project).permit(:name, :description,
-                                      :expected_deliverables, :prerequisites,
-                                      :related_work, :comments, :cloned)
+    as = [:name, :description, :expected_deliverables, :prerequisites,
+          :related_work, :comments, :cloned]
+    as += [:status, :status_published, :advisor] if current_user.admin?
+
+    if current_user.admin? or current_user.advisor?
+      params.require(:project).permit(*as)
     end
   end
 
@@ -310,11 +183,6 @@ class ProjectsController < ApplicationController
       redirect_to root_url, flash: { error: "This quarter is inactive." } and
         return
     end
-  end
-
-  def get_year_and_season
-    @year   = params[:year]
-    @season = params[:season]
   end
 
   def redirect_if_no_quarter_params

@@ -70,6 +70,11 @@ class ApplicationController < ActionController::Base
     current_ldap_user or current_local_user
   end
 
+  def get_year_and_season
+    @year   = params[:year]   || @quarter.year
+    @season = params[:season] || @quarter.season
+  end
+
   protected
 
   def configure_permitted_parameters

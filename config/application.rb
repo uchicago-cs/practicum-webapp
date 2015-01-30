@@ -12,6 +12,9 @@ module Practicum
     # Include files in /lib/ in the app (e.g., for modules).
     config.autoload_paths += %W(#{config.root}/lib)
 
+    # Include files in /app/controller_patterns/
+    config.autoload_paths += %W(#{config.root}/app/controller_patterns)
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

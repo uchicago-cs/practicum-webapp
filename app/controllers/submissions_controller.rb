@@ -1,5 +1,8 @@
 class SubmissionsController < ApplicationController
 
+  include SubmissionPatterns
+  include ProjectSubmissionPatterns
+
   load_and_authorize_resource
 
   # before_actions on both new and create?
@@ -12,6 +15,7 @@ class SubmissionsController < ApplicationController
   before_action :get_statuses,                only: [:show, :update_status]
   before_action :project_accepted_and_pub?,   only: [:new, :create]
   before_action :can_create_submissions?,     only: [:new, :create, :update]
+  before_action :get_year_and_season,         only: [:create, :update]
   before_action(except: [:index, :accepted]) { |c|
     c.get_this_user_for_object(@submission) }
   before_action(only: [:accept, :reject]) { |c|
@@ -23,91 +27,28 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new
   end
 
-  # TODO: Dry this up (see the create method of projects_controller.rb)
   def create
 
     # If an admin is creating the student's application, then
     # we figure out which student the admin is referring to.
     if params[:submission][:applicant].present?
-      applying_user = params[:submission][:applicant].downcase
-      actual_user = (applying_user.include? '@') ?
-      User.find_by(email: applying_user) :
-        User.find_by(cnet: applying_user)
-
-      if actual_user
-        @submission = @project.submissions.build(submission_params)
-        @submission.applicant = applying_user # Needed for the validation proc
-        @submission.assign_attributes(student_id: actual_user.id)
-      else
-        flash.now[:error] = "There is no user with that CNetID or E-mail " +
-          "address."
-        render 'new' and return
-      end
-
-      if !actual_user.student?
-        flash.now[:error] = "That user is not a student."
-        render 'new' and return
-      end
-
+      create_record_for_target_user :applicant
     else
       # Otherwise, build the submission normally.
       @submission = @project.submissions.build(submission_params)
       @submission.assign_attributes(student_id: current_user.id)
     end
 
-    @year   = @submission.quarter.year
-    @season = @submission.quarter.season
-
-    # Could be DRYer, but be careful to not rely on whether params[:commit]
-    # is one of the strings _or not_; we should check whether it is one of the
-    # strings _or the other_. (?)
-    if params[:commit] == "Submit my application"
-      if @submission.save
-        flash[:success] = "Application submitted."
-        redirect_to users_submissions_path(year: @year, season: @season)
-      else
-        render 'new'
-      end
-    elsif params[:commit] == "Save as draft"
-      @submission.assign_attributes(status: "draft")
-      if @submission.save(validate: false)
-        flash[:success] = "Application saved as a draft. You may edit it " +
-          "by navigating to your \"my applications\" page."
-        redirect_to users_submissions_path(year: @year, season: @season)
-      else
-        render 'new'
-      end
-    end
+    create_or_update_submission :new
   end
 
 
   def edit
   end
 
-  # Not DRY. (See #create.)
-  # Students can only edit drafts, i.e., submissions where status == "draft".
   def update
+    # Note: students can only edit drafts.
     @submission.assign_attributes(submission_params)
-    @year   = @submission.quarter.year
-    @season = @submission.quarter.season
-
-    if params[:commit] == "Submit my application"
-      @submission.assign_attributes(status: "pending")
-      if @submission.save
-        flash[:success] = "Application submitted."
-        redirect_to users_submissions_path(year: @year, season: @season)
-      else
-        render 'edit'
-      end
-    elsif params[:commit] == "Save as draft"
-      if @submission.save(validate: false)
-        flash[:success] = "Application saved as a draft. You may edit it " +
-          "by navigating to your \"my applications\" page."
-        redirect_to users_submissions_path(year: @year, season: @season)
-      else
-        render 'edit'
-      end
-    end
   end
 
   def destroy
@@ -138,21 +79,13 @@ class SubmissionsController < ApplicationController
 
   def accept_or_reject
     @submission.update_attributes(comments: params[:submission][:comments])
+    stat = { "Accept" => "accepted", "Reject" => "rejected" }[params[:commit]]
 
-    if params[:commit] == "Accept"
-      if @submission.update_attributes(status: "accepted")
-        flash[:success] = "Application accepted."
-        redirect_to q_path(@submission)
-      else
-        render 'show'
-      end
-    elsif params[:commit] == "Reject"
-      if @submission.update_attributes(status: "rejected")
-        flash[:success] = "Application rejected."
-        redirect_to q_path(@submission)
-      else
-        render 'show'
-      end
+    if @submission.update_attributes(status: stat)
+      flash[:success] = "Application #{stat}."
+      redirect_to q_path(@submission)
+    else
+      render 'show'
     end
   end
 
@@ -170,67 +103,33 @@ class SubmissionsController < ApplicationController
   def update_status
     @db_submission = Submission.find(params[:id])
 
-    # TODO: Dry this up
-    case params[:commit]
+    status_strings = {
+      "Unapprove decision" => { attr: "status_approved", val: false,
+                                txt: "unapproved" },
+      "Approve changes"    => { attr: "status_approved", val: true,
+                                txt: "approved" },
+      "Unpublish decision" => { attr: "status_published", val: false,
+                                txt: "unplished" },
+      "Publish decision"   => { attr: "status_published", val: true,
+                                txt: "published" } }
 
-    when "Unapprove decision"
-      if @db_submission.update_attributes(status_approved: false)
-        flash[:success] = "Application decision unapproved."
-        redirect_to q_path(@submission)
-      else
-        flash.now[:error] = "Application decision could not be unapproved."
-        render 'show'
-      end
-
-    when "Approve decision"
-      if @db_submission.update_attributes(status_approved: true)
-        flash[:success] = "Application decision approved."
-        redirect_to q_path(@submission)
-      else
-        flash.now[:error] = "Application decision could not be approved."
-        render 'show'
-      end
-
-    when "Unpublish decision"
-      if @db_submission.update_attributes(status_published: false)
-        flash[:success] = "Application decision unpublished."
-        redirect_to q_path(@submission)
-      else
-        flash.now[:error] = "Application decision could not be unpublished."
-        render 'show'
-      end
-
-    when "Publish decision"
-      if @db_submission.update_attributes(status_published: true)
-        flash[:success] = "Application decision published."
-        redirect_to q_path(@submission)
-      else
-        flash.now[:error] = "Application decision could not be published."
-        render 'show'
-      end
-    end
+    save_status(@db_submission, @submission, status_strings)
   end
 
   private
 
   def submission_params
-    # TODO: DRY this up
-    if current_user.admin?
-      params.require(:submission).permit(:information, :student_id, :status,
-                                         :qualifications, :courses, :resume,
-                                         :status_approved, :status_published,
-                                         :comments, :applicant)
-    else
-      params.require(:submission).permit(:information, :student_id, :status,
-                                         :qualifications, :courses, :resume,
-                                         :status_approved, :status_published,
-                                         :comments)
+    as = [:information, :student_id, :status, :qualifications, :courses,
+          :resume, :status_approved, :status_published, :comments]
+    as << :applicant if current_user.admin?
+
+    if current_user.admin? or current_user.advisor?
+      params.require(:project).permit(*as)
     end
   end
 
   def get_project
-    @project = Project.find(params[:project_id])#params[:project_id] ?
-      #Project.find(params[:project_id]) : @submission.project
+    @project = Project.find(params[:project_id])
   end
 
   def project_accepted?
