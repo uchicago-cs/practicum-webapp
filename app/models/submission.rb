@@ -11,7 +11,7 @@ class Submission < ActiveRecord::Base
         where.not(status: "draft") }
 
   scope :unsubmitted_submissions,
-    ->(q) { Submission.all.where(status: "draft").joins(:project).
+    ->(q) { Submission.where(status: "draft").joins(:project).
     where(projects: { quarter_id: q.id }) }
 
   scope :active_unsubmitted_submissions, -> { active_submissions.

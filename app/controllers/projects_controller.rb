@@ -78,11 +78,6 @@ class ProjectsController < ApplicationController
 
   # Not DRY (see #create and submissions_controller.rb), and a bit too much
   # logic.
-
-  # ***
-  # TODO: Check whether we should be checking the params instead in the
-  # outermost `if` statement?
-  # ***
   def update
     if @project.draft?
       # Editing the proposal while it's a draft

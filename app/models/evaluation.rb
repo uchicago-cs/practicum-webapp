@@ -29,8 +29,8 @@ class Evaluation < ActiveRecord::Base
   after_create :send_evaluation_submitted
 
   def Evaluation.in_quarter(q)
-    # TODO: Get this working in a scope?
-    Evaluation.all.select { |e| e.quarter.id == q.id }
+    q_id = q.id
+    Evaluation.select { |e| e.quarter.id == q_id }
   end
 
   def student

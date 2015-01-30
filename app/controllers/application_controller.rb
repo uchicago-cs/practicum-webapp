@@ -33,7 +33,8 @@ class ApplicationController < ActionController::Base
   def redirect_if_invalid_quarter
     if params[:year] and params[:season]
       if Quarter.where(year: params[:year], season: params[:season]).empty?
-        redirect_to root_url, flash: { error: "That quarter does not exist." }
+        flash[:error] = "Invalid quarter."
+        redirect_to root_url and return
       end
     end
   end
