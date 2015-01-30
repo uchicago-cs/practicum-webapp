@@ -16,7 +16,7 @@ module StatusMethods
     status == "draft"
   end
 
-  def in_current_quarter?
+  def in_active_quarter?
     Quarter.active_quarters.include? self.quarter
   end
 

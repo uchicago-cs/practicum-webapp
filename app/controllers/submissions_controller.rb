@@ -8,7 +8,7 @@ class SubmissionsController < ApplicationController
   before_action :project_accepted?,           only: [:new, :create]
   before_action :is_admin_or_advisor?,        only: :index
   before_action :already_applied_to_project?, only: [:new, :create]
-  before_action :project_in_current_quarter?, only: [:new, :create]
+  before_action :project_in_active_quarter?, only: [:new, :create]
   before_action :get_statuses,                only: [:show, :update_status]
   before_action :project_accepted_and_pub?,   only: [:new, :create]
   before_action :can_create_submissions?,     only: [:new, :create, :update]
@@ -244,11 +244,11 @@ class SubmissionsController < ApplicationController
       current_user.applied_to_project?(@project) and !current_user.admin?
   end
 
-  def project_in_current_quarter?
+  def project_in_active_quarter?
     message = "That project was offered in a previous quarter and is no " +
       "longer available."
     redirect_to root_url, flash: { error: message } unless
-      @project.quarter == Quarter.current_quarter
+      @project.quarter == Quarter.active_quarter
   end
 
   def is_admin_or_advisor?

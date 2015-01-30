@@ -44,7 +44,7 @@ describe "Creating a project", type: :feature do
       describe "when a project with its name exists" do
 
         before(:each) do
-          FactoryGirl.create(:project, :in_current_quarter,
+          FactoryGirl.create(:project, :in_active_quarter,
                              name: "Generic Project Name")
         end
 

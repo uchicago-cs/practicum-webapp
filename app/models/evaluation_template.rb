@@ -31,7 +31,7 @@ class EvaluationTemplate < ActiveRecord::Base
 
   def EvaluationTemplate.current_active
     EvaluationTemplate.where(active: true).
-      where(quarter: Quarter.current_quarter).take
+      where(quarter: Quarter.active_quarter).take
   end
 
   def has_grade_question?

@@ -40,7 +40,7 @@ RSpec.describe Notifier, type: :mailer do
       @student = FactoryGirl.create(:student)
       @project = FactoryGirl.create(:project,
                                     :accepted_and_published,
-                                    :in_current_quarter,
+                                    :in_active_quarter,
                                     advisor: @advisor)
     end
 
@@ -106,7 +106,7 @@ RSpec.describe Notifier, type: :mailer do
       it "should send e-mails to the admins" do
         # We expect the number of deliveries to equal the number of admins we
         # made in the `before` block.
-        expect { FactoryGirl.create(:project, :in_current_quarter,
+        expect { FactoryGirl.create(:project, :in_active_quarter,
                                     advisor: @advisor) }.
           to change{ ActionMailer::Base.deliveries.count }.by(@num)
       end
@@ -115,7 +115,7 @@ RSpec.describe Notifier, type: :mailer do
     context "as a draft" do
       before(:each) do
         ActionMailer::Base.deliveries.clear
-        @project = FactoryGirl.create(:project, :in_current_quarter,
+        @project = FactoryGirl.create(:project, :in_active_quarter,
                                       status: "draft",
                                       advisor: @advisor)
       end
@@ -140,7 +140,7 @@ RSpec.describe Notifier, type: :mailer do
     before { (@num = rand(1..10)).times { FactoryGirl.create(:admin) } }
 
     it "should send an e-mail" do
-      @project = FactoryGirl.create(:project, :in_current_quarter,
+      @project = FactoryGirl.create(:project, :in_active_quarter,
                                     status: "accepted", status_published: true)
       @submission = FactoryGirl.create(:submission, project: @project)
       # See #send_status_updated in submission.rb. We send e-mails to the
@@ -156,7 +156,7 @@ RSpec.describe Notifier, type: :mailer do
   context "when a project proposal's status is changed" do
     before do
       @admin = FactoryGirl.create(:admin)
-      @project = FactoryGirl.create(:project, :in_current_quarter)
+      @project = FactoryGirl.create(:project, :in_active_quarter)
       @project.this_user = @admin
     end
 
@@ -172,7 +172,7 @@ RSpec.describe Notifier, type: :mailer do
       # Create admins, whom we send the "new proposal" e-mail to.
       (@num = rand(1..10)).times { FactoryGirl.create(:admin) }
       @advisor = FactoryGirl.create(:advisor)
-      @project = FactoryGirl.create(:project, :in_current_quarter,
+      @project = FactoryGirl.create(:project, :in_active_quarter,
                                     advisor: @advisor, status: "accepted",
                                     status_published: true)
       @submission = FactoryGirl.create(:submission, project: @project)

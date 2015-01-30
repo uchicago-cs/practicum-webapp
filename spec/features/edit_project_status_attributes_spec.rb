@@ -18,7 +18,7 @@ describe "Editing a project's 'status' attributes", type: :feature do
     @advisor       = FactoryGirl.create(:advisor)
     @other_advisor = FactoryGirl.create(:advisor)
     @student       = FactoryGirl.create(:student)
-    @project       = FactoryGirl.create(:project, :in_current_quarter,
+    @project       = FactoryGirl.create(:project, :in_active_quarter,
                                         advisor: @advisor, status: "pending",
                                         status_published: false)
   end

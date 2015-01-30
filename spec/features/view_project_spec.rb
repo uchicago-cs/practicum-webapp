@@ -36,7 +36,7 @@ describe "Viewing a project", type: :feature do
 
     describe "after the advisor has made a project" do
       before(:each) do
-        @project = FactoryGirl.create(:project, :in_current_quarter,
+        @project = FactoryGirl.create(:project, :in_active_quarter,
                                       advisor: @advisor)
         ldap_sign_in(@advisor)
         visit root_path
@@ -69,7 +69,7 @@ describe "Viewing a project", type: :feature do
     describe "an admin viewing the project" do
 
       before do
-        @project = FactoryGirl.create(:project, :in_current_quarter,
+        @project = FactoryGirl.create(:project, :in_active_quarter,
                                       advisor: @advisor)
       end
 
@@ -86,8 +86,8 @@ describe "Viewing a project", type: :feature do
     describe "an admin changing its status to 'accepted'" do
 
       before(:each) do
-        # These _need_ to be :in_current_quarter.
-        @project = FactoryGirl.create(:project, :in_current_quarter,
+        # These _need_ to be :in_active_quarter.
+        @project = FactoryGirl.create(:project, :in_active_quarter,
                                       advisor: @advisor)
         ldap_sign_in(@admin)
         visit pending_projects_path(year: @y, season: @s)
@@ -173,7 +173,7 @@ describe "Viewing a project", type: :feature do
     shared_examples_for "a project with some status and status_published" \
     do |status, status_published|
       before do
-        @project = FactoryGirl.create(:project, :in_current_quarter,
+        @project = FactoryGirl.create(:project, :in_active_quarter,
                                       advisor: @advisor, status: status,
                                       status_published: status_published)
       end

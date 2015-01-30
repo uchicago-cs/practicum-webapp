@@ -19,7 +19,7 @@ describe "Creating a submission", type: :feature do
       @advisor = FactoryGirl.create(:advisor)
       @student = FactoryGirl.create(:student)
       @project = FactoryGirl.create(:project, :accepted_and_published,
-                                    :in_current_quarter, advisor: @advisor)
+                                    :in_active_quarter, advisor: @advisor)
       ldap_sign_in(@student)
     end
 
@@ -187,7 +187,7 @@ describe "Creating a submission", type: :feature do
       @advisor = FactoryGirl.create(:advisor)
       @student = FactoryGirl.create(:student)
       @project = FactoryGirl.create(:project, :accepted_and_published,
-                                    :in_current_quarter, advisor: @advisor)
+                                    :in_active_quarter, advisor: @advisor)
       ldap_sign_in(@student)
     end
 

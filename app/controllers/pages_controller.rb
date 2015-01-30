@@ -8,7 +8,7 @@ class PagesController < ApplicationController
                        :approve_all_statuses, :change_all_statuses]
   before_action :get_unsubmitted_submissions, only: :submission_drafts
   before_action :redirect_if_invaid_quarter_params, only: :submission_drafts
-  before_action :get_current_decided_submissions,
+  before_action :get_active_decided_submissions,
                 only: [:publish_all_statuses, :approve_all_statuses,
                        :change_all_statuses]
 
@@ -24,7 +24,7 @@ class PagesController < ApplicationController
   def change_all_statuses
     past_tenses = { "publish" => "published", "approve" => "approved" }
 
-    @current_decided_submissions.each do |sub|
+    @active_decided_submissions.each do |sub|
       sub.status_approved  = true if params['change'] == "approve"
       sub.status_published = true if params['change'] == "publish"
       if sub.valid?
@@ -77,7 +77,7 @@ class PagesController < ApplicationController
     end
   end
 
-  # Use a more descriptive name?
+  # TODO: Use a more descriptive name?
   def update_all_submissions
     Submission.update_selected(params)
 
@@ -95,12 +95,11 @@ class PagesController < ApplicationController
     if params[:year] and params[:season]
       @quarter = Quarter.where(year: params[:year],
                                season: params[:season]).take
-      @current_submitted_submissions =
+      @active_submitted_submissions =
         Submission.submitted_submissions_in_quarter(@quarter)
     else
-      # TODO: Replace `current_submitted_submissions` with a non-`current` scope
-      @current_submitted_submissions =
-        Submission.current_submitted_submissions
+      @active_submitted_submissions =
+        Submission.active_submitted_submissions
     end
   end
 
@@ -110,8 +109,8 @@ class PagesController < ApplicationController
       Submission.unsubmitted_submissions(quarter)
   end
 
-  def get_current_decided_submissions
-    @current_decided_submissions = @current_submissions.
+  def get_active_decided_submissions
+    @active_decided_submissions = @active_submissions.
       where.not(status: "pending")
   end
 

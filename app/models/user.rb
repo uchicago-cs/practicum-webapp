@@ -130,7 +130,7 @@ class User < ActiveRecord::Base
   end
 
   def current_projects
-    self.projects.where(quarter: Quarter.current_quarter)
+    self.projects.where(quarter: Quarter.active_quarter)
   end
 
   def send_roles_changed

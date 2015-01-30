@@ -105,7 +105,7 @@ class Ability
 
         can :apply_to, Project do |project|
           project.accepted? and !user.applied_to_project?(project) and
-            project.in_current_quarter? and project.status_published?
+            project.in_active_quarter? and project.status_published?
         end
 
         can :edit, Submission do |submission|

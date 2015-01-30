@@ -165,7 +165,7 @@ describe "Interacting with records from different quarters", type: :feature do
       @q4      = FactoryGirl.create(:quarter, :no_deadlines_passed,
                                     :earlier_start_date, year: 2015,
                                     season: "winter")
-      @p_new   = FactoryGirl.create(:project, :in_current_quarter,
+      @p_new   = FactoryGirl.create(:project, :in_active_quarter,
                                     advisor: @advisor, status: "accepted",
                                     status_published: true)
       @p_old   = FactoryGirl.build(:project, quarter: @q1,

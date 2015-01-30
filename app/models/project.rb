@@ -20,28 +20,23 @@ class Project < ActiveRecord::Base
   scope :unpublished_nonpending_projects,
     -> { current_unpublished_projects.where.not(status: "pending") }
 
-  # TODO: DRY this (see quarter.rb)
   scope :current_accepted_projects,
     -> { where(status: "accepted").
-    joins(:quarter).where("start_date <= ? AND ? <= end_date",
-                          DateTime.now, DateTime.now) }
+    joins(:quarter).merge(Quarter.active_quarters) }
 
   scope :accepting_submissions,
     -> { where({status: "accepted", status_published: true}).
-         joins(:quarter).where("start_date <= ? AND ? <= end_date",
-                               DateTime.now, DateTime.now).
-         where("? < student_submission_deadline", DateTime.now) }
+    joins(:quarter).merge(Quarter.active_quarters).
+    merge(Quarter.open_for_submissions) }
 
   scope :current_accepted_published_projects,
     -> { where({status: "accepted", status_published: true}).
-    joins(:quarter).where("start_date <= ? AND ? <= end_date",
-                          DateTime.now, DateTime.now) }
+    joins(:quarter).merge(Quarter.active_quarters) }
 
   scope :quarter_accepted_projects,
     ->(quarter) { where(status: "accepted").
     joins(:quarter).where(quarters: { id: quarter.id }) }
 
-  # Similar to the above scope:
   scope :accepted_published_projects_in_quarter,
     ->(quarter) { where({status: "accepted", status_published: true}).
     joins(:quarter).where(quarters: { id: quarter.id }) }
@@ -82,7 +77,7 @@ class Project < ActiveRecord::Base
   end
 
   def cloneable?
-    self.quarter != Quarter.current_quarter and
+    self.quarter != Quarter.active_quarter and
       self.accepted_submissions.count == 0 and
       !self.cloned?
   end
@@ -135,7 +130,7 @@ class Project < ActiveRecord::Base
   # Do we also need to check that this is a current project?
   def created_before_proposal_deadline
     errors.add(:base, "The proposal deadline has passed.") if
-      DateTime.now > Quarter.current_quarter.project_proposal_deadline
+      DateTime.now > Quarter.active_quarter.project_proposal_deadline
   end
 
   def created_in_an_active_quarter
@@ -148,7 +143,7 @@ class Project < ActiveRecord::Base
     message = "Cannot accept projects after the application deadline."
     errors.add(:base, message) if self.status_changed? and
       self.accepted? and
-      DateTime.now > Quarter.current_quarter.student_submission_deadline
+      DateTime.now > Quarter.active_quarter.student_submission_deadline
   end
 
   def status_not_pending_when_published

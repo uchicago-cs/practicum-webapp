@@ -3,17 +3,11 @@ class Quarter < ActiveRecord::Base
   attr_reader :current
 
   default_scope { order('quarters.created_at DESC') }
-  # TODO: DRY this (see project.rb)
-  # TODO: Move away from returning just one quarter here
-  scope :current_quarter, -> {
-    where("start_date <= ? AND ? <= end_date",
-          DateTime.now, DateTime.now).take }
 
   scope :active_quarter, -> {
     where("start_date <= ? AND ? <= end_date",
           DateTime.now, DateTime.now).take }
 
-  # Maybe call these quarters "active" instead?
   scope :active_quarters, -> {
     where("start_date <= ? AND ? <= end_date",
           DateTime.now, DateTime.now) }

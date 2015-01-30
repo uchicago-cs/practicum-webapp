@@ -28,7 +28,7 @@ RSpec.describe Submission, :type => :model do
         @advisor = FactoryGirl.create(:advisor)
         @student = FactoryGirl.create(:student)
         @project = FactoryGirl.create(:project, :accepted_and_published,
-                                      :in_current_quarter, advisor: @advisor)
+                                      :in_active_quarter, advisor: @advisor)
       end
 
       it "should be invalid" do

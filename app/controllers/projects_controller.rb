@@ -269,7 +269,7 @@ class ProjectsController < ApplicationController
   # `clone` is a keyword, so we use #clone_project instead of #clone.
   def clone_project
     @new_project = @old_project.dup
-    @new_project.assign_attributes(quarter_id: Quarter.current_quarter.id,
+    @new_project.assign_attributes(quarter_id: Quarter.active_quarter.id,
                                    status: "pending",
                                    status_published: false)
     if @new_project.save

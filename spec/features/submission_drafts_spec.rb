@@ -17,7 +17,7 @@ describe "Drafting a submission", type: :feature do
     @other_advisor = FactoryGirl.create(:advisor)
     @student       = FactoryGirl.create(:student)
     @other_student = FactoryGirl.create(:student)
-    @project       = FactoryGirl.create(:project, :in_current_quarter,
+    @project       = FactoryGirl.create(:project, :in_active_quarter,
                                         advisor: @advisor, status: "accepted",
                                         status_published: true)
   end

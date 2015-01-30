@@ -89,8 +89,8 @@ module ApplicationHelper
       "draft"    => "" }[status]
   end
 
-  def formatted_current_quarter
-    quarter = Quarter.current_quarter
+  def formatted_active_quarter
+    quarter = Quarter.active_quarter
     if quarter
       [quarter.season.capitalize, quarter.year].join(" ")
     else
@@ -117,12 +117,12 @@ module ApplicationHelper
   # Formatted deadlines (not the DateTime objects, which
   # @quarter.deadline(deadline) returns).
   def formatted_deadline(deadline)
-    Quarter.current_quarter.deadline(deadline).
+    Quarter.active_quarter.deadline(deadline).
       strftime("%I:%M %p on %D (%A, %B %d, %Y)")
   end
 
   def before_deadline?(deadline)
-    DateTime.now <= Quarter.current_quarter.deadline(deadline)
+    DateTime.now <= Quarter.active_quarter.deadline(deadline)
   end
 
   def formatted_project_status(project)

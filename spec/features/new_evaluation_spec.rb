@@ -22,7 +22,7 @@ describe "Creating an evaluation", type: :feature do
                                    name: "Midterm",
                                    active: true)
     @project  = FactoryGirl.create(:project, :accepted_and_published,
-                                   :in_current_quarter, advisor: @advisor)
+                                   :in_active_quarter, advisor: @advisor)
   end
 
   context "as the advisor" do
@@ -219,7 +219,7 @@ describe "Creating an evaluation", type: :feature do
       before(:each) do
         @advisor_2  = FactoryGirl.create(:advisor)
         @project_2  = FactoryGirl.create(:project, :accepted_and_published,
-                                         :in_current_quarter,
+                                         :in_active_quarter,
                                          advisor: @advisor_2)
         @submission_2 = FactoryGirl.create(:submission, project: @project_2,
                                            student: @student,

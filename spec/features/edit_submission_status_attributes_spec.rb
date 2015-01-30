@@ -18,7 +18,7 @@ describe "Editing a submission's 'status' attributes", type: :feature do
     @student       = FactoryGirl.create(:student)
     @other_student = FactoryGirl.create(:student)
     @project       = FactoryGirl.create(:project, :accepted_and_published,
-                                        :in_current_quarter, advisor: @advisor)
+                                        :in_active_quarter, advisor: @advisor)
     @submission    = FactoryGirl.create(:submission, student: @student,
                                         project: @project, status: "pending",
                                         status_approved: false,

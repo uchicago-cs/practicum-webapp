@@ -3,17 +3,18 @@ class Submission < ActiveRecord::Base
   include StatusMethods
 
   default_scope { order('submissions.created_at DESC') }
-  scope :current_submissions, -> { includes(:project).
-        where(projects: { quarter_id: Quarter.current_quarter.id }) }
 
-  scope :current_submitted_submissions, -> { current_submissions.
+  scope :active_submissions, -> { includes(:project).
+        where(projects: { quarter_id: Quarter.active_quarter.id }) }
+
+  scope :active_submitted_submissions, -> { active_submissions.
         where.not(status: "draft") }
 
   scope :unsubmitted_submissions,
     ->(q) { Submission.all.where(status: "draft").joins(:project).
     where(projects: { quarter_id: q.id }) }
 
-  scope :current_unsubmitted_submissions, -> { current_submissions.
+  scope :active_unsubmitted_submissions, -> { active_submissions.
         where(status: "draft") }
 
   scope :quarter_submissions, ->(quarter) { includes(:project).
@@ -50,7 +51,7 @@ class Submission < ActiveRecord::Base
   validate :decision_made_before_decision_deadline
   validate :creator_role, on: :create
   validate :created_when_project_visible, on: :create
-  validate :project_is_in_current_quarter, on: :create
+  validate :project_is_in_active_quarter, on: :create
 
   delegate :name, to: :project, prefix: true, allow_nil: true
   delegate :quarter, to: :project, prefix: false, allow_nil: true
@@ -144,7 +145,7 @@ class Submission < ActiveRecord::Base
     end
   end
 
-  # Make #in_current_quarter? its own check.
+  # Make #in_active_quarter? its own check.
   def status_not_pending_before_approved
     message = "Status must not be pending before an admin can approve it."
     errors.add(:base, message) if self.pending? and self.status_approved? and
@@ -166,19 +167,19 @@ class Submission < ActiveRecord::Base
   def status_published_after_advisor_deadline
     message = "Cannot publish status before the advisor's decision deadline."
     errors.add(:base, message) if self.status_published and
-      DateTime.now <= Quarter.current_quarter.advisor_decision_deadline
+      DateTime.now <= Quarter.active_quarter.advisor_decision_deadline
   end
 
   def created_before_submission_deadline
     message = "The application deadline has passed."
     errors.add(:base, message) if
-      DateTime.now > Quarter.current_quarter.student_submission_deadline
+      DateTime.now > Quarter.active_quarter.student_submission_deadline
   end
 
   def decision_made_before_decision_deadline
     message = "Status cannot be updated past the advisor's decision deadline."
     errors.add(:base, message) if !self.pending? and self.status_changed? and
-      DateTime.now > Quarter.current_quarter.advisor_decision_deadline and
+      DateTime.now > Quarter.active_quarter.advisor_decision_deadline and
       !self.this_user.try(:admin?)
   end
 
@@ -197,10 +198,10 @@ class Submission < ActiveRecord::Base
     self.status.downcase!
   end
 
-  def project_is_in_current_quarter
+  def project_is_in_active_quarter
     msg = "Applications cannot be submitted to projects from previous " +
       "quarters."
-    errors.add(:base, msg) unless project.in_current_quarter?
+    errors.add(:base, msg) unless project.in_active_quarter?
   end
 
 end

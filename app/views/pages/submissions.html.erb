@@ -1,4 +1,4 @@
-<h2><%= formatted_current_quarter %> Applications</h2>
+<h2><%= formatted_active_quarter %> Applications</h2>
 
 <div class="alert alert-<%= alert_type_by_deadline %>">
   <p>
@@ -7,7 +7,7 @@
   </p>
 </div>
 
-<% if @current_submitted_submissions.count > 0 %>
+<% if @active_submitted_submissions.count > 0 %>
   <%= form_tag update_all_submissions_path, method: :patch do %>
     <table class="table table-bordered">
       <tr>
@@ -22,7 +22,7 @@
 	<th>Select</th>
       </tr>
       <tbody>
-	<% @current_submitted_submissions.each do |submission| %>
+	<% @active_submitted_submissions.each do |submission| %>
 	  <%= fields_for "submissions[]", submission do |f| %>
 	    <%= render 'submission_short', submission: submission, form: f %>
 	  <% end %>

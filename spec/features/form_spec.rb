@@ -54,7 +54,7 @@ describe "Filling out a form", type: :feature do
   #       end
 
   #       it "should not create when project with its name exists" do
-  #         FactoryGirl.create(:project, :in_current_quarter,
+  #         FactoryGirl.create(:project, :in_active_quarter,
   #                            name: "Generic Project Name")
   #         fill_in "project_name", with: "Generic Project Name"
   #         fill_in "Description", with: "a"*500
