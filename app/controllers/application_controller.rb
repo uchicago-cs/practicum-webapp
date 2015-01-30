@@ -128,7 +128,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_if_no_quarters_exist
-    unless Quarter.all.present?
+    if Quarter.count == 0
       unless [new_quarter_path, quarters_path, root_path].include? request.path
         flash[:error] = "There are no quarters. An admin must create a " +
           "quarter before the site can be used."

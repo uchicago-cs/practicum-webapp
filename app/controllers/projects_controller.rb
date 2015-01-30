@@ -3,12 +3,14 @@ class ProjectsController < ApplicationController
   load_and_authorize_resource
 
   skip_before_action :authenticate_user!,        only: [:index, :show]
+  before_action      :redirect_if_no_quarters_exist, only: :index
   before_action      :get_status_published,      only: [:show, :update_status]
   before_action      :get_old_project_info,      only: :clone_project
   before_action      :can_create_projects?,      only: [:new, :create]
   before_action      :get_year_and_season,       only: [:new, :create, :edit,
                                                         :update, :pending]
   before_action      :redirect_if_no_quarter_params, only: :pending
+
   before_action(only: [:update_status, :update]) { |c|
     c.get_this_user_for_object(@project) }
   before_action(only: :show) { |c|
@@ -123,14 +125,6 @@ class ProjectsController < ApplicationController
   end
 
   def index
-    # Something similar should be put in the application controller for every
-    # page.
-    if Quarter.count == 0
-      flash[:error] = "There are no quarters. A quarter must exist before " +
-        "you can view projects."
-      redirect_to root_url and return
-    end
-
     if params[:year] and params[:season]
       # We're visiting a quarter-specific projects page
       @quarter = Quarter.where(year: params[:year],

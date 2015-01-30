@@ -34,7 +34,7 @@ RSpec.describe User, :type => :model do
     describe "projects" do
       before do
         @quarter = FactoryGirl.create(:quarter, :no_deadlines_passed)
-        @project = FactoryGirl.create(:project)
+        @project = FactoryGirl.create(:project, quarter: @quarter)
       end
 
       it "should not exist" do

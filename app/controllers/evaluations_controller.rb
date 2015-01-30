@@ -2,23 +2,18 @@ class EvaluationsController < ApplicationController
 
   load_and_authorize_resource
 
+  before_action :redirect_if_no_quarters_exist, only: :index
   before_action :get_project_and_submission,    only: [:new, :create]
   before_action :already_evaluated?,            only: [:new, :create]
   before_action :is_admin?,                     only: :index
   before_action :submission_status_sufficient?, only: [:new, :create]
   before_action :get_template
   before_action :get_student,                   only: [:new, :create]
+
   before_action(only: :show) { |c|
     c.redirect_if_wrong_quarter_params(@evaluation) }
 
   def index
-    # TODO: DRY up (see ProjectsController#index)
-    if Quarter.count == 0
-      flash[:error] = "There are no quarters. A quarter must exist before " +
-        "you can view evaluations."
-      redirect_to root_url and return
-    end
-
     if params[:year] and params[:season]
       @quarter = Quarter.where(year: params[:year],
                                season: params[:season]).take
