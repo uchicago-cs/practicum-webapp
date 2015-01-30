@@ -11,7 +11,7 @@ class ProjectsController < ApplicationController
   before_action      :get_old_project_info,      only: :clone_project
   before_action      :can_create_projects?,      only: [:new, :create]
   before_action      :get_year_and_season,       only: [:new, :create, :edit,
-                                                        :update, :pending]
+                                                        :update]
   before_action      :redirect_if_no_quarter_params, only: :pending
 
   before_action(only: [:update_status, :update]) { |c|
@@ -88,8 +88,9 @@ class ProjectsController < ApplicationController
 
   def pending
     if params[:year] and params[:season]
-      @quarter = Quarter.where(year: params[:year],
-                               season: params[:season]).take
+      @year     = params[:year]
+      @season   = params[:season]
+      @quarter  = Quarter.where(year: @year, season: @season).take
       @projects = Project.unpublished_in_quarter(@quarter)
     else
       @projects = Project.current_unpublished_projects

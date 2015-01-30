@@ -5,13 +5,13 @@ class SubmissionsController < ApplicationController
 
   load_and_authorize_resource
 
-  # before_actions on both new and create?
+  # TODO: before_actions on both new and create?
   before_action :get_project,                 only: [:index, :new, :create]
   before_action :submitted?,                  only: [:edit, :update]
   before_action :project_accepted?,           only: [:new, :create]
   before_action :is_admin_or_advisor?,        only: :index
   before_action :already_applied_to_project?, only: [:new, :create]
-  before_action :project_in_active_quarter?, only: [:new, :create]
+  before_action :project_in_active_quarter?,  only: [:new, :create]
   before_action :get_statuses,                only: [:show, :update_status]
   before_action :project_accepted_and_pub?,   only: [:new, :create]
   before_action :can_create_submissions?,     only: [:new, :create, :update]
@@ -106,7 +106,7 @@ class SubmissionsController < ApplicationController
     status_strings = {
       "Unapprove decision" => { attr: "status_approved", val: false,
                                 txt: "unapproved" },
-      "Approve changes"    => { attr: "status_approved", val: true,
+      "Approve decision"   => { attr: "status_approved", val: true,
                                 txt: "approved" },
       "Unpublish decision" => { attr: "status_published", val: false,
                                 txt: "unplished" },
