@@ -121,8 +121,8 @@ module ApplicationHelper
       strftime("%I:%M %p on %D (%A, %B %d, %Y)")
   end
 
-  def before_deadline?(deadline)
-    DateTime.now <= Quarter.active_quarter.deadline(deadline)
+  def before_deadline?(deadline, quarter = Quarter.active_quarter)
+    DateTime.now <= quarter.deadline(deadline)
   end
 
   def formatted_project_status(project)

@@ -17,4 +17,9 @@ module ProjectsHelper
     @grouped_projects ? 'quarter_projects_tables' : 'projects_table'
   end
 
+  def can_apply_to_project?
+    q = @project.quarter
+    (can? :apply_to, @project) and before_deadline?("student_submission", q)
+  end
+
 end

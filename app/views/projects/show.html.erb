@@ -18,7 +18,7 @@
   <%= render 'edit_status', object: @project %>
 <% end %>
 
-<% if (can? :apply_to, @project) and before_deadline?("student_submission") %>
+<% if can_apply_to_project? %>
   <p>
     Click <%= q_link_to "here", @project, :new_project_submission,
               { id: "new-submission-link" } %>

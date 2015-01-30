@@ -7,7 +7,7 @@ class PagesController < ApplicationController
                 only: [:submissions, :publish_all_statuses,
                        :approve_all_statuses, :change_all_statuses]
   before_action :get_unsubmitted_submissions, only: :submission_drafts
-  before_action :redirect_if_invaid_quarter, only: :submission_drafts
+  before_action :redirect_if_invalid_quarter, only: :submission_drafts
   before_action :get_active_decided_submissions,
                 only: [:publish_all_statuses, :approve_all_statuses,
                        :change_all_statuses]
