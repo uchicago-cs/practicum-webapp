@@ -28,7 +28,6 @@ class SubmissionsController < ApplicationController
   end
 
   def create
-
     # If an admin is creating the student's application, then
     # we figure out which student the admin is referring to.
     if params[:submission][:applicant].present?
@@ -123,8 +122,8 @@ class SubmissionsController < ApplicationController
           :resume, :status_approved, :status_published, :comments]
     as << :applicant if current_user.admin?
 
-    if current_user.admin? or current_user.advisor?
-      params.require(:project).permit(*as)
+    if current_user.admin? or current_user.advisor? or current_user.student?
+      params.require(:submission).permit(*as)
     end
   end
 

@@ -71,17 +71,13 @@ describe "Creating a submission", type: :feature do
       describe "the student correctly filling out the application form" do
 
         before(:each) do
-          within('#new_submission') do
-            fill_in 'Interests', with: 'a' * 500
-            fill_in 'submission_qualifications', with: 'a' * 500
-            fill_in 'submission_courses', with: 'a' * 500
-            click_button 'Submit my application'
-          end
-          save_and_open_page
+          fill_in 'Interests', with: 'a' * 500
+          fill_in 'Qualifications', with: 'a' * 500
+          fill_in 'Courses', with: 'a' * 500
+          click_button 'Submit my application'
         end
 
         it "should redirect the student to their submitted apps page" do
-          save_and_open_page
           expect(page).to have_selector("div.alert.alert-success")
           expect(page).to have_content(@project.name)
         end
