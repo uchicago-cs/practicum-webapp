@@ -48,6 +48,8 @@ class SubmissionsController < ApplicationController
   def update
     # Note: students can only edit drafts.
     @submission.assign_attributes(submission_params)
+
+    create_or_update_submission :edit
   end
 
   def destroy
