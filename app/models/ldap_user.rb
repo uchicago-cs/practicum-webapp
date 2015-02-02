@@ -18,12 +18,14 @@ class LdapUser < User
       self.email = Devise::LDAP::Adapter.
         get_ldap_param(self.cnet, "mail").first
 
-      self.first_name = (Devise::LDAP::Adapter.
-                         get_ldap_param(self.cnet,
-                                        "givenName") rescue nil).first
+      # For CNet users who do not have a givenName (?) or a sn
+      ldap_first_name = (Devise::LDAP::Adapter.get_ldap_param(self.cnet,
+                                        "givenName") rescue nil)
+      self.first_name = (ldap_first_name ? ldap_first_name.first : "")
 
-      self.last_name = (Devise::LDAP::Adapter.
-                        get_ldap_param(self.cnet, "sn") rescue nil).first
+      ldap_surname = (Devise::LDAP::Adapter.get_ldap_param(self.cnet,
+                                                           "sn") rescue nil)
+      self.last_name = (ldap_surname ? ldap_surname.first : "")
 
       self.student = true
     end
