@@ -100,17 +100,6 @@ class EvaluationTemplate < ActiveRecord::Base
     end
   end
 
-  # TODO: Improve the method below.
-  # Be careful with this... We shouldn't have to whitelist the allowed
-  # attributes here: we should just use the strong params filter in the
-  # controller.
-  def update_basic_info(info_params)
-    p = info_params[:evaluation_template]
-    self.update_attributes(name: p[:name], quarter_id: p[:quarter_id],
-                           active: p[:active], start_date: p[:start_date],
-                           end_date: p[:end_date])
-  end
-
   def add_question(survey_params)
     num = self.survey ? self.survey.length + 1 : 1
     self.survey = {} unless self.survey

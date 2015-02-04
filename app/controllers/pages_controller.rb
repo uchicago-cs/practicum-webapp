@@ -77,7 +77,6 @@ class PagesController < ApplicationController
     end
   end
 
-  # TODO: Use a more descriptive name?
   def update_all_submissions
     Submission.update_selected(params)
 
