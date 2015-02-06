@@ -48,8 +48,10 @@ module ProjectSubmissionPatterns
 
     if db_record.update_attributes(changed_attrs)
       flash[:success] = "#{rec_obj} #{s_info[params[:commit]][:txt]}."
+      # We need `view_context` here because this (ProjectSubmissionPatterns)
+      # is not a controller, and it cannot inherently use helpers from
+      # ApplicationHelper.
       redirect_to view_context.q_path(record)
-      # TODO: Why do we need `view_context` here but not in other controllers?
     else
       flash.now[:error] = "#{rec_obj} could not be " +
         "#{s_info[params[:commit]][:txt]}."
