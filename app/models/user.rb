@@ -136,7 +136,7 @@ class User < ActiveRecord::Base
   def send_roles_changed
     if this_user != self and
         (student_changed? or advisor_changed? or admin_changed?)
-      Notifier.roles_changed(self).deliver
+      Notifier.roles_changed(self).deliver_now
     end
   end
 
