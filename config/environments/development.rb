@@ -43,7 +43,6 @@ Practicum::Application.configure do
   # Set asset host for ActionMailer
   config.action_mailer.asset_host = "localhost:3000"
 
-  config.serve_static_files = true
+  config.serve_static_assets = true
 
-  config.active_record.raise_in_transactional_callbacks = true
 end

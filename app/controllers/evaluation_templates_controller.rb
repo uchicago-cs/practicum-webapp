@@ -61,7 +61,8 @@ class EvaluationTemplatesController < ApplicationController
   end
 
   def update_basic_info
-    if @evaluation_template.update_attributes(evaluation_template_params)
+    @evaluation_template.update_basic_info(params)
+    if @evaluation_template.save
       flash[:success] = "Template updated."
       redirect_to @evaluation_template
     else

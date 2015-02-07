@@ -343,7 +343,7 @@ describe "Interacting with records from different quarters", type: :feature do
 
     context "viewing an evaluation with a path without a quarter" do
       it "should redirect to the path with the valid quarter" do
-        visit evaluation_path(id: @eval.id, year: nil, season: nil)
+        visit evaluation_path(@eval, year: nil, season: nil)
         expect(current_path).to eq(q_path(@eval))
         expect(page).not_to have_selector("div.alert.alert-danger")
       end
@@ -369,7 +369,7 @@ describe "Interacting with records from different quarters", type: :feature do
                                year: 2016,
                                season: "winter")
       @q5.update_column(:start_date, DateTime.yesterday)
-      @q5.update_column(:project_proposal_deadline, Time.now.getlocal - 5.hours)
+      @q5.update_column(:project_proposal_deadline, DateTime.now - 5.hours)
 
       @p1 = FactoryGirl.build(:project, quarter: @q1,
                                advisor: @advisor, status: "accepted",

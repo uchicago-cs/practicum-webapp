@@ -1,5 +1,6 @@
 module ApplicationHelper
 
+  # TODO: DRY these quarter (q_) methods? (Also see /spec/support/utilities.rb)
   def q_link_to(txt, obj, path_type=obj.class.name.to_sym, opts={})
     # Link to a persisted project, submission, or evaluation, but the record's
     # quarter information is plugged into the path generator. Should not be used

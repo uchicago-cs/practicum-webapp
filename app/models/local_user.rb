@@ -28,7 +28,7 @@ class LocalUser < User
 
   def send_admin_email
     User.admins.each do |a|
-      Notifier.local_user_awaiting_approval(self, a).deliver_now
+      Notifier.local_user_awaiting_approval(self, a).deliver
     end
   end
 
@@ -52,7 +52,7 @@ class LocalUser < User
 
   def send_account_approved
     if approved_changed? and approved?
-      Notifier.account_approved(self).deliver_now
+      Notifier.account_approved(self).deliver
     end
   end
 

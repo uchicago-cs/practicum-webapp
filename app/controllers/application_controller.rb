@@ -1,4 +1,8 @@
 class ApplicationController < ActionController::Base
+
+  # For q_link_to, q_path, and q_url
+  include ApplicationHelper
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception

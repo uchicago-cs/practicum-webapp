@@ -5,6 +5,7 @@ class SubmissionsController < ApplicationController
 
   load_and_authorize_resource
 
+  # TODO: before_actions on both new and create?
   before_action :get_project,                 only: [:index, :new, :create]
   before_action :submitted?,                  only: [:edit, :update]
   before_action :project_accepted?,           only: [:new, :create]

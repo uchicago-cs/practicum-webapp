@@ -24,10 +24,11 @@
       <td><%= display_name(@evaluation.advisor) %></td>
     </tr>
 
+    <%# TODO: simple_format these answers? And their questions in the eval? %>
     <% @evaluation.survey.each do |question, answer| %>
     <tr>
       <th><%= question %></th>
-      <td><%= simple_format(formatted_answer(answer)) %></td>
+      <td><%= formatted_answer(answer) %></td>
     </tr>
     <% end %>
   </tbody>

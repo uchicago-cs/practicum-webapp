@@ -99,13 +99,13 @@ class Project < ActiveRecord::Base
   def send_project_proposed_immediately
     # See Submission#send_student_applied.
     if self.status == "pending"
-      User.admins.each { |ad| Notifier.project_proposed(self, ad).deliver_now }
+      User.admins.each { |ad| Notifier.project_proposed(self, ad).deliver }
     end
   end
 
   def send_project_proposed_after_draft
     if self.status_changed?(from: "draft", to: "pending")
-      User.admins.each { |ad| Notifier.project_proposed(self, ad).deliver_now }
+      User.admins.each { |ad| Notifier.project_proposed(self, ad).deliver }
     end
   end
 
@@ -113,11 +113,11 @@ class Project < ActiveRecord::Base
     # See Submission#send_status_updated.
     unless self.status_changed?(from: "draft")
       if status_changed? or (pending? and comments.present?)
-        Notifier.project_status_changed(self).deliver_now
+        Notifier.project_status_changed(self).deliver
       end
 
       if status_published_changed? and status == "accepted"
-        Notifier.project_status_published_accepted(self).deliver_now
+        Notifier.project_status_published_accepted(self).deliver
       end
     end
   end

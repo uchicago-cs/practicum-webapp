@@ -76,17 +76,14 @@ class Ability
         end
 
         can :create_evaluation_for, Submission do |submission|
-          # TODO: We should also check that an evaluation of the appropriate
-          # type has not already been made (maybe somewhere else).
+          # We should also check that an evaluation of the appropriate type
+          # has not already been made (maybe somewhere else).
           (submission.project_advisor_id == user.id) and
-            submission.accepted? and !submission.draft? and
-            submission.active_eval_createable? and
-            user.made_project?(submission.project)
+            submission.accepted? and !submission.draft?
         end
 
         can :read_evaluations_for, Submission do |submission|
-          submission.project.advisor.id == user.id and
-            submission.evaluations.present?
+          submission.project.advisor.id == user.id
         end
 
         # can :read, Evaluation do |evaluation|

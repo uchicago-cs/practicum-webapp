@@ -119,13 +119,13 @@ class Submission < ActiveRecord::Base
   end
 
   def send_student_applied_immediately
-    Notifier.student_applied(self).deliver_now if self.status == "pending"
+    Notifier.student_applied(self).deliver if self.status == "pending"
   end
 
   def send_student_applied_after_draft
     # Maybe even just `from: "draft"`; leave off `to: "pending"`?
     if self.status_changed?(from: "draft", to: "pending")
-      Notifier.student_applied(self).deliver_now
+      Notifier.student_applied(self).deliver
     end
   end
 
@@ -135,12 +135,12 @@ class Submission < ActiveRecord::Base
       # Ideally, don't use this_user here.
       if status_changed? and !this_user.try(:admin?)
         User.admins.each do
-          |admin| Notifier.submission_status_updated(self, admin).deliver_now
+          |admin| Notifier.submission_status_updated(self, admin).deliver
         end
       end
 
       if status_published_changed?
-        Notifier.submission_status_publish(self).deliver_now
+        Notifier.submission_status_publish(self).deliver
       end
     end
   end
