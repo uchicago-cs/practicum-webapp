@@ -1,14 +1,16 @@
 <%= f.select(:question_type,
 	     options_for_select(['Text field', 'Text area',
-				 'Check box', 'Radio button'],
+				 'Check box', 'Check box (multiple choices)',
+				 'Radio button'],
 				'Text field')) %>
 <%= f.text_area(:question_prompt,
 		'data-parsley-required' => 'true') %>
 
-<div id="radio-button-group">
-  <div id="radio-option-group">
-    <%= f.text_field 'radio_button_options[1]',
-    label: "Radio button option 1",
+<div id="multiple-button-group">
+  <div id="multiple-option-group">
+    <%= f.text_field 'multiple_btn_opts[1]',
+    label: "Radio button option 1", # TODO: add a function here to determine
+    # what text to display (radio button or checkbox (multi))
     'data-parsley-required' => 'true' %>
   </div>
   <%= f.form_group do %>

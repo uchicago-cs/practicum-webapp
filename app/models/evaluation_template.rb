@@ -86,8 +86,8 @@ class EvaluationTemplate < ActiveRecord::Base
 
     survey[num]["question_type"]   = type
     survey[num]["question_prompt"] = prompt
-    if type == "Radio button"
-      survey[num]["question_options"] = question_params[:radio_button_options]
+    if type == "Radio button" or type == "Check box (multiple choices)"
+      survey[num]["question_options"] = question_params[:multiple_btn_opts]
     end
   end
 
@@ -121,9 +121,10 @@ class EvaluationTemplate < ActiveRecord::Base
       "question_mandatory" => survey_params[:question_mandatory]
     }
 
-    if survey_params[:question_type] == "Radio button"
+    if survey_params[:question_type] == "Radio button" or
+        survey_params[:question_type] == "Check box (multiple choices)"
       self.survey[num]["question_options"] =
-        survey_params[:radio_button_options]
+        survey_params[:multiple_btn_opts]
     end
   end
 
@@ -138,7 +139,8 @@ class EvaluationTemplate < ActiveRecord::Base
   def no_empty_radio_btn_opts
     blank_opts = false
     survey.each do |q, r|
-      survey.find_all {|k, h| h["question_type"]=="Radio button"}.each do |o|
+      survey.find_all { |k, h| h["question_type"] == "Radio button" or
+        h["question_type"] == "Check box (multiple choices)"}.each do |o|
         o[1]["question_options"].each do |num, option|
           if option.blank?
             blank_opts = true
