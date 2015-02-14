@@ -1,5 +1,9 @@
 module EvaluationsHelper
 
+  def multi_types
+    ["Radio button", "Check box (multiple choices)"]
+  end
+
   def formatted_answer(answer)
     answer.present? ? answer : "(Unanswered)"
   end
@@ -7,7 +11,9 @@ module EvaluationsHelper
   def question_symbols(q_type)
     question_symbols =
       { "Text field" => :text_field, "Text area" => :text_area,
-        "Check box" => :check_box, "Radio button" => :radio_button }
+        "Check box" => :check_box, "Radio button" => :radio_button,
+        "Check box (multiple choices)" => :check_box_multi }
+
     question_symbols[q_type]
   end
 
@@ -50,6 +56,27 @@ module EvaluationsHelper
 
       end
 
+    elsif question["question_type"] == "Check box (multiple choices)"
+      # TODO: DRY this (see above elsif block)
+      # TODO: remove all `binding.pry`s
+      # TODO: Add array of question prompts here so we get these in the
+      # survey pair in the params hash
+      # e.g., "question['question_prompt'][#{num}]"
+      form.form_group(question["question_prompt"]) do
+
+        concat(form.hidden_field "survey[#{question['question_prompt']}]")
+        question["question_options"].collect do |num, opt|
+          checked = nil
+          if params[:survey]
+            checked = params[:survey]["#{question['question_prompt']}"] == opt
+          end
+          concat(form.check_box("survey[#{question['question_prompt']}]",
+                                inline: false, label: opt, checked: checked))
+          binding.pry
+        end
+
+      end
+
     else
       form.send(question_symbols(question["question_type"]),
 	       "survey[#{question['question_prompt']}]",
@@ -61,7 +88,7 @@ module EvaluationsHelper
   end
 
   def question_options(question)
-    if question["question_type"] == "Radio button"
+    if multi_types.include? question["question_type"]
       question["question_options"].collect do |num, opt|
         content_tag(:p, "#{num}. #{opt}")
       end.join.html_safe

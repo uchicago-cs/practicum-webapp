@@ -17,7 +17,7 @@ module QuartersHelper
   end
 
   def fmt_quarter_show_current(quarter)
-    formatted_quarter(quarter) + (quarter.active? ? " (current)" : "")
+    formatted_quarter(quarter) + (quarter.active? ? " (active)" : "")
   end
 
   def default_season

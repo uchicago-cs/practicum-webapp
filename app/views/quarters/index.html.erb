@@ -24,7 +24,7 @@
     <% @quarters.each do |quarter| %>
       <p>
 	<%= link_to formatted_quarter(quarter), quarter %>
-	<%= "(current)" if quarter.active? %>
+	<%= "(active)" if quarter.active? %>
       </p>
     <% end %>
 

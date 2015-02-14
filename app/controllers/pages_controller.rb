@@ -110,7 +110,7 @@ class PagesController < ApplicationController
   end
 
   def get_active_decided_submissions
-    @active_decided_submissions = @active_submissions.
+    @active_decided_submissions = @active_submitted_submissions.
       where.not(status: "pending")
   end
 

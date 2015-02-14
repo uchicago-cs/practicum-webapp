@@ -62,7 +62,6 @@ class User < ActiveRecord::Base
 
   def can_write_eval?
 
-    # Quick fix to get the correct return value.
     createable_exists = false
 
     projects.each do |p|

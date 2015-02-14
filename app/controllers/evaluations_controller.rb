@@ -31,6 +31,7 @@ class EvaluationsController < ApplicationController
   end
 
   def create
+    binding.pry
     @evaluation = @submission.evaluations.build
     @evaluation.assign_attributes(evaluation_template_id:
                                   EvaluationTemplate.current_active.id)

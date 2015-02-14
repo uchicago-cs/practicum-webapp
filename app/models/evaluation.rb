@@ -46,6 +46,7 @@ class Evaluation < ActiveRecord::Base
   end
 
   def set_survey(survey_params)
+    binding.pry # TODO: resume here
     self.survey = survey_params
     s = self.evaluation_template.survey
     self.survey.each do |q, r|
