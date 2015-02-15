@@ -62,19 +62,18 @@ module EvaluationsHelper
       # TODO: Add array of question prompts here so we get these in the
       # survey pair in the params hash
       # e.g., "question['question_prompt'][#{num}]"
-      form.form_group(question["question_prompt"]) do
+      prompt = question["question_prompt"]
+      form.form_group(prompt) do
 
-        concat(form.hidden_field "survey[#{question['question_prompt']}]")
         question["question_options"].collect do |num, opt|
           checked = nil
           if params[:survey]
-            checked = params[:survey]["#{question['question_prompt']}"] == opt
+            checked = params[:survey]["#{prompt}"] == opt
           end
-          concat(form.check_box("survey[#{question['question_prompt']}]",
+          concat(form.check_box("survey[#{prompt}][#{opt}]",
                                 inline: false, label: opt, checked: checked))
-          binding.pry
         end
-
+        binding.pry
       end
 
     else

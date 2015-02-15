@@ -28,7 +28,7 @@
     <% @evaluation.survey.each do |question, answer| %>
     <tr>
       <th><%= question %></th>
-      <td><%= formatted_answer(answer) %></td>
+      <td><%= simple_format formatted_answer(answer) %></td>
     </tr>
     <% end %>
   </tbody>

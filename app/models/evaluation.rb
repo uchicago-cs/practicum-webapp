@@ -46,12 +46,17 @@ class Evaluation < ActiveRecord::Base
   end
 
   def set_survey(survey_params)
-    binding.pry # TODO: resume here
     self.survey = survey_params
     s = self.evaluation_template.survey
+
     self.survey.each do |q, r|
       t = s.find { |k, h| h["question_prompt"] == q }[1]["question_type"]
-      survey[q] = ((survey[q] == "1") ? "Yes" : "No") if t == "Check box"
+
+      if t == "Check box"
+        survey[q] = (survey[q] == "1") ? "Yes" : "No"
+      elsif t == "Check box (multiple choices)"
+        survey[q] = survey[q].select! { |q, n| n == "1" }.keys.join("\n")
+      end
     end
   end
 
