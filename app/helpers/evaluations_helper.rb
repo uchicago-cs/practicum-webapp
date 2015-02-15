@@ -31,7 +31,7 @@ module EvaluationsHelper
       checked = nil
       # Check box if input was invalid and the user checked it before.
       if params[:survey]
-        is_yes = (params[:survey]["#{question['question_prompt']}"] == "Yes")
+        is_yes = (params[:survey][question['question_prompt']] == "Yes")
         checked = is_yes ? true : false
       end
       form.check_box("survey[#{question['question_prompt']}]",
@@ -48,7 +48,7 @@ module EvaluationsHelper
           # Select `opt` if input was invalid and user selected `opt` before.
           checked = nil
           if params[:survey]
-            checked = params[:survey]["#{question['question_prompt']}"] == opt
+            checked = params[:survey][question['question_prompt']] == opt
           end
           concat(form.radio_button("survey[#{question['question_prompt']}]",
                                    opt, label: opt, checked: checked))
@@ -66,8 +66,8 @@ module EvaluationsHelper
 
         question["question_options"].collect do |num, opt|
           checked = nil
-          if params[:survey]["#{prompt}"]["#{opt}"]
-            checked = params[:survey]["#{prompt}"]["#{opt}"] == opt
+          if params[:survey][prompt][opt]
+            checked = params[:survey][prompt][opt] == opt
           end
           concat(form.check_box("survey[#{prompt}][#{opt}]",
                                 inline: false, label: opt, checked: checked))
@@ -79,7 +79,7 @@ module EvaluationsHelper
 	       "survey[#{question['question_prompt']}]",
 	       hide_label: true,
 	       value: params[:survey] ?
-	       params[:survey]["#{question['question_prompt']}"] : nil )
+	       params[:survey][question['question_prompt']] : nil )
     end
 
   end
