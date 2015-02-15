@@ -55,7 +55,8 @@ class Evaluation < ActiveRecord::Base
       if t == "Check box"
         survey[q] = (survey[q] == "1") ? "Yes" : "No"
       elsif t == "Check box (multiple choices)"
-        survey[q] = survey[q].select! { |q, n| n == "1" }.keys.join("\n")
+        survey[q] = survey[q].select! { |q, n| n == "1" }.keys
+        survey[q] = survey[q].map { |k| "- #{k}" }.join("\n")
       end
     end
   end

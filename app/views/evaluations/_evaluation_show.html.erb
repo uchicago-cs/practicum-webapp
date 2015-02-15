@@ -24,7 +24,7 @@
       <td><%= display_name(@evaluation.advisor) %></td>
     </tr>
 
-    <%# TODO: simple_format these answers? And their questions in the eval? %>
+    <%# TODO: simple_format the questions (in the eval and its form)? %>
     <% @evaluation.survey.each do |question, answer| %>
     <tr>
       <th><%= question %></th>
