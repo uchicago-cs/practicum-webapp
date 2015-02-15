@@ -58,7 +58,6 @@ module EvaluationsHelper
 
     elsif question["question_type"] == "Check box (multiple choices)"
       # TODO: DRY this (see above elsif block)
-      # TODO: remove all `binding.pry`s
       # TODO: Add array of question prompts here so we get these in the
       # survey pair in the params hash
       # e.g., "question['question_prompt'][#{num}]"
@@ -67,13 +66,12 @@ module EvaluationsHelper
 
         question["question_options"].collect do |num, opt|
           checked = nil
-          if params[:survey]
-            checked = params[:survey]["#{prompt}"] == opt
+          if params[:survey]["#{prompt}"]["#{opt}"]
+            checked = params[:survey]["#{prompt}"]["#{opt}"] == opt
           end
           concat(form.check_box("survey[#{prompt}][#{opt}]",
                                 inline: false, label: opt, checked: checked))
         end
-        binding.pry
       end
 
     else
