@@ -66,7 +66,7 @@ module EvaluationsHelper
 
         question["question_options"].collect do |num, opt|
           checked = nil
-          if params[:survey][prompt][opt]
+          if params[:survey]
             checked = params[:survey][prompt][opt] == opt
           end
           concat(form.check_box("survey[#{prompt}][#{opt}]",

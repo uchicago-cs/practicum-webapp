@@ -69,7 +69,6 @@ class User < ActiveRecord::Base
         createable_exists = true if s.active_eval_createable?
       end
     end
-    binding.pry
 
     EvaluationTemplate.current_active_available? and
       advisor? and projects.any? and createable_exists
