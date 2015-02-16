@@ -30,8 +30,9 @@ class EvaluationTemplate < ActiveRecord::Base
   end
 
   def EvaluationTemplate.current_active
+    # TODO: implement long-term fix
     EvaluationTemplate.where(active: true).
-      where(quarter: Quarter.active_quarter).take
+      where(quarter: Quarter.active_quarters).take # QUICK FIX
   end
 
   def has_grade_question?
