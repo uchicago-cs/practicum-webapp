@@ -1,5 +1,6 @@
 class PagesController < ApplicationController
 
+  before_action :redirect_if_not_logged_in, only: :request_advisor_access
   before_action :authenticate_user!, only: [:submissions,
                                             :request_advisor_access]
   before_action :is_admin?, only: [:submissions, :submission_drafts]
@@ -117,6 +118,13 @@ class PagesController < ApplicationController
   def send_advisor_request_mail
     User.admins.each do |admin|
       Notifier.request_for_advisor_access(current_user, admin).deliver
+    end
+  end
+
+  def redirect_if_not_logged_in
+    unless current_user
+      flash[:error] = "Permission denied."
+      redirect_to root_url
     end
   end
 

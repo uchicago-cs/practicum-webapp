@@ -63,7 +63,6 @@ RSpec.describe User, :type => :model do
         expect{FactoryGirl.create(:submission, project: @project,
                                   advisor: @user)}.to raise_error
 
-        #Rails.logger.debug "#{FactoryGirl.create(:submission, project: @project, user: @user)}\n\n"*50
       end
     end
 
