@@ -15,15 +15,20 @@ class LdapUser < User
 
   def get_ldap_info
     if Devise::LDAP::Adapter.get_ldap_param(self.cnet, 'uid')
-      self.email = Devise::LDAP::Adapter.
-        get_ldap_param(self.cnet, "mail").first
+      self.email = Devise::LDAP::Adapter.get_ldap_param(self.cnet, "mail").first
 
-      self.first_name = (Devise::LDAP::Adapter.
-                         get_ldap_param(self.cnet,
-                                        "givenName") rescue nil).first
+      # Set the student's first and last name to their cnet if their
+      # LDAP directory is FERPA-protected
+      firstname = (Devise::LDAP::Adapter.
+                   get_ldap_param(self.cnet, "givenName") rescue nil)
+      firstname = firstname ? firstname.first : self.cnet
 
-      self.last_name = (Devise::LDAP::Adapter.
-                        get_ldap_param(self.cnet, "sn") rescue nil).first
+      lastname = (Devise::LDAP::Adapter.
+                  get_ldap_param(self.cnet, "sn") rescue nil)
+      lastname = lastname ? lastname.first : self.cnet
+
+      self.first_name = firstname
+      self.last_name = lastname
 
       self.student = true
     end
