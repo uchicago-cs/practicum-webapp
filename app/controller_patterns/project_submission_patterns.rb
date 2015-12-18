@@ -3,7 +3,8 @@ module ProjectSubmissionPatterns
   # Allows an admin to create either a proposal or a submission for a target
   # user (either a proposer (advisor) or applicant (student)).
   def create_record_for_target_user(user_type)
-    target_user = params[:project][user_type].downcase
+    record_type = (user_type == :proposer) ? :project : :submission
+    target_user = params[record_type][user_type].downcase
     attr_type = (target_user.include? '@') ? :email : :cnet
     actual_user = User.find_by(attr_type => target_user)
 
